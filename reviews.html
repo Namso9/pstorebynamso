@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Reviews</title>
+
+  <!-- Font Awesome (Icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* =========================
+       BASE
+    ========================== */
+    body{
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0b0f19;
+      color: #fff;
+    }
+
+    /* =========================
+       REVIEW SECTION
+    ========================== */
+    .proof-section{
+      max-width: 1200px;
+      margin: 46px auto 10px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    /* Title row (title + hint pill) */
+    .proof-head{
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      text-align: center;
+      margin-bottom: 28px; /* title/hint နဲ့ grid ကြား */
+    }
+
+    /* Gradient title */
+    .proof-title{
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0;
+      position: relative;
+      display: inline-block;
+
+      background: linear-gradient(135deg, #ffffff 20%, #00d2ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      text-shadow: 0 5px 15px rgba(0, 210, 255, 0.25);
+      padding-bottom: 15px;
+    }
+
+    .proof-title::after{
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 4px;
+      background: linear-gradient(to right, #2ed573, #00d2ff);
+      border-radius: 2px;
+    }
+
+    /* Tap hint pill */
+    .proof-hint{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      transform: translateY(-2px);
+    }
+
+    .proof-hint i{
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* ===== GRID ===== */
+    .proof-grid{
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+
+    @media (min-width: 720px){
+      .proof-grid{
+        gap: 20px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1024px){
+      .proof-grid{
+        gap: 22px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    /* ===== CARD ===== */
+    .proof-item{
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      aspect-ratio: 4 / 3;
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .proof-item::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.00) 50%, rgba(0,0,0,0.35));
+      opacity: 0;
+      transition: 0.22s ease;
+      pointer-events:none;
+    }
+
+    .proof-item:hover{
+      transform: translateY(-4px);
+      border-color: rgba(0,210,255,0.55);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+    }
+    .proof-item:hover::after{ opacity: 1; }
+
+    .proof-item img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      transform: scale(1.01);
+      transition: transform 0.22s ease;
+    }
+    .proof-item:hover img{ transform: scale(1.06); }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox{
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+    .lightbox.open{ display: flex; }
+
+    .lightbox img{
+      max-width: min(980px, 95%);
+      max-height: 90vh;
+      border-radius: 14px;
+      box-shadow: 0 0 26px rgba(255, 255, 255, 0.18);
+      animation: zoomIn 0.25s ease;
+    }
+
+    @keyframes zoomIn{
+      from { transform: scale(0.88); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .close-lightbox{
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      color: #fff;
+      font-size: 38px;
+      line-height: 1;
+      cursor: pointer;
+      transition: 0.2s;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+    }
+    .close-lightbox:hover{
+      color: #ff4757;
+      transform: scale(1.03);
+    }
+
+    /* =========================
+       OFFICIAL CHANNELS BOX
+    ========================== */
+    .guide-container{
+      max-width: 900px;
+      margin: 70px auto 60px;
+      padding: 0 16px;
+    }
+
+    .guide-box{
+      border-radius: 22px;
+      padding: 18px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.12);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.25) inset;
+      backdrop-filter: blur(10px);
+    }
+
+    .guide-box h2{
+      margin: 0 0 14px 0;
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    /* PC default: 1 col, 2 col on wider */
+    .guide-nav{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    @media (min-width: 700px){
+      .guide-nav{
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+    }
+
+    .nav-btn{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      background: #ffffff;
+      color: #111;
+      font-size: 1rem;
+      font-weight: 800;
+      transition: 0.2s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    .nav-btn i{ font-size: 1rem; }
+    .nav-btn:hover{ transform: translateY(-2px); }
+    .telegram-btn{ background: #2f7fb8; color: #fff; }
+
+    /* ===== TERMS FOOTER ===== */
+    .site-footer{
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .footer-links{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+    }
+
+    .footer-links a{
+      color: rgba(255,255,255,0.82);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 5px 8px;
+      border-radius: 999px;
+      transition: 0.2s;
+    }
+    .footer-links a:hover{
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .footer-sep{
+      color: rgba(255,255,255,0.25);
+      font-size: 0.85rem;
+    }
+
+    /* ===== BACK TO HOME ===== */
+    .back-home-wrap{
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .back-home-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: rgba(255,255,255,0.9);
+      font-weight: 800;
+      font-size: 0.95rem;
+      border: 2px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      transition: 0.2s ease;
+    }
+
+    .back-home-btn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(0,210,255,0.55);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    /* =========================
+       MOBILE (IMPORTANT) ✅
+       - Reviews grid square
+       - Official buttons 2 columns
+    ========================== */
+    @media (max-width: 768px){
+
+      .proof-section{ margin-top: 34px; }
+      .proof-hint{ font-size: 0.85rem; padding: 9px 12px; }
+
+      /* reviews grid: tidy */
+      .proof-grid{ gap: 14px; }
+      .proof-item{ border-radius: 16px; aspect-ratio: 1 / 1; }
+
+      /* guide: make it neat like your first photo */
+      .guide-container{
+        padding: 0 12px;
+        margin: 45px auto 50px;
+      }
+
+      .guide-box{
+        padding: 16px 14px;
+        border-radius: 18px;
+      }
+
+      .guide-box h2{
+        font-size: 1.10rem;
+        margin-bottom: 12px;
+      }
+
+      /* ✅ 2 columns on phone */
+      .guide-nav{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .nav-btn{
+        font-size: 0.90rem;
+        padding: 10px 10px;
+        border-radius: 12px;
+        white-space: normal;
+        text-align: center;
+      }
+
+      .back-home-btn{
+        font-size: 0.9rem;
+        padding: 10px 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       REVIEWS
+  ========================== -->
+  <section class="proof-section">
+    <div class="proof-head">
+      <h2 class="proof-title">Our Customer Reviews</h2>
+      <div class="proof-hint">
+        <i class="fa-solid fa-magnifying-glass-plus"></i>
+        Tap any image to zoom
+      </div>
+    </div>
+
+    <div class="proof-grid" id="proofGrid">
+      <script>
+        for (let i = 1; i <= 29; i++) {
+          document.write(`
+            <div class="proof-item">
+              <img src="images/review${i}.jpg" alt="Customer Review ${i}">
+            </div>
+          `);
+        }
+      </script>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <span class="close-lightbox" id="closeLightbox" aria-label="Close">&times;</span>
+    <img id="lightboxImg" src="" alt="Zoomed Review">
+  </div>
+
+  <script>
+    const grid = document.getElementById("proofGrid");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const closeBtn = document.getElementById("closeLightbox");
+
+    grid.addEventListener("click", (e) => {
+      const img = e.target.closest("img");
+      if (!img) return;
+
+      lightboxImg.src = img.src;
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+      document.body.style.overflow = "";
+    }
+
+    closeBtn.addEventListener("click", closeLightbox);
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
+    });
+  </script>
+
+  <!-- =========================
+       OFFICIAL CHANNELS & TERMS
+  ========================== -->
+  <div class="guide-container">
+    <div class="guide-box">
+      <h2>=== Official Channels & Pages ===</h2>
+
+      <div class="guide-nav">
+        <a href="https://t.me/premiumstorebzzz" target="_blank" class="nav-btn telegram-btn">
+          <i class="fa-solid fa-bullhorn"></i> Telegram Channel
+        </a>
+
+        <a href="https://www.facebook.com/share/1MyXdbrK9s/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Premium Store
+        </a>
+
+        <a href="https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Premium Store 2
+        </a>
+
+        <a href="https://www.facebook.com/share/1Fdm6SB8GQ/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Premium Store 3
+        </a>
+
+        <a href="https://www.facebook.com/share/1GSXUU97JG/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Premium Store 2.0
+        </a>
+
+        <a href="https://www.facebook.com/share/1HigTwYwir/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Movie For You
+        </a>
+      </div>
+
+      <footer class="site-footer">
+        <div class="footer-links">
+          <a href="terms-of-service-vpn.html">VPN Terms</a>
+          <span class="footer-sep">|</span>
+          <a href="terms-of-service.html">Shop Terms</a>
+        </div>
+      </footer>
+    </div>
+
+   <div class="back-home-wrap" style="display: flex; gap: 12px; justify-content: center;">
+      <button onclick="window.history.back()" class="back-home-btn" style="border: 2px solid rgba(255,255,255,0.14); cursor: pointer; font-family: inherit;">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back
+      </button>
+      
+      <a href="index.html" class="back-home-btn">
+        <i class="fa-solid fa-house"></i>
+        Back to Home
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

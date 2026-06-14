@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Express VPN Location Guide | Premium Store</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+    :root{
+        --bg:#0b0f19;
+        --cyan:#00d2ff;
+        --green:#2ed573;
+        --card:rgba(255,255,255,0.05);
+        --card-border:rgba(255,255,255,0.12);
+        --txt:#ffffff;
+        --txt-dim:rgba(255,255,255,0.65);
+        --txt-dim2:rgba(255,255,255,0.45);
+    }
+    *{ box-sizing:border-box; }
+    body{
+        margin:0;
+        font-family: Arial, Helvetica, sans-serif;
+        background:var(--bg);
+        color:var(--txt);
+        -webkit-text-size-adjust:100%;
+    }
+
+    /* ===== HEADER ===== */
+    .lg-head{
+        max-width:1200px;
+        margin:46px auto 10px;
+        padding:20px 16px;
+        text-align:center;
+    }
+    .lg-title{
+        font-size:clamp(1.6rem,4vw,2.3rem);
+        font-weight:900;
+        text-transform:uppercase;
+        letter-spacing:1px;
+        margin:0;
+        display:inline-block;
+        position:relative;
+        background:linear-gradient(135deg,#ffffff 20%,var(--cyan) 100%);
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        background-clip:text;
+        text-shadow:0 5px 15px rgba(0,210,255,0.25);
+        padding-bottom:15px;
+    }
+    .lg-title::after{
+        content:"";
+        position:absolute; bottom:0; left:50%;
+        transform:translateX(-50%);
+        width:90px; height:4px;
+        background:linear-gradient(to right,var(--green),var(--cyan));
+        border-radius:2px;
+    }
+    .lg-update{
+        display:inline-flex; align-items:center; gap:8px;
+        margin-top:14px;
+        padding:9px 14px;
+        border-radius:999px;
+        border:1px solid var(--card-border);
+        background:var(--card);
+        backdrop-filter:blur(10px);
+        color:var(--txt-dim);
+        font-size:0.9rem; font-weight:700;
+    }
+    .lg-update i{ color:var(--cyan); }
+
+    /* ===== LOCATION SETS ===== */
+    .lg-wrap{
+        max-width:1100px;
+        margin:30px auto 10px;
+        padding:0 16px;
+        display:flex;
+        flex-direction:column;
+        gap:40px;
+    }
+    .lg-set{
+        position:relative;
+        display:grid;
+        grid-template-columns:1fr;
+        gap:36px;
+    }
+    @media (min-width:900px){
+        .lg-set{ grid-template-columns:1fr 1fr; gap:30px; align-items:start; }
+    }
+
+    /* Glass section (both steps) */
+    .lg-card{
+        position:relative;
+        border-radius:20px;
+        background:var(--card);
+        border:1px solid var(--card-border);
+        box-shadow:0 0 0 1px rgba(0,0,0,0.25) inset;
+        backdrop-filter:blur(10px);
+        padding:26px 18px 18px;
+    }
+    .lg-badge{
+        position:absolute; top:-14px; left:18px;
+        font-weight:800; font-size:0.8rem;
+        padding:6px 14px; border-radius:999px;
+        color:#04121a;
+        box-shadow:0 8px 20px rgba(0,0,0,0.35);
+    }
+    .badge-green{ background:linear-gradient(135deg,var(--green),#1dd1a1); }
+    .badge-cyan{ background:linear-gradient(135deg,var(--cyan),#54a0ff); color:#04121a; }
+
+    /* arrow between steps */
+    .lg-arrow{
+        display:none;
+        position:absolute;
+        left:50%; top:50%;
+        transform:translate(-50%,-50%);
+        z-index:5;
+        width:40px; height:40px;
+        border-radius:50%;
+        background:linear-gradient(135deg,var(--cyan),var(--green));
+        color:#04121a;
+        align-items:center; justify-content:center;
+        box-shadow:0 8px 20px rgba(0,0,0,0.4);
+    }
+    @media (min-width:900px){ .lg-arrow{ display:flex; } }
+
+    /* ===== STEP 1 protocol ===== */
+    .proto-inner{
+        border:1px solid var(--card-border);
+        border-radius:14px;
+        background:rgba(0,0,0,0.2);
+        padding:14px;
+    }
+    .proto-label{ font-size:0.82rem; font-weight:700; color:var(--txt-dim); margin:0 0 10px; }
+    .proto-sel{
+        display:flex; gap:12px; align-items:flex-start;
+        padding:12px;
+        border-radius:12px;
+        background:rgba(46,213,115,0.10);
+        border:1px solid rgba(46,213,115,0.45);
+    }
+    .proto-sel .pname{ font-weight:800; font-size:0.95rem; color:#fff; display:block; margin-bottom:3px; }
+    .proto-sel .pdesc{ font-size:0.72rem; color:var(--txt-dim); line-height:1.45; }
+
+    /* radio (green live blink when selected) */
+    .radio{
+        width:20px; height:20px; border-radius:50%;
+        border:2px solid rgba(255,255,255,0.3);
+        flex-shrink:0; margin-top:2px;
+        display:inline-flex; align-items:center; justify-content:center;
+    }
+    .radio.on{ border-color:var(--green); }
+    .radio.on::after{
+        content:""; width:10px; height:10px; border-radius:50%;
+        background:var(--green);
+        animation:blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink{
+        0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(46,213,115,0.6); }
+        50%{ opacity:0.55; box-shadow:0 0 0 7px rgba(46,213,115,0); }
+    }
+
+    /* encryption sub box */
+    .enc-box{
+        margin:14px 0 0 10px;
+        padding:12px;
+        border-radius:12px;
+        background:rgba(0,0,0,0.25);
+        border:1px solid var(--card-border);
+    }
+    .enc-box .etitle{ font-size:0.8rem; font-weight:700; color:var(--txt-dim); margin:0 0 6px; }
+    .enc-row{
+        display:flex; align-items:center; gap:10px;
+        padding:9px 0;
+        border-bottom:1px solid rgba(255,255,255,0.08);
+        font-size:0.88rem;
+    }
+    .enc-row:last-of-type{ border-bottom:0; }
+    .enc-row .ename{ color:var(--txt-dim); }
+    .enc-row .ename.on{ color:#fff; font-weight:700; }
+    .nat-row{
+        display:flex; align-items:flex-start; gap:12px; justify-content:space-between;
+        padding-top:12px; margin-top:4px;
+        border-top:1px solid rgba(255,255,255,0.1);
+    }
+    .nat-row .ntitle{ font-size:0.85rem; font-weight:700; color:#fff; }
+    .nat-row .ndesc{ font-size:0.7rem; color:var(--txt-dim2); line-height:1.4; margin-top:3px; }
+    .toggle{
+        width:44px; height:24px; border-radius:999px; padding:2px;
+        flex-shrink:0; margin-top:2px; display:flex; align-items:center;
+    }
+    .toggle.on{ background:var(--green); justify-content:flex-end; }
+    .toggle.off{ background:rgba(255,255,255,0.2); justify-content:flex-start; }
+    .toggle .knob{ width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.4); }
+
+    /* ===== STEP 2 connection ===== */
+    .conn{
+        border-radius:18px;
+        overflow:hidden;
+        border:1px solid var(--card-border);
+        background:rgba(0,0,0,0.2);
+        max-width:360px;
+        margin:6px auto 0;
+    }
+    .conn-top{
+        background:linear-gradient(135deg,var(--green),#1dd1a1);
+        padding:16px; text-align:center; color:#04121a;
+    }
+    .conn-top i.power{ font-size:1.9rem; display:block; margin-bottom:4px; }
+    .conn-top .pstat{ font-weight:800; font-size:0.9rem; }
+    .conn-body{ padding:14px; display:flex; flex-direction:column; gap:11px; }
+    .conn-block{
+        background:rgba(255,255,255,0.05);
+        border:1px solid var(--card-border);
+        border-radius:12px;
+        padding:12px;
+    }
+    .loc-row{ display:flex; justify-content:space-between; align-items:center; }
+    .loc-row .flag{ font-size:1.4rem; }
+    .loc-row .llabel{ font-size:0.62rem; text-transform:uppercase; letter-spacing:.5px; color:var(--txt-dim2); font-weight:800; }
+    .loc-row .lname{ font-size:0.9rem; font-weight:800; color:#fff; }
+    .loc-row .change{ font-size:0.7rem; color:var(--txt-dim2); }
+    .ip-row{ display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; }
+    .ip-row .iplab{ color:var(--txt-dim); font-weight:600; }
+    .ip-row .ipval{ font-family:monospace; background:rgba(0,0,0,0.35); color:var(--green); font-weight:700; padding:2px 8px; border-radius:6px; }
+    .map{
+        height:64px; margin-top:9px; border-radius:10px;
+        background:rgba(0,210,255,0.08);
+        display:flex; align-items:center; justify-content:center;
+        position:relative; overflow:hidden;
+        color:rgba(0,210,255,0.4);
+    }
+    .map i{ font-size:1.8rem; }
+    .map .dot{
+        position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+        width:12px; height:12px; border-radius:50%; background:var(--green);
+        animation:blink 1.4s ease-in-out infinite;
+    }
+    .map .dot-core{
+        position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+        width:7px; height:7px; border-radius:50%; background:#1dd1a1;
+    }
+    .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+    .mini{
+        background:rgba(255,255,255,0.05);
+        border:1px solid var(--card-border);
+        border-radius:10px; padding:9px; text-align:center;
+    }
+    .mini .mlab{ font-size:0.62rem; font-weight:800; color:var(--txt-dim2); }
+    .mini .mval{ font-size:0.78rem; font-weight:800; color:#fff; margin-top:2px; }
+    .mini.proto{ background:rgba(0,210,255,0.10); border-color:rgba(0,210,255,0.4); }
+    .mini.proto .mlab{ color:var(--cyan); }
+    .sda{
+        background:rgba(255,255,255,0.05);
+        border:1px solid var(--card-border);
+        border-radius:10px; padding:10px;
+        display:flex; justify-content:space-between; align-items:center;
+        font-size:0.75rem; color:var(--txt-dim);
+    }
+    .sda .sval{ font-weight:800; color:#fff; }
+
+    /* ===== THANKS BANNER ===== */
+    .thanks{
+        max-width:460px; margin:46px auto 0; padding:14px 20px;
+        border-radius:16px; text-align:center; font-weight:800;
+        background:linear-gradient(135deg,#f5a623,#f7b733);
+        color:#3a2600;
+        box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    /* ===== OFFICIAL CHANNELS / FOOTER (from review.html) ===== */
+    .guide-container{ max-width:900px; margin:60px auto 50px; padding:0 16px; }
+    .guide-box{
+        border-radius:22px; padding:18px;
+        background:var(--card); border:2px solid var(--card-border);
+        box-shadow:0 0 0 1px rgba(0,0,0,0.25) inset; backdrop-filter:blur(10px);
+    }
+    .guide-box h2{ margin:0 0 14px; font-size:1.2rem; font-weight:800; letter-spacing:1px; text-align:center; }
+    .guide-nav{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:12px; }
+    @media (min-width:700px){ .guide-nav{ grid-template-columns:1fr 1fr; gap:14px; } }
+    .nav-btn{
+        display:flex; align-items:center; justify-content:center; gap:10px;
+        padding:10px 12px; border-radius:999px; text-decoration:none;
+        background:#fff; color:#111; font-size:1rem; font-weight:800;
+        transition:.2s; box-shadow:0 8px 20px rgba(0,0,0,0.25);
+    }
+    .nav-btn:hover{ transform:translateY(-2px); }
+    .telegram-btn{ background:#2f7fb8; color:#fff; }
+    .site-footer{ margin-top:18px; text-align:center; }
+    .footer-links{
+        display:inline-flex; align-items:center; gap:10px; padding:7px 10px;
+        border-radius:999px; border:1px solid var(--card-border);
+        background:rgba(255,255,255,0.04); backdrop-filter:blur(10px);
+    }
+    .footer-links a{ color:var(--txt-dim); text-decoration:none; font-size:0.82rem; font-weight:700; padding:5px 8px; border-radius:999px; transition:.2s; }
+    .footer-links a:hover{ background:rgba(255,255,255,0.08); color:#fff; }
+    .footer-sep{ color:rgba(255,255,255,0.25); }
+    .back-home-wrap{ margin-top:18px; display:flex; gap:12px; justify-content:center; }
+    .back-home-btn{
+        display:inline-flex; align-items:center; gap:10px; padding:11px 16px;
+        border-radius:999px; text-decoration:none; color:rgba(255,255,255,0.9);
+        font-weight:800; font-size:0.95rem; border:2px solid var(--card-border);
+        background:var(--card); backdrop-filter:blur(10px); transition:.2s;
+        cursor:pointer; font-family:inherit;
+    }
+    .back-home-btn:hover{ transform:translateY(-2px); border-color:rgba(0,210,255,0.55); box-shadow:0 10px 25px rgba(0,0,0,0.35); }
+
+    /* ===== MOBILE ===== */
+    @media (max-width:768px){
+        .lg-head{ margin-top:34px; }
+        .lg-wrap{ gap:30px; }
+        .lg-set{ gap:30px; }
+        .guide-container{ margin:45px auto 50px; }
+        .guide-nav{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+        .nav-btn{ font-size:0.88rem; padding:10px; border-radius:12px; white-space:normal; text-align:center; }
+        .back-home-btn{ font-size:0.9rem; padding:10px 14px; }
+    }
+</style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="lg-head">
+        <h1 class="lg-title">Express VPN Location Guide</h1>
+        <br>
+        <span class="lg-update"><i class="fa-solid fa-clock-rotate-left"></i> Latest Update: <span id="updateDate">28 May 2026</span></span>
+    </header>
+
+    <!-- ===== LOCATION SETS (auto) ===== -->
+    <div class="lg-wrap" id="locationWrap"></div>
+
+    <!-- ===== THANKS ===== -->
+    <div class="thanks"><i class="fa-solid fa-heart"></i> အားပေးကြတဲ့ customer များအားလုံးကျေးဇူးပါဗျ 💕</div>
+
+    <!-- ===== OFFICIAL CHANNELS & FOOTER ===== -->
+    <div class="guide-container">
+        <div class="guide-box">
+            <h2>=== Official Channels & Pages ===</h2>
+            <div class="guide-nav">
+                <a href="https://t.me/premiumstorebzzz" target="_blank" class="nav-btn telegram-btn"><i class="fa-solid fa-bullhorn"></i> Telegram Channel</a>
+                <a href="https://www.facebook.com/share/1MyXdbrK9s/?mibextid=wwXIfr" target="_blank" class="nav-btn"><i class="fa-brands fa-facebook"></i> Premium Store</a>
+                <a href="https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr" target="_blank" class="nav-btn"><i class="fa-brands fa-facebook"></i> Premium Store 2</a>
+                <a href="https://www.facebook.com/share/1Fdm6SB8GQ/?mibextid=wwXIfr" target="_blank" class="nav-btn"><i class="fa-brands fa-facebook"></i> Premium Store 3</a>
+                <a href="https://www.facebook.com/share/1GSXUU97JG/?mibextid=wwXIfr" target="_blank" class="nav-btn"><i class="fa-brands fa-facebook"></i> Premium Store 2.0</a>
+                <a href="https://www.facebook.com/share/1HigTwYwir/?mibextid=wwXIfr" target="_blank" class="nav-btn"><i class="fa-brands fa-facebook"></i> Movie For You</a>
+            </div>
+            <footer class="site-footer">
+                <div class="footer-links">
+                    <a href="terms-of-service-vpn.html">VPN Terms</a>
+                    <span class="footer-sep">|</span>
+                    <a href="terms-of-service.html">Shop Terms</a>
+                </div>
+            </footer>
+        </div>
+        <div class="back-home-wrap">
+            <button onclick="window.history.back()" class="back-home-btn"><i class="fa-solid fa-arrow-left"></i> Back</button>
+            <a href="index.html" class="back-home-btn"><i class="fa-solid fa-house"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- DI ATAUK-K KO-PE NE-TAING PYAUNG-PAR (CSS/HTML APO MA-HTI).  -->
+    <!--                                                              -->
+    <!-- UPDATE_DATE : header ka date                                 -->
+    <!--                                                              -->
+    <!-- LOCATIONS : location 1 ku = set 1 ku                         -->
+    <!--   lo-chin-yin { } block copy+comma / ma-lo-yin block phyat   -->
+    <!--                                                              -->
+    <!-- protocol (copy exactly):                                     -->
+    <!--   "Automatic" / "Lightway - UDP" / "Lightway - TCP" / "WireGuard" -->
+    <!-- encryption (Lightway only): "Automatic" / "AES" / "ChaCha20" -->
+    <!-- natHeartbeats: true / false                                  -->
+    <!-- ============================================================ -->
+    <script>
+        const UPDATE_DATE = "10 Jun 2026";
+
+        const LOCATIONS = [
+            { flag:"🇺🇸", country:"USA", city:"Little Rock", ip:"xxx.xx.xx.xxx",
+              protocol:"Automatic" },
+            { flag:"🇯🇵", country:"Japan", city:"Yokohama", ip:"xxx.xx.xx.xxx",
+              protocol:"Lightway - UDP", encryption:"ChaCha20", natHeartbeats:true },
+            { flag:"🇯🇵", country:"Japan", city:"Tokyo", ip:"xxx.xx.xx.xxx",
+              protocol:"IKEv2" },
+            { flag:"🇺🇸", country:"USA", city:"New York", ip:"xxx.xx.xx.xxx",
+              protocol:"Automatic or Wireguard" },
+            { flag:"🇳🇵", country:"Nepal", city:"Nepal", ip:"xxx.xx.xx.xxx",
+              protocol:"Lightway - TCP", encryption:"ChaCha20", natHeartbeats:true },
+            { flag:"🇺🇸", country:"USA", city:"Dallas", ip:"xxx.xx.xx.xxx",
+              protocol:"Automatic" }
+        ];
+        // ============================================================
+
+        const PROTO_DESC = {
+            "Automatic":      "ExpressVPN will automatically pick the protocol most appropriate for your network.",
+            "Lightway - UDP": "Engineered by ExpressVPN, Lightway is optimized for speed, security, and reliability—and provides post-quantum support.",
+            "Lightway - TCP": "May be slower than Lightway - UDP but connects better on certain networks. Also offers post-quantum protection.",
+            "WireGuard":      "Should be effective across most network types, but no TCP client.",
+            "IKEv2":      "Fast, but may not work on all networks."
+        };
+        const ENC_LABEL = { "Automatic":"Automatic (recommended)", "AES":"AES", "ChaCha20":"ChaCha20" };
+        const ENC_ORDER = ["Automatic","AES","ChaCha20"];
+
+        function step1(loc){
+            const isLW = loc.protocol.indexOf("Lightway") === 0;
+            let encBox = "";
+            if(isLW){
+                const selEnc = loc.encryption || "Automatic";
+                const rows = ENC_ORDER.map(e=>{
+                    const on = (e===selEnc);
+                    return `<div class="enc-row"><span class="radio ${on?'on':''}"></span><span class="ename ${on?'on':''}">${ENC_LABEL[e]}</span></div>`;
+                }).join("");
+                const natOn = loc.natHeartbeats;
+                encBox = `
+                <div class="enc-box">
+                    <p class="etitle">Select Lightway encryption:</p>
+                    ${rows}
+                    <div class="nat-row">
+                        <div>
+                            <div class="ntitle">Lightway NAT heartbeats</div>
+                            <div class="ndesc">Enabling this setting will help some apps and email clients fetch notifications faster. This will increase battery consumption.</div>
+                        </div>
+                        <div class="toggle ${natOn?'on':'off'}"><span class="knob"></span></div>
+                    </div>
+                </div>`;
+            }
+            return `
+            <div class="lg-card">
+                <span class="lg-badge badge-green">STEP 1: Protocol ချိန်းပါ</span>
+                <div class="proto-inner">
+                    <p class="proto-label">Select Protocol:</p>
+                    <div class="proto-sel">
+                        <span class="radio on"></span>
+                        <div>
+                            <span class="pname">${loc.protocol}</span>
+                            <span class="pdesc">${PROTO_DESC[loc.protocol]||""}</span>
+                        </div>
+                    </div>
+                    ${encBox}
+                </div>
+            </div>`;
+        }
+
+        function step2(loc){
+            return `
+            <div class="lg-card" style="background:transparent;border-color:rgba(0,210,255,0.25);">
+                <span class="lg-badge badge-cyan">STEP 2: ${loc.city} Location ချိတ်ပါ</span>
+                <div class="conn">
+                    <div class="conn-top">
+                        <i class="fa-solid fa-power-off power"></i>
+                        <span class="pstat"><i class="fa-solid fa-lock"></i> Protected</span>
+                    </div>
+                    <div class="conn-body">
+                        <div class="conn-block loc-row">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <span class="flag">${loc.flag}</span>
+                                <div>
+                                    <div class="llabel">Selected Location</div>
+                                    <div class="lname">${loc.country} - ${loc.city}</div>
+                                </div>
+                            </div>
+                            <span class="change">Change <i class="fa-solid fa-location-dot"></i></span>
+                        </div>
+                        <div class="conn-block">
+                            <div class="ip-row">
+                                <span class="iplab">VPN IP Address:</span>
+                                <span class="ipval">${loc.ip} <i class="fa-solid fa-rotate" style="font-size:.6rem;"></i></span>
+                            </div>
+                            <div class="map">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <span class="dot"></span><span class="dot-core"></span>
+                            </div>
+                        </div>
+                        <div class="grid2">
+                            <div class="mini">
+                                <div class="mlab">Time Protected</div>
+                                <div class="mval">&lt;1h <span style="font-weight:400;color:var(--txt-dim2);font-size:.6rem;">this week</span></div>
+                            </div>
+                            <div class="mini proto">
+                                <div class="mlab">Protocol (ရွေးချယ်မှု)</div>
+                                <div class="mval">${loc.protocol}</div>
+                            </div>
+                        </div>
+                        <div class="sda">
+                            <span><i class="fa-solid fa-shield-halved" style="color:var(--green);"></i> Secure Device Assistant</span>
+                            <span class="sval">3 out of 4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderSet(loc){
+            return `<div class="lg-set">${step1(loc)}<div class="lg-arrow"><i class="fa-solid fa-arrow-right"></i></div>${step2(loc)}</div>`;
+        }
+
+        document.getElementById("locationWrap").innerHTML = LOCATIONS.map(renderSet).join("");
+        document.getElementById("updateDate").textContent = UPDATE_DATE;
+    </script>
+
+</body>
+</html>
