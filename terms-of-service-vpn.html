@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VPN Terms of Service</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* =========================
+       MAIN LAYOUT
+    ========================== */
+    .terms-page {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 50px 20px;
+    }
+
+    .terms-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 40px;
+      padding: 50px;
+      max-width: 850px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      color: white;
+    }
+
+    .terms-card h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #00d2ff;
+      line-height: 1.25;
+    }
+
+    .terms-section h2 {
+      font-size: 1.3rem;
+      color: #ff4757;
+      margin-top: 30px;
+      border-left: 4px solid #ff4757;
+      padding-left: 15px;
+      margin-bottom: 15px;
+      line-height: 1.25;
+    }
+
+    .terms-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .terms-section li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 10px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.05rem;
+      word-break: break-word;
+    }
+
+    .terms-section li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #00d2ff;
+      font-weight: bold;
+    }
+
+    .terms-section p {
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.05rem;
+      margin-bottom: 15px;
+      word-break: break-word;
+    }
+
+    /* Disclaimer box */
+    .disclaimer-box {
+      background: rgba(255, 71, 87, 0.1);
+      border: 1px dashed #ff4757;
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 35px;
+    }
+
+    .disclaimer-box h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      border: none;
+      padding-left: 0;
+    }
+
+    .back-btn-container {
+      text-align: center;
+      margin-top: 35px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 12px 35px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      background: white;
+      color: #333;
+      transform: translateY(-3px);
+    }
+
+    /* =========================
+       MOBILE FRIENDLY
+    ========================== */
+    @media (max-width: 768px) {
+      .terms-page {
+        align-items: flex-start;
+        padding: 22px 12px;
+      }
+
+      .terms-card {
+        border-radius: 22px;
+        padding: 22px 16px;
+        box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+        border-width: 0.5px;
+      }
+
+      .terms-card h1 {
+        font-size: 1.35rem;
+        margin-bottom: 18px;
+      }
+
+      .terms-section h2 {
+        font-size: 1.05rem;
+        margin-top: 18px;
+        margin-bottom: 10px;
+        border-left-width: 3px;
+        padding-left: 12px;
+      }
+
+      .terms-section li {
+        font-size: 0.92rem;
+        line-height: 1.55;
+        padding-left: 20px;
+        margin-bottom: 8px;
+      }
+
+      .terms-section p {
+        font-size: 0.92rem;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      .disclaimer-box {
+        border-radius: 16px;
+        padding: 14px 12px;
+        margin-top: 18px;
+        border-width: 1px;
+      }
+
+      .back-btn-container {
+        margin-top: 22px;
+      }
+
+      .back-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        border-width: 0.5px;
+      }
+    }
+
+    /* Extra small phones */
+    @media (max-width: 390px) {
+      .terms-card {
+        padding: 18px 14px;
+        border-radius: 18px;
+      }
+
+      .terms-card h1 {
+        font-size: 1.2rem;
+      }
+
+      .terms-section h2 {
+        font-size: 1rem;
+      }
+
+      .terms-section li {
+        font-size: 0.88rem;
+      }
+
+      .terms-section p {
+        font-size: 0.88rem;
+      }
+
+      .back-btn {
+        font-size: 0.86rem;
+        padding: 10px 14px;
+      }
+    }
+  </style>
+</head>
+
+<body class="terms-page">
+
+  <div class="terms-card">
+    <h1>Terms & Conditions For VPN Services</h1>
+
+    <div class="terms-section">
+      <h2>1. Service Commitment</h2>
+      <ul>
+        <li>We strive to provide reliable VPN services and explore various ways to ensure uninterrupted service for our customers.</li>
+        <li>Our responsibility is limited to maintaining the premium version of the purchased VPN account.</li>
+      </ul>
+
+      <h2>2. Government Restrictions</h2>
+      <ul>
+        <li>VPN services may be restricted or prohibited by government authorities.</li>
+        <li>While VPN providers like Express and LetsVPN are designed to withstand strict regulations (including those in China), we cannot always guarantee service in regions with total VPN bans.</li>
+      </ul>
+
+      <h2>3. Refund Policy</h2>
+      <ul>
+        <li>We are not responsible for service interruptions or refunds if VPN usage is restricted due to government-imposed bans.</li>
+        <li>At the time of purchase, the VPN service is fully operational, and we guarantee the usability of the premium version within the warranty period.</li>
+      </ul>
+
+      <h2>4. Subscription Expiration and Reminders</h2>
+      <ul>
+        <li>Customers are responsible for establishing personal reminders for their subscription renewals.</li>
+      </ul>
+
+      <h2>5. Acknowledgments</h2>
+      <ul>
+        <li>By purchasing our VPN services, you agree to these terms and conditions. Thank you for choosing our services. We value your trust and look forward to serving you.</li>
+      </ul>
+    </div>
+
+    <div class="terms-section disclaimer-box">
+      <h2>
+        <i class="fa-solid fa-triangle-exclamation"></i> Disclaimer
+      </h2>
+      <p style="margin-bottom: 0;">
+        If there is any error, we will help our best to solve. But please keep in mind that
+        we're not responsible for anything apart from Account Issues.
+      </p>
+    </div>
+
+   <div class="back-btn-container" style="display: flex; gap: 15px; justify-content: center;">
+      <button onclick="window.history.back()" class="back-btn" style="border: none; cursor: pointer; font-family: inherit;">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </button>
+
+      <a href="index.html" class="back-btn">
+        <i class="fa-solid fa-house"></i> Back to Home
+      </a>
+    </div>
+
+</body>
+</html>

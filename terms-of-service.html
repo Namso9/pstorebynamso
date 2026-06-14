@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* =========================
+       Base layout (PC / Laptop)
+    ========================== */
+    .terms-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .terms-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 40px;
+      padding: 40px;
+      max-width: 900px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .terms-card h1 {
+      font-size: 2.2rem;
+      text-align: center;
+      color: #00d2ff;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+
+    .last-update {
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 40px;
+      line-height: 1.4;
+    }
+
+    .terms-section h2 {
+      font-size: 1.4rem;
+      color: #ff4757;
+      margin-top: 30px;
+      border-left: 5px solid #ff4757;
+      padding-left: 15px;
+      line-height: 1.25;
+    }
+
+    .terms-section p {
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.05rem;
+      margin-bottom: 15px;
+      word-break: break-word;
+    }
+
+    .disclaimer-box {
+      background: rgba(255, 71, 87, 0.1);
+      border: 1px dashed #ff4757;
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 35px;
+    }
+
+    .back-btn-container {
+      text-align: center;
+      width: 100%;
+      padding-bottom: 50px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 12px 35px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: 0.3s;
+      line-height: 1.2;
+    }
+
+    .back-btn:hover {
+      background: white;
+      color: #333;
+    }
+
+    /* ==================================================
+       ✅ MOBILE FRIENDLY (Laptop မထိခိုက်)
+    ================================================== */
+    @media (max-width: 768px) {
+      .terms-page {
+        padding: 22px 12px;
+        align-items: flex-start; /* top align for phone */
+      }
+
+      .terms-card {
+        border-radius: 22px;
+        padding: 22px 16px;
+        margin-bottom: 18px;
+
+        box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+        border-width: 0.5px;
+      }
+
+      .terms-card h1 {
+        font-size: 1.35rem;
+        margin-bottom: 6px;
+      }
+
+      .last-update {
+        font-size: 0.82rem;
+        margin-bottom: 18px;
+      }
+
+      .terms-section h2 {
+        font-size: 1.05rem;
+        margin-top: 18px;
+        padding-left: 12px;
+        border-left-width: 3px;
+      }
+
+      .terms-section p {
+        font-size: 0.92rem;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      .disclaimer-box {
+        border-radius: 16px;
+        padding: 14px 12px;
+        margin-top: 18px;
+        border-width: 1px;
+      }
+
+      .back-btn-container {
+        padding-bottom: 25px;
+        width: 100%;
+      }
+
+      .back-btn {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+        border-width: 0.5px;
+      }
+    }
+
+    /* Extra small phones (iPhone SE etc.) */
+    @media (max-width: 390px) {
+      .terms-card {
+        padding: 18px 14px;
+        border-radius: 18px;
+      }
+
+      .terms-card h1 {
+        font-size: 1.22rem;
+      }
+
+      .terms-section h2 {
+        font-size: 0.98rem;
+      }
+
+      .terms-section p {
+        font-size: 0.88rem;
+      }
+
+      .back-btn {
+        font-size: 0.86rem;
+        padding: 10px 14px;
+      }
+    }
+
+    /* =========================
+       Telegram Bot terms highlight
+    ========================== */
+    .bot-terms-box{
+      background: rgba(0, 210, 255, 0.08);
+      border: 1px solid rgba(0, 210, 255, 0.25);
+      border-radius: 20px;
+      padding: 18px 18px;
+      margin-top: 18px;
+    }
+
+    .bot-terms-box h2{
+      color: #00d2ff !important;
+      border-left-color: #00d2ff !important;
+    }
+
+    .bot-terms-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2ed573, #00d2ff);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      box-shadow: 0 12px 28px rgba(0,210,255,0.18);
+    }
+
+    @media (max-width: 768px){
+      .bot-terms-box{
+        padding: 13px 12px;
+        border-radius: 16px;
+        border-width: 0.5px;
+        margin-top: 14px;
+      }
+      .bot-terms-btn{
+        padding: 9px 14px;
+        font-size: 0.86rem;
+      }
+    }
+
+  </style>
+</head>
+
+<body class="terms-page">
+
+  <div class="terms-card">
+    <h1>Terms of Service</h1>
+    <p class="last-update">နောက်ဆုံးပြင်ဆင်သည့်ရက်စွဲ - ဇန်နဝါရီ ၁၇၊ ၂၀၂၆</p>
+
+    <div class="terms-content">
+      <div class="terms-section">
+
+        <h2>၁။ ဝယ်ယူခြင်းနှင့် ပစ္စည်းရွေးချယ်မှု</h2>
+        <p>
+          လိုချင်တဲ့ Digital Product ကို အပေါ်ဆုံးက သက်ဆိုင်ရာ List ထဲမှာ ရှာဖွေကြည့်ရှုနိုင်ပါတယ်။
+          
+        </p>
+
+        <h2>၂။ ငွေပေးချေမှုဆိုင်ရာ သတ်မှတ်ချက်များ</h2>
+        <p>
+          ဝယ်ယူလိုသော ပစ္စည်းများအတွက် Payment နည်းလမ်းများကို Navigation ထဲက Payment Methods ထဲတွင်
+          ဝင်ရောက်ကြည့်ရှုနိုင်ပါတယ်။ ငွေလွှဲပြီးပါက သက်ဆိုင်ရာ Amount ကို Screenshot ရိုက်ထားရန်
+          လိုအပ်ပါသည်။ Admin reply စောင့်စရာမလိုဘဲ Telegram Bot ထဲတွင် Top Up ဖြည့်ပြီး ဝယ်ယူနိုင်ပါသည်။
+        </p>
+
+        <h2>၃။ Screenshot ပေးပို့ခြင်းနှင့် အတည်ပြုခြင်း</h2>
+        <p>
+          ငွေလွှဲ Screenshot (SS) ကို Messenger သို့မဟုတ် Telegram တို့မှတစ်ဆင့် ပေးပို့နိုင်ပါတယ်။
+          Canva, Chat Gpt, Zoom ဒီသုံးခုအတွက်က မိမိ၏ Email Address ကိုပါ တစ်ပါတည်း ပေးပို့ပေးရန်
+          လိုအပ်ပါသည်။ Office 365 pro plus နဲ့ Netflix အတွက်ဆိုပါက မိမိထားချင်တဲ့ Pf name ပို့ပေးရန်လိုအပ်ပါသည်။
+          Spotify မိမိအကောင့်နဲ့တိုးချင်ပါက Spotify mail and pw ပေးပို့ရန်လိုပါသည်။
+          ကျန် subscriptions များအတွက်က ဒီဘက်က mail pw ပို့ပေးမည်ဖြစ်ပါသည်။ Cus ဘက်ကပေးစရာမလိုပါ။
+        </p>
+
+        <div class="terms-section bot-terms-box">
+          <h2>Telegram Bot ဖြင့် ဝယ်ယူခြင်း</h2>
+          <p>
+            Telegram Bot မှတစ်ဆင့် Wallet Top Up ပြုလုပ်သောအခါ ငွေလွှဲ Screenshot ကို Admin စစ်ဆေးပြီးမှ Wallet Balance ထဲသို့ ထည့်ပေးပါမည်။
+            Wallet Balance ဖြင့် ဝယ်ယူသော Auto Delivery Product များသည် Stock ရှိပါက Bot မှတစ်ဆင့် အလိုအလျောက်ပေးပို့ပေးပါမည်။
+            Manual Delivery လိုအပ်သော Product များအတွက် Admin မှ ဆက်သွယ်ပေးမည်ဖြစ်ပါသည်။
+          </p>
+          <a href="https://t.me/PSNamso_bot" target="_blank" class="bot-terms-btn">
+            <i class="fa-brands fa-telegram"></i> Open Telegram Bot
+          </a>
+        </div>
+
+        <h2>၄။ ဝန်ဆောင်မှုပေးအပ်ခြင်း</h2>
+        <p>
+          ပုံမှန်အားဖြင့် ၁၅ မိနစ်မှ ၃၀ မိနစ်အတွင်း သင်မှာယူထားသော Account ကို သင့်ထံသို့ ပေးပို့ပေးမည် ဖြစ်ပါသည်။
+        </p>
+
+        <h2>၅။ ပြဿနာများအား မေးမြန်းခြင်း</h2>
+        <p>
+          လုပ်ဆောင်စဉ်အတွင်း အခက်အခဲရှိပါက သို့မဟုတ် မသိရှိသည်များ ရှိပါက
+          သက်ဆိုင်ရာ Chatbox (Messenger, Telegram) များမှတစ်ဆင့် အချိန်မရွေး ဆက်သွယ်မေးမြန်းနိုင်ပါသည်။
+        </p>
+
+        <h2>၆။ ကိုယ်ရေးအချက်အလက် ထိန်းသိမ်းမှု (Privacy)</h2>
+        <p>
+          သင်ပေးပို့ထားသော Email Address နှင့် ငွေလွှဲ Screenshot အချက်အလက်များကို Account ပေးပို့ရန်အတွက်သာ အသုံးပြုမည်ဖြစ်ပြီး၊
+          အခြား မည်သည့်နေရာတွင်မျှ မျှဝေခြင်း ပြုလုပ်မည်မဟုတ်ပါ။
+        </p>
+
+      </div>
+
+      <div class="terms-section disclaimer-box">
+        <h2 style="margin-top:0; border:none; padding:0;">
+          <i class="fa-solid fa-triangle-exclamation"></i> Disclaimer
+        </h2>
+        <p style="margin-bottom:0;">
+          If there is any error, we will help our best to solve. But please keep in mind that
+          we're not responsible for anything apart from Account Issues.
+        </p>
+      </div>
+    </div>
+  </div>
+
+ 
+<div class="back-btn-container" style="display: flex; gap: 15px; justify-content: center;">
+      <button onclick="window.history.back()" class="back-btn" style="border: none; cursor: pointer; font-family: inherit;">
+        <i class="fa-solid fa-arrow-left"></i> ရှေ့စာမျက်နှာသို့ ပြန်သွားရန်
+      </button>
+
+      <a href="index.html" class="back-btn">
+        <i class="fa-solid fa-house"></i> Back to Home
+      </a>
+    </div>
+</body>
+</html>

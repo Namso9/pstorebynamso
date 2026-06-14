@@ -1,0 +1,239 @@
+/* ၁။ General Setup & Background */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --accent-color: #00d2ff;
+    --text-color: #ffffff;
+}
+
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url('images/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+/* ၂။ Header Section */
+.header {
+    text-align: center;
+    padding: 80px 20px 40px;
+}
+
+.header h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    color: var(--accent-color);
+    margin: 0;
+}
+
+/* ၃။ Product Grid Section */
+.product-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+}
+
+.product-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.product-card img {
+    width: 100%;
+    height: 320px; /* ပုံတွေကို ပိုကြီးပြီး ရှင်းလင်းအောင် ထိန်းပေးထားပါတယ် */
+    object-fit: contain;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ၄။ Guide & Social Box Styling (Index နှင့် Payment နှစ်ခုလုံးအတွက်) */
+.guide-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.guide-box, .payment-card {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 40px;
+    padding: 40px 30px;
+    border: 1px solid var(--glass-border);
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    color: white;
+}
+
+/* ၅။ QR Grid Section (Payment Page အတွက် Photo Size ထိန်းညှိခြင်း) */
+.qr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    max-width: 1000px;
+    margin: 30px auto;
+    justify-content: center;
+}
+
+.qr-item {
+    background: white; /* Scan ဖတ်ရလွယ်အောင် နောက်ခံအဖြူထားခြင်း */
+    padding: 15px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-width: 320px; /* ပုံတွေအရမ်းမကြီးအောင် ထိန်းထားခြင်း */
+    margin: 0 auto;
+}
+
+.qr-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    display: block;
+}
+
+.qr-item p {
+    color: #333 !important; /* အဖြူရောင်ပေါ်မှာ စာလုံးအမဲ ထင်ရှားစေရန် */
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 1.1rem;
+}
+
+/* ၆။ Buttons Styling */
+.guide-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.nav-btn {
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #1a1a1a;
+    background: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.buy-now { background: #2ed573; color: white; }
+.telegram-btn { background: #0088cc; color: white; }
+
+.nav-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* ၇။ Footer Styling */
+.site-footer {
+    width: 100%;
+    text-align: center;
+    padding: 60px 0 40px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 5px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+}
+*{ box-sizing: border-box; }
+
+@media (max-width: 480px){
+
+  .modal-overlay{
+    padding: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-content{
+    width: 100%;
+    max-width: calc(100vw - 24px);
+    padding: 20px 14px;
+    border-radius: 18px;
+  }
+
+  .close-modal{
+    top: 10px;
+    right: 12px;
+  }
+
+  .modal-title{
+    font-size: 1.15rem;
+    margin-bottom: 14px;
+  }
+
+  .plan-btn{
+    padding: 12px;
+  }
+
+  .plan-name{ font-size: 0.88rem; }
+  .plan-desc{ font-size: 0.72rem; }
+  .plan-price{ font-size: 0.95rem; }
+}
+/* === GUIDE BOX TEXT ALIGNMENT FIX === */
+
+/* ၁။ စာရင်းတစ်ခုလုံးကို Box အလယ်မှာထားမယ်၊ ဒါပေမဲ့ စာကို ဘယ်ဘက်ကပ်မယ် */
+.guide-box ul {
+    display: inline-block;  /* List ကို Block လိုက် အလယ်မှာနေစေရန် */
+    text-align: left;       /* စာသားများကို ဘယ်ဘက်ညီစေရန် */
+    max-width: 95%;         /* ဖုန်း Screen မှာ စာမပြတ်စေရန် */
+    margin: 0 auto 20px;    /* အပေါ်အောက် Margin */
+    padding: 0;
+    list-style: none;       /* မူလအစက်များကို ဖျောက်ရန် */
+}
+
+/* ၂။ စာကြောင်းတစ်ကြောင်းချင်းစီကို ချိန်ညှိမယ် */
+.guide-box li {
+    display: flex;          /* Icon နဲ့ စာသား တစ်တန်းတည်းဖြစ်အောင် */
+    align-items: flex-start; /* Icon ကို စာကြောင်းထိပ်နားထားမယ် */
+    gap: 12px;              /* Icon နဲ့ စာသားကြား နေရာခွာမယ် */
+    margin-bottom: 12px;    /* စာကြောင်းအကွာအဝေး */
+    line-height: 1.6;       /* စာဖတ်လို့ကောင်းအောင် */
+}
+
+/* ၃။ Icon (အမှန်ခြစ်) နေရာအတိအကျ */
+.guide-box li i {
+    margin-top: 5px;        /* စာသားနဲ့ညီအောင် နည်းနည်းအောက်ချမယ် */
+    flex-shrink: 0;         /* Icon ရှုံ့မသွားအောင် ထိန်းမယ် */
+    color: #2ed573;         /* အစိမ်းရောင် */
+}

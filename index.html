@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PREMIUM STORE</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* =========================
+       NAVBAR & SEARCH BUTTON STYLING
+    ========================== */
+    .navbar-search {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end; /* ခလုတ်ကို ညာဘက်ပို့ရန် */
+      padding: 15px 20px;
+      gap: 10px;
+    }
+
+    .search-btn {
+      background: linear-gradient(to right, #2ed573, #00d2ff); /* Gradient အရောင် */
+      border: none;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+    }
+
+    .search-btn:hover {
+      background: linear-gradient(to right, #00d2ff, #2ed573);
+      transform: scale(1.05);
+    }
+
+    /* =========================
+       SEARCH MODAL STYLING (Pop-up Box Design)
+    ========================== */
+    .search-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .search-modal.active {
+      display: flex;
+    }
+
+    .search-modal-content {
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 30px;
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .search-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .search-modal-title {
+      font-size: 1.8rem;
+      color: #00d2ff;
+      font-weight: bold;
+    }
+
+    .close-search {
+      background: none;
+      border: none;
+      color: #00d2ff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .close-search:hover {
+      color: #fff;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 15px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #00d2ff;
+      box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+    }
+
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .search-results {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .search-result-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .search-result-item:hover {
+      background: rgba(0, 210, 255, 0.1);
+      border-color: #00d2ff;
+      transform: translateX(5px);
+    }
+
+    .search-result-icon {
+      font-size: 1.5rem;
+      color: #00d2ff;
+      min-width: 30px;
+      text-align: center;
+    }
+
+    .search-result-name {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .no-results {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.6);
+      padding: 40px 20px;
+      font-size: 1.1rem;
+    }
+
+    /* Mobile Responsive for Search */
+    @media (max-width: 768px) {
+      .search-btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+      .search-modal-content {
+        padding: 25px;
+        border-radius: 20px;
+      }
+      .search-modal-title {
+        font-size: 1.4rem;
+      }
+    }
+    /* =========================
+       HEADER TITLE DESIGN
+    ========================== */
+    .header {
+      text-align: center;
+      padding: 50px 20px 30px;
+    }
+
+    .header h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+
+      background: linear-gradient(135deg, #ffffff 20%, #00d2ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      text-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
+      padding-bottom: 15px;
+    }
+
+    .header h1::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(to right, #2ed573, #00d2ff);
+      border-radius: 2px;
+    }
+
+    /* =========================
+       CARD LINK STYLING
+    ========================== */
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    /* Hover Effect (Laptop/PC only by default) */
+    .card-link:hover .product-card {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.15);
+      transition: 0.3s;
+      border-color: #00d2ff;
+      box-shadow: 0 10px 25px rgba(0, 210, 255, 0.2);
+    }
+
+
+
+    /* =========================
+       TELEGRAM BOT CTA SECTION
+    ========================== */
+    .bot-cta-container {
+      padding: 10px 20px 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .bot-cta-card {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 24px;
+      align-items: center;
+      padding: 28px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top left, rgba(46, 213, 115, 0.22), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(0, 210, 255, 0.22), transparent 35%),
+        rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .bot-cta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 13px;
+      border-radius: 999px;
+      color: #ffffff;
+      background: rgba(0, 210, 255, 0.16);
+      border: 1px solid rgba(0, 210, 255, 0.34);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+
+    .bot-cta-title {
+      color: #ffffff;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      line-height: 1.25;
+      margin: 0 0 12px;
+      font-weight: 800;
+    }
+
+    .bot-cta-text {
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 1rem;
+      line-height: 1.65;
+      margin: 0 0 18px;
+    }
+
+    .bot-cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .bot-primary-btn,
+    .bot-secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 16px;
+      font-weight: 800;
+      transition: 0.3s;
+    }
+
+    .bot-primary-btn {
+      color: #ffffff;
+      background: linear-gradient(to right, #2ed573, #00d2ff);
+      box-shadow: 0 12px 25px rgba(0, 210, 255, 0.2);
+    }
+
+    .bot-secondary-btn {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .bot-primary-btn:hover,
+    .bot-secondary-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .bot-steps {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bot-step {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 13px 14px;
+      border-radius: 18px;
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .bot-step i {
+      color: #00d2ff;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    /* =========================================================
+       ✅ MOBILE ONLY (Laptop/PC မထိခိုက်)
+       - Products 2 grid + spacing အဆင်ပြေ
+       - Guide section (ဝယ်ယူနည်း / official) စာ/ခလုတ် မကြီးအောင်
+    ========================================================= */
+    @media (max-width: 768px) {
+      body { overflow-x: hidden; }
+      *, *::before, *::after { box-sizing: border-box; }
+
+      /* Header mobile spacing */
+      .header {
+        padding: 34px 16px 18px;
+      }
+      .header h1 {
+        letter-spacing: 0.5px;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+      }
+      .header h1::after {
+        width: 60px;
+        height: 3px;
+      }
+
+      /* =========================
+         PRODUCTS GRID (2 columns)
+      ========================== */
+      .product-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 16px !important;
+
+        padding: 0 14px 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+      }
+
+      .product-container .card-link {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      /* Card overlap/ပြွတ်သိပ်တာ မဖြစ်အောင် fixed width/margin override */
+      .product-container .product-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        margin: 0 !important;
+        padding: 14px 12px 16px !important;
+        border-radius: 18px !important;
+        overflow: hidden;
+      }
+
+      .product-container .product-card img {
+        width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        border-radius: 14px !important;
+      }
+
+      .product-container .product-card h3 {
+        font-size: 1.05rem !important;
+        margin: 12px 0 6px !important;
+        line-height: 1.2 !important;
+        text-align: center;
+      }
+
+      .product-container .product-card p {
+        font-size: 0.85rem !important;
+        margin: 0 !important;
+        line-height: 1.35 !important;
+        text-align: center;
+        word-break: break-word;
+      }
+
+      /* Mobile မှာ hover transform က tap လုပ်ရင် ခနခန ရွေ့တတ်လို့ ပိတ် */
+      .card-link:hover .product-card {
+        transform: none !important;
+      }
+
+      /* =========================
+         GUIDE SECTION (smaller)
+      ========================== */
+      .guide-container {
+        padding: 0 12px !important;
+        margin-top: 14px !important;
+      }
+
+      .guide-box {
+        padding: 12px 10px !important;
+        border-radius: 16px !important;
+      }
+
+      .guide-box h2 {
+        font-size: 0.92rem !important;
+        margin: 0 0 10px 0 !important;
+        line-height: 1.25 !important;
+        text-align: center !important;
+      }
+
+      /* List compact */
+      .guide-box ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 0 10px 0 !important;
+      }
+
+      .guide-box ul li {
+        display: flex !important;
+        gap: 8px !important;
+        align-items: flex-start !important;
+        font-size: 0.82rem !important;
+        line-height: 1.35 !important;
+        margin-bottom: 7px !important;
+      }
+
+      .guide-box ul li i {
+        font-size: 0.85rem !important;
+        margin: 2px 0 0 0 !important;
+        flex: 0 0 auto !important;
+      }
+
+      /* Buttons smaller + 2 grid */
+      .guide-nav {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        margin-top: 10px !important;
+      }
+
+      .guide-nav .nav-btn {
+        font-size: 0.78rem !important;
+        padding: 8px 8px !important;
+        border-radius: 12px !important;
+        line-height: 1.15 !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+
+        white-space: normal !important;
+        text-align: center !important;
+      }
+
+      .guide-nav .nav-btn i {
+        font-size: 0.85rem !important;
+        margin-right: 6px !important;
+      }
+
+      /* Buy Now ကို အပြည့်တန်း */
+      .guide-nav .buy-now {
+        grid-column: span 2 !important;
+        font-size: 0.82rem !important;
+        padding: 10px 10px !important;
+      }
+
+
+
+      .bot-cta-container {
+        padding: 8px 12px 18px !important;
+      }
+
+      .bot-cta-card {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+        padding: 18px 14px !important;
+        border-radius: 22px !important;
+      }
+
+      .bot-cta-badge {
+        font-size: 0.78rem !important;
+        padding: 7px 10px !important;
+        margin-bottom: 10px !important;
+      }
+
+      .bot-cta-title {
+        font-size: 1.1rem !important;
+        line-height: 1.35 !important;
+      }
+
+      .bot-cta-text {
+        font-size: 0.84rem !important;
+        line-height: 1.55 !important;
+        margin-bottom: 12px !important;
+      }
+
+      .bot-cta-actions {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+      }
+
+      .bot-primary-btn,
+      .bot-secondary-btn {
+        font-size: 0.82rem !important;
+        padding: 10px 12px !important;
+        border-radius: 14px !important;
+      }
+
+      .bot-step {
+        font-size: 0.80rem !important;
+        padding: 10px 11px !important;
+        border-radius: 14px !important;
+      }
+
+      /* Footer smaller */
+      .site-footer {
+        padding: 18px 14px !important;
+      }
+      .site-footer p {
+        font-size: 0.85rem !important;
+        text-align: center;
+      }
+      .footer-links a {
+        font-size: 0.85rem !important;
+      }
+    }
+
+    /* Extra small phones */
+    @media (max-width: 390px) {
+      .product-container {
+        gap: 12px !important;
+        padding: 0 12px 10px !important;
+      }
+
+      .guide-container { padding: 0 10px !important; }
+      .guide-box { padding: 10px 9px !important; }
+
+      .guide-box h2 { font-size: 0.88rem !important; }
+
+      .guide-box ul li {
+        font-size: 0.80rem !important;
+        margin-bottom: 6px !important;
+      }
+
+      .guide-nav { gap: 7px !important; }
+
+      .guide-nav .nav-btn {
+        font-size: 0.76rem !important;
+        padding: 8px 7px !important;
+      }
+
+      .guide-nav .buy-now {
+        font-size: 0.80rem !important;
+        padding: 9px 9px !important;
+      }
+    }
+    
+  </style>
+</head>
+
+<body>
+  <nav class="navbar-search">
+      <button class="search-btn" onclick="openSearchModal()">
+        <i class="fas fa-search"></i> Search
+      </button>
+  </nav>
+
+  <div class="search-modal" id="searchModal">
+    <div class="search-modal-content">
+      <div class="search-modal-header">
+        <h2 class="search-modal-title">Search Products</h2>
+        <button class="close-search" onclick="closeSearchModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="search-input-wrapper">
+        <input 
+          type="text" 
+          class="search-input" 
+          id="searchInput" 
+          placeholder="Search for products... (e.g., Express VPN, ChatGPT, Netflix)"
+          oninput="performSearch()"
+        />
+      </div>
+      <div class="search-results" id="searchResults">
+        <div class="no-results">Type to search for products</div>
+      </div>
+    </div>
+  </div>
+  <div class="header">
+    <h1>Premium Store မှ ဝယ်ယူရရှိနိုင်မည့် Digital Products များ</h1>
+  </div>
+
+  <div class="product-container">
+    <a href="creative-apps.html" class="card-link">
+      <div class="product-card">
+        <img src="images/p1.png" alt="CREATIVE APPS" />
+        <h3>Creative Apps</h3>
+        <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+
+    <a href="music-apps.html" class="card-link">
+      <div class="product-card">
+        <img src="images/p2.png" alt="MUSIC APPS" />
+        <h3>Music Apps</h3>
+        <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+
+    <a href="communication-apps.html" class="card-link">
+      <div class="product-card">
+        <img src="images/p3.png" alt="COMMUNICATION APPS" />
+        <h3>Communication Apps</h3>
+        <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+
+    <a href="streaming-apps.html" class="card-link">
+      <div class="product-card">
+        <img src="images/p4.png" alt="STREAMING APPS" />
+        <h3>Streaming Apps</h3>
+        <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+
+    <a href="computer-keys-and-office-apps.html" class="card-link">
+      <div class="product-card">
+        <img src="images/p5.png" alt="OFFICE APPS" />
+        <h3>Computer Keys & Office</h3>
+        <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+
+    <a href="learning-apps.html" class="card-link">
+      <div class="product-card">
+        <img src="images/p6.png" alt="LEARNING APPS" />
+        <h3>Learning Apps</h3>
+        <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+
+    <a href="ai-apps.html" class="card-link">
+      <div class="product-card">
+        <img src="images/p7.png" alt="AI APPS" />
+        <h3>AI Apps</h3>
+        <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+
+    <a href="premium-vpn-apps.html" class="card-link">
+      <div class="product-card">
+        <img src="images/p8.png" alt="PREMIUM VPN APPS" />
+        <h3>Premium VPN Apps</h3>
+        <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+  
+
+   <a href="reviews.html" class="card-link">
+      <div class="product-card">
+        <img src="images/p9.png" alt="Customer Reviews " />
+        <h3>Customer Reviews </h3>
+        <p>အသေးစိတ် ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+
+     <a href="expressvpn-location-guide.html" class="card-link">
+      <div class="product-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/ExpressVPN-logo.png" alt="Expressvpn Location Guide " />
+        <h3>Expressvpn Location Guide</h3>
+        <p>အသေးစိတ် ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
+      </div>
+    </a>
+</div>
+
+  <div class="bot-cta-container">
+    <div class="bot-cta-card">
+      <div class="bot-cta-content">
+        <div class="bot-cta-badge">
+          <i class="fa-brands fa-telegram"></i> New Bot Checkout
+        </div>
+        <h2 class="bot-cta-title">Telegram Bot ထဲမှာ Wallet Top Up ဖြည့်ပြီး ပိုမြန်မြန်ဝယ်ယူနိုင်ပါပြီ</h2>
+        <p class="bot-cta-text">
+          Admin reply စောင့်စရာမလိုဘဲ Bot ထဲမှာ Screenshot ပို့ပြီး Top Up ဖြည့်နိုင်ပါတယ်။
+          Stock ရှိတဲ့ Digital Product များကို Wallet Balance နဲ့ အလွယ်တကူ ဝယ်ယူနိုင်ပါပြီ။
+        </p>
+        <div class="bot-cta-actions">
+          <a href="https://t.me/PSNamso_bot" target="_blank" class="bot-primary-btn">
+            <i class="fa-brands fa-telegram"></i> Open Telegram Bot
+          </a>
+          <a href="payment.html" class="bot-secondary-btn">
+            <i class="fa-solid fa-credit-card"></i> Payment Methods
+          </a>
+        </div>
+      </div>
+      <div class="bot-steps">
+        <div class="bot-step"><i class="fa-solid fa-wallet"></i> Wallet Top Up ဖြည့်ပါ</div>
+        <div class="bot-step"><i class="fa-solid fa-image"></i> Screenshot ပို့ပါ</div>
+        <div class="bot-step"><i class="fa-solid fa-circle-check"></i> Admin Approve ပြီးရင် Balance ဝင်ပါမယ်</div>
+        <div class="bot-step"><i class="fa-solid fa-bolt"></i> Product ကို Bot ထဲမှာ ဝယ်ယူပါ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-container">
+    <div class="guide-box">
+      <h2>=== ဝယ်ယူရမည့် နည်းလမ်းများ ===</h2>
+      <ul>
+        <li><i class="fa-solid fa-circle-check"></i> လိုချင်တဲ့ Plan ကို ရွေးချယ်ပြီး နှိပ်ပါ။</li>
+        <li><i class="fa-solid fa-circle-check"></i> မိမိ ငွေပေးချေမည့် နည်းလမ်း (KBZPay, WavePay, AyaPay) ကို ရွေးချယ်ပါ။</li>
+        <li><i class="fa-solid fa-circle-check"></i> ငွေလွှဲပြီးပါက Page Messenger or Telegram Message မှာ screenshot ပို့ပေးပါခဗျ။ Admin reply စောင့်စရာမလိုဘဲ Telegram Bot ထဲတွင် Top Up ဖြည့်ပြီးဝယ်ယူလို့လည်းရနိုင်ပါပြီခဗျ။</li>
+        <li><i class="fa-solid fa-circle-check"></i> Manual order များအတွက် ၁၅ မိနစ်မှ ၃၀ မိနစ်အတွင်း သင့်ထံသို့ Account ပေးပို့ပေးပါမည်။ Bot မှဝယ်ယူပါက Stock ရှိသည့် Product များကို ပိုမိုမြန်ဆန်စွာရရှိနိုင်ပါသည်။</li>
+      </ul>
+
+      <div class="guide-nav">
+        <a href="payment.html" class="nav-btn buy-now">
+          <i class="fa-solid fa-credit-card"></i> Buy Now (ငွေပေးချေရန်)
+        </a>
+        <a href="https://t.me/PSNamso_bot" target="_blank" class="nav-btn telegram-btn">
+          <i class="fa-brands fa-telegram"></i> Telegram Bot
+        </a>
+        <a href="https://www.messenger.com/t/happyyou2020" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook-messenger"></i> Messenger
+        </a>
+        <a href="https://t.me/Premiumstorezz" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-telegram"></i> Telegram
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-container">
+    <div class="guide-box">
+      <h2>=== Official Channels & Pages ===</h2>
+      <div class="guide-nav">
+        <a href="https://t.me/premiumstorebzzz" target="_blank" class="nav-btn telegram-btn">
+          <i class="fa-solid fa-bullhorn"></i> Telegram Channel
+        </a>
+        <a href="https://www.facebook.com/share/1MyXdbrK9s/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Premium Store
+        </a>
+        <a href="https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Premium Store 2
+        </a>
+        <a href="https://www.facebook.com/share/1Fdm6SB8GQ/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Premium Store 3
+        </a>
+        <a href="https://www.facebook.com/share/1GSXUU97JG/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Premium Store 2.0
+        </a>
+        <a href="https://www.facebook.com/share/1HigTwYwir/?mibextid=wwXIfr" target="_blank" class="nav-btn">
+          <i class="fa-brands fa-facebook"></i> Movie For You
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="terms-of-service-vpn.html">VPN Terms</a>
+        <span style="color: rgba(255,255,255,0.3);">|</span>
+        <a href="terms-of-service.html">Shop Terms</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // All searchable products data
+   // All searchable products data
+    const products = [
+      { name: 'Adobe Creative Cloud', link: 'creative-apps.html', icon: 'fa-palette' },
+      { name: 'CapCut', link: 'creative-apps.html', icon: 'fa-video' },
+      { name: 'Canva Pro', link: 'creative-apps.html', icon: 'fa-palette' },
+      { name: 'ChatGPT', link: 'ai-apps.html', icon: 'fa-brain' },
+      { name: 'Disney+', link: 'streaming-apps.html', icon: 'fa-play-circle' },
+      { name: 'Duolingo ', link: 'learning-apps.html', icon: 'fa-book' },
+      { name: 'Express VPN', link: 'premium-vpn-apps.html', icon: 'fa-shield' },
+      { name: 'Gemini ', link: 'ai-apps.html', icon: 'fa-brain' },
+      { name: 'Ai ', link: 'ai-apps.html', icon: 'fa-brain' },
+      { name: 'HBO Max', link: 'streaming-apps.html', icon: 'fa-play-circle' },
+      { name: 'Jump Jump VPN', link: 'premium-vpn-apps.html', icon: 'fa-shield' },
+      { name: 'Lets VPN', link: 'premium-vpn-apps.html', icon: 'fa-shield' },
+      { name: 'Manus AI Agent', link: 'ai-apps.html', icon: 'fa-brain' },
+      { name: 'Netflix', link: 'streaming-apps.html', icon: 'fa-play-circle' },
+      { name: 'Nord VPN', link: 'premium-vpn-apps.html', icon: 'fa-shield' },
+      { name: 'Norton VPN', link: 'premium-vpn-apps.html', icon: 'fa-shield' },
+      { name: 'Office 365 Pro Plus', link: 'computer-keys-and-office-apps.html', icon: 'fa-file-word' },
+      { name: 'Outline VPN', link: 'premium-vpn-apps.html', icon: 'fa-shield' },
+      { name: 'Hiddify VPN', link: 'premium-vpn-apps.html', icon: 'fa-shield' },
+      { name: 'VPN', link: 'premium-vpn-apps.html', icon: 'fa-shield' },
+      { name: 'V2 Box Vpn', link: 'premium-vpn-apps.html', icon: 'fa-shield' },
+      { name: 'Picsart Gold', link: 'creative-apps.html', icon: 'fa-image' },
+      
+       { name: 'Prime Video', link: 'streaming-apps.html', icon: 'fa-play-circle' },
+      { name: 'Quillbot Premium', link: 'learning-apps.html', icon: 'fa-pen' },
+      { name: 'SoundCloud', link: 'music-apps.html', icon: 'fa-music' },
+      { name: 'Spotify', link: 'music-apps.html', icon: 'fa-music' },
+      { name: 'Telegram Premium', link: 'communication-apps.html', icon: 'fa-paper-plane' },
+      { name: 'Tidal', link: 'music-apps.html', icon: 'fa-music' },
+      { name: 'Windows Lifetime Keys', link: 'computer-keys-and-office-apps.html', icon: 'fa-windows' },
+      { name: 'YouTube Music', link: 'music-apps.html', icon: 'fa-music' },
+      { name: 'YouTube Premium', link: 'streaming-apps.html', icon: 'fa-play-circle' },
+      { name: 'Zoom Pro', link: 'communication-apps.html', icon: 'fa-video' },
+      { name: 'Grok', link: 'ai-apps.html', icon: 'fa-brain' },
+      { name: 'SuperGrok', link: 'ai-apps.html', icon: 'fa-brain' },
+      { name: 'GammaAi', link: 'ai-apps.html', icon: 'fa-brain' },
+      { name: 'PerplexityAi', link: 'ai-apps.html', icon: 'fa-brain' },
+      { name: 'Peacock TV', link: 'streaming-apps.html', icon: 'fa-play-circle' },
+    ];
+
+    // Open Search Modal
+    function openSearchModal() {
+      document.getElementById('searchModal').classList.add('active');
+      document.getElementById('searchInput').focus();
+    }
+
+    // Close Search Modal
+    function closeSearchModal() {
+      document.getElementById('searchModal').classList.remove('active');
+      document.getElementById('searchInput').value = '';
+      document.getElementById('searchResults').innerHTML = '<div class="no-results">Type to search for products</div>';
+    }
+
+    // Perform Search Logic
+    function performSearch() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      const resultsContainer = document.getElementById('searchResults');
+
+      if (searchTerm.length === 0) {
+        resultsContainer.innerHTML = '<div class="no-results">Type to search for products</div>';
+        return;
+      }
+
+      let filteredProducts = products.filter(product => 
+        product.name.toLowerCase().startsWith(searchTerm)
+      );
+      
+      // Special logic for VPNs
+      if (searchTerm === 'hiddify' || searchTerm === 'outline' || searchTerm === 'v2' || searchTerm === 'h' || searchTerm === 'o') {
+        const vpnApps = products.filter(product => 
+          product.name.toLowerCase().includes('hiddify') || 
+          product.name.toLowerCase().includes('outline') || 
+          product.name.toLowerCase().includes('v2')
+        );
+        if (vpnApps.length > 0) {
+          filteredProducts = vpnApps;
+        }
+      }
+
+      if (filteredProducts.length === 0) {
+        resultsContainer.innerHTML = '<div class="no-results">No products found. Try another search term.</div>';
+        return;
+      }
+
+      // Display Search Results
+      resultsContainer.innerHTML = filteredProducts.map(product => `
+        <a href="${product.link}" class="search-result-item" onclick="closeSearchModal()">
+          <div class="search-result-icon">
+            <i class="fas ${product.icon}"></i>
+          </div>
+          <div class="search-result-name">${product.name}</div>
+        </a>
+      `).join('');
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeSearchModal();
+      }
+    });
+
+    // Close modal when clicking outside the box
+    document.getElementById('searchModal').addEventListener('click', function(event) {
+      if (event.target === this) {
+        closeSearchModal();
+      }
+    });
+  </script>
+</body>
+</html>
+
