@@ -1,0 +1,957 @@
+{
+  "settings": {
+    "botUsername": "PSNamso_bot",
+    "deepLinks": false,
+    "deepLinkPrefix": "buy",
+    "telegramChannel": "https://t.me/Premiumstorezz",
+    "facebookPage": "https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr",
+    "paymentPage": "payment.html"
+  },
+  "categories": [
+    {
+      "slug": "creative-apps",
+      "title": "Creative Apps",
+      "subtitle": "Design & Editing Tools",
+      "icon": "fa-palette",
+      "page": "creative-apps.html"
+    },
+    {
+      "slug": "music-apps",
+      "title": "Music Apps",
+      "subtitle": "Premium Music Streaming",
+      "icon": "fa-music",
+      "page": "music-apps.html"
+    },
+    {
+      "slug": "communication-apps",
+      "title": "Communication Apps",
+      "subtitle": "Chat & Meeting Tools",
+      "icon": "fa-comments",
+      "page": "communication-apps.html"
+    },
+    {
+      "slug": "streaming-apps",
+      "title": "Streaming Apps",
+      "subtitle": "Movies & TV Shows",
+      "icon": "fa-clapperboard",
+      "page": "streaming-apps.html"
+    },
+    {
+      "slug": "computer-keys-and-office-apps",
+      "title": "Computer Keys & Office",
+      "subtitle": "Windows & Office Licenses",
+      "icon": "fa-laptop",
+      "page": "computer-keys-and-office-apps.html"
+    },
+    {
+      "slug": "learning-apps",
+      "title": "Learning Apps",
+      "subtitle": "Education & Study Tools",
+      "icon": "fa-graduation-cap",
+      "page": "learning-apps.html"
+    },
+    {
+      "slug": "ai-apps",
+      "title": "AI Apps",
+      "subtitle": "Smart AI Assistants",
+      "icon": "fa-brain",
+      "page": "ai-apps.html"
+    },
+    {
+      "slug": "premium-vpn-apps",
+      "title": "Premium VPN Apps",
+      "subtitle": "Secure & Fast VPNs",
+      "icon": "fa-shield-halved",
+      "page": "premium-vpn-apps.html"
+    }
+  ],
+  "products": [
+    {
+      "id": "picsart",
+      "category": "creative-apps",
+      "name": "Picsart Gold",
+      "subtitle": "Photo & Video Editor",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Picsart_%28software_company%29_logo.svg",
+      "imageClass": "picsart-logo",
+      "modalTitle": "Picsart Gold Plans",
+      "plans": [
+        {
+          "name": "6 Months",
+          "desc": "One Device",
+          "price": "30,000 Ks",
+          "id": "6_months"
+        }
+      ]
+    },
+    {
+      "id": "capcut",
+      "category": "creative-apps",
+      "name": "CapCut Pro",
+      "subtitle": "All-in-one Video Editor",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Capcut_Pro.jpg",
+      "imageClass": "",
+      "modalTitle": "CapCut Pro Plans",
+      "plans": [
+        {
+          "name": "Whole Acc 1 Month",
+          "desc": "(2-3 Devices)",
+          "price": "20,000 Ks",
+          "id": "whole_acc_1_month"
+        },
+        {
+          "name": "Whole Acc 6 Months",
+          "desc": "(2-3 Devices)",
+          "price": "90,000 Ks",
+          "id": "whole_acc_6_months"
+        }
+      ]
+    },
+    {
+      "id": "canva",
+      "category": "creative-apps",
+      "name": "Canva Pro",
+      "subtitle": "Design & Visual Suite",
+      "image": "images/canva.svg",
+      "imageClass": "canva-logo",
+      "modalTitle": "Canva Pro Plans",
+      "plans": [
+        {
+          "name": "One Year",
+          "desc": "Your Personal Mail",
+          "price": "15,000 Ks",
+          "id": "one_year"
+        }
+      ]
+    },
+    {
+      "id": "adobe",
+      "category": "creative-apps",
+      "name": "Adobe Creative Cloud",
+      "subtitle": "All Apps Plan",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Adobe_Corporate_logo.svg",
+      "imageClass": "adobe-logo",
+      "modalTitle": "Adobe Creative Cloud Plans",
+      "plans": [
+        {
+          "name": "One Year One Device",
+          "desc": "Official price one month= 70$",
+          "price": "300,000 Ks",
+          "id": "one_year_one_device"
+        }
+      ]
+    },
+    {
+      "id": "spotify_us",
+      "category": "music-apps",
+      "name": "Spotify US Region",
+      "subtitle": "Premium",
+      "image": "images/spotify.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Spotify US Region",
+      "plans": [
+        {
+          "name": "6 Months",
+          "desc": "Premium Plan",
+          "price": "45,000 Ks",
+          "id": "6_months"
+        },
+        {
+          "name": "1 Year",
+          "desc": "Premium Plan",
+          "price": "90,000 Ks",
+          "id": "1_year"
+        }
+      ]
+    },
+    {
+      "id": "spotify_canada",
+      "category": "music-apps",
+      "name": "Spotify CANADA Region",
+      "subtitle": "Premium",
+      "image": "images/spotify.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Spotify CANADA Region",
+      "plans": [
+        {
+          "name": "3 Months",
+          "desc": "Premium Plan",
+          "price": "20,000 Ks",
+          "id": "3_months"
+        },
+        {
+          "name": "6 Months",
+          "desc": "Premium Plan",
+          "price": "35,000 Ks",
+          "id": "6_months"
+        }
+      ]
+    },
+    {
+      "id": "youtube",
+      "category": "music-apps",
+      "name": "YouTube",
+      "subtitle": "Premium No Ads",
+      "image": "images/youtube.svg",
+      "imageClass": "app-info",
+      "modalTitle": "YouTube Premium",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "No Ads (Monthly Change)",
+          "price": "10,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "3 Month",
+          "desc": "No Ads (Own Mail Invite)",
+          "price": "55,000 Ks",
+          "id": "3_month"
+        },
+        {
+          "name": "1 Year",
+          "desc": "No Ads (Own Mail Invite)",
+          "price": "150,000 Ks",
+          "id": "1_year"
+        }
+      ]
+    },
+    {
+      "id": "soundcloud",
+      "category": "music-apps",
+      "name": "SoundCloud",
+      "subtitle": "Go+ Offline",
+      "image": "images/soundcloud.svg",
+      "imageClass": "app-info",
+      "modalTitle": "SoundCloud Go+",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Offline + No Ads",
+          "price": "8,000 Ks",
+          "id": "1_month"
+        }
+      ]
+    },
+    {
+      "id": "tidal",
+      "category": "music-apps",
+      "name": "Tidal",
+      "subtitle": "Individual HI-Res audio quality Best for IEM users",
+      "image": "images/tidal.svg",
+      "imageClass": "tidal-logo",
+      "modalTitle": "Tidal Plans",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Starter Plan",
+          "price": "8,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "2 Months",
+          "desc": "Most Popular",
+          "price": "15,000 Ks",
+          "id": "2_months"
+        }
+      ]
+    },
+    {
+      "id": "zoom",
+      "category": "communication-apps",
+      "name": "Zoom Pro",
+      "subtitle": "100 Participants Plan",
+      "image": "images/zoom.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Zoom Pro Plans (100p)",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Monthly",
+          "price": "29,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "4 Months",
+          "desc": "3 Months + 30 Days Promo",
+          "price": "87,000 Ks",
+          "id": "4_months"
+        },
+        {
+          "name": "8 Months",
+          "desc": "6 Months + 60 Days Promo",
+          "price": "174,000 Ks",
+          "id": "8_months"
+        },
+        {
+          "name": "16 Months",
+          "desc": "1 Year + 120 Days Promo",
+          "price": "348,000 Ks",
+          "id": "16_months"
+        }
+      ]
+    },
+    {
+      "id": "telegram",
+      "category": "communication-apps",
+      "name": "Telegram Premium",
+      "subtitle": "Exclusive Features",
+      "image": "images/telegram.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Telegram Premium",
+      "plans": [
+        {
+          "name": "3 Months",
+          "desc": "Gift Link",
+          "price": "65,000 Ks",
+          "id": "3_months"
+        },
+        {
+          "name": "6 Months",
+          "desc": "Gift Link",
+          "price": "90,000 Ks",
+          "id": "6_months"
+        },
+        {
+          "name": "1 Year",
+          "desc": "Gift Link",
+          "price": "155,000 Ks",
+          "id": "1_year"
+        }
+      ]
+    },
+    {
+      "id": "netflix_tv",
+      "category": "streaming-apps",
+      "name": "Netflix (TV Plan)",
+      "subtitle": "For TV / TV Box / PS",
+      "image": "images/netflix.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Netflix TV Plans (4K Ultra HD)",
+      "plans": [
+        {
+          "header": "🔴 Premium Plan (No Household Code)"
+        },
+        {
+          "name": "1 Month",
+          "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
+          "price": "28,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "2 Months",
+          "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
+          "price": "52,000 Ks",
+          "id": "2_months"
+        },
+        {
+          "name": "3 Months",
+          "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
+          "price": "83,000 Ks",
+          "id": "3_months"
+        },
+        {
+          "header": "🔴 Basic Plan (Household code တက်နိုင်ပါတယ်)"
+        },
+        {
+          "name": "1 Month",
+          "desc": "1 Profile (1 Device)",
+          "price": "23,000 Ks",
+          "id": "1_month_2"
+        }
+      ]
+    },
+    {
+      "id": "netflix_phone",
+      "category": "streaming-apps",
+      "name": "Netflix (Phone/PC)",
+      "subtitle": "No TV / No TV Box",
+      "image": "images/netflix.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Netflix Phone/Tablet/PC Plans (4K Ultra HD)",
+      "plans": [
+        {
+          "header": "🔴 Premium Plan (Can Renew Without PF Change)"
+        },
+        {
+          "name": "1 Month",
+          "desc": "1 Profile (No TV)",
+          "price": "26,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "2 Months",
+          "desc": "1 Profile (No TV)",
+          "price": "48,000 Ks",
+          "id": "2_months"
+        },
+        {
+          "name": "3 Months",
+          "desc": "1 Profile (No TV)",
+          "price": "77,000 Ks",
+          "id": "3_months"
+        },
+        {
+          "header": "🔴 Basic Plan (Can't Renew, Monthly Change)"
+        },
+        {
+          "name": "1 Month",
+          "desc": "1 Profile (No TV)",
+          "price": "23,000 Ks",
+          "id": "1_month_2"
+        }
+      ]
+    },
+    {
+      "id": "youtube_premium",
+      "category": "streaming-apps",
+      "name": "YouTube Premium",
+      "subtitle": "No Ads",
+      "image": "images/youtube.svg",
+      "imageClass": "app-info",
+      "modalTitle": "YouTube Premium",
+      "plans": [
+        {
+          "name": "1 Month our mail",
+          "desc": "No Ads (Monthly Change)",
+          "price": "10,000 Ks",
+          "id": "1_month_our_mail"
+        },
+        {
+          "name": "3 Month cus mail",
+          "desc": "No Ads (Own Mail Invite)",
+          "price": "55,000 Ks",
+          "id": "3_month_cus_mail"
+        },
+        {
+          "name": "1 Year cus mail",
+          "desc": "No Ads (Own Mail Invite)",
+          "price": "150,000 Ks",
+          "id": "1_year_cus_mail"
+        }
+      ]
+    },
+    {
+      "id": "disneyplus",
+      "category": "streaming-apps",
+      "name": "Disney+",
+      "subtitle": "Movies & Series",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg",
+      "imageClass": "disney-logo",
+      "modalTitle": "Disney Plus",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "US VPN Required",
+          "price": "18,000 Ks",
+          "id": "1_month"
+        }
+      ]
+    },
+    {
+      "id": "hbomax",
+      "category": "streaming-apps",
+      "name": "HBO Max",
+      "subtitle": "Movies & Series",
+      "image": "images/hbomax.webp",
+      "imageClass": "app-info",
+      "modalTitle": "HBO Max",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "No VPN Needed",
+          "price": "18,000 Ks",
+          "id": "1_month"
+        }
+      ]
+    },
+    {
+      "id": "prime",
+      "category": "streaming-apps",
+      "name": "Prime Video",
+      "subtitle": "Amazon Movies & Series",
+      "image": "images/prime.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Amazon Prime Video (1 Profile, 1 Device)",
+      "plans": [
+        {
+          "header": "🔷 For TV"
+        },
+        {
+          "name": "1 Month",
+          "desc": "28-30 Days",
+          "price": "25,800 Ks",
+          "id": "1_month"
+        },
+        {
+          "header": "🔷 For Phone/Laptop"
+        },
+        {
+          "name": "1 Month",
+          "desc": "28-30 Days",
+          "price": "24,800 Ks",
+          "id": "1_month_2"
+        }
+      ]
+    },
+    {
+      "id": "peacock",
+      "category": "streaming-apps",
+      "name": "Peacock TV",
+      "subtitle": "World Cup 2026",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/f/fb/NBCUniversal_Peacock_Logo_%282020%E2%80%932026%29.svg",
+      "imageClass": "peacock-logo",
+      "modalTitle": "Peacock TV Premium (1 Profile, 1 Device)",
+      "plans": [
+        {
+          "name": "3 Month",
+          "desc": "US VPN Required",
+          "price": "25,000 Ks",
+          "id": "3_month"
+        }
+      ]
+    },
+    {
+      "id": "windows",
+      "category": "computer-keys-and-office-apps",
+      "name": "Windows Lifetime Keys",
+      "subtitle": "Win 10 / 11 (Home & Pro)",
+      "image": "images/windows.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Windows Lifetime Keys",
+      "plans": [
+        {
+          "header": "🔷 Windows Pro Versions"
+        },
+        {
+          "name": "Windows 10 Pro",
+          "desc": "Lifetime Key",
+          "price": "25,000 Ks",
+          "id": "windows_10_pro"
+        },
+        {
+          "name": "Windows 11 Pro",
+          "desc": "Lifetime Key",
+          "price": "25,000 Ks",
+          "id": "windows_11_pro"
+        },
+        {
+          "header": "🔷 Windows Home Versions"
+        },
+        {
+          "name": "Windows 10 Home",
+          "desc": "Lifetime Key",
+          "price": "30,000 Ks",
+          "id": "windows_10_home"
+        },
+        {
+          "name": "Windows 11 Home",
+          "desc": "Lifetime Key",
+          "price": "30,000 Ks",
+          "id": "windows_11_home"
+        }
+      ]
+    },
+    {
+      "id": "office",
+      "category": "computer-keys-and-office-apps",
+      "name": "Office 365 Pro Plus",
+      "subtitle": "Full Apps Suite",
+      "image": "images/office365.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Office 365 Pro Plus",
+      "plans": [
+        {
+          "name": "One Year",
+          "desc": "Random Name",
+          "price": "29,000 Ks",
+          "id": "one_year"
+        }
+      ]
+    },
+    {
+      "id": "quillbot",
+      "category": "learning-apps",
+      "name": "Quillbot Premium",
+      "subtitle": "Paraphrasing Tool",
+      "image": "images/quillbot.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Quillbot Premium Plans",
+      "plans": [
+        {
+          "name": "3 Months",
+          "desc": "One Device",
+          "price": "17,000 Ks",
+          "id": "3_months"
+        },
+        {
+          "name": "6 Months",
+          "desc": "One Device",
+          "price": "30,000 Ks",
+          "id": "6_months"
+        }
+      ]
+    },
+    {
+      "id": "duolingo",
+      "category": "learning-apps",
+      "name": "Duolingo Super",
+      "subtitle": "Language Learning",
+      "image": "images/duolingo.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Duolingo Super Plan",
+      "plans": [
+        {
+          "name": "One Year",
+          "desc": "With your own mail",
+          "price": "40,000 Ks",
+          "id": "one_year"
+        }
+      ]
+    },
+    {
+      "id": "duolingocrack",
+      "category": "learning-apps",
+      "name": "Duolingo Crack Acc Plan",
+      "subtitle": "Better Value",
+      "image": "images/duolingo.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Duolingo Crack Acc Plan",
+      "plans": [
+        {
+          "name": "Max 3 months warranty",
+          "desc": "Crack Acc",
+          "price": "20,000 Ks",
+          "id": "max_3_months_warrant"
+        },
+        {
+          "name": "Super 3 months warranty",
+          "desc": "Crack Acc",
+          "price": "14,000 Ks",
+          "id": "super_3_months_warra"
+        }
+      ]
+    },
+    {
+      "id": "chatgpt",
+      "category": "ai-apps",
+      "name": "ChatGPT Plus",
+      "subtitle": "GPT Latest Model",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/e/ef/ChatGPT-Logo.svg",
+      "imageClass": "chatgpt-logo",
+      "modalTitle": "ChatGPT 1 Month Plus Plan",
+      "plans": [
+        {
+          "name": "30 days warranty",
+          "desc": "Our Mail (Private Acc)",
+          "price": "65,000 Ks",
+          "id": "30_days_warranty"
+        },
+        {
+          "name": "15 days warranty",
+          "desc": "Our Mail (Private Acc)",
+          "price": "45,000 Ks",
+          "id": "15_days_warranty"
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "category": "ai-apps",
+      "name": "Gemini AI",
+      "subtitle": "Nano Banana",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Gemini Pro Apply Service Fee",
+      "plans": [
+        {
+          "name": "12 Months",
+          "desc": "need your gmail and pw",
+          "price": "35,000 Ks",
+          "id": "12_months"
+        },
+        {
+          "name": "18 Months",
+          "desc": "need your gmail and pw",
+          "price": "40,000 Ks",
+          "id": "18_months"
+        }
+      ]
+    },
+    {
+      "id": "manus",
+      "category": "ai-apps",
+      "name": "Manus AI Agent",
+      "subtitle": "AI Agent",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Manus_AI.png",
+      "imageClass": "",
+      "modalTitle": "Manus AI Plans",
+      "plans": [
+        {
+          "name": "1 Year 5000 credits",
+          "desc": "AI Agent",
+          "price": "390,000 Ks",
+          "id": "1_year_5000_credits"
+        }
+      ]
+    },
+    {
+      "id": "gamma",
+      "category": "ai-apps",
+      "name": "Gamma AI",
+      "subtitle": "AI For Presentation",
+      "image": "images/gamma.svg",
+      "imageClass": "gamma-logo",
+      "modalTitle": "Gamma AI Plans",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Ultra plan",
+          "contact": true,
+          "id": "1_month"
+        }
+      ]
+    },
+    {
+      "id": "grok",
+      "category": "ai-apps",
+      "name": "Super Grok AI",
+      "subtitle": "AI For Video and Real Data From X",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Grok-feb-2025-logo.svg",
+      "imageClass": "grok-logo",
+      "modalTitle": "Super Grok AI Plans",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Super plan",
+          "contact": true,
+          "id": "1_month"
+        }
+      ]
+    },
+    {
+      "id": "stealthwriter",
+      "category": "ai-apps",
+      "name": "Stealth Writer AI",
+      "subtitle": "AI For Rewrites",
+      "image": "images/stealthwriter.webp",
+      "imageClass": "stealthwriter-logo",
+      "modalTitle": "Stealthwriter AI Plans",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Starter Plan (Official Price 20$)",
+          "price": "60,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "1 Month",
+          "desc": "Plus Plan (Official Price 50$)",
+          "price": "100,000 Ks",
+          "id": "1_month_2"
+        }
+      ]
+    },
+    {
+      "id": "perplexity",
+      "category": "ai-apps",
+      "name": "Perplexity AI",
+      "subtitle": "Best AI For Research",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Perplexity_AI_logo.svg",
+      "imageClass": "perplexity-logo",
+      "modalTitle": "Perplexity AI Plan",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Pro Plan (Official Price 20$)",
+          "price": "35,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "1 Year",
+          "desc": "Pro Plan (Official Price 200$)",
+          "price": "320,000 Ks",
+          "id": "1_year"
+        }
+      ]
+    },
+    {
+      "id": "express_phone",
+      "category": "premium-vpn-apps",
+      "name": "Express VPN (Phone)",
+      "subtitle": "One Device Plan",
+      "image": "images/express.svg",
+      "imageClass": "expressvpn-logo",
+      "modalTitle": "Express VPN (Phone)",
+      "plans": [
+        {
+          "name": "6 Months",
+          "desc": "One Device",
+          "price": "20,000 Ks",
+          "id": "6_months"
+        },
+        {
+          "name": "1 Year",
+          "desc": "One Device",
+          "price": "35,000 Ks",
+          "id": "1_year"
+        }
+      ]
+    },
+    {
+      "id": "express_pc",
+      "category": "premium-vpn-apps",
+      "name": "Express VPN (PC)",
+      "subtitle": "One Device Plan",
+      "image": "images/express.svg",
+      "imageClass": "expressvpn-logo",
+      "modalTitle": "Express VPN (PC)",
+      "plans": [
+        {
+          "name": "6 Months",
+          "desc": "Pro Version(One PC)",
+          "price": "20,000 Ks",
+          "id": "6_months"
+        },
+        {
+          "name": "1 Year",
+          "desc": "Pro Version(လစဉ် Key လဲရန် မလို)",
+          "price": "35,000 Ks",
+          "id": "1_year"
+        }
+      ]
+    },
+    {
+      "id": "express_whole",
+      "category": "premium-vpn-apps",
+      "name": "Express VPN (Phone + PC)",
+      "subtitle": "Whole Acc (8-14 Devices)",
+      "image": "images/express.svg",
+      "imageClass": "expressvpn-logo",
+      "modalTitle": "Express VPN (Phone + PC)",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Whole Acc (8-14 Devices)",
+          "price": "20,000 Ks",
+          "id": "1_month"
+        }
+      ]
+    },
+    {
+      "id": "jumpjump",
+      "category": "premium-vpn-apps",
+      "name": "Jump Jump VPN",
+      "subtitle": "Phone / PC",
+      "image": "images/jumpjump.svg",
+      "imageClass": "jumpjump-logo",
+      "modalTitle": "Jump Jump VPN",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "One Device",
+          "price": "19,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "6 Months",
+          "desc": "2 Devices (Whole Acc)",
+          "price": "150,000 Ks",
+          "id": "6_months"
+        },
+        {
+          "name": "1 Year",
+          "desc": "2 Devices (Whole Acc)",
+          "price": "200,000 Ks",
+          "id": "1_year"
+        }
+      ]
+    },
+    {
+      "id": "letsvpn",
+      "category": "premium-vpn-apps",
+      "name": "Lets VPN",
+      "subtitle": "Platinum Plan (2 Devices)",
+      "image": "images/letsvpn.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Lets VPN Platinum (2 Devices)",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Platinum Plan",
+          "price": "52,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "3 Months",
+          "desc": "Platinum Plan",
+          "price": "120,000 Ks",
+          "stock": false,
+          "id": "3_months"
+        },
+        {
+          "name": "1 Year",
+          "desc": "Platinum Plan",
+          "price": "350,000 Ks",
+          "id": "1_year"
+        }
+      ]
+    },
+    {
+      "id": "hiddify",
+      "category": "premium-vpn-apps",
+      "name": "Hiddify,V2 box,V2 Ray VPN",
+      "subtitle": "link Based / Data Limit",
+      "image": "images/hiddify.svg",
+      "imageClass": "hiddify-logo",
+      "modalTitle": "Hiddify,V2 box,V2 Ray VPN",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "250GB Data",
+          "price": "8,000 Ks",
+          "id": "1_month"
+        },
+        {
+          "name": "6 Months",
+          "desc": "250GB Data",
+          "price": "20,000 Ks",
+          "id": "6_months"
+        }
+      ]
+    },
+    {
+      "id": "norton",
+      "category": "premium-vpn-apps",
+      "name": "Norton VPN",
+      "subtitle": "",
+      "image": "images/norton.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Norton VPN",
+      "plans": [
+        {
+          "name": "3 Month",
+          "desc": "One Device",
+          "price": "15,000 Ks",
+          "id": "3_month"
+        }
+      ]
+    },
+    {
+      "id": "nord",
+      "category": "premium-vpn-apps",
+      "name": "Nord VPN",
+      "subtitle": "One Device Plan",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/4/48/NordVPN_logo.svg",
+      "imageClass": "nord-logo",
+      "modalTitle": "Nord VPN",
+      "plans": [
+        {
+          "name": "3 Months",
+          "desc": "One Device",
+          "price": "20,000 Ks",
+          "id": "3_months"
+        }
+      ]
+    }
+  ]
+}

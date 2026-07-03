@@ -7,8 +7,9 @@
 
   <title>Payment Methods | Premium Store</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/components.css" />
 
   <style>
     /* =========================
@@ -414,6 +415,7 @@ a[href^="tel"]{
 </head>
 
 <body class="payment-page">
+  <div class="order-summary" id="order-summary" style="display:none"></div>
 
   <header class="payment-header">
   <h1 class="payment-title">Payment Methods</h1>
@@ -456,17 +458,17 @@ a[href^="tel"]{
         <!-- quick buttons with image icons -->
         <div class="platform-buttons" aria-label="Platform quick select">
           <button type="button" class="platform-btn" data-platform="kpay">
-            <img src="images/kpayicon.jpeg" class="pay-icon" alt="KBZPay Icon">
+            <img loading="lazy" decoding="async" src="images/kpayicon.webp" class="pay-icon" alt="KBZPay Icon">
             KBZPay
           </button>
 
           <button type="button" class="platform-btn" data-platform="wave">
-            <img src="images/wavepayicon.png" class="pay-icon" alt="WavePay Icon">
+            <img loading="lazy" decoding="async" src="images/wavepayicon.webp" class="pay-icon" alt="WavePay Icon">
             WavePay
           </button>
 
           <button type="button" class="platform-btn" data-platform="aya">
-            <img src="images/aya.jpeg" class="pay-icon" alt="AyaPay Icon">
+            <img loading="lazy" decoding="async" src="images/aya.webp" class="pay-icon" alt="AyaPay Icon">
             AyaPay
           </button>
         </div>
@@ -489,7 +491,7 @@ a[href^="tel"]{
         </p>
 
         <div class="qr-single">
-          <img src="images/kpay-qr.jpg" alt="KBZPay QR">
+          <img loading="lazy" decoding="async" src="images/kpay-qr.webp" alt="KBZPay QR">
         </div>
       </div>
 
@@ -508,7 +510,7 @@ a[href^="tel"]{
         </p>
 
         <div class="qr-single">
-          <img src="images/wavepay-qr.png" alt="WavePay QR">
+          <img loading="lazy" decoding="async" src="images/wavepay-qr.webp" alt="WavePay QR">
         </div>
       </div>
 
@@ -527,7 +529,7 @@ a[href^="tel"]{
         </p>
 
         <div class="qr-single">
-          <img src="images/ayapay-qr.png" alt="AyaPay QR">
+          <img loading="lazy" decoding="async" src="images/ayapay-qr.webp" alt="AyaPay QR">
         </div>
       </div>
 
@@ -547,15 +549,15 @@ a[href^="tel"]{
         </p>
 
         <div class="proof-nav">
-          <a href="https://t.me/PSNamso_bot" target="_blank" class="nav-btn bot-topup-btn">
+          <a href="https://t.me/PSNamso_bot" target="_blank" rel="noopener" class="nav-btn bot-topup-btn">
             <i class="fa-brands fa-telegram"></i> Top Up with Bot
           </a>
 
-          <a href="https://www.messenger.com/t/happyyou2020" target="_blank" class="nav-btn">
+          <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" class="nav-btn">
             <i class="fa-brands fa-facebook-messenger"></i> Page Messenger 
           </a>
 
-          <a href="https://t.me/Premiumstorezz" target="_blank" class="nav-btn">
+          <a href="https://t.me/Premiumstorezz" target="_blank" rel="noopener" class="nav-btn">
             <i class="fa-brands fa-telegram"></i> Telegram 
           </a>
         </div>
@@ -640,5 +642,6 @@ a[href^="tel"]{
     })();
   </script>
 
+  <script src="assets/app.js" defer></script>
 </body>
 </html>

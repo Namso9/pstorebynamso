@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Without Telegram | PREMIUM STORE</title>
+  <meta name="description" content="Telegram မသုံးဘဲ website ကနေတိုက်ရိုက် order တင်နိုင်ပါသည်။ ငွေလွှဲ screenshot ကို ဒီမှာတင်ပါ။" />
+  <meta name="theme-color" content="#00d2ff" />
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/components.css" />
+</head>
+<body>
+
+  <div class="order-summary" id="order-summary" style="display:none"></div>
+
+  <div class="order-form-card">
+    <h2><i class="fa-solid fa-file-invoice"></i> Order တင်ရန်</h2>
+    <p class="of-sub">Telegram မသုံးသူများအတွက် — ငွေလွှဲပြီး screenshot တင်လိုက်ပါ။ Admin က သင်ရွေးထားတဲ့နည်းလမ်းနဲ့ ပြန်ဆက်သွယ်ပါမယ်။</p>
+
+    <form id="orderForm">
+      <div class="of-field">
+        <label for="of-name">နာမည် *</label>
+        <input type="text" id="of-name" name="name" required maxlength="60" placeholder="သင့်နာမည်" />
+      </div>
+
+      <div class="of-field">
+        <label for="of-product">ဝယ်ယူလိုသည့် ပစ္စည်း *</label>
+        <input type="text" id="of-product" name="product" required maxlength="120" placeholder="ဥပမာ - Netflix 1 Month" />
+      </div>
+
+      <div class="of-field">
+        <label for="of-payment">ငွေလွှဲထားသည့် နည်းလမ်း *</label>
+        <select id="of-payment" name="payment" required>
+          <option value="">ရွေးပါ</option>
+          <option>KBZ Pay</option>
+          <option>Wave Pay</option>
+          <option>AYA Pay</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="of-field">
+        <label for="of-contact">ပြန်ဆက်သွယ်ရန် ဖုန်း (သို့) Viber နံပါတ် *</label>
+        <input type="tel" id="of-contact" name="contact" required maxlength="40" placeholder="09xxxxxxxxx" />
+      </div>
+
+      <div class="of-field">
+        <label>ငွေလွှဲ Screenshot *</label>
+        <label class="of-file" id="of-file-label" for="of-file">
+          <i class="fa-solid fa-image"></i> <span id="of-file-text">Screenshot ရွေးရန် နှိပ်ပါ</span>
+        </label>
+        <input type="file" id="of-file" name="screenshot" accept="image/*" required style="display:none" />
+      </div>
+
+      <div class="of-field">
+        <label for="of-note">မှတ်ချက် (ထည့်ချင်မှထည့်ပါ)</label>
+        <textarea id="of-note" name="note" rows="2" maxlength="300" placeholder="ဥပမာ - ညနေပိုင်းမှ ဖုန်းကိုင်နိုင်ပါတယ်"></textarea>
+      </div>
+
+      <input type="text" name="website" id="of-hp" style="display:none" tabindex="-1" autocomplete="off" />
+
+      <button type="submit" class="of-submit" id="of-submit">
+        <i class="fa-solid fa-paper-plane"></i> Order တင်မယ်
+      </button>
+    </form>
+
+    <div class="of-result" id="of-result"></div>
+  </div>
+
+  <script src="assets/app.js" defer></script>
+  <script>
+    (function () {
+      var fileInput = document.getElementById('of-file');
+      var fileLabel = document.getElementById('of-file-label');
+      var fileText = document.getElementById('of-file-text');
+      fileInput.addEventListener('change', function () {
+        if (fileInput.files.length) {
+          fileText.textContent = fileInput.files[0].name;
+          fileLabel.classList.add('has-file');
+        }
+      });
+
+      // Pre-fill product from query params (?product=xxx&plan=yyy)
+      var q = new URLSearchParams(location.search);
+      if (q.get('product')) {
+        fetch('products.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
+          var p = d.products.find(function (x) { return x.id === q.get('product'); });
+          if (!p) return;
+          var plan = (p.plans || []).find(function (x) { return x.id === q.get('plan'); });
+          document.getElementById('of-product').value = p.name + (plan ? ' — ' + plan.name + (plan.price ? ' (' + plan.price + ')' : '') : '');
+        }).catch(function () {});
+      }
+
+      document.getElementById('orderForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = document.getElementById('of-submit');
+        var result = document.getElementById('of-result');
+        var f = fileInput.files[0];
+        if (f && f.size > 8 * 1024 * 1024) {
+          result.className = 'of-result err';
+          result.textContent = 'Screenshot ဖိုင်က 8MB ထက်ကြီးနေပါတယ်။ ပိုသေးတဲ့ပုံပြန်ရွေးပေးပါ။';
+          return;
+        }
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ပို့နေသည်…';
+        result.className = 'of-result';
+
+        var fd = new FormData(e.target);
+        fetch('/api/order', { method: 'POST', body: fd })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (res) {
+            if (res.ok && res.j.ok) {
+              result.className = 'of-result ok';
+              result.innerHTML =
+                '<strong><i class="fa-solid fa-circle-check"></i> Order တင်ပြီးပါပြီ!</strong><br/>' +
+                'Order ID: <strong>' + res.j.orderId + '</strong><br/>' +
+                'Admin က မကြာခင် သင့်ဖုန်း/Viber ကို ပြန်ဆက်သွယ်ပါမယ်။<br/>' +
+                'Facebook နဲ့လည်း ဆက်သွယ်နိုင်ပါတယ် — အောက်ကခလုတ်နှိပ်ပြီး Order ID ကို ပို့ထားပါ:<br/>' +
+                '<a class="of-fb-btn" target="_blank" rel="noopener" rel="noopener" href="' + res.j.fbLink + '"><i class="fa-brands fa-facebook-messenger"></i> Facebook Page ကို စာပို့မယ်</a>';
+              e.target.reset();
+              fileText.textContent = 'Screenshot ရွေးရန် နှိပ်ပါ';
+              fileLabel.classList.remove('has-file');
+            } else {
+              throw new Error(res.j.error || 'failed');
+            }
+          })
+          .catch(function () {
+            result.className = 'of-result err';
+            result.innerHTML = 'Order ပို့မရသေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပါ (သို့) Telegram Bot <a href="https://t.me/PSNamso_bot" style="color:#00d2ff">@PSNamso_bot</a> ကနေ ဝယ်ယူနိုင်ပါတယ်။';
+          })
+          .finally(function () {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Order တင်မယ်';
+          });
+      });
+    })();
+  </script>
+</body>
+</html>

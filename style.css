@@ -8,7 +8,7 @@
 
 body {
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url('images/bg.jpg');
+                url('images/bg.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -236,4 +236,11 @@ body {
     margin-top: 5px;        /* စာသားနဲ့ညီအောင် နည်းနည်းအောက်ချမယ် */
     flex-shrink: 0;         /* Icon ရှုံ့မသွားအောင် ထိန်းမယ် */
     color: #2ed573;         /* အစိမ်းရောင် */
+}
+
+/* Mobile performance: fixed background scroll ထစ်တာကာကွယ်ရန် */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
 }

@@ -1,0 +1,17 @@
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/products.json
+  Cache-Control: public, max-age=300, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=86400
+
+/style.css
+  Cache-Control: public, max-age=86400
+
+/images/*
+  Cache-Control: public, max-age=2592000, immutable
