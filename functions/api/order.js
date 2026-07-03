@@ -25,6 +25,8 @@ export async function onRequestPost({ request, env }) {
     const product = clean(form.get('product'), 120);
     const payment = clean(form.get('payment'), 30);
     const contact = clean(form.get('contact'), 40);
+    const customerMail = clean(form.get('customer_mail'), 120);
+    const customerPw = clean(form.get('customer_pw'), 100);
     const note = clean(form.get('note'), 300);
     const shot = form.get('screenshot');
 
@@ -48,9 +50,11 @@ export async function onRequestPost({ request, env }) {
       `📦 Product: ${product}\n` +
       `💳 Payment: ${payment}\n` +
       `📞 Contact: ${contact}\n` +
+      (customerMail ? `📧 Customer Mail: ${customerMail}\n` : '') +
+      (customerPw ? `🔑 Mail Password: ${customerPw}\n` : '') +
       (note ? `📝 Note: ${note}\n` : '') +
       `━━━━━━━━━━━━━━━\n` +
-      `⚠️ ဒီ customer က Telegram မသုံးပါ — ဖုန်း/Viber နဲ့ ပြန်ဆက်သွယ်ပါ`;
+      `⚠️ Website order form ကနေ ဝင်လာတဲ့ order ပါ — အပေါ်က Contact (Viber နံပါတ် / Telegram username) အတိုင်း ပြန်ဆက်သွယ်ပေးပါ`;
 
     const tg = new FormData();
     tg.append('chat_id', env.ADMIN_CHAT_ID);

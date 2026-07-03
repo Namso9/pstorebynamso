@@ -31,6 +31,17 @@
         <input type="text" id="of-product" name="product" required maxlength="120" placeholder="ဥပမာ - Netflix 1 Month" />
       </div>
 
+      <div class="of-field" id="of-mail-field" style="display:none">
+        <label for="of-mail" id="of-mail-label">Upgrade လုပ်မည့် သင့် Email *</label>
+        <input type="email" id="of-mail" name="customer_mail" maxlength="120" placeholder="yourname@gmail.com" autocomplete="off" />
+        <p id="of-mail-hint" style="font-size:0.78rem;color:rgba(255,255,255,0.55);margin:6px 0 0"></p>
+      </div>
+
+      <div class="of-field" id="of-pw-field" style="display:none">
+        <label for="of-pw">Gmail Password (optional)</label>
+        <input type="text" id="of-pw" name="customer_pw" maxlength="100" placeholder="Gmail password" autocomplete="off" />
+      </div>
+
       <div class="of-field">
         <label for="of-payment">ငွေလွှဲထားသည့် နည်းလမ်း *</label>
         <select id="of-payment" name="payment" required>
@@ -44,7 +55,7 @@
 
       <div class="of-field">
         <label for="of-contact">ပြန်ဆက်သွယ်ရန် Viber နံပါတ် သို့မဟုတ် Telegram Username *</label>
-        <input type="tel" id="of-contact" name="contact" required maxlength="40" placeholder="09xxxxxxxxx" />
+        <input type="text" id="of-contact" name="contact" required maxlength="40" placeholder="09xxxxxxxxx (သို့) @username" autocomplete="off" />
       </div>
 
       <div class="of-field">
@@ -83,16 +94,85 @@
         }
       });
 
-      // Pre-fill product from query params (?product=xxx&plan=yyy)
+      // ---- Product-specific extra fields ----
+      // Own-mail products: customer email required (upgrade သင့် mail ပေါ်မှာလုပ်ရလို့)
+      var MAIL_REQUIRED = ['zoom', 'canva', 'duolingo'];
+      // Gemini: gmail + password optional (မဖြည့်ရင် admin ဆက်သွယ်ချိန်ပေးလို့ရ)
+      var MAIL_PW_OPTIONAL = ['gemini'];
+
+      var productInput = document.getElementById('of-product');
+      var mailField = document.getElementById('of-mail-field');
+      var mailInput = document.getElementById('of-mail');
+      var mailLabel = document.getElementById('of-mail-label');
+      var mailHint = document.getElementById('of-mail-hint');
+      var pwField = document.getElementById('of-pw-field');
+      var pwInput = document.getElementById('of-pw');
+      var allProducts = null;
+      var currentProductId = '';
+
+      function updateExtraFields() {
+        var needMail = MAIL_REQUIRED.indexOf(currentProductId) !== -1;
+        var isGemini = MAIL_PW_OPTIONAL.indexOf(currentProductId) !== -1;
+        if (needMail) {
+          mailField.style.display = '';
+          pwField.style.display = 'none';
+          pwInput.value = '';
+          mailInput.required = true;
+          mailLabel.textContent = 'Upgrade လုပ်မည့် သင့် Email *';
+          mailHint.textContent = 'ဒီ product က သင့် mail ပေါ်မှာ တင်ပေးရတာမို့ Email ဖြည့်ပေးပါ။';
+        } else if (isGemini) {
+          mailField.style.display = '';
+          pwField.style.display = '';
+          mailInput.required = false;
+          mailLabel.textContent = 'Gmail (optional)';
+          mailHint.textContent = 'Gemini က သင့် Gmail + Password နဲ့ တင်ပေးရပါတယ်။ အခုမဖြည့်ချင်ရင် Admin ဆက်သွယ်လာချိန် ပေးလို့ရပါတယ်။';
+        } else {
+          mailField.style.display = 'none';
+          pwField.style.display = 'none';
+          mailInput.required = false;
+          mailInput.value = '';
+          pwInput.value = '';
+        }
+      }
+
+      function resolveProductId(text) {
+        var t = (text || '').toLowerCase();
+        if (!t) return '';
+        var best = '', bestLen = 0;
+        (allProducts || []).forEach(function (p) {
+          var n = (p.name || '').toLowerCase();
+          if (n && t.indexOf(n) !== -1 && n.length > bestLen) { best = p.id; bestLen = n.length; }
+        });
+        if (best) return best;
+        if (t.indexOf('canva') !== -1) return 'canva';
+        if (t.indexOf('zoom') !== -1) return 'zoom';
+        if (t.indexOf('gemini') !== -1) return 'gemini';
+        if (t.indexOf('duolingo') !== -1 && t.indexOf('crack') === -1) return 'duolingo';
+        return '';
+      }
+
+      productInput.addEventListener('input', function () {
+        currentProductId = resolveProductId(productInput.value);
+        updateExtraFields();
+      });
+
+      // Load products.json (prefill from ?product=xxx&plan=yyy + name matching အတွက်)
       var q = new URLSearchParams(location.search);
-      if (q.get('product')) {
-        fetch('products.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
-          var p = d.products.find(function (x) { return x.id === q.get('product'); });
+      fetch('products.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
+        allProducts = d.products || [];
+        var pid = q.get('product');
+        if (pid) {
+          var p = allProducts.find(function (x) { return x.id === pid; });
           if (!p) return;
           var plan = (p.plans || []).find(function (x) { return x.id === q.get('plan'); });
-          document.getElementById('of-product').value = p.name + (plan ? ' — ' + plan.name + (plan.price ? ' (' + plan.price + ')' : '') : '');
-        }).catch(function () {});
-      }
+          productInput.value = p.name + (plan ? ' — ' + plan.name + (plan.price ? ' (' + plan.price + ')' : '') : '');
+          currentProductId = p.id;
+          updateExtraFields();
+        } else if (productInput.value) {
+          currentProductId = resolveProductId(productInput.value);
+          updateExtraFields();
+        }
+      }).catch(function () {});
 
       document.getElementById('orderForm').addEventListener('submit', function (e) {
         e.preventDefault();
