@@ -536,31 +536,37 @@ a[href^="tel"]{
       <!-- ✅ Screenshot ပို့ရန် box (platform ရွေးပြီးမှပေါ်) -->
       <div id="send-proof" class="payment-selector send-proof" aria-live="polite">
         <p style="margin:0; line-height:1.45;">
-          ✅ <strong>ငွေလွှဲပြီးပါက</strong>
-          (<strong id="selectedPlatformText">Platform</strong>)
-          Page Messenger or Telegram Message မှာ
-          <strong>screenshot</strong> ပို့ပေးပါခဗျ။
-          Admin reply စောင့်စရာမလိုဘဲ Telegram Bot ထဲတွင်
-          <strong>Top Up ဖြည့်ပြီး ဝယ်ယူလို့လည်း ရနိုင်ပါပြီခဗျ။</strong>
+          ✅ <strong id="selectedPlatformText">Platform</strong> နဲ့
+          <strong>ငွေလွှဲပြီးပါက</strong> — screenshot ကို
+          <strong>Page Messenger</strong> သို့ ပို့ပေးပါခဗျ
+          (သို့မဟုတ်) <strong>Order Form</strong> ကနေ Order တင်ပေးပါခဗျ။
         </p>
 
-        <p class="bot-note">
-          🤖 မြန်မြန်ဝယ်ချင်ပါက Telegram Bot ထဲတွင် Wallet Top Up လုပ်ပြီး Stock ရှိသော Product များကို အလိုအလျောက်ဝယ်ယူနိုင်ပါသည်။
-        </p>
-
-        <div class="proof-nav">
-          <a href="https://t.me/PSNamso_bot" target="_blank" rel="noopener" class="nav-btn bot-topup-btn">
-            <i class="fa-brands fa-telegram"></i> Top Up with Bot
+        <div class="proof-nav" style="margin-top:12px;">
+          <a href="https://t.me/Premiumstorezz" target="_blank" rel="noopener" class="nav-btn">
+            <i class="fa-brands fa-telegram"></i> Telegram
           </a>
 
           <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" class="nav-btn">
-            <i class="fa-brands fa-facebook-messenger"></i> Page Messenger 
+            <i class="fa-brands fa-facebook-messenger"></i> Messenger
           </a>
 
-          <a href="https://t.me/Premiumstorezz" target="_blank" rel="noopener" class="nav-btn">
-            <i class="fa-brands fa-telegram"></i> Telegram 
+          <a href="viber://chat?number=%2B959953362620" class="nav-btn">
+            <i class="fa-brands fa-viber"></i> Viber
           </a>
         </div>
+
+        <a href="order.html" id="proof-order-form" class="nav-btn" style="display:flex; justify-content:center; margin-top:10px;">
+          <i class="fa-solid fa-file-invoice"></i>&nbsp;  Order Form ကနေတင်မယ်
+        </a>
+
+        <p class="bot-note">
+          🤖 <strong>အမြန်နည်းလမ်း:</strong> Telegram သုံးတတ်ရင် Bot ထဲမှာ Wallet Top Up ဖြည့်ပြီး Stock ရှိတဲ့ Product များကို Admin reply စောင့်စရာမလိုဘဲ တန်းဝယ်နိုင်ပါသည်။
+        </p>
+
+        <a href="https://t.me/PSNamso_bot" target="_blank" rel="noopener" class="nav-btn bot-topup-btn" style="display:flex; justify-content:center; margin-top:10px;">
+          <i class="fa-brands fa-telegram"></i>&nbsp; Open Telegram Bot (Top Up)
+        </a>
       </div>
 
       <!-- Back button -->
@@ -593,6 +599,8 @@ a[href^="tel"]{
 
       const sendProof = document.getElementById("send-proof");
       const selectedPlatformText = document.getElementById("selectedPlatformText");
+      const proofOrderForm = document.getElementById("proof-order-form");
+      if (proofOrderForm && location.search) proofOrderForm.href = "order.html" + location.search;
 
       const platformLabels = {
         kpay: "KBZPay",

@@ -239,10 +239,14 @@
       if (!product) { host.style.display = 'none'; return; }
       var plan = (product.plans || []).find(function (pl) { return pl.id === plid; });
       host.style.display = '';
+      var onOrderPage = location.pathname.indexOf('order.html') !== -1;
+      var tail = onOrderPage
+        ? 'အောက်က form ကိုဖြည့်ပြီး ငွေလွှဲ screenshot တင်ပေးပါ။'
+        : 'အောက်မှာ Platform ရွေးပြီး QR နဲ့ ငွေလွှဲပါ။ ငွေလွှဲပြီးရင် screenshot ကို Page Messenger သို့မဟုတ် <a href="order.html' + location.search + '" style="color:#00d2ff">ဒီ order form</a> ကနေ တင်နိုင်ပါတယ်။';
       host.innerHTML = '<h3><i class="fa-solid fa-cart-shopping"></i> Your Order</h3>' +
         '<p>' + esc(product.name) + (plan ? ' — ' + esc(plan.name) : '') + '</p>' +
         (plan && plan.price ? '<p class="os-price">' + esc(plan.price) + '</p>' : '') +
-        '<p style="font-size:0.85rem;color:rgba(255,255,255,0.65)">ငွေလွှဲပြီးရင် screenshot ကို Telegram Bot ထဲပို့ပါ (သို့) <a href="order.html' + location.search + '" style="color:#00d2ff">Telegram မသုံးရင် ဒီကနေ order တင်ပါ</a></p>';
+        '<p style="font-size:0.85rem;color:rgba(255,255,255,0.65)">' + tail + '</p>';
     });
   }
 

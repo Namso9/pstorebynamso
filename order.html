@@ -18,7 +18,7 @@
 
   <div class="order-form-card">
     <h2><i class="fa-solid fa-file-invoice"></i> Order တင်ရန်</h2>
-    <p class="of-sub">Telegram မသုံးသူများအတွက် — ငွေလွှဲပြီး screenshot တင်လိုက်ပါ။ Admin က သင်ရွေးထားတဲ့နည်းလမ်းနဲ့ ပြန်ဆက်သွယ်ပါမယ်။</p>
+    <p class="of-sub"> ငွေလွှဲပြီး screenshot တင်လိုက်ပါ။ Admin က <strong>Viber or Telegram</strong> ကနေ ပြန်ဆက်သွယ်ပါမယ်။<br/>Form မတင်ချင်ရင်  <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> ကို screenshot တိုက်ရိုက်ပို့လို့လည်း ရပါတယ်။</p>
 
     <form id="orderForm">
       <div class="of-field">
@@ -43,7 +43,7 @@
       </div>
 
       <div class="of-field">
-        <label for="of-contact">ပြန်ဆက်သွယ်ရန် ဖုန်း (သို့) Viber နံပါတ် *</label>
+        <label for="of-contact">ပြန်ဆက်သွယ်ရန် Viber နံပါတ် သို့မဟုတ် Telegram Username *</label>
         <input type="tel" id="of-contact" name="contact" required maxlength="40" placeholder="09xxxxxxxxx" />
       </div>
 
@@ -56,8 +56,8 @@
       </div>
 
       <div class="of-field">
-        <label for="of-note">မှတ်ချက် (ထည့်ချင်မှထည့်ပါ)</label>
-        <textarea id="of-note" name="note" rows="2" maxlength="300" placeholder="ဥပမာ - ညနေပိုင်းမှ ဖုန်းကိုင်နိုင်ပါတယ်"></textarea>
+        <label for="of-note">မှတ်ချက် (optional)</label>
+        <textarea id="of-note" name="note" rows="2" maxlength="300" placeholder="ထပ်ဖြည့်ပြောချင်တာရှိရင် ရေးပါ"></textarea>
       </div>
 
       <input type="text" name="website" id="of-hp" style="display:none" tabindex="-1" autocomplete="off" />
@@ -117,7 +117,7 @@
               result.innerHTML =
                 '<strong><i class="fa-solid fa-circle-check"></i> Order တင်ပြီးပါပြီ!</strong><br/>' +
                 'Order ID: <strong>' + res.j.orderId + '</strong><br/>' +
-                'Admin က မကြာခင် သင့်ဖုန်း/Viber ကို ပြန်ဆက်သွယ်ပါမယ်။<br/>' +
+                'Admin က Viber <strong>09 953 362 620</strong> ကနေ မကြာခင် ပြန်ဆက်သွယ်ပါမယ် — အဲ့နံပါတ်က message ကို လက်ခံပေးပါ။<br/>' +
                 'Facebook နဲ့လည်း ဆက်သွယ်နိုင်ပါတယ် — အောက်ကခလုတ်နှိပ်ပြီး Order ID ကို ပို့ထားပါ:<br/>' +
                 '<a class="of-fb-btn" target="_blank" rel="noopener" rel="noopener" href="' + res.j.fbLink + '"><i class="fa-brands fa-facebook-messenger"></i> Facebook Page ကို စာပို့မယ်</a>';
               e.target.reset();
