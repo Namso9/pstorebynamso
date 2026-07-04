@@ -909,13 +909,15 @@
           "name": "1 Month",
           "desc": "250GB Data",
           "price": "8,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "name": "6 Months",
           "desc": "250GB Data",
           "price": "20,000 Ks",
-          "id": "6_months"
+          "id": "6_months",
+          "bot": true
         }
       ]
     },

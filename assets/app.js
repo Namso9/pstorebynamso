@@ -139,18 +139,84 @@
         '<a class="plan-contact-btn plan-contact-btn--fb" href="' + esc(s.facebookPage || '#') + '" target="_blank" rel="noopener" rel="noopener"><i class="fa-brands fa-facebook"></i></a>' +
         '</div></div>';
     }
-    var href;
-    if (s.deepLinks) {
-      href = 'https://t.me/' + s.botUsername + '?start=' + (s.deepLinkPrefix || 'buy') + '-' + product.id + '-' + plan.id;
-    } else {
-      href = (s.paymentPage || 'payment.html') + '?product=' + encodeURIComponent(product.id) + '&plan=' + encodeURIComponent(plan.id);
-    }
-    var target = s.deepLinks ? ' target="_blank" rel="noopener" rel="noopener"' : '';
-    return '<a href="' + href + '" class="plan-btn"' + target + '>' +
+    // Hybrid checkout: clicking a plan opens the checkout-method chooser.
+    // We stash product/plan ids on the element so no inline-quote escaping breaks.
+    return '<button type="button" class="plan-btn" ' +
+      'data-pid="' + esc(product.id) + '" data-plid="' + esc(plan.id) + '" ' +
+      'onclick="openCheckout(this.getAttribute(\'data-pid\'), this.getAttribute(\'data-plid\'))">' +
       '<div class="plan-info"><span class="plan-name">' + esc(plan.name) + '</span>' +
       '<span class="plan-desc">' + esc(plan.desc) + '</span></div>' +
-      '<span class="plan-price">' + esc(plan.price) + '</span></a>';
+      '<span class="plan-price">' + esc(plan.price) + '</span></button>';
   }
+
+  /* ---------- Checkout-method modal (hybrid: bot + web form) ---------- */
+  function injectCheckoutModal() {
+    if (document.getElementById('checkoutModal')) return;
+    var wrap = document.createElement('div');
+    wrap.innerHTML =
+      '<div id="checkoutModal" class="modal-overlay" onclick="closeCheckoutOutside(event)">' +
+      '<div class="modal-content">' +
+      '<span class="close-modal" onclick="closeCheckout()">&times;</span>' +
+      '<h2 class="modal-title">ဝယ်ယူနည်း ရွေးပါ</h2>' +
+      '<div id="checkoutBody"></div>' +
+      '</div></div>';
+    document.body.appendChild(wrap.firstChild);
+  }
+
+  window.openCheckout = function (productId, planId) {
+    loadData().then(function (d) {
+      if (!d) return;
+      var s = d.settings || {};
+      var product = d.products.find(function (p) { return p.id === productId; });
+      if (!product) return;
+      var plan = (product.plans || []).find(function (x) { return x.id === planId; });
+      if (!plan) return;
+
+      injectCheckoutModal();
+      var body = document.getElementById('checkoutBody');
+      var summary =
+        '<div class="checkout-summary">' +
+        '<span class="plan-name">' + esc(product.name) + ' — ' + esc(plan.name) + '</span>' +
+        '<span class="plan-price">' + esc(plan.price) + '</span></div>';
+
+      // Telegram bot option — only when a bot mapping exists for THIS plan
+      // (mapping flag = plan.bot === true, set from products.json by the panel).
+      // Deep-link format MUST be 'buy-<product>-<plan>' (hyphen, 3 parts) —
+      // that is exactly what the live bot's /start handler parses
+      // (^/start buy-...  ->  split('-',2) -> web_catalog.lookup(pid, plid)).
+      var botHtml = '';
+      if (plan.bot === true && s.botUsername) {
+        var start = (s.deepLinkPrefix || 'buy') + '-' + product.id + '-' + plan.id;
+        var tgHref = 'https://t.me/' + s.botUsername + '?start=' + start;
+        botHtml =
+          '<a class="checkout-opt checkout-opt--bot" href="' + tgHref + '" target="_blank" rel="noopener">' +
+          '<div class="checkout-opt-main"><i class="fa-brands fa-telegram"></i> Telegram Bot ကနေ ဝယ်မည်</div>' +
+          '<div class="checkout-opt-sub">အမြန်ဆုံး · auto delivery · wallet/VIP အကျိုးရ (Recommended)</div></a>';
+      }
+
+      // Website order form — always available as a fallback.
+      var payHref = (s.paymentPage || 'payment.html') +
+        '?product=' + encodeURIComponent(product.id) + '&plan=' + encodeURIComponent(plan.id);
+      var webHtml =
+        '<a class="checkout-opt checkout-opt--web" href="' + payHref + '">' +
+        '<div class="checkout-opt-main"><i class="fa-solid fa-file-invoice"></i> Website ကနေ Order Form တင်မည်</div>' +
+        '<div class="checkout-opt-sub">Payment screenshot တင် · admin က manual ပြန်ဆက်သွယ်</div></a>';
+
+      var note = botHtml ? '' :
+        '<div class="checkout-note">ဒီ plan အတွက် bot auto မရသေးပါ — Website Order Form နဲ့ ဝယ်ပါ။</div>';
+
+      body.innerHTML = summary + botHtml + webHtml + note;
+      document.getElementById('checkoutModal').style.display = 'flex';
+    });
+  };
+
+  window.closeCheckout = function () {
+    var m = document.getElementById('checkoutModal');
+    if (m) m.style.display = 'none';
+  };
+  window.closeCheckoutOutside = function (e) {
+    if (e.target === document.getElementById('checkoutModal')) closeCheckout();
+  };
 
   window.openModal = function (productId) {
     loadData().then(function (d) {

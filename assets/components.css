@@ -1066,3 +1066,22 @@
 /* Reviews hero image */
 .reviews-hero { display: flex; justify-content: center; padding: 24px 20px 4px; }
 .reviews-hero img { width: 100%; max-width: 360px; border-radius: 20px; }
+
+/* ---------- Hybrid checkout modal (bot + web form) ---------- */
+.checkout-summary { display:flex; justify-content:space-between; align-items:center;
+      gap:12px; padding:12px 14px; margin-bottom:16px; border-radius:12px;
+      background:rgba(0,210,255,0.08); border:1px solid rgba(0,210,255,0.25); }
+.checkout-summary .plan-name { font-size:0.92rem; font-weight:700; }
+.checkout-summary .plan-price { color:#2ed573; font-weight:700; white-space:nowrap; }
+.checkout-opt { display:block; text-align:left; text-decoration:none;
+      padding:14px 16px; margin-bottom:12px; border-radius:12px; color:#fff;
+      background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);
+      transition:0.2s; }
+.checkout-opt:hover { transform:scale(1.02); background:rgba(255,255,255,0.1); }
+.checkout-opt--bot { border-color:rgba(0,210,255,0.5); }
+.checkout-opt--bot:hover { border-color:#00d2ff; box-shadow:0 6px 18px rgba(0,210,255,0.2); }
+.checkout-opt--web:hover { border-color:#2ed573; }
+.checkout-opt-main { font-size:0.98rem; font-weight:700; }
+.checkout-opt-main i { margin-right:8px; }
+.checkout-opt-sub { font-size:0.76rem; opacity:0.75; margin-top:4px; }
+.checkout-note { font-size:0.78rem; color:#ffeb3b; opacity:0.85; margin-top:6px; text-align:center; }
