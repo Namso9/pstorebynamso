@@ -79,7 +79,8 @@
           "name": "6 Months",
           "desc": "One Device",
           "price": "30,000 Ks",
-          "id": "6_months"
+          "id": "6_months",
+          "bot": true
         }
       ]
     },
@@ -96,13 +97,15 @@
           "name": "Whole Acc 1 Month",
           "desc": "(2-3 Devices)",
           "price": "20,000 Ks",
-          "id": "whole_acc_1_month"
+          "id": "whole_acc_1_month",
+          "bot": true
         },
         {
           "name": "Whole Acc 6 Months",
           "desc": "(2-3 Devices)",
           "price": "90,000 Ks",
-          "id": "whole_acc_6_months"
+          "id": "whole_acc_6_months",
+          "bot": true
         }
       ]
     },
@@ -176,13 +179,15 @@
           "name": "3 Months",
           "desc": "Premium Plan",
           "price": "20,000 Ks",
-          "id": "3_months"
+          "id": "3_months",
+          "bot": true
         },
         {
           "name": "6 Months",
           "desc": "Premium Plan",
           "price": "35,000 Ks",
-          "id": "6_months"
+          "id": "6_months",
+          "bot": true
         }
       ]
     },
@@ -581,13 +586,15 @@
           "name": "3 Months",
           "desc": "One Device",
           "price": "17,000 Ks",
-          "id": "3_months"
+          "id": "3_months",
+          "bot": true
         },
         {
           "name": "6 Months",
           "desc": "One Device",
           "price": "30,000 Ks",
-          "id": "6_months"
+          "id": "6_months",
+          "bot": true
         }
       ]
     },
@@ -787,13 +794,15 @@
           "name": "6 Months",
           "desc": "One Device",
           "price": "20,000 Ks",
-          "id": "6_months"
+          "id": "6_months",
+          "bot": true
         },
         {
           "name": "1 Year",
           "desc": "One Device",
           "price": "35,000 Ks",
-          "id": "1_year"
+          "id": "1_year",
+          "bot": true
         }
       ]
     },
@@ -810,13 +819,15 @@
           "name": "6 Months",
           "desc": "Pro Version(One PC)",
           "price": "20,000 Ks",
-          "id": "6_months"
+          "id": "6_months",
+          "bot": true
         },
         {
           "name": "1 Year",
           "desc": "Pro Version(လစဉ် Key လဲရန် မလို)",
           "price": "35,000 Ks",
-          "id": "1_year"
+          "id": "1_year",
+          "bot": true
         }
       ]
     },
@@ -850,7 +861,8 @@
           "name": "1 Month",
           "desc": "One Device",
           "price": "19,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "name": "6 Months",
