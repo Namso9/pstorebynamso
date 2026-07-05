@@ -80,7 +80,7 @@
           "desc": "One Device",
           "price": "30,000 Ks",
           "id": "6_months",
-          "bot": true
+          "stock": false
         }
       ]
     },
