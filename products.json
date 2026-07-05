@@ -184,16 +184,14 @@
           "desc": "Premium Plan",
           "price": "20,000 Ks",
           "id": "3_months",
-          "bot": true,
-          "stock": false
+          "bot": true
         },
         {
           "name": "6 Months",
           "desc": "Premium Plan",
           "price": "35,000 Ks",
           "id": "6_months",
-          "bot": true,
-          "stock": false
+          "bot": true
         }
       ]
     },
