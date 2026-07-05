@@ -123,7 +123,8 @@
           "name": "One Year",
           "desc": "Your Personal Mail",
           "price": "15,000 Ks",
-          "id": "one_year"
+          "id": "one_year",
+          "bot": true
         }
       ]
     },
@@ -140,7 +141,8 @@
           "name": "One Year One Device",
           "desc": "Official price one month= 70$",
           "price": "300,000 Ks",
-          "id": "one_year_one_device"
+          "id": "one_year_one_device",
+          "bot": true
         }
       ]
     },
@@ -157,13 +159,15 @@
           "name": "6 Months",
           "desc": "Premium Plan",
           "price": "45,000 Ks",
-          "id": "6_months"
+          "id": "6_months",
+          "bot": true
         },
         {
           "name": "1 Year",
           "desc": "Premium Plan",
           "price": "90,000 Ks",
-          "id": "1_year"
+          "id": "1_year",
+          "bot": true
         }
       ]
     },
@@ -195,35 +199,6 @@
       ]
     },
     {
-      "id": "youtube",
-      "category": "music-apps",
-      "name": "YouTube",
-      "subtitle": "Premium No Ads",
-      "image": "images/youtube.svg",
-      "imageClass": "app-info",
-      "modalTitle": "YouTube Premium",
-      "plans": [
-        {
-          "name": "1 Month",
-          "desc": "No Ads (Monthly Change)",
-          "price": "10,000 Ks",
-          "id": "1_month"
-        },
-        {
-          "name": "3 Month",
-          "desc": "No Ads (Own Mail Invite)",
-          "price": "55,000 Ks",
-          "id": "3_month"
-        },
-        {
-          "name": "1 Year",
-          "desc": "No Ads (Own Mail Invite)",
-          "price": "150,000 Ks",
-          "id": "1_year"
-        }
-      ]
-    },
-    {
       "id": "soundcloud",
       "category": "music-apps",
       "name": "SoundCloud",
@@ -236,7 +211,8 @@
           "name": "1 Month",
           "desc": "Offline + No Ads",
           "price": "8,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         }
       ]
     },
@@ -253,13 +229,15 @@
           "name": "1 Month",
           "desc": "Starter Plan",
           "price": "8,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "name": "2 Months",
           "desc": "Most Popular",
           "price": "15,000 Ks",
-          "id": "2_months"
+          "id": "2_months",
+          "bot": true
         }
       ]
     },
@@ -276,25 +254,29 @@
           "name": "1 Month",
           "desc": "Monthly",
           "price": "29,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "name": "4 Months",
           "desc": "3 Months + 30 Days Promo",
           "price": "87,000 Ks",
-          "id": "4_months"
+          "id": "4_months",
+          "bot": true
         },
         {
           "name": "8 Months",
           "desc": "6 Months + 60 Days Promo",
           "price": "174,000 Ks",
-          "id": "8_months"
+          "id": "8_months",
+          "bot": true
         },
         {
           "name": "16 Months",
           "desc": "1 Year + 120 Days Promo",
           "price": "348,000 Ks",
-          "id": "16_months"
+          "id": "16_months",
+          "bot": true
         }
       ]
     },
@@ -311,19 +293,22 @@
           "name": "3 Months",
           "desc": "Gift Link",
           "price": "65,000 Ks",
-          "id": "3_months"
+          "id": "3_months",
+          "bot": true
         },
         {
           "name": "6 Months",
           "desc": "Gift Link",
           "price": "90,000 Ks",
-          "id": "6_months"
+          "id": "6_months",
+          "bot": true
         },
         {
           "name": "1 Year",
           "desc": "Gift Link",
           "price": "155,000 Ks",
-          "id": "1_year"
+          "id": "1_year",
+          "bot": true
         }
       ]
     },
@@ -343,19 +328,22 @@
           "name": "1 Month",
           "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
           "price": "28,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "name": "2 Months",
           "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
           "price": "52,000 Ks",
-          "id": "2_months"
+          "id": "2_months",
+          "bot": true
         },
         {
           "name": "3 Months",
           "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
           "price": "83,000 Ks",
-          "id": "3_months"
+          "id": "3_months",
+          "bot": true
         },
         {
           "header": "🔴 Basic Plan (Household code တက်နိုင်ပါတယ်)"
@@ -364,7 +352,8 @@
           "name": "1 Month",
           "desc": "1 Profile (1 Device)",
           "price": "23,000 Ks",
-          "id": "1_month_2"
+          "id": "1_month_2",
+          "bot": true
         }
       ]
     },
@@ -384,19 +373,22 @@
           "name": "1 Month",
           "desc": "1 Profile (No TV)",
           "price": "26,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "name": "2 Months",
           "desc": "1 Profile (No TV)",
           "price": "48,000 Ks",
-          "id": "2_months"
+          "id": "2_months",
+          "bot": true
         },
         {
           "name": "3 Months",
           "desc": "1 Profile (No TV)",
           "price": "77,000 Ks",
-          "id": "3_months"
+          "id": "3_months",
+          "bot": true
         },
         {
           "header": "🔴 Basic Plan (Can't Renew, Monthly Change)"
@@ -405,7 +397,8 @@
           "name": "1 Month",
           "desc": "1 Profile (No TV)",
           "price": "23,000 Ks",
-          "id": "1_month_2"
+          "id": "1_month_2",
+          "bot": true
         }
       ]
     },
@@ -422,19 +415,22 @@
           "name": "1 Month our mail",
           "desc": "No Ads (Monthly Change)",
           "price": "10,000 Ks",
-          "id": "1_month_our_mail"
+          "id": "1_month_our_mail",
+          "bot": true
         },
         {
           "name": "3 Month cus mail",
           "desc": "No Ads (Own Mail Invite)",
           "price": "55,000 Ks",
-          "id": "3_month_cus_mail"
+          "id": "3_month_cus_mail",
+          "bot": true
         },
         {
           "name": "1 Year cus mail",
           "desc": "No Ads (Own Mail Invite)",
           "price": "150,000 Ks",
-          "id": "1_year_cus_mail"
+          "id": "1_year_cus_mail",
+          "bot": true
         }
       ]
     },
@@ -452,6 +448,7 @@
           "desc": "US VPN Required",
           "price": "18,000 Ks",
           "id": "1_month",
+          "bot": true,
           "stock": false
         }
       ]
@@ -469,7 +466,8 @@
           "name": "1 Month",
           "desc": "No VPN Needed",
           "price": "18,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         }
       ]
     },
@@ -489,7 +487,8 @@
           "name": "1 Month",
           "desc": "28-30 Days",
           "price": "25,800 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "header": "🔷 For Phone/Laptop"
@@ -498,7 +497,8 @@
           "name": "1 Month",
           "desc": "28-30 Days",
           "price": "24,800 Ks",
-          "id": "1_month_2"
+          "id": "1_month_2",
+          "bot": true
         }
       ]
     },
@@ -515,7 +515,8 @@
           "name": "3 Month",
           "desc": "US VPN Required",
           "price": "25,000 Ks",
-          "id": "3_month"
+          "id": "3_month",
+          "bot": true
         }
       ]
     },
@@ -535,13 +536,15 @@
           "name": "Windows 10 Pro",
           "desc": "Lifetime Key",
           "price": "25,000 Ks",
-          "id": "windows_10_pro"
+          "id": "windows_10_pro",
+          "bot": true
         },
         {
           "name": "Windows 11 Pro",
           "desc": "Lifetime Key",
           "price": "25,000 Ks",
-          "id": "windows_11_pro"
+          "id": "windows_11_pro",
+          "bot": true
         },
         {
           "header": "🔷 Windows Home Versions"
@@ -550,13 +553,15 @@
           "name": "Windows 10 Home",
           "desc": "Lifetime Key",
           "price": "30,000 Ks",
-          "id": "windows_10_home"
+          "id": "windows_10_home",
+          "bot": true
         },
         {
           "name": "Windows 11 Home",
           "desc": "Lifetime Key",
           "price": "30,000 Ks",
-          "id": "windows_11_home"
+          "id": "windows_11_home",
+          "bot": true
         }
       ]
     },
@@ -573,7 +578,8 @@
           "name": "One Year",
           "desc": "Random Name",
           "price": "29,000 Ks",
-          "id": "one_year"
+          "id": "one_year",
+          "bot": true
         }
       ]
     },
@@ -615,7 +621,8 @@
           "name": "One Year",
           "desc": "With your own mail",
           "price": "40,000 Ks",
-          "id": "one_year"
+          "id": "one_year",
+          "bot": true
         }
       ]
     },
@@ -632,13 +639,15 @@
           "name": "Max 3 months warranty",
           "desc": "Crack Acc",
           "price": "20,000 Ks",
-          "id": "max_3_months_warrant"
+          "id": "max_3_months_warrant",
+          "bot": true
         },
         {
           "name": "Super 3 months warranty",
           "desc": "Crack Acc",
           "price": "14,000 Ks",
-          "id": "super_3_months_warra"
+          "id": "super_3_months_warra",
+          "bot": true
         }
       ]
     },
@@ -655,13 +664,15 @@
           "name": "30 days warranty",
           "desc": "Our Mail (Private Acc)",
           "price": "65,000 Ks",
-          "id": "30_days_warranty"
+          "id": "30_days_warranty",
+          "bot": true
         },
         {
           "name": "15 days warranty",
           "desc": "Our Mail (Private Acc)",
           "price": "45,000 Ks",
-          "id": "15_days_warranty"
+          "id": "15_days_warranty",
+          "bot": true
         }
       ]
     },
@@ -678,13 +689,15 @@
           "name": "12 Months",
           "desc": "need your gmail and pw",
           "price": "35,000 Ks",
-          "id": "12_months"
+          "id": "12_months",
+          "bot": true
         },
         {
           "name": "18 Months",
           "desc": "need your gmail and pw",
           "price": "40,000 Ks",
-          "id": "18_months"
+          "id": "18_months",
+          "bot": true
         }
       ]
     },
@@ -701,7 +714,8 @@
           "name": "1 Year 5000 credits",
           "desc": "AI Agent",
           "price": "390,000 Ks",
-          "id": "1_year_5000_credits"
+          "id": "1_year_5000_credits",
+          "bot": true
         }
       ]
     },
@@ -752,13 +766,15 @@
           "name": "1 Month",
           "desc": "Starter Plan (Official Price 20$)",
           "price": "60,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "name": "1 Month",
           "desc": "Plus Plan (Official Price 50$)",
           "price": "100,000 Ks",
-          "id": "1_month_2"
+          "id": "1_month_2",
+          "bot": true
         }
       ]
     },
@@ -775,13 +791,15 @@
           "name": "1 Month",
           "desc": "Pro Plan (Official Price 20$)",
           "price": "35,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "name": "1 Year",
           "desc": "Pro Plan (Official Price 200$)",
           "price": "320,000 Ks",
-          "id": "1_year"
+          "id": "1_year",
+          "bot": true
         }
       ]
     },
@@ -836,23 +854,6 @@
       ]
     },
     {
-      "id": "express_whole",
-      "category": "premium-vpn-apps",
-      "name": "Express VPN (Phone + PC)",
-      "subtitle": "Whole Acc (8-14 Devices)",
-      "image": "images/express.svg",
-      "imageClass": "expressvpn-logo",
-      "modalTitle": "Express VPN (Phone + PC)",
-      "plans": [
-        {
-          "name": "1 Month",
-          "desc": "Whole Acc (8-14 Devices)",
-          "price": "20,000 Ks",
-          "id": "1_month"
-        }
-      ]
-    },
-    {
       "id": "jumpjump",
       "category": "premium-vpn-apps",
       "name": "Jump Jump VPN",
@@ -872,13 +873,15 @@
           "name": "6 Months",
           "desc": "2 Devices (Whole Acc)",
           "price": "150,000 Ks",
-          "id": "6_months"
+          "id": "6_months",
+          "bot": true
         },
         {
           "name": "1 Year",
           "desc": "2 Devices (Whole Acc)",
           "price": "200,000 Ks",
-          "id": "1_year"
+          "id": "1_year",
+          "bot": true
         }
       ]
     },
@@ -895,7 +898,8 @@
           "name": "1 Month",
           "desc": "Platinum Plan",
           "price": "52,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "bot": true
         },
         {
           "name": "3 Months",
@@ -908,7 +912,8 @@
           "name": "1 Year",
           "desc": "Platinum Plan",
           "price": "350,000 Ks",
-          "id": "1_year"
+          "id": "1_year",
+          "bot": true
         }
       ]
     },
@@ -950,7 +955,8 @@
           "name": "3 Month",
           "desc": "One Device",
           "price": "15,000 Ks",
-          "id": "3_month"
+          "id": "3_month",
+          "bot": true
         }
       ]
     },
@@ -967,7 +973,8 @@
           "name": "3 Months",
           "desc": "One Device",
           "price": "20,000 Ks",
-          "id": "3_months"
+          "id": "3_months",
+          "bot": true
         }
       ]
     }
