@@ -451,7 +451,8 @@
           "name": "1 Month",
           "desc": "US VPN Required",
           "price": "18,000 Ks",
-          "id": "1_month"
+          "id": "1_month",
+          "stock": false
         }
       ]
     },
