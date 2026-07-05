@@ -904,8 +904,8 @@
           "name": "3 Months",
           "desc": "Platinum Plan",
           "price": "120,000 Ks",
-          "stock": false,
-          "id": "3_months"
+          "id": "3_months",
+          "bot": true
         },
         {
           "name": "1 Year",
