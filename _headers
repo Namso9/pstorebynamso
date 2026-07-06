@@ -13,9 +13,19 @@
 /style.css
   Cache-Control: public, max-age=86400
 
-# /images/* is cached immutably for 30 days — GREAT for fingerprinted assets,
-# but it means a replaced-in-place image (same filename) shows stale in browsers
-# for up to 30 days. When you UPDATE a mutable image (payment QR, logo), give it
-# a NEW filename (e.g. kpay-qr.v2.webp -> .v3.webp) and update its references.
+# /images/* is cached immutably for 30 days — great for product/review art that
+# never changes under the same name.
 /images/*
   Cache-Control: public, max-age=2592000, immutable
+
+# Payment QR images CAN be replaced in place and must NEVER serve stale (money
+# path). These override the immutable rule above (listed after it + more
+# specific, so they win under either CF precedence rule). Browsers always
+# revalidate -> a swapped QR is picked up on the next load, no rename needed.
+# Trailing '*' also covers versioned names (kpay-qr.v2.webp, kpay-qr.v3.webp…).
+/images/kpay-qr*
+  Cache-Control: public, max-age=0, must-revalidate
+/images/wavepay-qr*
+  Cache-Control: public, max-age=0, must-revalidate
+/images/ayapay-qr*
+  Cache-Control: public, max-age=0, must-revalidate
