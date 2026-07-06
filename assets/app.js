@@ -33,7 +33,7 @@
       '<div class="site-header-actions">' +
       '<a class="hdr-btn" href="index.html"><i class="fa-solid fa-house"></i><span> Home</span></a>' +
       '<button class="search-btn" type="button" onclick="openSearchModal()"><i class="fas fa-search"></i><span> Search</span></button>' +
-      '<a class="hdr-btn hdr-btn--bot" href="https://t.me/PSNamso_bot" target="_blank" rel="noopener" rel="noopener"><i class="fa-brands fa-telegram"></i><span> Bot</span></a>' +
+      '<a class="hdr-btn hdr-btn--bot" href="https://t.me/PSNamso_bot" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i><span> Bot</span></a>' +
       '</div>';
     document.body.insertBefore(hdr, document.body.firstChild);
   }
@@ -135,8 +135,8 @@
         '<div class="plan-info"><span class="plan-name">' + esc(plan.name) + '</span>' +
         '<span class="plan-desc">' + esc(plan.desc) + '</span></div>' +
         '<div class="plan-contact-row">' +
-        '<a class="plan-contact-btn plan-contact-btn--tg" href="' + esc(s.telegramChannel || '#') + '" target="_blank" rel="noopener" rel="noopener"><i class="fa-brands fa-telegram"></i> Ask price</a>' +
-        '<a class="plan-contact-btn plan-contact-btn--fb" href="' + esc(s.facebookPage || '#') + '" target="_blank" rel="noopener" rel="noopener"><i class="fa-brands fa-facebook"></i></a>' +
+        '<a class="plan-contact-btn plan-contact-btn--tg" href="' + esc(s.telegramChannel || '#') + '" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Ask price</a>' +
+        '<a class="plan-contact-btn plan-contact-btn--fb" href="' + esc(s.facebookPage || '#') + '" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i></a>' +
         '</div></div>';
     }
     // Hybrid checkout: clicking a plan opens the checkout-method chooser.
@@ -270,28 +270,28 @@
     });
   }
 
-  /* ---------- Homepage: category grid + review preview ---------- */
-  function renderCategoryGrid() {
-    var grid = document.getElementById('category-grid');
-    if (!grid) return;
+  /* ---------- Homepage: enhance the static category cards with live product
+     counts. Progressive enhancement — the image cards in index.html are the
+     no-JS fallback; here we only add a "N products" badge once data loads, so
+     a JS/products.json failure leaves the static cards fully intact. ---------- */
+  function enhanceHomeCards() {
+    var cards = document.querySelectorAll('.product-container .card-link');
+    if (!cards.length) return;
     loadData().then(function (d) {
-      if (!d) return;
+      if (!d) return; // data failed -> static cards stay as-is (fallback)
       var counts = {};
       d.products.forEach(function (p) { counts[p.category] = (counts[p.category] || 0) + 1; });
-      var html = d.categories.map(function (c) {
-        return '<a href="' + esc(c.page) + '" class="category-card">' +
-          '<div class="cat-icon"><i class="fa-solid ' + esc(c.icon) + '"></i></div>' +
-          '<h3>' + esc(c.title) + '</h3>' +
-          '<span class="cat-count">' + (counts[c.slug] || 0) + ' products</span>' +
-          '</a>';
-      }).join('');
-      html += '<a href="reviews.html" class="category-card category-card--alt">' +
-        '<div class="cat-icon"><i class="fa-solid fa-star"></i></div>' +
-        '<h3>Customer Reviews</h3><span class="cat-count">30+ reviews</span></a>';
-      html += '<a href="expressvpn-location-guide.html" class="category-card category-card--alt">' +
-        '<div class="cat-icon"><i class="fa-solid fa-location-dot"></i></div>' +
-        '<h3>ExpressVPN Location Guide</h3><span class="cat-count">Guide</span></a>';
-      grid.innerHTML = html;
+      cards.forEach(function (a) {
+        var slug = (a.getAttribute('href') || '').replace(/\.html.*$/, '');
+        var n = counts[slug];
+        if (!n) return; // guide / unknown card -> no count badge
+        var card = a.querySelector('.product-card');
+        if (!card || card.querySelector('.cat-count')) return;
+        var badge = document.createElement('span');
+        badge.className = 'cat-count';
+        badge.textContent = n + ' products';
+        card.appendChild(badge);
+      });
     });
   }
 
@@ -336,7 +336,7 @@
     injectSearchModal();
     injectPlanModal();
     renderAppList();
-    renderCategoryGrid();
+    enhanceHomeCards();
     renderOrderSummary();
     bindFAQ();
   }

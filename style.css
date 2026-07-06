@@ -67,6 +67,19 @@ body {
     background: rgba(255, 255, 255, 0.05);
 }
 
+/* Live product-count badge, added by app.js enhanceHomeCards() (progressive
+   enhancement — absent when JS/products.json is unavailable). */
+.product-card .cat-count {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(0, 210, 255, 0.12);
+    border: 1px solid rgba(0, 210, 255, 0.25);
+    padding: 3px 12px;
+    border-radius: 12px;
+}
+
 /* ၄။ Guide & Social Box Styling (Index နှင့် Payment နှစ်ခုလုံးအတွက်) */
 .guide-container {
     max-width: 900px;
