@@ -1,0 +1,4 @@
+# Retired payment-vpn page — consolidated into the single payment.html.
+# Keep old URLs working (301) so any bookmarked/stray link still lands there.
+/payment-vpn        /payment  301
+/payment-vpn.html   /payment  301
