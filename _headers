@@ -13,5 +13,9 @@
 /style.css
   Cache-Control: public, max-age=86400
 
+# /images/* is cached immutably for 30 days — GREAT for fingerprinted assets,
+# but it means a replaced-in-place image (same filename) shows stale in browsers
+# for up to 30 days. When you UPDATE a mutable image (payment QR, logo), give it
+# a NEW filename (e.g. kpay-qr.v2.webp -> .v3.webp) and update its references.
 /images/*
   Cache-Control: public, max-age=2592000, immutable
