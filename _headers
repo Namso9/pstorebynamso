@@ -22,7 +22,9 @@
 # path). These override the immutable rule above (listed after it + more
 # specific, so they win under either CF precedence rule). Browsers always
 # revalidate -> a swapped QR is picked up on the next load, no rename needed.
-# Trailing '*' also covers versioned names (kpay-qr.v2.webp, kpay-qr.v3.webp…).
+# (Stable filenames on purpose: fingerprint-renaming broke when a deploy shipped
+# the HTML but not the renamed binary. Trailing '*' still covers any future
+# versioned name if you ever do fingerprint one.)
 /images/kpay-qr*
   Cache-Control: public, max-age=0, must-revalidate
 /images/wavepay-qr*
