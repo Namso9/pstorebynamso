@@ -1,7 +1,7 @@
 {
   "settings": {
     "botUsername": "PSNamso_bot",
-    "deepLinks": false,
+    "deepLinks": true,
     "deepLinkPrefix": "buy",
     "telegramChannel": "https://t.me/Premiumstorezz",
     "facebookPage": "https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr",

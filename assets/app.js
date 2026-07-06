@@ -180,12 +180,15 @@
         '<span class="plan-price">' + esc(plan.price) + '</span></div>';
 
       // Telegram bot option — only when a bot mapping exists for THIS plan
-      // (mapping flag = plan.bot === true, set from products.json by the panel).
+      // (mapping flag = plan.bot === true, set from products.json by the panel)
+      // AND the global settings.deepLinks master-switch is not turned off.
+      // deepLinks !== false => on when true or absent (backward compatible);
+      // deepLinks:false hides ALL bot deep-link buttons site-wide (kill-switch).
       // Deep-link format MUST be 'buy-<product>-<plan>' (hyphen, 3 parts) —
       // that is exactly what the live bot's /start handler parses
       // (^/start buy-...  ->  split('-',2) -> web_catalog.lookup(pid, plid)).
       var botHtml = '';
-      if (plan.bot === true && s.botUsername) {
+      if (s.deepLinks !== false && plan.bot === true && s.botUsername) {
         var start = (s.deepLinkPrefix || 'buy') + '-' + product.id + '-' + plan.id;
         var tgHref = 'https://t.me/' + s.botUsername + '?start=' + start;
         botHtml =
