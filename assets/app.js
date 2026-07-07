@@ -60,7 +60,7 @@
       if (e.target === this) closeSearchModal();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { closeSearchModal(); closePlanModal(); }
+      if (e.key === 'Escape') { closeSearchModal(); closePlanModal(); closeCheckout(); }
     });
   }
 
@@ -95,7 +95,7 @@
       d.categories.forEach(function (c) { catBySlug[c.slug] = c; });
       var hits = d.products.filter(function (p) {
         var cat = catBySlug[p.category] || {};
-        return (p.name + ' ' + p.subtitle + ' ' + (cat.title || '')).toLowerCase().indexOf(term) !== -1;
+        return (p.name + ' ' + (p.subtitle || '') + ' ' + (cat.title || '')).toLowerCase().indexOf(term) !== -1;
       }).slice(0, 12);
       if (!hits.length) { res.innerHTML = '<div class="no-results">No products found for "' + esc(inp.value) + '"</div>'; return; }
       res.innerHTML = hits.map(function (p) {

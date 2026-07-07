@@ -1,3 +1,13 @@
+# Security headers for every response. Deliberately NO Content-Security-Policy
+# yet: the pages rely on inline <script>/onclick handlers, so a strict CSP
+# would break them and a loose one adds little — revisit after moving JS
+# into assets/.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
