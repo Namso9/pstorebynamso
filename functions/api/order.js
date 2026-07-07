@@ -10,7 +10,29 @@
 
 const MAX_FILE = 8 * 1024 * 1024; // 8MB
 
-export async function onRequestPost({ request, env }) {
+/**
+ * Optional panel mirror (tracking): set BOTH env vars to enable —
+ *   PANEL_INGEST_URL   = https://admin.pstorebynamso.com/internal/web-order
+ *   PANEL_INGEST_TOKEN = (WEB_ORDER_TOKEN from the panel .env)
+ * plus a Cloudflare Access bypass/service-token policy for that exact path.
+ * Fire-and-forget: a panel hiccup never blocks the customer's order.
+ * Password/screenshot are NOT mirrored — Telegram keeps the only copy.
+ */
+function mirrorToPanel(env, waitUntil, data) {
+  if (!env.PANEL_INGEST_URL || !env.PANEL_INGEST_TOKEN) return;
+  waitUntil(
+    fetch(env.PANEL_INGEST_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Ingest-Token': env.PANEL_INGEST_TOKEN,
+      },
+      body: JSON.stringify(data),
+    }).catch(() => {})
+  );
+}
+
+export async function onRequestPost({ request, env, waitUntil }) {
   try {
     if (!env.BOT_TOKEN || !env.ADMIN_CHAT_ID) {
       return json({ ok: false, error: 'Server not configured' }, 500);
@@ -71,6 +93,14 @@ export async function onRequestPost({ request, env }) {
       console.error('Telegram error:', JSON.stringify(data));
       return json({ ok: false, error: 'Delivery failed' }, 502);
     }
+
+    mirrorToPanel(env, waitUntil, {
+      order_ref: orderId,
+      name, product, payment, contact,
+      customer_mail: customerMail,
+      note,
+      has_pw: Boolean(customerPw),
+    });
 
     return json({
       ok: true,
