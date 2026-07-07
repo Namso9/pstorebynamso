@@ -406,15 +406,6 @@
     </div>
 
     <div class="proof-grid" id="proofGrid">
-      <script>
-        for (let i = 1; i <= 30; i++) {
-          document.write(`
-            <div class="proof-item">
-              <img loading="lazy" decoding="async" src="images/review${i}.webp" alt="Customer Review ${i}">
-            </div>
-          `);
-        }
-      </script>
     </div>
   </section>
 
@@ -424,39 +415,6 @@
     <img id="lightboxImg" src="" alt="Zoomed Review">
   </div>
 
-  <script>
-    const grid = document.getElementById("proofGrid");
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightboxImg");
-    const closeBtn = document.getElementById("closeLightbox");
-
-    grid.addEventListener("click", (e) => {
-      const img = e.target.closest("img");
-      if (!img) return;
-
-      lightboxImg.src = img.src;
-      lightbox.classList.add("open");
-      lightbox.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-    });
-
-    function closeLightbox() {
-      lightbox.classList.remove("open");
-      lightbox.setAttribute("aria-hidden", "true");
-      lightboxImg.src = "";
-      document.body.style.overflow = "";
-    }
-
-    closeBtn.addEventListener("click", closeLightbox);
-
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
-    });
-  </script>
 
   <!-- =========================
        OFFICIAL CHANNELS & TERMS
@@ -501,7 +459,7 @@
     </div>
 
    <div class="back-home-wrap" style="display: flex; gap: 12px; justify-content: center;">
-      <button onclick="window.history.back()" class="back-home-btn" style="border: 2px solid rgba(255,255,255,0.14); cursor: pointer; font-family: inherit;">
+      <button data-action="back" class="back-home-btn" style="border: 2px solid rgba(255,255,255,0.14); cursor: pointer; font-family: inherit;">
         <i class="fa-solid fa-arrow-left"></i>
         Back
       </button>
@@ -513,6 +471,7 @@
     </div>
   </div>
 
-  <script src="assets/app.js" defer></script>
+  <script src="assets/reviews.js" defer></script>
+  <script src="assets/app.js?v=2" defer></script>
 </body>
 </html>

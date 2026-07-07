@@ -1,12 +1,14 @@
-# Security headers for every response. Deliberately NO Content-Security-Policy
-# yet: the pages rely on inline <script>/onclick handlers, so a strict CSP
-# would break them and a loose one adds little — revisit after moving JS
-# into assets/.
+# Security headers for every response. CSP is enforceable since 2026-07-07:
+# ALL JS lives in assets/*.js (no inline <script>, no onclick attributes —
+# app.js routes [data-action] clicks). Inline <style> blocks and style=""
+# attributes are still used, hence 'unsafe-inline' for styles only.
+# External allowances: Font Awesome CSS + webfonts from cdnjs.
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate

@@ -574,7 +574,7 @@ a[href^="tel"]{
 
       <!-- Back button -->
     <div class="guide-nav" style="margin-top: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
-        <button onclick="window.history.back()" class="nav-btn" style="border: none; cursor: pointer; font-family: inherit;">
+        <button data-action="back" class="nav-btn" style="border: none; cursor: pointer; font-family: inherit;">
           <i class="fa-solid fa-arrow-left"></i> Back
         </button>
         <a href="index.html" class="nav-btn">
@@ -589,70 +589,8 @@ a[href^="tel"]{
     <p>Premium Store Since 2020</p>
   </footer>
 
-  <script>
-    (function () {
-      const selectEl = document.getElementById("platform");
-      const buttons = Array.from(document.querySelectorAll(".platform-btn"));
+  <script src="assets/payment.js" defer></script>
 
-      const panels = {
-        kpay: document.getElementById("panel-kpay"),
-        wave: document.getElementById("panel-wave"),
-        aya: document.getElementById("panel-aya"),
-      };
-
-      const sendProof = document.getElementById("send-proof");
-      const selectedPlatformText = document.getElementById("selectedPlatformText");
-      const proofOrderForm = document.getElementById("proof-order-form");
-      if (proofOrderForm && location.search) proofOrderForm.href = "order.html" + location.search;
-
-      const platformLabels = {
-        kpay: "KBZPay",
-        wave: "WavePay",
-        aya: "AyaPay"
-      };
-
-      function hideAllPanels() {
-        Object.values(panels).forEach(p => p.classList.remove("show"));
-      }
-
-      function setActiveButton(platform) {
-        buttons.forEach(btn => {
-          btn.classList.toggle("active", btn.dataset.platform === platform);
-        });
-      }
-
-      function showPlatform(platform) {
-        if (!platform || !panels[platform]) return;
-
-        hideAllPanels();
-        panels[platform].classList.add("show");
-
-        // sync UI
-        setActiveButton(platform);
-        if (selectEl.value !== platform) selectEl.value = platform;
-
-        // ✅ Show screenshot send box only after platform selected
-        selectedPlatformText.textContent = platformLabels[platform] || "Platform";
-        sendProof.classList.add("show");
-
-        // nice UX scroll
-        panels[platform].scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-
-      // Select change
-      selectEl.addEventListener("change", (e) => {
-        showPlatform(e.target.value);
-      });
-
-      // Buttons click
-      buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          showPlatform(btn.dataset.platform);
-        });
-      });
-    })();
-  </script>
-
-  <script src="assets/app.js" defer></script>
+  <script src="assets/app.js?v=2" defer></script>
 </body>
 </html>

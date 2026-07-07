@@ -1,6 +1,8 @@
 /* ==========================================================
    PREMIUM STORE — shared app engine
    Data source: /products.json  (single source of truth)
+   CSP-safe: NO inline handlers — one delegated click listener
+   routes [data-action] elements (see boot()).
    ========================================================== */
 (function () {
   'use strict';
@@ -32,7 +34,7 @@
       '<a class="site-brand" href="index.html"><i class="fa-solid fa-gem"></i> PREMIUM STORE</a>' +
       '<div class="site-header-actions">' +
       '<a class="hdr-btn" href="index.html"><i class="fa-solid fa-house"></i><span> Home</span></a>' +
-      '<button class="search-btn" type="button" onclick="openSearchModal()"><i class="fas fa-search"></i><span> Search</span></button>' +
+      '<button class="search-btn" type="button" data-action="search-open"><i class="fas fa-search"></i><span> Search</span></button>' +
       '<a class="hdr-btn hdr-btn--bot" href="https://t.me/PSNamso_bot" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i><span> Bot</span></a>' +
       '</div>';
     document.body.insertBefore(hdr, document.body.firstChild);
@@ -47,15 +49,16 @@
       '<div class="search-modal-content">' +
       '<div class="search-modal-header">' +
       '<h2 class="search-modal-title">Search Products</h2>' +
-      '<button class="close-search" type="button" onclick="closeSearchModal()"><i class="fas fa-times"></i></button>' +
+      '<button class="close-search" type="button" data-action="search-close"><i class="fas fa-times"></i></button>' +
       '</div>' +
       '<div class="search-input-wrapper">' +
-      '<input type="text" class="search-input" id="searchInput" placeholder="Search products... (e.g., Netflix, ChatGPT, VPN)" oninput="performSearch()" />' +
+      '<input type="text" class="search-input" id="searchInput" placeholder="Search products... (e.g., Netflix, ChatGPT, VPN)" />' +
       '</div>' +
       '<div class="search-results" id="searchResults"><div class="no-results">Type to search for products</div></div>' +
       '</div></div>';
     document.body.appendChild(wrap.firstChild);
 
+    document.getElementById('searchInput').addEventListener('input', performSearch);
     document.getElementById('searchModal').addEventListener('click', function (e) {
       if (e.target === this) closeSearchModal();
     });
@@ -64,16 +67,16 @@
     });
   }
 
-  window.openSearchModal = function () {
+  function openSearchModal() {
     var m = document.getElementById('searchModal');
     if (!m) return;
     m.classList.add('active');
     var inp = document.getElementById('searchInput');
     if (inp) inp.focus();
     loadData();
-  };
+  }
 
-  window.closeSearchModal = function () {
+  function closeSearchModal() {
     var m = document.getElementById('searchModal');
     if (!m) return;
     m.classList.remove('active');
@@ -81,9 +84,9 @@
     if (inp) inp.value = '';
     var res = document.getElementById('searchResults');
     if (res) res.innerHTML = '<div class="no-results">Type to search for products</div>';
-  };
+  }
 
-  window.performSearch = function () {
+  function performSearch() {
     var inp = document.getElementById('searchInput');
     var res = document.getElementById('searchResults');
     if (!inp || !res) return;
@@ -100,22 +103,22 @@
       if (!hits.length) { res.innerHTML = '<div class="no-results">No products found for "' + esc(inp.value) + '"</div>'; return; }
       res.innerHTML = hits.map(function (p) {
         var cat = catBySlug[p.category] || {};
-        return '<a href="' + esc(p.category) + '.html#app-' + esc(p.id) + '" class="search-result-item" onclick="closeSearchModal()">' +
+        return '<a href="' + esc(p.category) + '.html#app-' + esc(p.id) + '" class="search-result-item" data-action="search-close">' +
           '<div class="search-result-icon"><i class="fas ' + esc(cat.icon || 'fa-box') + '"></i></div>' +
           '<div class="search-result-name">' + esc(p.name) + '</div>' +
           '</a>';
       }).join('');
     });
-  };
+  }
 
   /* ---------- Plan modal ---------- */
   function injectPlanModal() {
     if (document.getElementById('planModal')) return;
     var wrap = document.createElement('div');
     wrap.innerHTML =
-      '<div id="planModal" class="modal-overlay" onclick="closeModalOutside(event)">' +
+      '<div id="planModal" class="modal-overlay" data-action="overlay-plan">' +
       '<div class="modal-content">' +
-      '<span class="close-modal" onclick="closePlanModal()">&times;</span>' +
+      '<span class="close-modal" data-action="plan-close">&times;</span>' +
       '<h2 class="modal-title" id="modalTitle">Choose Plan</h2>' +
       '<div id="modalPlans"></div>' +
       '</div></div>';
@@ -140,10 +143,9 @@
         '</div></div>';
     }
     // Hybrid checkout: clicking a plan opens the checkout-method chooser.
-    // We stash product/plan ids on the element so no inline-quote escaping breaks.
-    return '<button type="button" class="plan-btn" ' +
-      'data-pid="' + esc(product.id) + '" data-plid="' + esc(plan.id) + '" ' +
-      'onclick="openCheckout(this.getAttribute(\'data-pid\'), this.getAttribute(\'data-plid\'))">' +
+    // product/plan ids ride on data attrs; the delegated listener routes it.
+    return '<button type="button" class="plan-btn" data-action="checkout-open" ' +
+      'data-pid="' + esc(product.id) + '" data-plid="' + esc(plan.id) + '">' +
       '<div class="plan-info"><span class="plan-name">' + esc(plan.name) + '</span>' +
       '<span class="plan-desc">' + esc(plan.desc) + '</span></div>' +
       '<span class="plan-price">' + esc(plan.price) + '</span></button>';
@@ -154,16 +156,16 @@
     if (document.getElementById('checkoutModal')) return;
     var wrap = document.createElement('div');
     wrap.innerHTML =
-      '<div id="checkoutModal" class="modal-overlay" onclick="closeCheckoutOutside(event)">' +
+      '<div id="checkoutModal" class="modal-overlay" data-action="overlay-checkout">' +
       '<div class="modal-content">' +
-      '<span class="close-modal" onclick="closeCheckout()">&times;</span>' +
+      '<span class="close-modal" data-action="checkout-close">&times;</span>' +
       '<h2 class="modal-title">ဝယ်ယူနည်း ရွေးပါ</h2>' +
       '<div id="checkoutBody"></div>' +
       '</div></div>';
     document.body.appendChild(wrap.firstChild);
   }
 
-  window.openCheckout = function (productId, planId) {
+  function openCheckout(productId, planId) {
     loadData().then(function (d) {
       if (!d) return;
       var s = d.settings || {};
@@ -211,17 +213,14 @@
       body.innerHTML = summary + botHtml + webHtml + note;
       document.getElementById('checkoutModal').style.display = 'flex';
     });
-  };
+  }
 
-  window.closeCheckout = function () {
+  function closeCheckout() {
     var m = document.getElementById('checkoutModal');
     if (m) m.style.display = 'none';
-  };
-  window.closeCheckoutOutside = function (e) {
-    if (e.target === document.getElementById('checkoutModal')) closeCheckout();
-  };
+  }
 
-  window.openModal = function (productId) {
+  function openModal(productId) {
     loadData().then(function (d) {
       if (!d) return;
       var product = d.products.find(function (p) { return p.id === productId; });
@@ -234,16 +233,32 @@
       }).join('');
       modal.style.display = 'flex';
     });
-  };
+  }
 
-  window.closePlanModal = function () {
+  function closePlanModal() {
     var m = document.getElementById('planModal');
     if (m) m.style.display = 'none';
-  };
-  window.closeModal = window.closePlanModal;
-  window.closeModalOutside = function (e) {
-    if (e.target === document.getElementById('planModal')) closePlanModal();
-  };
+  }
+
+  /* ---------- Delegated click routing (CSP-safe, no inline handlers) ----- */
+  function bindActions() {
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest ? e.target.closest('[data-action]') : null;
+      if (!el) return;
+      var act = el.getAttribute('data-action');
+      if (act === 'back') { e.preventDefault(); window.history.back(); }
+      else if (act === 'search-open') { openSearchModal(); }
+      else if (act === 'search-close') { closeSearchModal(); }          // <a> keeps navigating
+      else if (act === 'plan-close') { closePlanModal(); }
+      else if (act === 'checkout-close') { closeCheckout(); }
+      else if (act === 'view-plans') { openModal(el.getAttribute('data-pid')); }
+      else if (act === 'checkout-open') {
+        openCheckout(el.getAttribute('data-pid'), el.getAttribute('data-plid'));
+      }
+      else if (act === 'overlay-plan') { if (e.target === el) closePlanModal(); }
+      else if (act === 'overlay-checkout') { if (e.target === el) closeCheckout(); }
+    });
+  }
 
   /* ---------- Category page: render app list ---------- */
   function renderAppList() {
@@ -258,14 +273,14 @@
         return '<div class="app-item" id="app-' + esc(p.id) + '">' +
           '<img loading="lazy" decoding="async" src="' + esc(p.image) + '" alt="' + esc(p.name) + '" width="48" height="48" class="' + cls + '" />' +
           '<div class="app-info"><h3>' + esc(p.name) + '</h3><p>' + esc(p.subtitle) + '</p></div>' +
-          '<button class="view-plans-btn" type="button" onclick="openModal(\'' + esc(p.id) + '\')">View Plans</button>' +
+          '<button class="view-plans-btn" type="button" data-action="view-plans" data-pid="' + esc(p.id) + '">View Plans</button>' +
           '</div>';
       }).join('');
       // deep anchor: open modal if URL hash targets a product
       if (location.hash && location.hash.indexOf('#app-') === 0) {
         var id = location.hash.slice(5);
         var el = document.getElementById('app-' + id);
-        if (el) { el.scrollIntoView({ block: 'center' }); window.openModal(id); }
+        if (el) { el.scrollIntoView({ block: 'center' }); openModal(id); }
       }
     });
   }
@@ -335,6 +350,7 @@
     injectHeader();
     injectSearchModal();
     injectPlanModal();
+    bindActions();
     renderAppList();
     enhanceHomeCards();
     renderOrderSummary();
