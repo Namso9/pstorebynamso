@@ -935,8 +935,7 @@
           "desc": "250GB Data",
           "price": "20,000 Ks",
           "id": "6_months",
-          "bot": true,
-          "stock": false
+          "bot": true
         }
       ]
     },
