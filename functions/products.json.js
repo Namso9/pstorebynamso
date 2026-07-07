@@ -39,3 +39,9 @@ export async function onRequestGet({ request, env }) {
   headers.set('X-Products-Source', 'static-fallback');
   return new Response(fallback.body, { status: fallback.status, headers });
 }
+
+// `curl -I` (HEAD) also goes through the proxy — same headers, no body.
+export async function onRequestHead(ctx) {
+  const r = await onRequestGet(ctx);
+  return new Response(null, { status: r.status, headers: r.headers });
+}
