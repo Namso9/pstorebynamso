@@ -98,7 +98,8 @@
           "desc": "(2-3 Devices)",
           "price": "20,000 Ks",
           "id": "whole_acc_1_month",
-          "bot": true
+          "bot": true,
+          "stock": false
         },
         {
           "name": "Whole Acc 6 Months",
