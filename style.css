@@ -1,194 +1,338 @@
-/* ၁။ General Setup & Background */
+/* ==========================================================
+   PREMIUM STORE — Liquid Glass base theme (v3)
+   Minimal · smooth · futuristic. Same selectors as v2 —
+   HTML untouched; this file only re-skins.
+   ========================================================== */
+
+/* ၁။ Design tokens */
 :root {
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --accent-color: #00d2ff;
-    --text-color: #ffffff;
+    /* surfaces */
+    --bg-ink: #05080f;
+    --glass: rgba(255, 255, 255, 0.07);
+    --glass-hi: rgba(255, 255, 255, 0.12);
+    --glass-deep: rgba(8, 13, 22, 0.55);
+    --stroke: rgba(255, 255, 255, 0.13);
+    --stroke-hi: rgba(255, 255, 255, 0.30);
+
+    /* type */
+    --text: #f2f6fa;
+    --text-dim: rgba(233, 242, 249, 0.62);
+
+    /* accents (hues kept from v2 — app.js paints these inline too) */
+    --accent: #00d2ff;
+    --accent-soft: rgba(0, 210, 255, 0.14);
+    --accent-line: rgba(0, 210, 255, 0.42);
+    --mint: #2ed573;
+    --mint-soft: rgba(46, 213, 115, 0.13);
+    --mint-line: rgba(46, 213, 115, 0.38);
+
+    /* geometry */
+    --r-xl: 28px;
+    --r-lg: 22px;
+    --r-md: 16px;
+    --r-sm: 12px;
+
+    /* glass optics */
+    --blur: blur(24px) saturate(1.7); /* @kind other */
+    --blur-soft: blur(14px) saturate(1.5); /* @kind other */
+    --edge: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.04); /* @kind shadow */
+    --lift: 0 24px 60px rgba(0, 0, 0, 0.45);
+
+    /* motion */
+    --ease: cubic-bezier(0.32, 0.72, 0.24, 1); /* @kind other */
+    --t-fast: 0.18s; /* @kind other */
+    --t-med: 0.32s; /* @kind other */
+
+    /* legacy aliases (older per-page CSS may reference these) */
+    --glass-bg: var(--glass);
+    --glass-border: var(--stroke);
+    --accent-color: var(--accent);
+    --text-color: var(--text);
 }
 
+* { box-sizing: border-box; }
+
+button, input, select, textarea { font-family: inherit; }
+
 body {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url('images/bg.webp');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background:
+        radial-gradient(900px 500px at 92% -8%, rgba(246, 168, 33, 0.10), transparent 60%),
+        radial-gradient(800px 600px at -5% 25%, rgba(46, 213, 115, 0.09), transparent 60%),
+        radial-gradient(1000px 700px at 55% 115%, rgba(124, 92, 255, 0.10), transparent 60%),
+        linear-gradient(rgba(5, 8, 15, 0.70), rgba(5, 8, 15, 0.90)),
+        url('images/bg.webp') center / cover fixed,
+        var(--bg-ink);
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--text-color);
+    font-family: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Noto Serif Myanmar', 'Noto Sans Myanmar', serif;
+    color: var(--text);
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent-soft); color: var(--text); }
+
+/* default link colors — palette, never browser blue */
+a { color: var(--accent); }
+a:hover { color: #7fe6ff; }
+
+:focus-visible {
+    outline: 2px solid var(--accent-line);
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 /* ၂။ Header Section */
 .header {
     text-align: center;
-    padding: 80px 20px 40px;
+    padding: 72px 20px 36px;
 }
 
 .header h1 {
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
-    text-shadow: 0 10px 20px rgba(0,0,0,0.5);
-    color: var(--accent-color);
+    font-size: clamp(1.6rem, 4.5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: 0.5px;
     margin: 0;
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(135deg, #ffffff 15%, #00d2ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--accent);
+    text-shadow: 0 6px 20px rgba(0, 210, 255, 0.25);
+    padding-bottom: 15px;
+    text-wrap: pretty;
+}
+
+.header h1::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, #2ed573, #00d2ff);
+    border-radius: 999px;
 }
 
 /* ၃။ Product Grid Section */
 .product-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+    gap: 22px;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px 60px;
+    padding: 0 20px 56px;
 }
 
 .product-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--glass-border);
-    border-radius: 30px;
-    padding: 25px;
+    position: relative;
+    background: var(--glass);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--stroke);
+    border-radius: var(--r-xl);
+    padding: 22px;
     text-align: center;
-    transition: 0.3s;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    transition: transform var(--t-med) var(--ease),
+                background var(--t-med) var(--ease),
+                border-color var(--t-med) var(--ease),
+                box-shadow var(--t-med) var(--ease);
+    box-shadow: var(--edge), 0 16px 40px rgba(0, 0, 0, 0.30);
 }
 
 .product-card:hover {
-    transform: translateY(-10px);
-    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-6px);
+    background: var(--glass-hi);
+    border-color: rgba(0, 210, 255, 0.50);
+    box-shadow: var(--edge), 0 10px 30px rgba(0, 210, 255, 0.15), var(--lift);
 }
 
 .product-card img {
     width: 100%;
-    height: 320px; /* ပုံတွေကို ပိုကြီးပြီး ရှင်းလင်းအောင် ထိန်းပေးထားပါတယ် */
+    height: 320px;
     object-fit: contain;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--r-md);
+    margin-bottom: 18px;
+    background: rgba(255, 255, 255, 0.04);
 }
 
-/* Live product-count badge, added by app.js enhanceHomeCards() (progressive
-   enhancement — absent when JS/products.json is unavailable). */
+.product-card h3 {
+    margin: 0 0 6px;
+    font-size: 1.08rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+}
+
+.product-card p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+/* Live product-count badge (progressive enhancement via app.js) */
 .product-card .cat-count {
     display: inline-block;
-    margin-top: 6px;
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.75);
-    background: rgba(0, 210, 255, 0.12);
-    border: 1px solid rgba(0, 210, 255, 0.25);
+    margin-top: 10px;
+    font-size: 0.76rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
     padding: 3px 12px;
-    border-radius: 12px;
+    border-radius: 999px;
 }
 
-/* ၄။ Guide & Social Box Styling (Index နှင့် Payment နှစ်ခုလုံးအတွက်) */
+/* ၄။ Guide & Social Box (index + payment) */
 .guide-container {
     max-width: 900px;
-    margin: 40px auto;
+    margin: 36px auto;
     padding: 0 20px;
 }
 
 .guide-box, .payment-card {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 40px;
-    padding: 40px 30px;
-    border: 1px solid var(--glass-border);
+    background: var(--glass-deep);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border-radius: var(--r-xl);
+    padding: 36px 28px;
+    border: 1px solid var(--stroke);
     text-align: center;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-    color: white;
+    box-shadow: var(--edge), var(--lift);
+    color: var(--text);
 }
 
-/* ၅။ QR Grid Section (Payment Page အတွက် Photo Size ထိန်းညှိခြင်း) */
+.guide-box h2 {
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin-top: 0;
+}
+
+/* ၅။ QR Grid (payment) — white stays for scannability */
 .qr-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
+    gap: 22px;
     max-width: 1000px;
-    margin: 30px auto;
+    margin: 28px auto;
     justify-content: center;
 }
 
 .qr-item {
-    background: white; /* Scan ဖတ်ရလွယ်အောင် နောက်ခံအဖြူထားခြင်း */
-    padding: 15px;
-    border-radius: 25px;
+    background: #fff;
+    padding: 14px;
+    border-radius: var(--r-lg);
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    max-width: 320px; /* ပုံတွေအရမ်းမကြီးအောင် ထိန်းထားခြင်း */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.30);
+    max-width: 320px;
     margin: 0 auto;
 }
 
 .qr-item img {
     width: 100%;
     height: auto;
-    border-radius: 15px;
+    border-radius: var(--r-md);
     display: block;
 }
 
 .qr-item p {
-    color: #333 !important; /* အဖြူရောင်ပေါ်မှာ စာလုံးအမဲ ထင်ရှားစေရန် */
-    font-weight: bold;
-    margin-top: 15px;
-    font-size: 1.1rem;
+    color: #17222b !important;
+    font-weight: 600;
+    margin-top: 14px;
+    font-size: 1.05rem;
 }
 
-/* ၆။ Buttons Styling */
+/* ၆။ Buttons */
 .guide-nav {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-top: 25px;
+    margin-top: 24px;
 }
 
 .nav-btn {
-    padding: 12px 25px;
-    border-radius: 50px;
+    padding: 12px 24px;
+    min-height: 44px;
+    border-radius: 999px;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 0.92rem;
     color: #1a1a1a;
-    background: white;
+    background: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: 0.3s;
+    transition: transform var(--t-fast) var(--ease),
+                box-shadow var(--t-fast) var(--ease),
+                filter var(--t-fast) var(--ease);
     min-width: 140px;
     justify-content: center;
 }
 
-.buy-now { background: #2ed573; color: white; }
-.telegram-btn { background: #0088cc; color: white; }
+.buy-now {
+    background: #2ed573;
+    border-color: transparent;
+    color: #fff;
+}
+
+.telegram-btn {
+    background: #0088cc;
+    border-color: transparent;
+    color: #fff;
+}
 
 .nav-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+    filter: brightness(1.04);
+    color: #1a1a1a;
 }
 
-/* ၇။ Footer Styling */
+.buy-now:hover { background: #2ed573; color: #fff; }
+.telegram-btn:hover { background: #0088cc; color: #fff; }
+
+/* ၇။ Footer */
 .site-footer {
     width: 100%;
     text-align: center;
-    padding: 60px 0 40px;
-    color: rgba(255, 255, 255, 0.6);
+    padding: 56px 0 40px;
+    color: var(--text-dim);
 }
 
 .footer-links {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 12px;
     margin-top: 15px;
 }
 
 .footer-links a {
-    color: white;
+    color: var(--text-dim);
     text-decoration: none;
-    font-size: 0.9rem;
-    padding: 5px 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
+    font-size: 0.85rem;
+    padding: 6px 16px;
+    border: 1px solid var(--stroke);
+    border-radius: 999px;
+    background: var(--glass);
+    backdrop-filter: var(--blur-soft);
+    -webkit-backdrop-filter: var(--blur-soft);
+    transition: color var(--t-fast) var(--ease),
+                border-color var(--t-fast) var(--ease);
 }
-*{ box-sizing: border-box; }
+
+.footer-links a:hover { color: var(--text); border-color: var(--stroke-hi); }
 
 @media (max-width: 480px){
 
@@ -223,32 +367,30 @@ body {
   .plan-desc{ font-size: 0.72rem; }
   .plan-price{ font-size: 0.95rem; }
 }
-/* === GUIDE BOX TEXT ALIGNMENT FIX === */
 
-/* ၁။ စာရင်းတစ်ခုလုံးကို Box အလယ်မှာထားမယ်၊ ဒါပေမဲ့ စာကို ဘယ်ဘက်ကပ်မယ် */
+/* === GUIDE BOX TEXT ALIGNMENT === */
 .guide-box ul {
-    display: inline-block;  /* List ကို Block လိုက် အလယ်မှာနေစေရန် */
-    text-align: left;       /* စာသားများကို ဘယ်ဘက်ညီစေရန် */
-    max-width: 95%;         /* ဖုန်း Screen မှာ စာမပြတ်စေရန် */
-    margin: 0 auto 20px;    /* အပေါ်အောက် Margin */
+    display: inline-block;
+    text-align: left;
+    max-width: 95%;
+    margin: 0 auto 20px;
     padding: 0;
-    list-style: none;       /* မူလအစက်များကို ဖျောက်ရန် */
+    list-style: none;
 }
 
-/* ၂။ စာကြောင်းတစ်ကြောင်းချင်းစီကို ချိန်ညှိမယ် */
 .guide-box li {
-    display: flex;          /* Icon နဲ့ စာသား တစ်တန်းတည်းဖြစ်အောင် */
-    align-items: flex-start; /* Icon ကို စာကြောင်းထိပ်နားထားမယ် */
-    gap: 12px;              /* Icon နဲ့ စာသားကြား နေရာခွာမယ် */
-    margin-bottom: 12px;    /* စာကြောင်းအကွာအဝေး */
-    line-height: 1.6;       /* စာဖတ်လို့ကောင်းအောင် */
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    line-height: 1.65;
+    color: var(--text-dim);
 }
 
-/* ၃။ Icon (အမှန်ခြစ်) နေရာအတိအကျ */
 .guide-box li i {
-    margin-top: 5px;        /* စာသားနဲ့ညီအောင် နည်းနည်းအောက်ချမယ် */
-    flex-shrink: 0;         /* Icon ရှုံ့မသွားအောင် ထိန်းမယ် */
-    color: #2ed573;         /* အစိမ်းရောင် */
+    margin-top: 5px;
+    flex-shrink: 0;
+    color: var(--mint);
 }
 
 /* Mobile performance: fixed background scroll ထစ်တာကာကွယ်ရန် */

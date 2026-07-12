@@ -31,7 +31,7 @@
     var hdr = document.createElement('header');
     hdr.className = 'site-header';
     hdr.innerHTML =
-      '<a class="site-brand" href="index.html"><i class="fa-solid fa-gem"></i> PREMIUM STORE</a>' +
+      '<a class="site-brand" href="index.html"><img class="site-logo" src="images/brand-logo.png" alt="Premium Store" width="30" height="30" /> <span>PREMIUM <b>STORE</b></span></a>' +
       '<div class="site-header-actions">' +
       '<a class="hdr-btn" href="index.html"><i class="fa-solid fa-house"></i><span> Home</span></a>' +
       '<button class="search-btn" type="button" data-action="search-open"><i class="fas fa-search"></i><span> Search</span></button>' +

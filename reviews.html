@@ -18,10 +18,17 @@
     ========================== */
     body{
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0b0f19;
-      color: #fff;
+      font-family: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Noto Serif Myanmar', 'Noto Sans Myanmar', serif;
+      background:
+        linear-gradient(rgba(5, 8, 15, 0.72), rgba(5, 8, 15, 0.92)),
+        url('images/bg.webp') center / cover fixed,
+        #05080f;
+      color: #f2f6fa;
+      -webkit-font-smoothing: antialiased;
     }
+    @media (max-width: 768px){ body{ background-attachment: scroll; } }
+    a { color: #00d2ff; }
+    a:hover { color: #7fe6ff; }
 
     /* =========================
        REVIEW SECTION
@@ -44,20 +51,20 @@
       margin-bottom: 28px; /* title/hint နဲ့ grid ကြား */
     }
 
-    /* Gradient title */
+    /* Title */
     .proof-title{
-      font-size: clamp(1.6rem, 4vw, 2.3rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      text-transform: none;
+      letter-spacing: 0.5px;
       margin: 0;
       position: relative;
       display: inline-block;
-
       background: linear-gradient(135deg, #ffffff 20%, #00d2ff 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
-
+      color: #00d2ff;
       text-shadow: 0 5px 15px rgba(0, 210, 255, 0.25);
       padding-bottom: 15px;
     }
@@ -71,7 +78,7 @@
       width: 90px;
       height: 4px;
       background: linear-gradient(to right, #2ed573, #00d2ff);
-      border-radius: 2px;
+      border-radius: 999px;
     }
 
     /* Tap hint pill */
@@ -217,20 +224,21 @@
     }
 
     .guide-box{
-      border-radius: 22px;
-      padding: 18px 18px;
-      background: rgba(255,255,255,0.05);
-      border: 2px solid rgba(255,255,255,0.12);
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.25) inset;
-      backdrop-filter: blur(10px);
+      border-radius: 26px;
+      padding: 20px 18px;
+      background: rgba(8, 13, 22, 0.55);
+      border: 1px solid rgba(255,255,255,0.13);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 24px 60px rgba(0,0,0,0.45);
+      backdrop-filter: blur(24px) saturate(1.7);
+      -webkit-backdrop-filter: blur(24px) saturate(1.7);
     }
 
     .guide-box h2{
       margin: 0 0 14px 0;
-      color: #fff;
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: 1px;
+      color: #f2f6fa;
+      font-size: 1.2rem;
+      font-weight: 650;
+      letter-spacing: -0.01em;
       text-align: center;
     }
 
@@ -254,20 +262,23 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      padding: 10px 12px;
+      padding: 11px 12px;
+      min-height: 44px;
       border-radius: 999px;
       text-decoration: none;
       background: #ffffff;
-      color: #111;
-      font-size: 1rem;
-      font-weight: 800;
-      transition: 0.2s ease;
+      border: 1px solid rgba(255,255,255,0.6);
+      color: #1a1a1a;
+      font-size: 0.95rem;
+      font-weight: 700;
+      transition: 0.18s cubic-bezier(0.32, 0.72, 0.24, 1);
       box-shadow: 0 8px 20px rgba(0,0,0,0.25);
     }
 
     .nav-btn i{ font-size: 1rem; }
-    .nav-btn:hover{ transform: translateY(-2px); }
-    .telegram-btn{ background: #2f7fb8; color: #fff; }
+    .nav-btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0,0,0,0.35); color: #1a1a1a; }
+    .telegram-btn{ background: #0088cc; border-color: transparent; color: #fff; }
+    .telegram-btn:hover{ background: #0088cc; filter: brightness(1.08); }
 
     /* ===== TERMS FOOTER ===== */
     .site-footer{
@@ -316,22 +327,26 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 11px 16px;
+      padding: 11px 18px;
+      min-height: 44px;
       border-radius: 999px;
       text-decoration: none;
-      color: rgba(255,255,255,0.9);
-      font-weight: 800;
+      color: #f2f6fa;
+      font-weight: 600;
       font-size: 0.95rem;
-      border: 2px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
-      transition: 0.2s ease;
+      border: 1px solid rgba(255,255,255,0.13);
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(14px) saturate(1.5);
+      -webkit-backdrop-filter: blur(14px) saturate(1.5);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+      transition: 0.18s cubic-bezier(0.32, 0.72, 0.24, 1);
     }
 
     .back-home-btn:hover{
       transform: translateY(-2px);
       border-color: rgba(0,210,255,0.55);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      background: rgba(255,255,255,0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 10px 25px rgba(0,0,0,0.35);
     }
 
     /* =========================
@@ -384,7 +399,7 @@
       }
     }
   </style>
-  <link rel="stylesheet" href="assets/components.css" />
+  <link rel="stylesheet" href="assets/components.css?v=3" />
 </head>
 
 <body>
@@ -459,7 +474,7 @@
     </div>
 
    <div class="back-home-wrap" style="display: flex; gap: 12px; justify-content: center;">
-      <button data-action="back" class="back-home-btn" style="border: 2px solid rgba(255,255,255,0.14); cursor: pointer; font-family: inherit;">
+      <button data-action="back" class="back-home-btn" style="cursor: pointer; font-family: inherit;">
         <i class="fa-solid fa-arrow-left"></i>
         Back
       </button>
@@ -472,6 +487,6 @@
   </div>
 
   <script src="assets/reviews.js" defer></script>
-  <script src="assets/app.js?v=2" defer></script>
+  <script src="assets/app.js?v=3" defer></script>
 </body>
 </html>

@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="assets/components.css" />
+  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="assets/components.css?v=3" />
 
   <style>
     /* =========================
@@ -24,10 +24,11 @@
 
     .payment-selector {
       margin-top: 18px;
-      padding: 14px 12px;
-      border-radius: 16px;
+      padding: 16px 14px;
+      border-radius: 18px;
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.13);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
     }
 
     .payment-selector .selector-title{
@@ -109,10 +110,11 @@
     /* Result QR panel */
     .qr-panel{
       margin-top: 16px;
-      padding: 14px 12px;
-      border-radius: 16px;
+      padding: 16px 14px;
+      border-radius: 18px;
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.13);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
       display: none; /* default hidden */
     }
     .qr-panel.show{ display: block; }
@@ -327,19 +329,17 @@ a[href^="tel"]{
 }
 
 .payment-title{
-  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  font-size: clamp(1.5rem, 4.5vw, 2.4rem);
   font-weight: 800;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   margin: 0 0 10px;
   display: inline-block;
   position: relative;
-
-  /* Gradient Text */
   background: linear-gradient(135deg, #ffffff 10%, #00d2ff 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-
-  /* Soft Glow */
+  color: #00d2ff;
   text-shadow: 0 6px 18px rgba(0,210,255,0.25);
   padding-bottom: 14px;
 }
@@ -355,7 +355,6 @@ a[href^="tel"]{
   height: 4px;
   border-radius: 999px;
   background: linear-gradient(to right, #2ed573, #00d2ff);
-  opacity: 0.95;
 }
 
 .payment-subtitle{
@@ -386,16 +385,17 @@ a[href^="tel"]{
        Telegram Bot CTA
     ========================== */
     .bot-topup-btn{
-      background: linear-gradient(135deg, #2ed573, #00d2ff) !important;
+      background: linear-gradient(45deg, #2ed573, #00d2ff) !important;
       color: #fff !important;
       border: none !important;
-      box-shadow: 0 12px 28px rgba(0,210,255,0.20);
-      font-weight: 800;
+      box-shadow: 0 12px 28px rgba(0,210,255,0.22);
+      font-weight: 700;
     }
 
     .bot-topup-btn:hover{
       transform: translateY(-2px);
-      box-shadow: 0 16px 34px rgba(46,213,115,0.22);
+      filter: brightness(1.08);
+      box-shadow: 0 16px 34px rgba(0,210,255,0.26);
     }
 
     .bot-note{
@@ -591,6 +591,6 @@ a[href^="tel"]{
 
   <script src="assets/payment.js" defer></script>
 
-  <script src="assets/app.js?v=2" defer></script>
+  <script src="assets/app.js?v=3" defer></script>
 </body>
 </html>
