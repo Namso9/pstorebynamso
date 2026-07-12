@@ -941,8 +941,7 @@
           "desc": "500GB Data",
           "price": "28,000 Ks",
           "id": "6_months_500gb",
-          "bot": true,
-          "stock": false
+          "bot": true
         },
         {
           "name": "1 Year",
