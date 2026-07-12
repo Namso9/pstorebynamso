@@ -7,17 +7,32 @@
   var grid = document.getElementById('proofGrid');
   if (!grid) return;
 
-  for (var i = 1; i <= 30; i++) {
-    var item = document.createElement('div');
-    item.className = 'proof-item';
-    var img = document.createElement('img');
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    img.src = 'images/review' + i + '.webp';
-    img.alt = 'Customer Review ' + i;
-    item.appendChild(img);
-    grid.appendChild(item);
+  function build(list) {
+    grid.innerHTML = '';
+    list.forEach(function (src, idx) {
+      var item = document.createElement('div');
+      item.className = 'proof-item';
+      var img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.src = src;
+      img.alt = 'Customer Review ' + (idx + 1);
+      item.appendChild(img);
+      grid.appendChild(item);
+    });
   }
+
+  // static fallback first (page never blank), then the panel-managed list
+  var fallback = [];
+  for (var i = 1; i <= 30; i++) fallback.push('images/review' + i + '.webp');
+  build(fallback);
+
+  fetch('/data/reviews.json')
+    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function (d) {
+      if (d && Array.isArray(d.images) && d.images.length) build(d.images);
+    })
+    .catch(function () { /* fallback grid stays */ });
 
   var lightbox = document.getElementById('lightbox');
   var lightboxImg = document.getElementById('lightboxImg');

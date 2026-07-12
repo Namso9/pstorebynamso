@@ -119,5 +119,17 @@
             return `<div class="lg-set">${step1(loc)}<div class="lg-arrow"><i class="fa-solid fa-arrow-right"></i></div>${step2(loc)}</div>`;
         }
 
-        document.getElementById("locationWrap").innerHTML = LOCATIONS.map(renderSet).join("");
-        document.getElementById("updateDate").textContent = UPDATE_DATE;
+        function renderAll(updated, locations){
+            document.getElementById("locationWrap").innerHTML = locations.map(renderSet).join("");
+            document.getElementById("updateDate").textContent = updated;
+        }
+
+        // static fallback first (page never blank), then the panel-managed data
+        renderAll(UPDATE_DATE, LOCATIONS);
+        fetch('/data/express-guide.json')
+            .then(function(r){ if(!r.ok) throw new Error('http ' + r.status); return r.json(); })
+            .then(function(d){
+                if (d && Array.isArray(d.locations) && d.locations.length)
+                    renderAll(d.updated || UPDATE_DATE, d.locations);
+            })
+            .catch(function(){ /* fallback render stays */ });
