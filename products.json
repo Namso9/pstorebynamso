@@ -946,9 +946,9 @@
         },
         {
           "name": "1 Year",
-          "desc": "500GB Data",
+          "desc": "600GB Data",
           "price": "40,000 Ks",
-          "id": "1_year_500gb",
+          "id": "1_year_600gb",
           "bot": true,
           "stock": false
         }
