@@ -71,7 +71,7 @@
       "category": "creative-apps",
       "name": "Picsart Gold",
       "subtitle": "Photo & Video Editor",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Picsart_%28software_company%29_logo.svg",
+      "image": "images/picsart.svg",
       "imageClass": "picsart-logo",
       "modalTitle": "Picsart Gold Plans",
       "plans": [
@@ -89,7 +89,7 @@
       "category": "creative-apps",
       "name": "CapCut Pro",
       "subtitle": "All-in-one Video Editor",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Capcut_Pro.jpg",
+      "image": "images/capcut.jpg",
       "imageClass": "",
       "modalTitle": "CapCut Pro Plans",
       "plans": [
@@ -132,7 +132,7 @@
       "category": "creative-apps",
       "name": "Adobe Creative Cloud",
       "subtitle": "All Apps Plan",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Adobe_Corporate_logo.svg",
+      "image": "images/adobe.svg",
       "imageClass": "adobe-logo",
       "modalTitle": "Adobe Creative Cloud Plans",
       "plans": [
@@ -436,7 +436,7 @@
       "category": "streaming-apps",
       "name": "Disney+",
       "subtitle": "Movies & Series",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg",
+      "image": "images/disneyplus.svg",
       "imageClass": "disney-logo",
       "modalTitle": "Disney Plus",
       "plans": [
@@ -503,7 +503,7 @@
       "category": "streaming-apps",
       "name": "Peacock TV",
       "subtitle": "World Cup 2026",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/f/fb/NBCUniversal_Peacock_Logo_%282020%E2%80%932026%29.svg",
+      "image": "images/peacock.svg",
       "imageClass": "peacock-logo",
       "modalTitle": "Peacock TV Premium (1 Profile, 1 Device)",
       "plans": [
@@ -652,7 +652,7 @@
       "category": "ai-apps",
       "name": "ChatGPT Plus",
       "subtitle": "GPT Latest Model",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/e/ef/ChatGPT-Logo.svg",
+      "image": "images/chatgpt.svg",
       "imageClass": "chatgpt-logo",
       "modalTitle": "ChatGPT 1 Month Plus Plan",
       "plans": [
@@ -677,7 +677,7 @@
       "category": "ai-apps",
       "name": "Gemini AI",
       "subtitle": "Nano Banana",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg",
+      "image": "images/gemini.svg",
       "imageClass": "app-info",
       "modalTitle": "Gemini Pro Apply Service Fee",
       "plans": [
@@ -702,7 +702,7 @@
       "category": "ai-apps",
       "name": "Manus AI Agent",
       "subtitle": "AI Agent",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Manus_AI.png",
+      "image": "images/manus.png",
       "imageClass": "",
       "modalTitle": "Manus AI Plans",
       "plans": [
@@ -737,7 +737,7 @@
       "category": "ai-apps",
       "name": "Super Grok AI",
       "subtitle": "AI For Video and Real Data From X",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Grok-feb-2025-logo.svg",
+      "image": "images/grok.svg",
       "imageClass": "grok-logo",
       "modalTitle": "Super Grok AI Plans",
       "plans": [
@@ -779,7 +779,7 @@
       "category": "ai-apps",
       "name": "Perplexity AI",
       "subtitle": "Best AI For Research",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Perplexity_AI_logo.svg",
+      "image": "images/perplexity.svg",
       "imageClass": "perplexity-logo",
       "modalTitle": "Perplexity AI Plan",
       "plans": [
@@ -961,7 +961,7 @@
       "category": "premium-vpn-apps",
       "name": "Nord VPN",
       "subtitle": "One Device Plan",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/4/48/NordVPN_logo.svg",
+      "image": "images/nord.svg",
       "imageClass": "nord-logo",
       "modalTitle": "Nord VPN",
       "plans": [
