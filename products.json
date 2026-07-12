@@ -935,6 +935,22 @@
           "price": "20,000 Ks",
           "id": "6_months",
           "bot": true
+        },
+        {
+          "name": "6 Months",
+          "desc": "500GB Data",
+          "price": "28,000 Ks",
+          "id": "6_months_500gb",
+          "bot": true,
+          "stock": false
+        },
+        {
+          "name": "1 Year",
+          "desc": "500GB Data",
+          "price": "40,000 Ks",
+          "id": "1_year_500gb",
+          "bot": true,
+          "stock": false
         }
       ]
     },
