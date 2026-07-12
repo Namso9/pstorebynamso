@@ -949,8 +949,7 @@
           "desc": "600GB Data",
           "price": "40,000 Ks",
           "id": "1_year_600gb",
-          "bot": true,
-          "stock": false
+          "bot": true
         }
       ]
     },
