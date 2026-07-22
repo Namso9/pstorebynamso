@@ -20,6 +20,13 @@
       // ---- Product-specific extra fields ----
       // Own-mail products: customer email required (upgrade သင့် mail ပေါ်မှာလုပ်ရလို့)
       var MAIL_REQUIRED = ['zoom', 'canva', 'duolingo'];
+      // Plan-level own-mail flag: YouTube "Own Mail Invite" plan ids contain
+      // 'cus_mail' — set from the ?plan= prefill (plan id ride-along).
+      // prefilledValue/prefilledNeedsMail remember the original prefill so the
+      // flag survives cosmetic edits and comes back if the user restores it.
+      var planNeedsMail = false;
+      var prefilledValue = '';
+      var prefilledNeedsMail = false;
       // Gemini: gmail + password optional (မဖြည့်ရင် admin ဆက်သွယ်ချိန်ပေးလို့ရ)
       var MAIL_PW_OPTIONAL = ['gemini'];
 
@@ -40,7 +47,7 @@
       var currentProductId = '';
 
       function updateExtraFields() {
-        var needMail = MAIL_REQUIRED.indexOf(currentProductId) !== -1;
+        var needMail = MAIL_REQUIRED.indexOf(currentProductId) !== -1 || planNeedsMail;
         var isGemini = MAIL_PW_OPTIONAL.indexOf(currentProductId) !== -1;
         if (needMail) {
           mailField.style.display = '';
@@ -82,6 +89,10 @@
 
       productInput.addEventListener('input', function () {
         currentProductId = resolveProductId(productInput.value);
+        // Only drop the plan flag when the product text genuinely changed from
+        // the prefill (trimmed compare) — and restore it if they undo the edit.
+        planNeedsMail = (prefilledValue && productInput.value.trim() === prefilledValue)
+          ? prefilledNeedsMail : false;
         updateExtraFields();
       });
 
@@ -94,8 +105,22 @@
           var p = allProducts.find(function (x) { return x.id === pid; });
           if (!p) return;
           var plan = (p.plans || []).find(function (x) { return x.id === q.get('plan'); });
-          productInput.value = p.name + (plan ? ' — ' + plan.name + (plan.price ? ' (' + plan.price + ')' : '') : '');
+          productInput.value = p.name + (plan
+            ? ' — ' + plan.name + (plan.desc ? ' · ' + plan.desc : '') + (plan.price ? ' (' + plan.price + ')' : '')
+            : '');
           currentProductId = p.id;
+          planNeedsMail = !!(plan && String(plan.id).indexOf('cus_mail') !== -1);
+          prefilledValue = productInput.value.trim();
+          prefilledNeedsMail = planNeedsMail;
+          // Prefilled plan is out of stock -> warn visibly (textContent, no
+          // innerHTML) but keep the form usable — admin reviews manual orders.
+          if (plan && plan.stock === false && !document.getElementById('of-stock-warn')) {
+            var warn = document.createElement('p');
+            warn.id = 'of-stock-warn';
+            warn.style.cssText = 'font-size:0.78rem;color:#ff6b6b;margin:6px 0 0';
+            warn.textContent = 'သတိပြုရန် — ဒီ plan က လောလောဆယ် stock မရှိပါ။ Order တင်ထားရင် stock ပြန်ရှိချိန် Admin က အကြောင်းပြန်ပါမယ်။';
+            productInput.parentNode.appendChild(warn);
+          }
           updateExtraFields();
         } else if (productInput.value) {
           currentProductId = resolveProductId(productInput.value);

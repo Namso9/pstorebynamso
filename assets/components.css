@@ -542,6 +542,15 @@
     padding-right: 10px;
 }
 
+/* Out-of-stock rows keep the layout but drop every clickable affordance */
+.plan-btn--oos { cursor: default; opacity: 0.6; }
+.plan-btn--oos:hover {
+    background: var(--glass);
+    border-color: var(--stroke);
+    transform: none;
+}
+.plan-btn--oos:hover .plan-price { color: var(--mint); }
+
 .plan-desc { display: block; font-size: 0.75rem; color: var(--gold-note); opacity: 0.85; margin-top: 2px; }
 .plan-price { font-weight: 700; color: var(--mint); white-space: nowrap; }
 .plan-btn:hover .plan-price { color: #d9ffe9; }

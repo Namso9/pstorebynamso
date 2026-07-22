@@ -15,7 +15,11 @@
     dataPromise = fetch('products.json', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error('products.json load failed'); return r.json(); })
       .then(function (d) { DATA = d; return d; })
-      .catch(function (e) { console.error(e); return null; });
+      .catch(function (e) {
+        console.error(e);
+        dataPromise = null; // allow a later retry to refetch
+        return null;
+      });
     return dataPromise;
   }
 
@@ -95,7 +99,7 @@
     var term = inp.value.trim().toLowerCase();
     if (!term) { res.innerHTML = '<div class="no-results">Type to search for products</div>'; return; }
     loadData().then(function (d) {
-      if (!d) { res.innerHTML = '<div class="no-results">Search unavailable</div>'; return; }
+      if (!d) { res.innerHTML = '<div class="no-results">ရှာဖွေမှု မရသေးပါ — Internet ပြန်စစ်ပြီး ထပ်ရိုက်ကြည့်ပေးပါ။</div>'; return; }
       var catBySlug = {};
       d.categories.forEach(function (c) { catBySlug[c.slug] = c; });
       var hits = d.products.filter(function (p) {
@@ -130,10 +134,13 @@
   function planButtonHTML(product, plan) {
     var s = DATA.settings || {};
     if (plan.stock === false) {
-      return '<div class="plan-btn" style="cursor:default;opacity:0.55">' +
+      return '<div class="plan-btn plan-btn--oos">' +
         '<div class="plan-info"><span class="plan-name">' + esc(plan.name) + '</span>' +
         '<span class="plan-desc">' + esc(plan.desc) + '</span></div>' +
-        '<span class="plan-price" style="color:#ff6b6b">Out of stock</span></div>';
+        '<div style="text-align:right">' +
+        '<span class="plan-price" style="text-decoration:line-through;opacity:0.55">' + esc(plan.price) + '</span>' +
+        '<span style="display:block;font-size:0.72rem;font-weight:600;color:#ff6b6b;white-space:nowrap">Out of stock</span>' +
+        '</div></div>';
     }
     if (plan.contact) {
       return '<div class="plan-btn" style="cursor:default">' +
@@ -167,20 +174,41 @@
     document.body.appendChild(wrap.firstChild);
   }
 
-  function openCheckout(productId, planId) {
-    loadData().then(function (d) {
-      if (!d) return;
-      var s = d.settings || {};
-      var product = d.products.find(function (p) { return p.id === productId; });
-      if (!product) return;
-      var plan = (product.plans || []).find(function (x) { return x.id === planId; });
-      if (!plan) return;
+  // Bumped on every open AND on close — a pending fetch from a closed (or
+  // superseded) open sees a stale seq and must not render/re-show the modal.
+  var checkoutSeq = 0;
 
-      injectCheckoutModal();
-      var body = document.getElementById('checkoutBody');
+  function openCheckout(productId, planId) {
+    // Open instantly with a loading state — data may still be fetching.
+    injectCheckoutModal();
+    var seq = ++checkoutSeq;
+    var body = document.getElementById('checkoutBody');
+    body.innerHTML = '<div class="no-results">Loading…</div>';
+    document.getElementById('checkoutModal').style.display = 'flex';
+    loadData().then(function (d) {
+      if (seq !== checkoutSeq) return; // closed / reopened while loading
+      var product = d && d.products.find(function (p) { return p.id === productId; });
+      var plan = product && (product.plans || []).find(function (x) { return x.id === planId; });
+      if (!plan) {
+        // fetch failed (retryable — loadData refetches) or unknown ids
+        body.innerHTML =
+          '<div class="no-results">အချက်အလက် မတင်နိုင်သေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပေးပါ။</div>' +
+          '<button type="button" class="view-plans-btn" style="width:100%" data-action="checkout-open" data-pid="' + esc(productId) + '" data-plid="' + esc(planId) + '">ထပ်ကြိုးစားမည်</button>';
+        return;
+      }
+      // Stock re-check at checkout time — the plan button may have been
+      // rendered from stale data (old tab) or reached via a bookmarked URL.
+      if (plan.stock === false) {
+        body.innerHTML =
+          '<div class="no-results">ဒီ plan လောလောဆယ် stock မရှိပါ။ နောက်မှ ပြန်စစ်ပေးပါ (သို့) တခြား plan ရွေးပေးပါ။</div>' +
+          '<button type="button" class="view-plans-btn" style="width:100%" data-action="checkout-close">ပိတ်မည်</button>';
+        return;
+      }
+      var s = d.settings || {};
       var summary =
         '<div class="checkout-summary">' +
-        '<span class="plan-name">' + esc(product.name) + ' — ' + esc(plan.name) + '</span>' +
+        '<span class="plan-name">' + esc(product.name) + ' — ' + esc(plan.name) +
+        (plan.desc ? ' <span style="opacity:0.7;font-weight:400">(' + esc(plan.desc) + ')</span>' : '') + '</span>' +
         '<span class="plan-price">' + esc(plan.price) + '</span></div>';
 
       // Telegram bot option — only when a bot mapping exists for THIS plan
@@ -193,10 +221,12 @@
       // (^/start buy-...  ->  split('-',2) -> web_catalog.lookup(pid, plid)).
       var botHtml = '';
       if (s.deepLinks !== false && plan.bot === true && s.botUsername) {
-        var start = (s.deepLinkPrefix || 'buy') + '-' + product.id + '-' + plan.id;
-        var tgHref = 'https://t.me/' + s.botUsername + '?start=' + start;
+        // ids/username are catalog-derived -> URL-encode the components and
+        // esc() the final href before it touches innerHTML.
+        var start = encodeURIComponent((s.deepLinkPrefix || 'buy') + '-' + product.id + '-' + plan.id);
+        var tgHref = 'https://t.me/' + encodeURIComponent(s.botUsername) + '?start=' + start;
         botHtml =
-          '<a class="checkout-opt checkout-opt--bot" href="' + tgHref + '" target="_blank" rel="noopener">' +
+          '<a class="checkout-opt checkout-opt--bot" href="' + esc(tgHref) + '" target="_blank" rel="noopener">' +
           '<div class="checkout-opt-main"><i class="fa-brands fa-telegram"></i> Telegram Bot ကနေ ဝယ်မည်</div>' +
           '<div class="checkout-opt-sub">အမြန်ဆုံး · auto delivery · wallet/VIP အကျိုးရ (Recommended)</div></a>';
       }
@@ -205,7 +235,7 @@
       var payHref = (s.paymentPage || 'payment.html') +
         '?product=' + encodeURIComponent(product.id) + '&plan=' + encodeURIComponent(plan.id);
       var webHtml =
-        '<a class="checkout-opt checkout-opt--web" href="' + payHref + '">' +
+        '<a class="checkout-opt checkout-opt--web" href="' + esc(payHref) + '">' +
         '<div class="checkout-opt-main"><i class="fa-solid fa-file-invoice"></i> Website ကနေ Order Form တင်မည်</div>' +
         '<div class="checkout-opt-sub">Payment screenshot တင် · admin က manual ပြန်ဆက်သွယ်</div></a>';
 
@@ -218,22 +248,42 @@
   }
 
   function closeCheckout() {
+    checkoutSeq++; // abort any in-flight open (it must not re-show the modal)
     var m = document.getElementById('checkoutModal');
     if (m) m.style.display = 'none';
   }
 
   function openModal(productId) {
+    // Open instantly with a loading state — data may still be fetching.
+    var modal = document.getElementById('planModal');
+    var plansEl = document.getElementById('modalPlans');
+    if (!modal || !plansEl) return;
+    document.getElementById('modalTitle').innerText = 'Choose Plan';
+    plansEl.innerHTML = '<div class="no-results">Loading…</div>';
+    modal.style.display = 'flex';
     loadData().then(function (d) {
-      if (!d) return;
-      var product = d.products.find(function (p) { return p.id === productId; });
-      if (!product) return;
-      var modal = document.getElementById('planModal');
+      var product = d && d.products.find(function (p) { return p.id === productId; });
+      if (!product) {
+        // fetch failed (retryable — loadData refetches) or unknown id
+        plansEl.innerHTML =
+          '<div class="no-results">Plan များ မတင်နိုင်သေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပေးပါ။</div>' +
+          '<button type="button" class="view-plans-btn" style="width:100%" data-action="view-plans" data-pid="' + esc(productId) + '">ထပ်ကြိုးစားမည်</button>';
+        return;
+      }
+      var s = d.settings || {};
       document.getElementById('modalTitle').innerText = product.modalTitle || product.name;
-      document.getElementById('modalPlans').innerHTML = product.plans.map(function (pl) {
+      var plans = product.plans || [];
+      plansEl.innerHTML = plans.length ? plans.map(function (pl) {
         if (pl.header) return '<div class="plan-category">' + esc(pl.header) + '</div>';
         return planButtonHTML(product, pl);
-      }).join('');
-      modal.style.display = 'flex';
+      }).join('') :
+        // no plans published yet -> same look as a contact-only plan row
+        '<div class="plan-btn" style="cursor:default">' +
+        '<div class="plan-info"><span class="plan-name">ဒီ product အတွက် plan များကို Admin ကို တိုက်ရိုက် မေးမြန်းပေးပါ</span></div>' +
+        '<div class="plan-contact-row">' +
+        '<a class="plan-contact-btn plan-contact-btn--tg" href="' + esc(s.telegramChannel || '#') + '" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Ask price</a>' +
+        '<a class="plan-contact-btn plan-contact-btn--fb" href="' + esc(s.facebookPage || '#') + '" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i></a>' +
+        '</div></div>';
     });
   }
 
@@ -259,16 +309,34 @@
       }
       else if (act === 'overlay-plan') { if (e.target === el) closePlanModal(); }
       else if (act === 'overlay-checkout') { if (e.target === el) closeCheckout(); }
+      else if (act === 'list-retry') { renderAppList(); }
     });
+    // hash can change after load (back/forward, shared #app- links) — reuse
+    // the same deep-anchor logic renderAppList runs on first paint.
+    window.addEventListener('hashchange', openFromHash);
   }
 
   /* ---------- Category page: render app list ---------- */
+  function openFromHash() {
+    if (location.hash && location.hash.indexOf('#app-') === 0) {
+      var id = location.hash.slice(5);
+      var el = document.getElementById('app-' + id);
+      if (el) { el.scrollIntoView({ block: 'center' }); openModal(id); }
+    }
+  }
+
   function renderAppList() {
     var list = document.getElementById('app-list');
     if (!list) return;
     var slug = list.getAttribute('data-category');
+    list.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.6)">Loading products…</p>';
     loadData().then(function (d) {
-      if (!d) { list.innerHTML = '<p style="text-align:center">Products failed to load. Please refresh.</p>'; return; }
+      if (!d) {
+        list.innerHTML =
+          '<p style="text-align:center">Products များ မတင်နိုင်သေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပေးပါ။</p>' +
+          '<p style="text-align:center"><button class="view-plans-btn" type="button" data-action="list-retry">ထပ်ကြိုးစားမည်</button></p>';
+        return;
+      }
       var items = d.products.filter(function (p) { return p.category === slug; });
       list.innerHTML = items.map(function (p) {
         var cls = 'app-logo' + (p.imageClass ? ' ' + esc(p.imageClass) : '');
@@ -279,11 +347,7 @@
           '</div>';
       }).join('');
       // deep anchor: open modal if URL hash targets a product
-      if (location.hash && location.hash.indexOf('#app-') === 0) {
-        var id = location.hash.slice(5);
-        var el = document.getElementById('app-' + id);
-        if (el) { el.scrollIntoView({ block: 'center' }); openModal(id); }
-      }
+      openFromHash();
     });
   }
 
@@ -325,7 +389,9 @@
       if (!product) { host.style.display = 'none'; return; }
       var plan = (product.plans || []).find(function (pl) { return pl.id === plid; });
       host.style.display = '';
-      var onOrderPage = location.pathname.indexOf('order.html') !== -1;
+      // Cloudflare Pages serves clean URLs too — match /order and /order.html
+      // (end-anchored so unrelated paths containing 'order' don't hit this).
+      var onOrderPage = /(^|\/)order(\.html)?$/.test(location.pathname);
       // Rebuild the query from the two validated params only — never echo the
       // raw location.search into innerHTML (HTML-injection vector).
       var safeSearch = '?product=' + encodeURIComponent(pid) +
@@ -334,7 +400,7 @@
         ? 'အောက်က form ကိုဖြည့်ပြီး ငွေလွှဲ screenshot တင်ပေးပါ။'
         : 'အောက်မှာ Platform ရွေးပြီး QR နဲ့ ငွေလွှဲပါ။ ငွေလွှဲပြီးရင် screenshot ကို <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> သို့မဟုတ် <a href="order.html' + esc(safeSearch) + '" style="color:#00d2ff">ဒီ order form</a> ကနေ တင်နိုင်ပါတယ်။';
       host.innerHTML = '<h3><i class="fa-solid fa-cart-shopping"></i> Your Order</h3>' +
-        '<p>' + esc(product.name) + (plan ? ' — ' + esc(plan.name) : '') + '</p>' +
+        '<p>' + esc(product.name) + (plan ? ' — ' + esc(plan.name) + (plan.desc ? ' (' + esc(plan.desc) + ')' : '') : '') + '</p>' +
         (plan && plan.price ? '<p class="os-price">' + esc(plan.price) + '</p>' : '') +
         '<p style="font-size:0.85rem;color:rgba(255,255,255,0.65)">' + tail + '</p>';
     });

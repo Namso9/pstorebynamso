@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css?v=3" />
-  <link rel="stylesheet" href="assets/components.css?v=3" />
+  <link rel="stylesheet" href="assets/components.css?v=4" />
   <link rel="stylesheet" href="assets/theme.css?v=1" />
   <script src="assets/theme.js?v=1"></script>
 </head>
@@ -60,7 +60,7 @@
 
       <div class="of-field">
         <label for="of-contact">ပြန်ဆက်သွယ်ရန် Viber နံပါတ် သို့မဟုတ် Telegram Username *</label>
-        <input type="text" id="of-contact" name="contact" required maxlength="40" placeholder="09xxxxxxxxx (သို့) @username" autocomplete="off" />
+        <input type="text" id="of-contact" name="contact" required maxlength="40" placeholder="09xxxxxxxxx (သို့) @username" autocomplete="off" pattern="09\d{7,9}|\+?95\d{7,10}|@?[A-Za-z0-9_]{4,32}" title="Viber နံပါတ် (09xxxxxxxxx) သို့မဟုတ် Telegram username (@username) ဖြည့်ပေးပါ" />
       </div>
 
       <div class="of-field">
@@ -86,7 +86,7 @@
     <div class="of-result" id="of-result"></div>
   </div>
 
-  <script src="assets/app.js?v=5" defer></script>
-  <script src="assets/order.js?v=4" defer></script>
+  <script src="assets/app.js?v=6" defer></script>
+  <script src="assets/order.js?v=5" defer></script>
 </body>
 </html>
