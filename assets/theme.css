@@ -1,0 +1,208 @@
+/* ==========================================================
+   PREMIUM STORE — light theme overrides
+   Dark stays the DEFAULT look (all existing CSS untouched).
+   theme.js puts .theme-light on <html> (manual choice or
+   system preference) — everything here is scoped under it,
+   so with the class absent this file changes NOTHING.
+   ========================================================== */
+
+:root { color-scheme: dark; }
+html.theme-light { color-scheme: light; }
+
+/* ---------- design tokens (mirror style.css/components.css) ---------- */
+html.theme-light {
+    --bg-ink: #eef2f7;
+    --glass: rgba(12, 30, 46, 0.05);
+    --glass-hi: rgba(12, 30, 46, 0.09);
+    --glass-deep: rgba(255, 255, 255, 0.72);
+    --glass-solid: rgba(255, 255, 255, 0.94);
+    --stroke: rgba(10, 30, 50, 0.15);
+    --stroke-hi: rgba(10, 30, 50, 0.32);
+    --text: #132430;
+    --text-dim: rgba(19, 36, 48, 0.66);
+    --accent: #007ea6;
+    --accent-soft: rgba(0, 126, 166, 0.10);
+    --accent-line: rgba(0, 126, 166, 0.42);
+    --accent-ink: #eaf7fc;
+    --mint: #128a4a;
+    --mint-soft: rgba(18, 138, 74, 0.10);
+    --mint-line: rgba(18, 138, 74, 0.38);
+    --gold-note: #8a6d00;
+    --brand-amber: #b97a08;
+    --edge: inset 0 1px 0 rgba(255, 255, 255, 0.65),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+    --lift: 0 24px 60px rgba(30, 50, 70, 0.16);
+
+    /* expressvpn-location-guide page tokens */
+    --bg: #eef2f7;
+    --card: rgba(12, 30, 46, 0.05);
+    --card-border: rgba(10, 30, 50, 0.15);
+    --txt: #132430;
+    --txt-dim: rgba(19, 36, 48, 0.68);
+    --txt-dim2: rgba(19, 36, 48, 0.48);
+}
+
+/* ---------- page background (same photo, light wash) ---------- */
+html.theme-light body {
+    background:
+        radial-gradient(900px 500px at 92% -8%, rgba(246, 168, 33, 0.10), transparent 60%),
+        radial-gradient(800px 600px at -5% 25%, rgba(46, 213, 115, 0.08), transparent 60%),
+        radial-gradient(1000px 700px at 55% 115%, rgba(124, 92, 255, 0.08), transparent 60%),
+        linear-gradient(rgba(243, 247, 251, 0.90), rgba(238, 243, 249, 0.95)),
+        url('../images/bg.webp') center / cover fixed,
+        var(--bg-ink);
+    color: var(--text);
+}
+@media (max-width: 768px) {
+    html.theme-light body { background-attachment: scroll; }
+}
+
+html.theme-light ::selection { background: var(--accent-soft); color: var(--text); }
+html.theme-light a { color: var(--accent); }
+html.theme-light a:hover { color: #005e7d; }
+
+/* ---------- gradient display headings (white part invisible on light) ---- */
+html.theme-light .header h1,
+html.theme-light .page-title,
+html.theme-light .payment-title,
+html.theme-light .proof-title,
+html.theme-light .lg-title {
+    background: linear-gradient(135deg, #14303e 15%, #007ea6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: none;
+}
+
+/* ---------- sticky site header ---------- */
+html.theme-light .site-header { background: rgba(250, 252, 255, 0.78); }
+
+/* ---------- modal / search scrims + inputs ---------- */
+html.theme-light .search-modal,
+html.theme-light .modal-overlay { background: rgba(25, 38, 50, 0.35); }
+
+html.theme-light .search-input,
+html.theme-light .of-field input[type="text"],
+html.theme-light .of-field input[type="tel"],
+html.theme-light .of-field input[type="email"],
+html.theme-light .of-field input[type="password"],
+html.theme-light .of-field select,
+html.theme-light .of-field textarea {
+    background: rgba(255, 255, 255, 0.78);
+    color: var(--text);
+}
+html.theme-light .search-input:focus,
+html.theme-light .of-field input:focus,
+html.theme-light .of-field select:focus,
+html.theme-light .of-field textarea:focus { background: #ffffff; }
+html.theme-light .of-field select option { background: #ffffff; color: #132430; }
+html.theme-light .of-file { background: rgba(255, 255, 255, 0.5); }
+
+/* ---------- hardcoded light-blue text on dark (needs dark ink) ---------- */
+html.theme-light .faq-question:hover { color: #005e7d; }
+html.theme-light .review-preview-head a:hover { color: #005e7d; }
+html.theme-light .plan-btn:hover .plan-price { color: #0c6b3a; }
+html.theme-light .bot-cta-badge { color: var(--accent); }
+html.theme-light .plan-contact-btn--tg { color: #0b6db0; border-color: rgba(11, 109, 176, 0.45); }
+html.theme-light .plan-contact-btn--fb { color: #3556b0; border-color: rgba(53, 86, 176, 0.45); }
+html.theme-light .of-fb-btn {
+    background: rgba(24, 119, 242, 0.10);
+    border-color: rgba(24, 119, 242, 0.45);
+    color: #1b4d9c;
+}
+
+/* white pill buttons: border/shadow tuned for light bg */
+html.theme-light .nav-btn {
+    border-color: rgba(10, 30, 50, 0.18);
+    box-shadow: 0 8px 20px rgba(30, 50, 70, 0.15);
+}
+html.theme-light .nav-btn:hover { box-shadow: 0 12px 26px rgba(30, 50, 70, 0.20); }
+
+/* app tiles: soft plate reads better on light glass */
+html.theme-light .app-item img {
+    background: linear-gradient(145deg, #ffffff, #eef2f6);
+    border-color: rgba(10, 30, 50, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 6px 16px rgba(30, 50, 70, 0.12);
+}
+html.theme-light .app-info h3 { text-shadow: none; }
+html.theme-light .search-modal-title,
+html.theme-light .modal-title { text-shadow: none; }
+
+html.theme-light .faq-answer { background: rgba(12, 30, 46, 0.04); }
+html.theme-light .plan-note { background: rgba(12, 30, 46, 0.04); }
+html.theme-light .bot-step { background: rgba(255, 255, 255, 0.55); }
+html.theme-light .category-card .cat-count { background: rgba(12, 30, 46, 0.07); }
+html.theme-light .product-card img { background: rgba(12, 30, 46, 0.03); }
+
+/* ---------- payment page (inline <style> uses hardcoded darks) ---------- */
+html.theme-light .payment-subtitle { color: var(--text-dim); }
+html.theme-light .payment-selector,
+html.theme-light .qr-panel {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: var(--stroke);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+html.theme-light .platform-select {
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--text);
+    border-color: var(--stroke);
+}
+html.theme-light .platform-btn {
+    background: rgba(255, 255, 255, 0.75);
+    color: var(--text);
+    border-color: var(--stroke);
+}
+html.theme-light .platform-btn.active {
+    background: var(--accent-soft);
+    border-color: var(--accent-line);
+    box-shadow: 0 10px 25px rgba(0, 126, 166, 0.14);
+}
+html.theme-light .pay-icon { border-color: var(--stroke); }
+html.theme-light .badge {
+    background: rgba(12, 30, 46, 0.06);
+    border-color: var(--stroke);
+    color: var(--text);
+}
+html.theme-light .qr-single img {
+    border-color: var(--stroke);
+    background: rgba(12, 30, 46, 0.04);
+}
+/* forced-white iOS link overrides in payment.html must flip to ink */
+html.theme-light a[href^="tel"],
+html.theme-light .payment-instruction a,
+html.theme-light .payment-instruction span,
+html.theme-light .payment-instruction strong,
+html.theme-light .payment-instruction a:link,
+html.theme-light .payment-instruction a:visited { color: #132430 !important; }
+
+/* ---------- reviews page ---------- */
+html.theme-light .proof-hint {
+    border-color: var(--stroke);
+    background: rgba(255, 255, 255, 0.6);
+    color: var(--text-dim);
+}
+html.theme-light .proof-item {
+    border-color: var(--stroke);
+    background: rgba(255, 255, 255, 0.5);
+}
+/* lightbox intentionally stays dark — best for viewing photos */
+
+/* ---------- terms of service pages ---------- */
+html.theme-light .terms-card {
+    background: rgba(255, 255, 255, 0.78);
+    border-color: var(--stroke);
+    color: var(--text);
+    box-shadow: 0 30px 60px rgba(30, 50, 70, 0.15);
+}
+html.theme-light .terms-card h1 { color: var(--accent); }
+html.theme-light .last-update { color: var(--text-dim); }
+html.theme-light .terms-section p,
+html.theme-light .terms-card p,
+html.theme-light .terms-card li { color: rgba(19, 36, 48, 0.85); }
+
+/* ---------- expressvpn guide: page shell only ----------
+   (step cards mimic the real app's dark UI — they keep their
+   own colors on purpose; page bg/title/update pill adapt) */
+html.theme-light .lg-update { background: rgba(255, 255, 255, 0.6); }
+
+/* ---------- theme toggle button ---------- */
+.theme-toggle-btn { min-width: 38px; justify-content: center; }

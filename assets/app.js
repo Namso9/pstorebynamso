@@ -33,6 +33,8 @@
     hdr.innerHTML =
       '<a class="site-brand" href="index.html"><img class="site-logo" src="images/brand-logo.png" alt="Premium Store" width="30" height="30" /> <span>PREMIUM <b>STORE</b></span></a>' +
       '<div class="site-header-actions">' +
+      // theme cycle button — clicks handled by theme.js (not bindActions)
+      '<button class="hdr-btn theme-toggle-btn" type="button" id="themeToggle" data-action="theme-cycle" title="Theme" aria-label="Theme"><i class="fa-solid fa-circle-half-stroke"></i></button>' +
       '<a class="hdr-btn" href="index.html"><i class="fa-solid fa-house"></i><span> Home</span></a>' +
       '<button class="search-btn" type="button" data-action="search-open"><i class="fas fa-search"></i><span> Search</span></button>' +
       '<a class="hdr-btn hdr-btn--bot" href="https://t.me/PSNamso_bot" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i><span> Bot</span></a>' +
