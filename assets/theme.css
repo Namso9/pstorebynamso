@@ -1,15 +1,15 @@
 /* ==========================================================
-   PREMIUM STORE — light theme (v2, clean minimalist)
+   PREMIUM STORE — light theme (v3, Liquid Glass / iOS style)
    Dark stays the DEFAULT look (all existing CSS untouched).
    theme.js puts .theme-light on <html> — everything here is
    scoped under it, so with the class absent this file
    changes NOTHING.
 
-   Design language (light):
-   · flat soft-grey canvas (no photo, no heavy glass)
-   · solid white cards, hairline borders, feather shadows
-   · one accent blue (#0284c7) + one green (#0a9e5c)
-   · zero text-shadows / glows
+   Design language (light, per owner's Pinterest refs):
+   · soft pastel ambient canvas (cyan/violet/peach blobs)
+   · frosted translucent panels (backdrop blur + saturate)
+   · white glass edges + glossy top highlight
+   · airy colored shadows, iOS-blue accent
    ========================================================== */
 
 :root { color-scheme: dark; }
@@ -17,77 +17,94 @@ html.theme-light { color-scheme: light; }
 
 /* ---------- design tokens (mirror style.css/components.css) ---------- */
 html.theme-light {
-    --bg-ink: #f6f8fb;
+    --bg-ink: #eef1f8;
 
-    /* "glass" becomes flat, minimal surfaces */
-    --glass: #ffffff;
-    --glass-hi: #f2f6fa;
-    --glass-deep: #ffffff;
-    --glass-solid: #ffffff;
+    /* frosted glass surfaces (the base CSS already applies
+       backdrop-filter via --blur on these components) */
+    --glass: rgba(255, 255, 255, 0.48);
+    --glass-hi: rgba(255, 255, 255, 0.68);
+    --glass-deep: rgba(255, 255, 255, 0.55);
+    --glass-solid: rgba(255, 255, 255, 0.82);
 
-    --stroke: #e4eaf1;
-    --stroke-hi: #c6d3e0;
+    /* glass edge = bright white hairline (iOS look) */
+    --stroke: rgba(255, 255, 255, 0.75);
+    --stroke-hi: rgba(255, 255, 255, 0.95);
 
-    --text: #172a37;
-    --text-dim: #5d7080;
+    --text: #1b2b3a;
+    --text-dim: rgba(27, 43, 58, 0.62);
 
-    --accent: #0284c7;
-    --accent-soft: #eaf6fd;
-    --accent-line: #9bd4ef;
-    --accent-ink: #eaf6fd;
-    --mint: #0a9e5c;
-    --mint-soft: #e9f8f0;
-    --mint-line: #a5dfc4;
-    --gold-note: #946f00;
-    --brand-amber: #c07f06;
+    --accent: #0a7cff;
+    --accent-soft: rgba(10, 124, 255, 0.12);
+    --accent-line: rgba(10, 124, 255, 0.40);
+    --accent-ink: #eaf3ff;
+    --mint: #0eaa66;
+    --mint-soft: rgba(14, 170, 102, 0.12);
+    --mint-line: rgba(14, 170, 102, 0.35);
+    --gold-note: #a87b00;
+    --brand-amber: #d98a06;
 
-    /* kill the glass optics: hairline + feather shadow */
-    --edge: 0 0 0 0 rgba(0, 0, 0, 0);
-    --lift: 0 10px 30px rgba(23, 42, 55, 0.08);
+    /* glossy optics: bright inner highlight + soft tinted lift */
+    --edge: inset 0 1px 0 rgba(255, 255, 255, 0.95),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.35);
+    --lift: 0 20px 45px rgba(31, 38, 135, 0.14);
 
     /* expressvpn-location-guide page-shell tokens (cards re-darken below) */
-    --bg: #f6f8fb;
-    --txt: #172a37;
-    --txt-dim: #5d7080;
-    --txt-dim2: #8395a5;
+    --bg: #eef1f8;
+    --txt: #1b2b3a;
+    --txt-dim: rgba(27, 43, 58, 0.62);
+    --txt-dim2: rgba(27, 43, 58, 0.45);
 }
 
-/* ---------- canvas: flat, calm, no photo ---------- */
+/* ---------- canvas: pastel ambient blobs (glass needs color behind) ----- */
 html.theme-light body {
-    background: linear-gradient(180deg, #f8fafd 0%, #f2f5f9 100%) fixed;
+    background:
+        radial-gradient(900px 600px at 88% -10%, rgba(255, 138, 88, 0.22), transparent 60%),
+        radial-gradient(800px 650px at -10% 18%, rgba(0, 195, 255, 0.20), transparent 60%),
+        radial-gradient(950px 750px at 55% 118%, rgba(129, 96, 255, 0.22), transparent 62%),
+        radial-gradient(700px 500px at 30% 55%, rgba(46, 213, 115, 0.10), transparent 60%),
+        linear-gradient(180deg, #f3f5fb 0%, #e8ecf6 100%);
+    background-attachment: fixed;
     color: var(--text);
 }
 @media (max-width: 768px) {
     html.theme-light body { background-attachment: scroll; }
 }
 
-html.theme-light ::selection { background: #d3edfa; color: var(--text); }
-html.theme-light a { color: var(--accent); }
-html.theme-light a:hover { color: #026aa1; }
+html.theme-light ::selection { background: rgba(10, 124, 255, 0.18); color: var(--text); }
+html.theme-light a { color: #0668d6; }
+html.theme-light a:hover { color: #054fa6; }
 
-/* ---------- display headings: solid ink, no glow ---------- */
+/* ---------- display headings: ink→blue gradient, no glow ---------- */
 html.theme-light .header h1,
 html.theme-light .page-title,
 html.theme-light .payment-title,
 html.theme-light .proof-title,
 html.theme-light .lg-title {
-    background: none;
-    -webkit-text-fill-color: currentColor;
-    color: #14303e;
+    background: linear-gradient(135deg, #16324a 25%, #0a7cff 110%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     text-shadow: none;
 }
 html.theme-light .search-modal-title,
-html.theme-light .modal-title,
-html.theme-light .app-info h3 { text-shadow: none; }
+html.theme-light .modal-title { color: #0668d6; text-shadow: none; }
+html.theme-light .app-info h3 { color: #0668d6; text-shadow: none; }
 
-/* ---------- sticky site header: solid white bar ---------- */
+/* ---------- sticky site header: frosted bar ---------- */
 html.theme-light .site-header {
-    background: rgba(255, 255, 255, 0.92);
-    border-bottom: 1px solid var(--stroke);
+    background: rgba(255, 255, 255, 0.55);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 24px rgba(31, 38, 135, 0.08);
 }
-html.theme-light .site-brand .site-logo { box-shadow: 0 1px 4px rgba(23, 42, 55, 0.12); }
+html.theme-light .hdr-btn {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 12px rgba(31, 38, 135, 0.10);
+}
+html.theme-light .hdr-btn:hover { background: rgba(255, 255, 255, 0.8); border-color: #fff; }
+html.theme-light .site-brand .site-logo { box-shadow: 0 2px 8px rgba(31, 38, 135, 0.18); }
 
-/* ---------- cards: solid white, hairline, feather shadow ---------- */
+/* ---------- glass panels: colored shadow + glossy edge ---------- */
 html.theme-light .product-card,
 html.theme-light .app-item,
 html.theme-light .category-card,
@@ -95,67 +112,47 @@ html.theme-light .guide-box,
 html.theme-light .payment-card,
 html.theme-light .faq-container,
 html.theme-light .order-form-card,
-html.theme-light .bot-cta-card,
 html.theme-light .search-modal-content,
 html.theme-light .modal-content {
-    background: #ffffff;
-    border-color: var(--stroke);
-    box-shadow: 0 1px 2px rgba(23, 42, 55, 0.04), 0 8px 24px rgba(23, 42, 55, 0.06);
+    box-shadow: var(--edge), 0 12px 34px rgba(31, 38, 135, 0.12);
 }
-
 html.theme-light .product-card:hover,
 html.theme-light .card-link:hover .product-card {
-    background: #ffffff;
-    border-color: var(--accent-line);
-    box-shadow: 0 2px 4px rgba(23, 42, 55, 0.05), 0 14px 34px rgba(23, 42, 55, 0.10);
+    border-color: rgba(10, 124, 255, 0.45);
+    box-shadow: var(--edge), 0 10px 30px rgba(10, 124, 255, 0.16), var(--lift);
 }
 html.theme-light .app-item:hover,
 html.theme-light .category-card:hover {
-    background: #ffffff;
-    border-color: var(--stroke-hi);
-    box-shadow: 0 2px 4px rgba(23, 42, 55, 0.05), 0 12px 28px rgba(23, 42, 55, 0.10);
+    box-shadow: var(--edge), 0 14px 34px rgba(31, 38, 135, 0.16);
 }
 
-/* bot CTA: drop the colored radials, keep it airy */
+/* bot CTA keeps its colorful radials — brighten them for light glass */
 html.theme-light .bot-cta-card {
     background:
-        radial-gradient(circle at top left, rgba(10, 158, 92, 0.05), transparent 42%),
-        radial-gradient(circle at bottom right, rgba(2, 132, 199, 0.05), transparent 42%),
-        #ffffff;
+        radial-gradient(circle at top left, rgba(46, 213, 115, 0.18), transparent 42%),
+        radial-gradient(circle at bottom right, rgba(10, 124, 255, 0.16), transparent 42%),
+        rgba(255, 255, 255, 0.5);
 }
 
-html.theme-light .product-card img { background: #f6f8fb; }
+html.theme-light .product-card img { background: rgba(255, 255, 255, 0.45); }
 
-/* app tiles: flat plate */
+/* app tiles: glossy squircle plate */
 html.theme-light .app-item img {
-    background: #f4f7fa;
-    border-color: var(--stroke);
-    box-shadow: none;
-}
-html.theme-light .app-item:hover img { box-shadow: 0 6px 14px rgba(23, 42, 55, 0.10); }
-
-/* dark brand marks already sit on light plates — soften their border */
-html.theme-light .adobe-logo, html.theme-light .picsart-logo,
-html.theme-light .peacock-logo, html.theme-light .chatgpt-logo,
-html.theme-light .grok-logo, html.theme-light .perplexity-logo,
-html.theme-light .disney-logo, html.theme-light .hiddify-logo,
-html.theme-light .jumpjump-logo, html.theme-light .nord-logo {
-    border-color: var(--stroke) !important;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: inset 0 1px 0 #ffffff, 0 6px 16px rgba(31, 38, 135, 0.12);
 }
 /* white-asset logos need a dark plate to stay visible on light */
 html.theme-light .gamma-logo, html.theme-light .tidal-logo {
-    background: #17232e;
+    background: #1d2a3a;
     border-radius: 13px;
     padding: 8px;
 }
 
-/* ---------- modals / search ---------- */
+/* ---------- modals / search: airy scrim, frosted sheet ---------- */
 html.theme-light .search-modal,
-html.theme-light .modal-overlay {
-    background: rgba(23, 36, 48, 0.38);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-}
+html.theme-light .modal-overlay { background: rgba(60, 80, 120, 0.28); }
+
 html.theme-light .search-input,
 html.theme-light .of-field input[type="text"],
 html.theme-light .of-field input[type="tel"],
@@ -163,125 +160,155 @@ html.theme-light .of-field input[type="email"],
 html.theme-light .of-field input[type="password"],
 html.theme-light .of-field select,
 html.theme-light .of-field textarea {
-    background: #fbfcfe;
-    border-color: #d6dfe8;
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(27, 43, 58, 0.14);
     color: var(--text);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 html.theme-light .search-input:focus,
 html.theme-light .of-field input:focus,
 html.theme-light .of-field select:focus,
 html.theme-light .of-field textarea:focus {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px #d9effa;
+    box-shadow: 0 0 0 3px rgba(10, 124, 255, 0.15);
 }
-html.theme-light .of-field select option { background: #ffffff; color: #172a37; }
-html.theme-light .of-file { background: #fbfcfe; border-color: #c6d3e0; }
+html.theme-light .search-input::placeholder { color: rgba(27, 43, 58, 0.45); }
+html.theme-light .of-field select option { background: #ffffff; color: #1b2b3a; }
+html.theme-light .of-file {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(27, 43, 58, 0.22);
+}
 html.theme-light .of-file:hover,
-html.theme-light .of-file.has-file { background: var(--accent-soft); border-color: var(--accent); }
+html.theme-light .of-file.has-file { background: var(--accent-soft); border-color: var(--accent); color: #0668d6; }
 
-html.theme-light .search-result-item { background: #fbfcfe; }
-html.theme-light .search-result-item:hover { background: var(--accent-soft); }
-html.theme-light .close-search,
-html.theme-light .close-modal { color: #8395a5; }
-html.theme-light .close-search { background: #f2f6fa; }
+html.theme-light .search-result-item {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(255, 255, 255, 0.9);
+}
+html.theme-light .search-result-item:hover { background: rgba(10, 124, 255, 0.10); border-color: var(--accent-line); }
+html.theme-light .close-search {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 0.95);
+    color: rgba(27, 43, 58, 0.6);
+}
+html.theme-light .close-modal { color: rgba(27, 43, 58, 0.5); }
 html.theme-light .close-search:hover,
 html.theme-light .close-modal:hover { color: var(--text); }
 
-/* plan rows */
-html.theme-light .plan-btn { background: #fbfcfe; }
-html.theme-light .plan-btn:hover { background: var(--accent-soft); border-color: var(--accent-line); }
+/* plan rows: glass pills */
+html.theme-light .plan-btn {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 12px rgba(31, 38, 135, 0.07);
+}
+html.theme-light .plan-btn:hover { background: rgba(10, 124, 255, 0.10); border-color: var(--accent-line); }
 html.theme-light .plan-btn:hover .plan-price { color: #067647; }
 html.theme-light .plan-note,
-html.theme-light .faq-answer { background: #f6f8fb; }
-html.theme-light .checkout-opt { background: #fbfcfe; }
-html.theme-light .checkout-opt:hover { background: var(--accent-soft); }
+html.theme-light .faq-answer { background: rgba(255, 255, 255, 0.45); }
+html.theme-light .checkout-opt {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 12px rgba(31, 38, 135, 0.07);
+}
+html.theme-light .checkout-opt:hover { background: rgba(10, 124, 255, 0.10); }
+html.theme-light .checkout-opt--bot { border-color: rgba(10, 124, 255, 0.45); }
+html.theme-light .checkout-opt--web:hover { border-color: var(--mint-line); }
 
-/* ---------- pills, badges, small buttons ---------- */
+/* ---------- pills, badges, small buttons: glossy ---------- */
 html.theme-light .nav-btn {
-    color: #172a37;
-    background: #ffffff;
-    border-color: #d6dfe8;
-    box-shadow: 0 1px 2px rgba(23, 42, 55, 0.06), 0 6px 16px rgba(23, 42, 55, 0.06);
+    color: #1b2b3a;
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: inset 0 1px 0 #ffffff, 0 8px 20px rgba(31, 38, 135, 0.12);
 }
 html.theme-light .nav-btn:hover {
-    color: #172a37;
-    box-shadow: 0 2px 4px rgba(23, 42, 55, 0.07), 0 10px 22px rgba(23, 42, 55, 0.10);
+    color: #1b2b3a;
+    box-shadow: inset 0 1px 0 #ffffff, 0 12px 26px rgba(31, 38, 135, 0.16);
 }
-html.theme-light .buy-now { background: #0a9e5c; color: #fff; }
-html.theme-light .buy-now:hover { background: #0a9e5c; color: #fff; }
-html.theme-light .telegram-btn { background: #0284c7; color: #fff; }
-html.theme-light .telegram-btn:hover { background: #0284c7; color: #fff; }
+html.theme-light .buy-now { background: #12b56d; color: #fff; }
+html.theme-light .buy-now:hover { background: #12b56d; color: #fff; }
+html.theme-light .telegram-btn { background: #0a7cff; color: #fff; }
+html.theme-light .telegram-btn:hover { background: #0a7cff; color: #fff; }
 
-html.theme-light .bot-cta-badge { color: var(--accent); background: var(--accent-soft); }
-html.theme-light .bot-step { background: #f6f8fb; }
-html.theme-light .category-card .cat-count { background: #eef2f7; }
-html.theme-light .footer-links a { background: #ffffff; }
+html.theme-light .bot-cta-badge { color: #0668d6; background: rgba(10, 124, 255, 0.12); border-color: rgba(10, 124, 255, 0.35); }
+html.theme-light .bot-step {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.9);
+}
+html.theme-light .bot-step i { color: #0668d6; }
+html.theme-light .category-card .cat-count { background: rgba(255, 255, 255, 0.6); }
+html.theme-light .product-card .cat-count { color: #0668d6; }
+html.theme-light .footer-links a { background: rgba(255, 255, 255, 0.5); }
 
-html.theme-light .plan-contact-btn--tg { color: #0270a8; border-color: #a8d7ee; }
-html.theme-light .plan-contact-btn--fb { color: #3556b0; border-color: #bcc9ec; }
-html.theme-light .plan-contact-btn:hover { background: var(--accent-soft); }
+html.theme-light .plan-contact-btn--tg { color: #0668d6; border-color: rgba(10, 124, 255, 0.4); }
+html.theme-light .plan-contact-btn--fb { color: #3556b0; border-color: rgba(53, 86, 176, 0.4); }
+html.theme-light .plan-contact-btn:hover { background: rgba(10, 124, 255, 0.10); }
 html.theme-light .of-fb-btn {
-    background: #eef3fd;
-    border-color: #b9cdf5;
+    background: rgba(24, 119, 242, 0.10);
+    border-color: rgba(24, 119, 242, 0.4);
     color: #1b4d9c;
 }
 
 /* hardcoded light-blue hovers -> deep blue */
-html.theme-light .faq-question:hover { color: #026aa1; }
-html.theme-light .review-preview-head a:hover { color: #026aa1; }
+html.theme-light .faq-question:hover { color: #0668d6; }
+html.theme-light .review-preview-head a:hover { color: #054fa6; }
 
 /* result banners */
 html.theme-light .of-result.ok { background: var(--mint-soft); border-color: var(--mint-line); }
-html.theme-light .of-result.err { background: #fdeeee; border-color: #f2b8b5; }
+html.theme-light .of-result.err { background: rgba(255, 99, 99, 0.10); border-color: rgba(214, 69, 69, 0.45); }
 
 /* inline-styled links/hints (style="" attrs need !important) */
 html.theme-light .of-sub a,
-html.theme-light .order-summary a { color: #026aa1 !important; }
-html.theme-light #of-mail-hint { color: #7a8b99 !important; }
+html.theme-light .order-summary a { color: #0668d6 !important; }
+html.theme-light #of-mail-hint { color: rgba(27, 43, 58, 0.55) !important; }
 
 /* order summary strip */
 html.theme-light .order-summary {
-    background: var(--accent-soft);
-    border-color: var(--accent-line);
+    background: rgba(10, 124, 255, 0.10);
+    border-color: rgba(10, 124, 255, 0.35);
 }
+html.theme-light .order-summary h3 { color: #0668d6; }
 
 /* ---------- payment page (inline <style> hardcodes darks) ---------- */
 html.theme-light .payment-subtitle { color: var(--text-dim); }
 html.theme-light .payment-selector,
 html.theme-light .qr-panel {
-    background: #f8fafc;
-    border-color: var(--stroke);
-    box-shadow: none;
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 10px 26px rgba(31, 38, 135, 0.10);
+    backdrop-filter: blur(18px) saturate(1.5);
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
 }
 html.theme-light .platform-select {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.75);
     color: var(--text);
-    border-color: #d6dfe8;
+    border-color: rgba(27, 43, 58, 0.14);
 }
 html.theme-light .platform-btn {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.75);
     color: var(--text);
-    border-color: #d6dfe8;
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: inset 0 1px 0 #ffffff, 0 4px 12px rgba(31, 38, 135, 0.08);
 }
 html.theme-light .platform-btn.active {
-    background: var(--accent-soft);
-    border-color: var(--accent);
-    box-shadow: 0 6px 16px rgba(2, 132, 199, 0.12);
+    background: rgba(10, 124, 255, 0.12);
+    border-color: rgba(10, 124, 255, 0.55);
+    box-shadow: 0 8px 20px rgba(10, 124, 255, 0.16);
 }
-html.theme-light .pay-icon { border-color: var(--stroke); }
+html.theme-light .pay-icon { border-color: rgba(255, 255, 255, 0.9); }
 html.theme-light .badge {
-    background: #eef2f7;
-    border-color: var(--stroke);
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 0.95);
     color: var(--text);
 }
 html.theme-light .qr-single img {
-    border-color: var(--stroke);
+    border-color: rgba(255, 255, 255, 0.95);
     background: #ffffff;
 }
 html.theme-light .bot-note {
-    background: var(--mint-soft);
-    border-color: var(--mint-line);
+    background: rgba(14, 170, 102, 0.10);
+    border-color: rgba(14, 170, 102, 0.30);
 }
 /* forced-white iOS link overrides in payment.html must flip to ink */
 html.theme-light a[href^="tel"],
@@ -289,54 +316,53 @@ html.theme-light .payment-instruction a,
 html.theme-light .payment-instruction span,
 html.theme-light .payment-instruction strong,
 html.theme-light .payment-instruction a:link,
-html.theme-light .payment-instruction a:visited { color: #172a37 !important; }
+html.theme-light .payment-instruction a:visited { color: #1b2b3a !important; }
 
 /* ---------- reviews page ---------- */
 html.theme-light .proof-hint {
-    border-color: var(--stroke);
-    background: #ffffff;
+    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.55);
     color: var(--text-dim);
 }
 html.theme-light .proof-item {
-    border-color: var(--stroke);
-    background: #ffffff;
+    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.5);
 }
 html.theme-light .proof-item:hover {
-    border-color: var(--accent-line);
-    box-shadow: 0 12px 26px rgba(23, 42, 55, 0.12);
+    border-color: rgba(10, 124, 255, 0.5);
+    box-shadow: 0 14px 30px rgba(31, 38, 135, 0.16);
 }
 /* lightbox intentionally stays dark — best for viewing photos */
 
 /* ---------- terms of service pages ---------- */
 html.theme-light .terms-card {
-    background: #ffffff;
-    border-color: var(--stroke);
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(255, 255, 255, 0.85);
     color: var(--text);
-    box-shadow: 0 1px 2px rgba(23, 42, 55, 0.04), 0 12px 32px rgba(23, 42, 55, 0.07);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 16px 40px rgba(31, 38, 135, 0.12);
 }
-html.theme-light .terms-card h1 { color: #026aa1; }
+html.theme-light .terms-card h1 { color: #0668d6; }
 html.theme-light .last-update { color: var(--text-dim); }
 html.theme-light .terms-section p,
 html.theme-light .terms-card p,
-html.theme-light .terms-card li { color: #2c3f4d; }
+html.theme-light .terms-card li { color: rgba(27, 43, 58, 0.85); }
 
 /* ---------- expressvpn guide ----------
-   Page shell (bg/title/update pill/footer) goes light; the two
-   step cards mimic the real ExpressVPN app's dark UI, so they
+   Page shell (bg/title/update pill/footer) goes light glass; the
+   two step cards mimic the real ExpressVPN app's dark UI, so they
    stay DARK ISLANDS: solid slate bg (!important beats step2's
-   inline transparent bg) + the text tokens re-darkened inside,
-   so every var()-driven label inside the card reads again. */
-html.theme-light .lg-update { background: #ffffff; }
+   inline transparent bg) + text tokens re-darkened inside. */
+html.theme-light .lg-update { background: rgba(255, 255, 255, 0.6); border-color: rgba(255, 255, 255, 0.9); }
 html.theme-light .lg-card {
     --txt: #ffffff;
     --txt-dim: rgba(255, 255, 255, 0.65);
     --txt-dim2: rgba(255, 255, 255, 0.45);
     background: #101826 !important;
     border-color: rgba(255, 255, 255, 0.16) !important;
-    box-shadow: 0 12px 30px rgba(23, 42, 55, 0.18);
+    box-shadow: 0 14px 34px rgba(31, 38, 135, 0.22);
     color: #ffffff;
 }
-html.theme-light .footer-links a:hover { background: #eef2f7; color: var(--text); }
+html.theme-light .footer-links a:hover { background: rgba(255, 255, 255, 0.85); color: var(--text); }
 
 /* ---------- theme toggle button ---------- */
 .theme-toggle-btn { min-width: 38px; justify-content: center; }
