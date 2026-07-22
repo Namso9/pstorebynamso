@@ -813,8 +813,7 @@
           "desc": "One Device",
           "price": "20,000 Ks",
           "id": "6_months",
-          "bot": true,
-          "stock": false
+          "bot": true
         },
         {
           "name": "1 Year",
