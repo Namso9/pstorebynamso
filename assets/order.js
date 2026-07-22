@@ -128,7 +128,7 @@
               result.innerHTML =
                 '<strong><i class="fa-solid fa-circle-check"></i> Order တင်ပြီးပါပြီ!</strong><br/>' +
                 'Order ID: <strong>' + esc(res.j.orderId) + '</strong><br/>' +
-                'Admin က Viber <strong>09 953 362 620</strong> ကနေ မကြာခင် ပြန်ဆက်သွယ်ပါမယ် — အဲ့နံပါတ်က message ကို လက်ခံပေးပါ။<br/>' +
+                'Admin က သင်ပေးထားတဲ့ Contact (Viber / Telegram) အတိုင်း မကြာခင် ပြန်ဆက်သွယ်ပါမယ်။<br/>' +
                 'Facebook နဲ့လည်း ဆက်သွယ်နိုင်ပါတယ် — အောက်ကခလုတ်နှိပ်ပြီး Order ID ကို ပို့ထားပါ:<br/>' +
                 '<a class="of-fb-btn" target="_blank" rel="noopener" href="' + esc(fbLink) + '"><i class="fa-brands fa-facebook-messenger"></i> Facebook Page ကို စာပို့မယ်</a>';
               e.target.reset();
