@@ -693,7 +693,8 @@
           "desc": "18 months link • Promotion Price 🔥",
           "price": "25,000 Ks",
           "id": "18_months",
-          "bot": true
+          "bot": true,
+          "stock": false
         }
       ]
     },
