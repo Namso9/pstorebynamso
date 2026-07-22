@@ -23,6 +23,11 @@
     <p class="of-sub"> ငွေလွှဲပြီး screenshot တင်လိုက်ပါ။ Admin က <strong>Viber or Telegram</strong> ကနေ ပြန်ဆက်သွယ်ပါမယ်။<br/>Form မတင်ချင်ရင်  <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> ကို screenshot တိုက်ရိုက်ပို့လို့လည်း ရပါတယ်။</p>
 
     <form id="orderForm">
+      <!-- machine-readable ids from the ?product=&plan= prefill so the server
+           can resolve the exact plan (stock check). Cleared by order.js if the
+           customer manually edits the product text away from the prefill. -->
+      <input type="hidden" id="of-product-id" name="product_id" value="" />
+      <input type="hidden" id="of-plan-id" name="plan_id" value="" />
       <div class="of-field">
         <label for="of-name">နာမည် *</label>
         <input type="text" id="of-name" name="name" required maxlength="60" placeholder="သင့်နာမည်" />

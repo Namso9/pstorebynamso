@@ -27,6 +27,8 @@
       var planNeedsMail = false;
       var prefilledValue = '';
       var prefilledNeedsMail = false;
+      var prefilledProductId = '';
+      var prefilledPlanId = '';
       // Gemini: gmail + password optional (မဖြည့်ရင် admin ဆက်သွယ်ချိန်ပေးလို့ရ)
       var MAIL_PW_OPTIONAL = ['gemini'];
 
@@ -45,6 +47,8 @@
       }
       var allProducts = null;
       var currentProductId = '';
+      var prodIdInput = document.getElementById('of-product-id');
+      var planIdInput = document.getElementById('of-plan-id');
 
       function updateExtraFields() {
         var needMail = MAIL_REQUIRED.indexOf(currentProductId) !== -1 || planNeedsMail;
@@ -87,12 +91,27 @@
         return '';
       }
 
+      function clearStockWarn() {
+        var w = document.getElementById('of-stock-warn');
+        if (w) w.remove();
+      }
+
       productInput.addEventListener('input', function () {
         currentProductId = resolveProductId(productInput.value);
-        // Only drop the plan flag when the product text genuinely changed from
-        // the prefill (trimmed compare) — and restore it if they undo the edit.
-        planNeedsMail = (prefilledValue && productInput.value.trim() === prefilledValue)
-          ? prefilledNeedsMail : false;
+        // Only keep the prefill-bound ids/flag while the text still matches the
+        // prefill (trimmed) — a genuine edit means "different product", so the
+        // hidden ids must not keep pointing at the old plan.
+        var stillPrefill = prefilledValue && productInput.value.trim() === prefilledValue;
+        planNeedsMail = stillPrefill ? prefilledNeedsMail : false;
+        if (!stillPrefill) {
+          if (prodIdInput) prodIdInput.value = '';
+          if (planIdInput) planIdInput.value = '';
+          clearStockWarn();  // OOS warning belonged to the prefilled plan
+        } else {
+          // restore the EXACT prefill ids (not a re-resolved guess)
+          if (prodIdInput) prodIdInput.value = prefilledProductId;
+          if (planIdInput) planIdInput.value = prefilledPlanId;
+        }
         updateExtraFields();
       });
 
@@ -112,6 +131,11 @@
           planNeedsMail = !!(plan && String(plan.id).indexOf('cus_mail') !== -1);
           prefilledValue = productInput.value.trim();
           prefilledNeedsMail = planNeedsMail;
+          // carry the resolved ids for server-side stock validation
+          prefilledProductId = p.id;
+          prefilledPlanId = plan ? plan.id : '';
+          if (prodIdInput) prodIdInput.value = prefilledProductId;
+          if (planIdInput) planIdInput.value = prefilledPlanId;
           // Prefilled plan is out of stock -> warn visibly (textContent, no
           // innerHTML) but keep the form usable — admin reviews manual orders.
           if (plan && plan.stock === false && !document.getElementById('of-stock-warn')) {
@@ -159,6 +183,17 @@
               e.target.reset();
               fileText.textContent = 'Screenshot ရွေးရန် နှိပ်ပါ';
               fileLabel.classList.remove('has-file');
+              // reset() blanks the fields but not our derived state — reconcile
+              // so a cleared form can't keep showing a required email / warning
+              planNeedsMail = false;
+              currentProductId = '';
+              prefilledValue = '';
+              prefilledProductId = '';
+              prefilledPlanId = '';
+              if (prodIdInput) prodIdInput.value = '';
+              if (planIdInput) planIdInput.value = '';
+              clearStockWarn();
+              updateExtraFields();
             } else {
               throw new Error(res.j.error || 'failed');
             }
