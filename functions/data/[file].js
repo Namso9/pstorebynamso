@@ -25,6 +25,7 @@ export async function onRequestGet({ params, request, env }) {
         headers: {
           'Content-Type': 'application/json; charset=utf-8',
           'Cache-Control': 'public, max-age=60, must-revalidate',
+          'X-Content-Type-Options': 'nosniff',
           'X-Data-Source': 'github-live',
         },
       });

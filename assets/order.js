@@ -1,4 +1,12 @@
     (function () {
+      // defense-in-depth: escape anything we interpolate into innerHTML,
+      // even server-generated values (API response shape may change later)
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
       var fileInput = document.getElementById('of-file');
       var fileLabel = document.getElementById('of-file-label');
       var fileText = document.getElementById('of-file-text');
@@ -22,6 +30,12 @@
       var mailHint = document.getElementById('of-mail-hint');
       var pwField = document.getElementById('of-pw-field');
       var pwInput = document.getElementById('of-pw');
+      var pwShow = document.getElementById('of-pw-show');
+      if (pwShow) {
+        pwShow.addEventListener('change', function () {
+          pwInput.type = pwShow.checked ? 'text' : 'password';
+        });
+      }
       var allProducts = null;
       var currentProductId = '';
 
@@ -108,13 +122,15 @@
           .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
           .then(function (res) {
             if (res.ok && res.j.ok) {
+              // only allow an https link from the server; anything else -> '#'
+              var fbLink = /^https:\/\//.test(res.j.fbLink) ? res.j.fbLink : '#';
               result.className = 'of-result ok';
               result.innerHTML =
                 '<strong><i class="fa-solid fa-circle-check"></i> Order တင်ပြီးပါပြီ!</strong><br/>' +
-                'Order ID: <strong>' + res.j.orderId + '</strong><br/>' +
+                'Order ID: <strong>' + esc(res.j.orderId) + '</strong><br/>' +
                 'Admin က Viber <strong>09 953 362 620</strong> ကနေ မကြာခင် ပြန်ဆက်သွယ်ပါမယ် — အဲ့နံပါတ်က message ကို လက်ခံပေးပါ။<br/>' +
                 'Facebook နဲ့လည်း ဆက်သွယ်နိုင်ပါတယ် — အောက်ကခလုတ်နှိပ်ပြီး Order ID ကို ပို့ထားပါ:<br/>' +
-                '<a class="of-fb-btn" target="_blank" rel="noopener" href="' + res.j.fbLink + '"><i class="fa-brands fa-facebook-messenger"></i> Facebook Page ကို စာပို့မယ်</a>';
+                '<a class="of-fb-btn" target="_blank" rel="noopener" href="' + esc(fbLink) + '"><i class="fa-brands fa-facebook-messenger"></i> Facebook Page ကို စာပို့မယ်</a>';
               e.target.reset();
               fileText.textContent = 'Screenshot ရွေးရန် နှိပ်ပါ';
               fileLabel.classList.remove('has-file');

@@ -39,7 +39,10 @@
 
       <div class="of-field" id="of-pw-field" style="display:none">
         <label for="of-pw">Gmail Password (optional)</label>
-        <input type="text" id="of-pw" name="customer_pw" maxlength="100" placeholder="Gmail password" autocomplete="off" />
+        <input type="password" id="of-pw" name="customer_pw" maxlength="100" placeholder="Gmail password" autocomplete="off" />
+        <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;margin-top:6px;opacity:0.8;cursor:pointer">
+          <input type="checkbox" id="of-pw-show" style="width:auto" /> Password ပြရန်
+        </label>
       </div>
 
       <div class="of-field">
@@ -81,7 +84,7 @@
     <div class="of-result" id="of-result"></div>
   </div>
 
-  <script src="assets/app.js?v=3" defer></script>
-  <script src="assets/order.js" defer></script>
+  <script src="assets/app.js?v=4" defer></script>
+  <script src="assets/order.js?v=2" defer></script>
 </body>
 </html>

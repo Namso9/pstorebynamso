@@ -4,6 +4,7 @@
 # attributes are still used, hence 'unsafe-inline' for styles only.
 # External allowances: Font Awesome CSS + webfonts from cdnjs.
 /*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin

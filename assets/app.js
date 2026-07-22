@@ -324,9 +324,13 @@
       var plan = (product.plans || []).find(function (pl) { return pl.id === plid; });
       host.style.display = '';
       var onOrderPage = location.pathname.indexOf('order.html') !== -1;
+      // Rebuild the query from the two validated params only — never echo the
+      // raw location.search into innerHTML (HTML-injection vector).
+      var safeSearch = '?product=' + encodeURIComponent(pid) +
+        (plid ? '&plan=' + encodeURIComponent(plid) : '');
       var tail = onOrderPage
         ? 'အောက်က form ကိုဖြည့်ပြီး ငွေလွှဲ screenshot တင်ပေးပါ။'
-        : 'အောက်မှာ Platform ရွေးပြီး QR နဲ့ ငွေလွှဲပါ။ ငွေလွှဲပြီးရင် screenshot ကို <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> သို့မဟုတ် <a href="order.html' + location.search + '" style="color:#00d2ff">ဒီ order form</a> ကနေ တင်နိုင်ပါတယ်။';
+        : 'အောက်မှာ Platform ရွေးပြီး QR နဲ့ ငွေလွှဲပါ။ ငွေလွှဲပြီးရင် screenshot ကို <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> သို့မဟုတ် <a href="order.html' + esc(safeSearch) + '" style="color:#00d2ff">ဒီ order form</a> ကနေ တင်နိုင်ပါတယ်။';
       host.innerHTML = '<h3><i class="fa-solid fa-cart-shopping"></i> Your Order</h3>' +
         '<p>' + esc(product.name) + (plan ? ' — ' + esc(plan.name) : '') + '</p>' +
         (plan && plan.price ? '<p class="os-price">' + esc(plan.price) + '</p>' : '') +

@@ -61,6 +61,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
     if (shot.size > MAX_FILE) {
       return json({ ok: false, error: 'File too large' }, 400);
     }
+    // must be an image (Telegram sendPhoto rejects anything else with a
+    // confusing error). Empty type is allowed — some browsers omit it.
+    if (shot.type && !shot.type.startsWith('image/')) {
+      return json({ ok: false, error: 'Screenshot must be an image' }, 400);
+    }
 
     const orderId = 'W' + Date.now().toString(36).toUpperCase() +
       Math.random().toString(36).slice(2, 5).toUpperCase();
@@ -102,12 +107,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
       has_pw: Boolean(customerPw),
     });
 
-    return json({
-      ok: true,
-      orderId,
-      fbLink: (env.FB_PAGE_LINK || 'https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr') +
-        (env.FB_PAGE_LINK && env.FB_PAGE_LINK.includes('m.me') ? `?ref=${orderId}` : ''),
-    });
+    const fbBase = env.FB_PAGE_LINK || 'https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr';
+    const fbRef = env.FB_PAGE_LINK && env.FB_PAGE_LINK.includes('m.me')
+      ? (fbBase.includes('?') ? `&ref=${orderId}` : `?ref=${orderId}`)
+      : '';
+    return json({ ok: true, orderId, fbLink: fbBase + fbRef });
   } catch (e) {
     console.error(e);
     return json({ ok: false, error: 'Server error' }, 500);
@@ -121,6 +125,10 @@ function clean(v, max) {
 function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), {
     status,
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      // _headers rules don't apply to Pages Function responses — set here
+      'X-Content-Type-Options': 'nosniff',
+    },
   });
 }
