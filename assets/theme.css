@@ -1,9 +1,15 @@
 /* ==========================================================
-   PREMIUM STORE — light theme overrides
+   PREMIUM STORE — light theme (v2, clean minimalist)
    Dark stays the DEFAULT look (all existing CSS untouched).
-   theme.js puts .theme-light on <html> (manual choice or
-   system preference) — everything here is scoped under it,
-   so with the class absent this file changes NOTHING.
+   theme.js puts .theme-light on <html> — everything here is
+   scoped under it, so with the class absent this file
+   changes NOTHING.
+
+   Design language (light):
+   · flat soft-grey canvas (no photo, no heavy glass)
+   · solid white cards, hairline borders, feather shadows
+   · one accent blue (#0284c7) + one green (#0a9e5c)
+   · zero text-shadows / glows
    ========================================================== */
 
 :root { color-scheme: dark; }
@@ -11,75 +17,145 @@ html.theme-light { color-scheme: light; }
 
 /* ---------- design tokens (mirror style.css/components.css) ---------- */
 html.theme-light {
-    --bg-ink: #eef2f7;
-    --glass: rgba(12, 30, 46, 0.05);
-    --glass-hi: rgba(12, 30, 46, 0.09);
-    --glass-deep: rgba(255, 255, 255, 0.72);
-    --glass-solid: rgba(255, 255, 255, 0.94);
-    --stroke: rgba(10, 30, 50, 0.15);
-    --stroke-hi: rgba(10, 30, 50, 0.32);
-    --text: #132430;
-    --text-dim: rgba(19, 36, 48, 0.66);
-    --accent: #007ea6;
-    --accent-soft: rgba(0, 126, 166, 0.10);
-    --accent-line: rgba(0, 126, 166, 0.42);
-    --accent-ink: #eaf7fc;
-    --mint: #128a4a;
-    --mint-soft: rgba(18, 138, 74, 0.10);
-    --mint-line: rgba(18, 138, 74, 0.38);
-    --gold-note: #8a6d00;
-    --brand-amber: #b97a08;
-    --edge: inset 0 1px 0 rgba(255, 255, 255, 0.65),
-            inset 0 -1px 0 rgba(0, 0, 0, 0.03);
-    --lift: 0 24px 60px rgba(30, 50, 70, 0.16);
+    --bg-ink: #f6f8fb;
 
-    /* expressvpn-location-guide page tokens */
-    --bg: #eef2f7;
-    --card: rgba(12, 30, 46, 0.05);
-    --card-border: rgba(10, 30, 50, 0.15);
-    --txt: #132430;
-    --txt-dim: rgba(19, 36, 48, 0.68);
-    --txt-dim2: rgba(19, 36, 48, 0.48);
+    /* "glass" becomes flat, minimal surfaces */
+    --glass: #ffffff;
+    --glass-hi: #f2f6fa;
+    --glass-deep: #ffffff;
+    --glass-solid: #ffffff;
+
+    --stroke: #e4eaf1;
+    --stroke-hi: #c6d3e0;
+
+    --text: #172a37;
+    --text-dim: #5d7080;
+
+    --accent: #0284c7;
+    --accent-soft: #eaf6fd;
+    --accent-line: #9bd4ef;
+    --accent-ink: #eaf6fd;
+    --mint: #0a9e5c;
+    --mint-soft: #e9f8f0;
+    --mint-line: #a5dfc4;
+    --gold-note: #946f00;
+    --brand-amber: #c07f06;
+
+    /* kill the glass optics: hairline + feather shadow */
+    --edge: 0 0 0 0 rgba(0, 0, 0, 0);
+    --lift: 0 10px 30px rgba(23, 42, 55, 0.08);
+
+    /* expressvpn-location-guide page-shell tokens (cards re-darken below) */
+    --bg: #f6f8fb;
+    --txt: #172a37;
+    --txt-dim: #5d7080;
+    --txt-dim2: #8395a5;
 }
 
-/* ---------- page background (same photo, light wash) ---------- */
+/* ---------- canvas: flat, calm, no photo ---------- */
 html.theme-light body {
-    background:
-        radial-gradient(900px 500px at 92% -8%, rgba(246, 168, 33, 0.10), transparent 60%),
-        radial-gradient(800px 600px at -5% 25%, rgba(46, 213, 115, 0.08), transparent 60%),
-        radial-gradient(1000px 700px at 55% 115%, rgba(124, 92, 255, 0.08), transparent 60%),
-        linear-gradient(rgba(243, 247, 251, 0.90), rgba(238, 243, 249, 0.95)),
-        url('../images/bg.webp') center / cover fixed,
-        var(--bg-ink);
+    background: linear-gradient(180deg, #f8fafd 0%, #f2f5f9 100%) fixed;
     color: var(--text);
 }
 @media (max-width: 768px) {
     html.theme-light body { background-attachment: scroll; }
 }
 
-html.theme-light ::selection { background: var(--accent-soft); color: var(--text); }
+html.theme-light ::selection { background: #d3edfa; color: var(--text); }
 html.theme-light a { color: var(--accent); }
-html.theme-light a:hover { color: #005e7d; }
+html.theme-light a:hover { color: #026aa1; }
 
-/* ---------- gradient display headings (white part invisible on light) ---- */
+/* ---------- display headings: solid ink, no glow ---------- */
 html.theme-light .header h1,
 html.theme-light .page-title,
 html.theme-light .payment-title,
 html.theme-light .proof-title,
 html.theme-light .lg-title {
-    background: linear-gradient(135deg, #14303e 15%, #007ea6 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: #14303e;
     text-shadow: none;
 }
+html.theme-light .search-modal-title,
+html.theme-light .modal-title,
+html.theme-light .app-info h3 { text-shadow: none; }
 
-/* ---------- sticky site header ---------- */
-html.theme-light .site-header { background: rgba(250, 252, 255, 0.78); }
+/* ---------- sticky site header: solid white bar ---------- */
+html.theme-light .site-header {
+    background: rgba(255, 255, 255, 0.92);
+    border-bottom: 1px solid var(--stroke);
+}
+html.theme-light .site-brand .site-logo { box-shadow: 0 1px 4px rgba(23, 42, 55, 0.12); }
 
-/* ---------- modal / search scrims + inputs ---------- */
+/* ---------- cards: solid white, hairline, feather shadow ---------- */
+html.theme-light .product-card,
+html.theme-light .app-item,
+html.theme-light .category-card,
+html.theme-light .guide-box,
+html.theme-light .payment-card,
+html.theme-light .faq-container,
+html.theme-light .order-form-card,
+html.theme-light .bot-cta-card,
+html.theme-light .search-modal-content,
+html.theme-light .modal-content {
+    background: #ffffff;
+    border-color: var(--stroke);
+    box-shadow: 0 1px 2px rgba(23, 42, 55, 0.04), 0 8px 24px rgba(23, 42, 55, 0.06);
+}
+
+html.theme-light .product-card:hover,
+html.theme-light .card-link:hover .product-card {
+    background: #ffffff;
+    border-color: var(--accent-line);
+    box-shadow: 0 2px 4px rgba(23, 42, 55, 0.05), 0 14px 34px rgba(23, 42, 55, 0.10);
+}
+html.theme-light .app-item:hover,
+html.theme-light .category-card:hover {
+    background: #ffffff;
+    border-color: var(--stroke-hi);
+    box-shadow: 0 2px 4px rgba(23, 42, 55, 0.05), 0 12px 28px rgba(23, 42, 55, 0.10);
+}
+
+/* bot CTA: drop the colored radials, keep it airy */
+html.theme-light .bot-cta-card {
+    background:
+        radial-gradient(circle at top left, rgba(10, 158, 92, 0.05), transparent 42%),
+        radial-gradient(circle at bottom right, rgba(2, 132, 199, 0.05), transparent 42%),
+        #ffffff;
+}
+
+html.theme-light .product-card img { background: #f6f8fb; }
+
+/* app tiles: flat plate */
+html.theme-light .app-item img {
+    background: #f4f7fa;
+    border-color: var(--stroke);
+    box-shadow: none;
+}
+html.theme-light .app-item:hover img { box-shadow: 0 6px 14px rgba(23, 42, 55, 0.10); }
+
+/* dark brand marks already sit on light plates — soften their border */
+html.theme-light .adobe-logo, html.theme-light .picsart-logo,
+html.theme-light .peacock-logo, html.theme-light .chatgpt-logo,
+html.theme-light .grok-logo, html.theme-light .perplexity-logo,
+html.theme-light .disney-logo, html.theme-light .hiddify-logo,
+html.theme-light .jumpjump-logo, html.theme-light .nord-logo {
+    border-color: var(--stroke) !important;
+}
+/* white-asset logos need a dark plate to stay visible on light */
+html.theme-light .gamma-logo, html.theme-light .tidal-logo {
+    background: #17232e;
+    border-radius: 13px;
+    padding: 8px;
+}
+
+/* ---------- modals / search ---------- */
 html.theme-light .search-modal,
-html.theme-light .modal-overlay { background: rgba(25, 38, 50, 0.35); }
-
+html.theme-light .modal-overlay {
+    background: rgba(23, 36, 48, 0.38);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
 html.theme-light .search-input,
 html.theme-light .of-field input[type="text"],
 html.theme-light .of-field input[type="tel"],
@@ -87,84 +163,125 @@ html.theme-light .of-field input[type="email"],
 html.theme-light .of-field input[type="password"],
 html.theme-light .of-field select,
 html.theme-light .of-field textarea {
-    background: rgba(255, 255, 255, 0.78);
+    background: #fbfcfe;
+    border-color: #d6dfe8;
     color: var(--text);
 }
 html.theme-light .search-input:focus,
 html.theme-light .of-field input:focus,
 html.theme-light .of-field select:focus,
-html.theme-light .of-field textarea:focus { background: #ffffff; }
-html.theme-light .of-field select option { background: #ffffff; color: #132430; }
-html.theme-light .of-file { background: rgba(255, 255, 255, 0.5); }
+html.theme-light .of-field textarea:focus {
+    background: #ffffff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px #d9effa;
+}
+html.theme-light .of-field select option { background: #ffffff; color: #172a37; }
+html.theme-light .of-file { background: #fbfcfe; border-color: #c6d3e0; }
+html.theme-light .of-file:hover,
+html.theme-light .of-file.has-file { background: var(--accent-soft); border-color: var(--accent); }
 
-/* ---------- hardcoded light-blue text on dark (needs dark ink) ---------- */
-html.theme-light .faq-question:hover { color: #005e7d; }
-html.theme-light .review-preview-head a:hover { color: #005e7d; }
-html.theme-light .plan-btn:hover .plan-price { color: #0c6b3a; }
-html.theme-light .bot-cta-badge { color: var(--accent); }
-html.theme-light .plan-contact-btn--tg { color: #0b6db0; border-color: rgba(11, 109, 176, 0.45); }
-html.theme-light .plan-contact-btn--fb { color: #3556b0; border-color: rgba(53, 86, 176, 0.45); }
+html.theme-light .search-result-item { background: #fbfcfe; }
+html.theme-light .search-result-item:hover { background: var(--accent-soft); }
+html.theme-light .close-search,
+html.theme-light .close-modal { color: #8395a5; }
+html.theme-light .close-search { background: #f2f6fa; }
+html.theme-light .close-search:hover,
+html.theme-light .close-modal:hover { color: var(--text); }
+
+/* plan rows */
+html.theme-light .plan-btn { background: #fbfcfe; }
+html.theme-light .plan-btn:hover { background: var(--accent-soft); border-color: var(--accent-line); }
+html.theme-light .plan-btn:hover .plan-price { color: #067647; }
+html.theme-light .plan-note,
+html.theme-light .faq-answer { background: #f6f8fb; }
+html.theme-light .checkout-opt { background: #fbfcfe; }
+html.theme-light .checkout-opt:hover { background: var(--accent-soft); }
+
+/* ---------- pills, badges, small buttons ---------- */
+html.theme-light .nav-btn {
+    color: #172a37;
+    background: #ffffff;
+    border-color: #d6dfe8;
+    box-shadow: 0 1px 2px rgba(23, 42, 55, 0.06), 0 6px 16px rgba(23, 42, 55, 0.06);
+}
+html.theme-light .nav-btn:hover {
+    color: #172a37;
+    box-shadow: 0 2px 4px rgba(23, 42, 55, 0.07), 0 10px 22px rgba(23, 42, 55, 0.10);
+}
+html.theme-light .buy-now { background: #0a9e5c; color: #fff; }
+html.theme-light .buy-now:hover { background: #0a9e5c; color: #fff; }
+html.theme-light .telegram-btn { background: #0284c7; color: #fff; }
+html.theme-light .telegram-btn:hover { background: #0284c7; color: #fff; }
+
+html.theme-light .bot-cta-badge { color: var(--accent); background: var(--accent-soft); }
+html.theme-light .bot-step { background: #f6f8fb; }
+html.theme-light .category-card .cat-count { background: #eef2f7; }
+html.theme-light .footer-links a { background: #ffffff; }
+
+html.theme-light .plan-contact-btn--tg { color: #0270a8; border-color: #a8d7ee; }
+html.theme-light .plan-contact-btn--fb { color: #3556b0; border-color: #bcc9ec; }
+html.theme-light .plan-contact-btn:hover { background: var(--accent-soft); }
 html.theme-light .of-fb-btn {
-    background: rgba(24, 119, 242, 0.10);
-    border-color: rgba(24, 119, 242, 0.45);
+    background: #eef3fd;
+    border-color: #b9cdf5;
     color: #1b4d9c;
 }
 
-/* white pill buttons: border/shadow tuned for light bg */
-html.theme-light .nav-btn {
-    border-color: rgba(10, 30, 50, 0.18);
-    box-shadow: 0 8px 20px rgba(30, 50, 70, 0.15);
+/* hardcoded light-blue hovers -> deep blue */
+html.theme-light .faq-question:hover { color: #026aa1; }
+html.theme-light .review-preview-head a:hover { color: #026aa1; }
+
+/* result banners */
+html.theme-light .of-result.ok { background: var(--mint-soft); border-color: var(--mint-line); }
+html.theme-light .of-result.err { background: #fdeeee; border-color: #f2b8b5; }
+
+/* inline-styled links/hints (style="" attrs need !important) */
+html.theme-light .of-sub a,
+html.theme-light .order-summary a { color: #026aa1 !important; }
+html.theme-light #of-mail-hint { color: #7a8b99 !important; }
+
+/* order summary strip */
+html.theme-light .order-summary {
+    background: var(--accent-soft);
+    border-color: var(--accent-line);
 }
-html.theme-light .nav-btn:hover { box-shadow: 0 12px 26px rgba(30, 50, 70, 0.20); }
 
-/* app tiles: soft plate reads better on light glass */
-html.theme-light .app-item img {
-    background: linear-gradient(145deg, #ffffff, #eef2f6);
-    border-color: rgba(10, 30, 50, 0.12);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 6px 16px rgba(30, 50, 70, 0.12);
-}
-html.theme-light .app-info h3 { text-shadow: none; }
-html.theme-light .search-modal-title,
-html.theme-light .modal-title { text-shadow: none; }
-
-html.theme-light .faq-answer { background: rgba(12, 30, 46, 0.04); }
-html.theme-light .plan-note { background: rgba(12, 30, 46, 0.04); }
-html.theme-light .bot-step { background: rgba(255, 255, 255, 0.55); }
-html.theme-light .category-card .cat-count { background: rgba(12, 30, 46, 0.07); }
-html.theme-light .product-card img { background: rgba(12, 30, 46, 0.03); }
-
-/* ---------- payment page (inline <style> uses hardcoded darks) ---------- */
+/* ---------- payment page (inline <style> hardcodes darks) ---------- */
 html.theme-light .payment-subtitle { color: var(--text-dim); }
 html.theme-light .payment-selector,
 html.theme-light .qr-panel {
-    background: rgba(255, 255, 255, 0.6);
+    background: #f8fafc;
     border-color: var(--stroke);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    box-shadow: none;
 }
 html.theme-light .platform-select {
-    background: rgba(255, 255, 255, 0.85);
+    background: #ffffff;
     color: var(--text);
-    border-color: var(--stroke);
+    border-color: #d6dfe8;
 }
 html.theme-light .platform-btn {
-    background: rgba(255, 255, 255, 0.75);
+    background: #ffffff;
     color: var(--text);
-    border-color: var(--stroke);
+    border-color: #d6dfe8;
 }
 html.theme-light .platform-btn.active {
     background: var(--accent-soft);
-    border-color: var(--accent-line);
-    box-shadow: 0 10px 25px rgba(0, 126, 166, 0.14);
+    border-color: var(--accent);
+    box-shadow: 0 6px 16px rgba(2, 132, 199, 0.12);
 }
 html.theme-light .pay-icon { border-color: var(--stroke); }
 html.theme-light .badge {
-    background: rgba(12, 30, 46, 0.06);
+    background: #eef2f7;
     border-color: var(--stroke);
     color: var(--text);
 }
 html.theme-light .qr-single img {
     border-color: var(--stroke);
-    background: rgba(12, 30, 46, 0.04);
+    background: #ffffff;
+}
+html.theme-light .bot-note {
+    background: var(--mint-soft);
+    border-color: var(--mint-line);
 }
 /* forced-white iOS link overrides in payment.html must flip to ink */
 html.theme-light a[href^="tel"],
@@ -172,37 +289,54 @@ html.theme-light .payment-instruction a,
 html.theme-light .payment-instruction span,
 html.theme-light .payment-instruction strong,
 html.theme-light .payment-instruction a:link,
-html.theme-light .payment-instruction a:visited { color: #132430 !important; }
+html.theme-light .payment-instruction a:visited { color: #172a37 !important; }
 
 /* ---------- reviews page ---------- */
 html.theme-light .proof-hint {
     border-color: var(--stroke);
-    background: rgba(255, 255, 255, 0.6);
+    background: #ffffff;
     color: var(--text-dim);
 }
 html.theme-light .proof-item {
     border-color: var(--stroke);
-    background: rgba(255, 255, 255, 0.5);
+    background: #ffffff;
+}
+html.theme-light .proof-item:hover {
+    border-color: var(--accent-line);
+    box-shadow: 0 12px 26px rgba(23, 42, 55, 0.12);
 }
 /* lightbox intentionally stays dark — best for viewing photos */
 
 /* ---------- terms of service pages ---------- */
 html.theme-light .terms-card {
-    background: rgba(255, 255, 255, 0.78);
+    background: #ffffff;
     border-color: var(--stroke);
     color: var(--text);
-    box-shadow: 0 30px 60px rgba(30, 50, 70, 0.15);
+    box-shadow: 0 1px 2px rgba(23, 42, 55, 0.04), 0 12px 32px rgba(23, 42, 55, 0.07);
 }
-html.theme-light .terms-card h1 { color: var(--accent); }
+html.theme-light .terms-card h1 { color: #026aa1; }
 html.theme-light .last-update { color: var(--text-dim); }
 html.theme-light .terms-section p,
 html.theme-light .terms-card p,
-html.theme-light .terms-card li { color: rgba(19, 36, 48, 0.85); }
+html.theme-light .terms-card li { color: #2c3f4d; }
 
-/* ---------- expressvpn guide: page shell only ----------
-   (step cards mimic the real app's dark UI — they keep their
-   own colors on purpose; page bg/title/update pill adapt) */
-html.theme-light .lg-update { background: rgba(255, 255, 255, 0.6); }
+/* ---------- expressvpn guide ----------
+   Page shell (bg/title/update pill/footer) goes light; the two
+   step cards mimic the real ExpressVPN app's dark UI, so they
+   stay DARK ISLANDS: solid slate bg (!important beats step2's
+   inline transparent bg) + the text tokens re-darkened inside,
+   so every var()-driven label inside the card reads again. */
+html.theme-light .lg-update { background: #ffffff; }
+html.theme-light .lg-card {
+    --txt: #ffffff;
+    --txt-dim: rgba(255, 255, 255, 0.65);
+    --txt-dim2: rgba(255, 255, 255, 0.45);
+    background: #101826 !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    box-shadow: 0 12px 30px rgba(23, 42, 55, 0.18);
+    color: #ffffff;
+}
+html.theme-light .footer-links a:hover { background: #eef2f7; color: var(--text); }
 
 /* ---------- theme toggle button ---------- */
 .theme-toggle-btn { min-width: 38px; justify-content: center; }
