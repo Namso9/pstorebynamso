@@ -22,6 +22,18 @@
   // position/background/url() လို ဖုံးအုပ်နိုင်တဲ့ style တွေ လုံးဝ မဝင်နိုင်။
   var SAFE_CLASS = /^[\w\- ]{1,80}$/;
   var SAFE_STYLE = /^\s*color\s*:\s*(#[0-9a-f]{3,8}|rgba?\([\d\s.,%]+\)|[a-z]+)\s*;?\s*$/i;
+  // panel-entered FAQ content still carries dark-theme inline heading colors
+  // (cyan/mint/red picked for the dark canvas — near-invisible on light).
+  // Known hexes are rewritten to the accent CLASSES, which have per-theme
+  // definitions (components.css dark / theme.css light). Unknown colors keep
+  // the old pass-through behavior.
+  var COLOR_TO_CLASS = {
+    '#00d2ff': 'faq-accent-blue', '#0ba2ff': 'faq-accent-blue',
+    '#453dd8': 'faq-accent-blue', '#a29bfe': 'faq-accent-blue',
+    '#2ed573': 'faq-accent-green', '#69f6a4': 'faq-accent-green',
+    '#ff6b6b': 'faq-accent-red', '#dd3c4c': 'faq-accent-red',
+    '#ff4757': 'faq-accent-red'
+  };
 
   function safeHref(v) {
     var raw = String(v == null ? '' : v).replace(/[\u0000-\u001F\u007F]/g, '').trim();
@@ -50,6 +62,18 @@
           (a.name === 'style' && SAFE_STYLE.test(a.value));
         if (!keep) n.removeAttribute(a.name);
       });
+      // known dark-palette inline color -> theme-aware accent class
+      var st = n.getAttribute && n.getAttribute('style');
+      if (st) {
+        var hex = (st.match(/#[0-9a-f]{3,8}/i) || [''])[0].toLowerCase();
+        var cls = COLOR_TO_CLASS[hex];
+        if (cls) {
+          n.removeAttribute('style');
+          if ((' ' + n.className + ' ').indexOf(' ' + cls + ' ') === -1) {
+            n.className = (n.className ? n.className + ' ' : '') + cls;
+          }
+        }
+      }
       if (n.tagName === 'A' && href) {
         n.setAttribute('href', href);
         n.setAttribute('target', '_blank');

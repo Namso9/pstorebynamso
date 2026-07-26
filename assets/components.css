@@ -102,6 +102,10 @@
     padding: 36px;
     width: 100%;
     max-width: 600px;
+    /* short screens (landscape phones): the sheet must scroll, or the title
+       and close button get pushed above the viewport and become unreachable */
+    max-height: min(90vh, 90dvh);
+    overflow-y: auto;
     box-shadow: var(--edge), var(--lift);
     animation: popUp var(--t-med) var(--ease);
 }
@@ -165,7 +169,7 @@
 
 .search-input::placeholder { color: var(--text-dim); }
 
-.search-results { max-height: 400px; overflow-y: auto; }
+.search-results { max-height: min(400px, 50vh); overflow-y: auto; }
 
 .search-result-item {
     background: var(--glass);

@@ -2,14 +2,17 @@
 # ALL JS lives in assets/*.js (no inline <script>, no onclick attributes —
 # app.js routes [data-action] clicks). Inline <style> blocks and style=""
 # attributes are still used, hence 'unsafe-inline' for styles only.
-# External allowances: Font Awesome CSS + webfonts from cdnjs.
+# External allowances: Font Awesome CSS + webfonts from cdnjs; Lora +
+# Noto Sans Myanmar via Google Fonts (theme.css @import -> fonts.googleapis.com
+# stylesheet -> fonts.gstatic.com woff2) — without these two hosts the font
+# @import is CSP-blocked and every page silently falls back to Georgia.
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
