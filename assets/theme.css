@@ -289,7 +289,7 @@ html.theme-light .of-field textarea:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 4px rgba(56, 50, 40, 0.12);
 }
-html.theme-light .search-input::placeholder { color: rgba(63, 57, 41, 0.50); }
+html.theme-light .search-input::placeholder { color: rgba(63, 57, 41, 0.56); }
 html.theme-light .of-field select option { background: #ffffff; color: #1f1e1d; }
 html.theme-light .of-file {
     background: rgba(255, 255, 255, 0.55);
@@ -309,7 +309,7 @@ html.theme-light .close-search {
     border-color: transparent;
     color: rgba(63, 57, 41, 0.55);
 }
-html.theme-light .close-modal { color: rgba(63, 57, 41, 0.55); }
+html.theme-light .close-modal { color: rgba(63, 57, 41, 0.60); }
 html.theme-light .close-search:hover,
 html.theme-light .close-modal:hover { color: var(--text); }
 
@@ -387,6 +387,9 @@ html.theme-light .of-result.err { background: rgba(214, 69, 69, 0.08); border-co
 html.theme-light .of-sub a,
 html.theme-light .order-summary a { color: #8a6420 !important; }
 html.theme-light #of-mail-hint { color: rgba(63, 57, 41, 0.6) !important; }
+/* show-password checkbox label stacks inline opacity:0.8 on --text-dim,
+   landing ~0.45 effective ink on the cream card */
+html.theme-light #of-pw-field label { opacity: 1; }
 /* order-submit FAILURE box: the two recovery links (bot / messenger) are
    inline cyan — err box only, so the ok box's .of-fb-btn keeps its color */
 html.theme-light .of-result.err a { color: #8a6420 !important; }
@@ -628,9 +631,18 @@ html.theme-light :focus-visible { outline-color: #2b2723; }
     }
 }
 
-/* lazy-render below-the-fold blocks (FAQ lists are huge) */
-.faq-container,
-.review-preview,
+/* lazy-render below-the-fold blocks (FAQ lists are huge).
+   Placeholder heights are per-block: one flat 600px estimate made the page
+   jump ~400px when a 12-item FAQ rendered and shrink when the short review
+   strip did. These track the real rendered heights on a phone. */
+.faq-container {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1000px;
+}
+.review-preview {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 350px;
+}
 .bot-cta-container {
     content-visibility: auto;
     contain-intrinsic-size: auto 600px;

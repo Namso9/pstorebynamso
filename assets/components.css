@@ -682,7 +682,13 @@
 }
 
 .site-brand i { font-size: 1.1rem; color: var(--accent); }
+/* the brand must be able to shrink, or on a 320px phone its unbreakable
+   "PREMIUM" word pushes the 4 action buttons past the header edge */
+.site-brand { min-width: 0; }
+.site-brand > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.site-header-actions { flex: none; }
 .site-brand .site-logo {
+    flex: none;
     width: 30px;
     height: 30px;
     border-radius: 9px;
@@ -947,6 +953,10 @@
 /* ===== Payment page order summary ===== */
 .order-summary {
     max-width: 900px;
+    /* below 900/560px the auto margins collapse to 0 and these rounded glass
+       blocks touch both screen edges — keep the same gutter every other
+       container on the site has */
+    width: calc(100% - 32px);
     margin: 20px auto 0;
     padding: 18px 22px;
     background: var(--accent-soft);
@@ -964,6 +974,7 @@
 /* ===== Web order form ===== */
 .order-form-card {
     max-width: 560px;
+    width: calc(100% - 32px);
     margin: 30px auto 60px;
     padding: 30px 26px;
     background: var(--glass-deep);
@@ -1060,7 +1071,9 @@
 
 /* ===== Reviews hero ===== */
 .reviews-hero { display: flex; justify-content: center; padding: 24px 20px 4px; }
-.reviews-hero img { width: 100%; max-width: 360px; border-radius: var(--r-lg); border: 1px solid var(--stroke); }
+/* height:auto is REQUIRED — the tag carries width/height attrs for CLS, and
+   without it the height hint stretches the hero (same trap as .review-strip) */
+.reviews-hero img { width: 100%; height: auto; max-width: 360px; border-radius: var(--r-lg); border: 1px solid var(--stroke); }
 
 /* ===== Hybrid checkout modal ===== */
 .checkout-summary {
