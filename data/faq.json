@@ -203,7 +203,7 @@
       },
       {
         "q": "💻 Netflix (Phone / Tablet / PC) Premium နဲ့ Basic Plan ဘာကွာလဲ?",
-        "a_html": "<p>\nဘယ် Plan ပဲယူယူ 4K Ultra HD Quality ရမှာရယ်၊ ကိုယ်ပိုင်သီးသန့် Profile တစ်ခု ရမှာရယ်ချင်းက တူတူပါပဲခင်ဗျ။\n\n<strong style=\"color: #ff4757;\">⚠️ မှတ်ချက်:</strong> ဒီ Plan က Phone, Tablet, Computer မှာပဲကြည့်လို့ရပါတယ်။ TV / TV Box / Playstation စက်များတွင် လုံးဝ(လုံးဝ) Sign-in ဝင်လို့မရ၊ ကြည့်ရှုလို့မရပါ။\n\n<strong style=\"color: #2ed573;\">🔴 Premium Plan:</strong> သက်တမ်းကုန်ခါနီး တစ်ပတ်အလိုအကြောင်းကြားပေးတဲ့ Service လေး အပိုပါပါမယ်ဗျ။\n       <strong style=\"color: #2ed573;\">🔴 Basic Plan:</strong> Household codeမတက်အောင် တစ်လပြည့်ရင်တစ်ခါအကောင့်လဲ ရပါတယ်ခဗျ။\nအကောင့်မပြောင်းဘဲ ဆက်သုံးလို့ရတာမျိုးဆို Premium Planလေးယူလို့ရပါတယ်။\n</p>"
+        "a_html": "<p>\nဘယ် Plan ပဲယူယူ 4K Ultra HD Quality ရမှာရယ်၊ ကိုယ်ပိုင်သီးသန့် Profile တစ်ခု ရမှာရယ်ချင်းက တူတူပါပဲခင်ဗျ။\n\n<strong class=\"faq-accent-red\">⚠️ မှတ်ချက်:</strong> ဒီ Plan က Phone, Tablet, Computer မှာပဲကြည့်လို့ရပါတယ်။ TV / TV Box / Playstation စက်များတွင် လုံးဝ(လုံးဝ) Sign-in ဝင်လို့မရ၊ ကြည့်ရှုလို့မရပါ။\n\n<strong class=\"faq-accent-green\">🔴 Premium Plan:</strong> သက်တမ်းကုန်ခါနီး တစ်ပတ်အလိုအကြောင်းကြားပေးတဲ့ Service လေး အပိုပါပါမယ်ဗျ။\n       <strong class=\"faq-accent-green\">🔴 Basic Plan:</strong> Household codeမတက်အောင် တစ်လပြည့်ရင်တစ်ခါအကောင့်လဲ ရပါတယ်ခဗျ။\nအကောင့်မပြောင်းဘဲ ဆက်သုံးလို့ရတာမျိုးဆို Premium Planလေးယူလို့ရပါတယ်။\n</p>"
       },
       {
         "q": "🎬 Netflix, HBO Max, Amazon Prime ဝယ်ရင် ဘာတွေပေးရမလဲ?",
