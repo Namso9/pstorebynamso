@@ -10,10 +10,18 @@
       var fileInput = document.getElementById('of-file');
       var fileLabel = document.getElementById('of-file-label');
       var fileText = document.getElementById('of-file-text');
+      var FILE_IDLE_TEXT = 'Screenshot ရွေးရန် နှိပ်ပါ';
+      function resetFileLabel() {
+        fileText.textContent = FILE_IDLE_TEXT;
+        fileLabel.classList.remove('has-file');
+      }
       fileInput.addEventListener('change', function () {
         if (fileInput.files.length) {
           fileText.textContent = fileInput.files[0].name;
           fileLabel.classList.add('has-file');
+        } else {
+          // ရွေးထားတဲ့ပုံကို ပြန်ဖျက်လိုက်ရင် ဖိုင်နာမည်ဟောင်း ကျန်မနေစေရ
+          resetFileLabel();
         }
       });
 
@@ -50,9 +58,20 @@
       var prodIdInput = document.getElementById('of-product-id');
       var planIdInput = document.getElementById('of-plan-id');
 
+      // Gemini 18-month plan က single-use activation link (auto delivery) —
+      // customer ရဲ့ Gmail/password လုံးဝ မလိုဘူး။ ဒါကြောင့် product id တင်
+      // မဟုတ်ဘဲ plan level ကိုပါ စစ်တယ် (မလိုတဲ့ Google password တောင်းမိတာ
+      // မဖြစ်စေရ)။ plan id မရှိရင် ရိုက်ထားတဲ့ စာသားကနေ ခန့်မှန်းသည်။
+      function geminiNeedsPw() {
+        var plid = (planIdInput && planIdInput.value) || '';
+        if (plid) return plid !== '18_months';
+        var t = (productInput.value || '').toLowerCase();
+        return t.indexOf('18 month') === -1 && t.indexOf('link') === -1;
+      }
+
       function updateExtraFields() {
         var needMail = MAIL_REQUIRED.indexOf(currentProductId) !== -1 || planNeedsMail;
-        var isGemini = MAIL_PW_OPTIONAL.indexOf(currentProductId) !== -1;
+        var isGemini = MAIL_PW_OPTIONAL.indexOf(currentProductId) !== -1 && geminiNeedsPw();
         if (needMail) {
           mailField.style.display = '';
           pwField.style.display = 'none';
@@ -157,7 +176,16 @@
         var btn = document.getElementById('of-submit');
         var result = document.getElementById('of-result');
         var f = fileInput.files[0];
-        if (f && f.size > 8 * 1024 * 1024) {
+        // Screenshot မရွေးဘဲ တင်လိုက်ရင် (browser required check မရှိတဲ့အခါ)
+        // ဘာမှမဖြစ်ဘဲ ငြိမ်နေတာ မဖြစ်စေရ — အထက်က 8MB check အတိုင်း အမြင်ရှိတဲ့
+        // error ပြသည်။
+        if (!f) {
+          result.className = 'of-result err';
+          result.textContent = 'ငွေလွှဲ Screenshot ရွေးပေးပါဦး — အပေါ်က "' + FILE_IDLE_TEXT + '" ကိုနှိပ်ပြီး ပုံရွေးပါ။';
+          resetFileLabel();
+          return;
+        }
+        if (f.size > 8 * 1024 * 1024) {
           result.className = 'of-result err';
           result.textContent = 'Screenshot ဖိုင်က 8MB ထက်ကြီးနေပါတယ်။ ပိုသေးတဲ့ပုံပြန်ရွေးပေးပါ။';
           return;
@@ -167,7 +195,13 @@
         result.className = 'of-result';
 
         var fd = new FormData(e.target);
-        fetch('/api/order', { method: 'POST', body: fd })
+        // mobile data ရပ်သွားရင် spinner ထာဝရ မလည်စေရ — အချိန်ကျော်ရင် ဖြတ်တယ်။
+        // 3 မိနစ်ထားရတဲ့အကြောင်းရင်း: ဒါက screenshot (8MB အထိ) ပါတဲ့ multipart
+        // upload ဖြစ်ပြီး မြန်မာ mobile data မှာ 1MB တင်ဖို့ကို 40s+ ကြာနိုင်တယ်။
+        // အချိန်တိုထားရင် ငွေလွှဲပြီးသား order တွေ အလကား ပျက်ကုန်မယ်။
+        var ctl = new AbortController();
+        var timer = setTimeout(function () { ctl.abort(); }, 180000);
+        fetch('/api/order', { method: 'POST', body: fd, signal: ctl.signal })
           .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
           .then(function (res) {
             if (res.ok && res.j.ok) {
@@ -181,8 +215,7 @@
                 'Facebook နဲ့လည်း ဆက်သွယ်နိုင်ပါတယ် — အောက်ကခလုတ်နှိပ်ပြီး Order ID ကို ပို့ထားပါ:<br/>' +
                 '<a class="of-fb-btn" target="_blank" rel="noopener" href="' + esc(fbLink) + '"><i class="fa-brands fa-facebook-messenger"></i> Facebook Page ကို စာပို့မယ်</a>';
               e.target.reset();
-              fileText.textContent = 'Screenshot ရွေးရန် နှိပ်ပါ';
-              fileLabel.classList.remove('has-file');
+              resetFileLabel();
               // reset() blanks the fields but not our derived state — reconcile
               // so a cleared form can't keep showing a required email / warning
               planNeedsMail = false;
@@ -198,11 +231,39 @@
               throw new Error(res.j.error || 'failed');
             }
           })
-          .catch(function () {
+          .catch(function (err) {
+            // server ပြန်ပေးတဲ့ အကြောင်းရင်းအတိုင်း လမ်းညွှန်ပေးတယ် — အကုန်လုံးကို
+            // "internet မကောင်းလို့" လို့ ပြောလိုက်ရင် ငွေလွှဲပြီးသား customer က
+            // ဖိုင်တစ်ခုတည်းကို ထပ်ခါထပ်ခါ တင်ပြီး order ပျောက်သွားတယ်။
+            var msg = String((err && err.message) || '');
+            var name = String((err && err.name) || '');
+            // ဘယ် error မှာမဆို အရန်လမ်းကြောင်း ၂ ခု ပြထားပေးသည်
+            var fallback = ' (သို့) Telegram Bot <a href="https://t.me/PSNamso_bot" target="_blank" rel="noopener" style="color:#00d2ff">@PSNamso_bot</a> ' +
+              '(သို့) <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> ကနေ ဆက်သွယ်နိုင်ပါတယ်။';
+            var html;
+            if (name === 'AbortError') {
+              // abort က browser ဘက်ကပဲ ရပ်တာ — server ဘက်မှာ order က
+              // ရောက်ပြီးသား ဖြစ်နေနိုင်တယ်။ "ထပ်နှိပ်ပါ" လို့ ပြောလိုက်ရင်
+              // order ၂ ခု ဖြစ်သွားနိုင်လို့ အရင် စစ်ခိုင်းတယ်။
+              html = 'Order ပို့တာ အချိန်ကြာနေလို့ ရပ်လိုက်ပါတယ်။ <strong>Order က ရောက်နှင့်ပြီး ဖြစ်နေနိုင်ပါတယ်</strong> — ထပ်မတင်ခင် အောက်က လမ်းကြောင်းတစ်ခုကနေ Admin ကို အရင် စစ်ပေးပါ။' + fallback;
+            } else if (msg.indexOf('Unsupported image type') !== -1) {
+              html = 'ဒီ screenshot ဖိုင်အမျိုးအစားကို လက်မခံပါ။ ပုံကို <strong>JPG / PNG</strong> အနေနဲ့ ပြန်သိမ်းပြီး (iPhone ဆိုရင် screenshot ကို Photos ထဲကနေ share → save အသစ်လုပ်ပြီး) ထပ်တင်ပေးပါ။';
+            } else if (msg.indexOf('File too large') !== -1) {
+              html = 'Screenshot ဖိုင်က ကြီးလွန်းနေပါတယ် (8MB အထိသာ ရပါတယ်)။ ပိုသေးတဲ့ပုံ ပြန်ရွေးပေးပါ။';
+            } else if (msg.indexOf('Screenshot required') !== -1) {
+              html = 'ငွေလွှဲ Screenshot ပါမလာပါ — ပုံပြန်ရွေးပြီး ထပ်တင်ပေးပါ။';
+            } else if (msg.indexOf('Missing fields') !== -1) {
+              html = 'လိုအပ်တဲ့ အချက်အလက် မပြည့်စုံသေးပါ — * ပါတဲ့ အကွက်အားလုံး ဖြည့်ပေးပါ။';
+            } else if (msg.indexOf('Delivery failed') !== -1) {
+              html = 'Order က Admin ဆီ မရောက်သေးပါ။ ခဏနေ ထပ်ကြိုးစားပါ' + fallback;
+            } else {
+              html = 'Order ပို့မရသေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပါ' + fallback;
+            }
             result.className = 'of-result err';
-            result.innerHTML = 'Order ပို့မရသေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပါ (သို့) Telegram Bot <a href="https://t.me/PSNamso_bot" style="color:#00d2ff">@PSNamso_bot</a> ကနေ ဝယ်ယူနိုင်ပါတယ်။';
+            result.innerHTML = html;
           })
           .finally(function () {
+            clearTimeout(timer);
             btn.disabled = false;
             btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Order တင်မယ်';
           });

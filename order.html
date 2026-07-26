@@ -5,13 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Order Without Telegram | PREMIUM STORE</title>
   <meta name="description" content="Telegram မသုံးဘဲ website ကနေတိုက်ရိုက် order တင်နိုင်ပါသည်။ ငွေလွှဲ screenshot ကို ဒီမှာတင်ပါ။" />
+  <meta property="og:title" content="Order Without Telegram | PREMIUM STORE" />
+  <meta property="og:description" content="Telegram မသုံးဘဲ website ကနေတိုက်ရိုက် order တင်နိုင်ပါသည်။ ငွေလွှဲ screenshot ကို ဒီမှာတင်ပါ။" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pstorebynamso.com/order" />
+  <meta property="og:image" content="https://pstorebynamso.com/images/p1.webp" />
   <meta name="theme-color" content="#00d2ff" />
+  <link rel="canonical" href="https://pstorebynamso.com/order" />
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css?v=3" />
-  <link rel="stylesheet" href="assets/components.css?v=4" />
-  <link rel="stylesheet" href="assets/theme.css?v=5" />
+  <link rel="stylesheet" href="assets/components.css?v=5" />
+  <link rel="stylesheet" href="assets/theme.css?v=6" />
   <script src="assets/theme.js?v=1"></script>
 </head>
 <body>
@@ -19,7 +25,7 @@
   <div class="order-summary" id="order-summary" style="display:none"></div>
 
   <div class="order-form-card">
-    <h2><i class="fa-solid fa-file-invoice"></i> Order တင်ရန်</h2>
+    <h1><i class="fa-solid fa-file-invoice"></i> Order တင်ရန်</h1>
     <p class="of-sub"> ငွေလွှဲပြီး screenshot တင်လိုက်ပါ။ Admin က <strong>Viber or Telegram</strong> ကနေ ပြန်ဆက်သွယ်ပါမယ်။<br/>Form မတင်ချင်ရင်  <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> ကို screenshot တိုက်ရိုက်ပို့လို့လည်း ရပါတယ်။</p>
 
     <form id="orderForm">
@@ -73,7 +79,11 @@
         <label class="of-file" id="of-file-label" for="of-file">
           <i class="fa-solid fa-image"></i> <span id="of-file-text">Screenshot ရွေးရန် နှိပ်ပါ</span>
         </label>
-        <input type="file" id="of-file" name="screenshot" accept="image/*" required style="display:none" />
+        <!-- required ကို မထားပါ — display:none input မှာ native validation ဖမ်းရင်
+             Chrome က ဘာ message မှမပြဘဲ submit ကို တိတ်တဆိတ် ရပ်ပစ်တယ်။
+             ဖိုင်ရွေးမရွေးကို order.js ရဲ့ submit handler ထဲမှာ စစ်ပြီး
+             မြင်ရတဲ့ error ပြပါတယ်။ -->
+        <input type="file" id="of-file" name="screenshot" accept="image/*" style="display:none" />
       </div>
 
       <div class="of-field">
@@ -81,7 +91,7 @@
         <textarea id="of-note" name="note" rows="2" maxlength="300" placeholder="ထပ်ဖြည့်ပြောချင်တာရှိရင် ရေးပါ"></textarea>
       </div>
 
-      <input type="text" name="website" id="of-hp" style="display:none" tabindex="-1" autocomplete="off" />
+      <input type="text" name="extra_field_hp" id="of-hp" style="display:none" tabindex="-1" autocomplete="off" />
 
       <button type="submit" class="of-submit" id="of-submit">
         <i class="fa-solid fa-paper-plane"></i> Order တင်မယ်
@@ -91,7 +101,7 @@
     <div class="of-result" id="of-result"></div>
   </div>
 
-  <script src="assets/app.js?v=6" defer></script>
-  <script src="assets/order.js?v=5" defer></script>
+  <script src="assets/app.js?v=7" defer></script>
+  <script src="assets/order.js?v=6" defer></script>
 </body>
 </html>

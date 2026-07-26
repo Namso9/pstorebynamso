@@ -11,14 +11,47 @@
   <meta property="og:url" content="https://pstorebynamso.com/" />
   <meta property="og:image" content="https://pstorebynamso.com/images/p1.webp" />
   <meta name="theme-color" content="#00d2ff" />
+  <link rel="canonical" href="https://pstorebynamso.com/" />
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
   <link rel="preload" as="image" href="images/bg.webp" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css?v=3" />
-  <link rel="stylesheet" href="assets/components.css?v=4" />
-  <link rel="stylesheet" href="assets/theme.css?v=5" />
+  <link rel="stylesheet" href="assets/components.css?v=5" />
+  <link rel="stylesheet" href="assets/theme.css?v=6" />
   <script src="assets/theme.js?v=1"></script>
+  <!-- JSON-LD is a DATA block (never executed), so CSP script-src 'self' does
+       not apply to it. Prices/stock stay out on purpose: products.json is
+       panel-written, so Product/Offer markup belongs to that sync, not here. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://pstorebynamso.com/#organization",
+        "name": "Premium Store by Namso",
+        "url": "https://pstorebynamso.com/",
+        "logo": "https://pstorebynamso.com/images/brand-logo.png",
+        "foundingDate": "2020",
+        "areaServed": "MM",
+        "sameAs": [
+          "https://t.me/premiumstorebzzz",
+          "https://t.me/Premiumstorezz",
+          "https://www.facebook.com/share/1MyXdbrK9s/?mibextid=wwXIfr"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://pstorebynamso.com/#website",
+        "url": "https://pstorebynamso.com/",
+        "name": "Premium Store by Namso",
+        "inLanguage": "my",
+        "publisher": { "@id": "https://pstorebynamso.com/#organization" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -29,7 +62,8 @@
   <div class="product-container">
     <a href="creative-apps.html" class="card-link">
       <div class="product-card">
-        <img loading="lazy" decoding="async" src="images/p1.webp" alt="CREATIVE APPS" />
+        <!-- first card = LCP candidate: eager + high priority, never lazy -->
+        <img fetchpriority="high" decoding="async" src="images/p1.webp" alt="CREATIVE APPS" width="800" height="800" />
         <h3>Creative Apps</h3>
         <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
       </div>
@@ -37,7 +71,8 @@
 
     <a href="music-apps.html" class="card-link">
       <div class="product-card">
-        <img loading="lazy" decoding="async" src="images/p2.webp" alt="MUSIC APPS" />
+        <!-- 2nd card shares the first row of the 2-col phone grid -->
+        <img decoding="async" src="images/p2.webp" alt="MUSIC APPS" width="800" height="800" />
         <h3>Music Apps</h3>
         <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
       </div>
@@ -45,7 +80,7 @@
 
     <a href="communication-apps.html" class="card-link">
       <div class="product-card">
-        <img loading="lazy" decoding="async" src="images/p3.webp" alt="COMMUNICATION APPS" />
+        <img loading="lazy" decoding="async" width="800" height="800" src="images/p3.webp" alt="COMMUNICATION APPS" />
         <h3>Communication Apps</h3>
         <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
       </div>
@@ -53,7 +88,7 @@
 
     <a href="streaming-apps.html" class="card-link">
       <div class="product-card">
-        <img loading="lazy" decoding="async" src="images/p4.webp" alt="STREAMING APPS" />
+        <img loading="lazy" decoding="async" width="800" height="800" src="images/p4.webp" alt="STREAMING APPS" />
         <h3>Streaming Apps</h3>
         <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
       </div>
@@ -61,7 +96,7 @@
 
     <a href="computer-keys-and-office-apps.html" class="card-link">
       <div class="product-card">
-        <img loading="lazy" decoding="async" src="images/p5.webp" alt="OFFICE APPS" />
+        <img loading="lazy" decoding="async" width="800" height="800" src="images/p5.webp" alt="OFFICE APPS" />
         <h3>Computer Keys & Office</h3>
         <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
       </div>
@@ -69,7 +104,7 @@
 
     <a href="learning-apps.html" class="card-link">
       <div class="product-card">
-        <img loading="lazy" decoding="async" src="images/p6.webp" alt="LEARNING APPS" />
+        <img loading="lazy" decoding="async" width="800" height="800" src="images/p6.webp" alt="LEARNING APPS" />
         <h3>Learning Apps</h3>
         <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
       </div>
@@ -77,7 +112,7 @@
 
     <a href="ai-apps.html" class="card-link">
       <div class="product-card">
-        <img loading="lazy" decoding="async" src="images/p7.webp" alt="AI APPS" />
+        <img loading="lazy" decoding="async" width="800" height="800" src="images/p7.webp" alt="AI APPS" />
         <h3>AI Apps</h3>
         <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
       </div>
@@ -85,7 +120,7 @@
 
     <a href="premium-vpn-apps.html" class="card-link">
       <div class="product-card">
-        <img loading="lazy" decoding="async" src="images/p8.webp" alt="PREMIUM VPN APPS" />
+        <img loading="lazy" decoding="async" width="800" height="800" src="images/p8.webp" alt="PREMIUM VPN APPS" />
         <h3>Premium VPN Apps</h3>
         <p>App တစ်ခုချင်းစီ ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
       </div>
@@ -93,7 +128,7 @@
 
      <a href="expressvpn-location-guide.html" class="card-link">
       <div class="product-card">
-        <img loading="lazy" decoding="async" src="images/express.svg" alt="ExpressVPN Location Guide" />
+        <img loading="lazy" decoding="async" width="48" height="48" src="images/express.svg" alt="ExpressVPN Location Guide" />
         <h3>Expressvpn Location Guide</h3>
         <p>အသေးစိတ် ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
       </div>
@@ -106,10 +141,10 @@
       <a href="reviews.html">အားလုံးကြည့်ရန် <i class="fa-solid fa-arrow-right"></i></a>
     </div>
     <div class="review-strip">
-      <img loading="lazy" decoding="async" src="images/p9.webp" alt="Customer review 1" />
-      <img loading="lazy" decoding="async" src="images/review5.webp" alt="Customer review 2" />
-      <img loading="lazy" decoding="async" src="images/review7.webp" alt="Customer review 3" />
-      <img loading="lazy" decoding="async" src="images/review10.webp" alt="Customer review 4" />
+      <img loading="lazy" decoding="async" width="800" height="800" src="images/p9.webp" alt="Customer review 1" />
+      <img loading="lazy" decoding="async" width="700" height="587" src="images/review5.webp" alt="Customer review 2" />
+      <img loading="lazy" decoding="async" width="700" height="587" src="images/review7.webp" alt="Customer review 3" />
+      <img loading="lazy" decoding="async" width="700" height="489" src="images/review10.webp" alt="Customer review 4" />
     </div>
   </div>
 
@@ -205,6 +240,6 @@
     </div>
   </footer>
 
-  <script src="assets/app.js?v=6" defer></script>
+  <script src="assets/app.js?v=7" defer></script>
 </body>
 </html>

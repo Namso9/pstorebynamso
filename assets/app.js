@@ -9,9 +9,15 @@
 
   var DATA = null;
   var dataPromise = null;
+  var dataTime = 0;
+  // products.json edge cache TTL နဲ့ တန်းညှိထားသည်။ page တစ်သက်လုံး memo
+  // လုပ်ထားရင် tab ဟောင်းတစ်ခုက sold-out plan ကို stock ရှိသလို ဆက်ပြနေမယ်
+  // (checkout stock re-check ကလည်း အဲ့ဒီ ဟောင်းနေတဲ့ snapshot ကိုပဲ ဖတ်မိမယ်)။
+  var DATA_TTL = 60000;
 
   function loadData() {
-    if (dataPromise) return dataPromise;
+    if (dataPromise && (Date.now() - dataTime) < DATA_TTL) return dataPromise;
+    dataTime = Date.now();
     dataPromise = fetch('products.json', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error('products.json load failed'); return r.json(); })
       .then(function (d) { DATA = d; return d; })
@@ -27,6 +33,28 @@
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
+  }
+
+  /* ---------- Modal focus handling (a11y) ----------
+     Modal တွေက body အဆုံးမှာ inject လုပ်တာမို့ screen reader / keyboard user
+     အတွက် focus ကို ကိုယ်တိုင် ရွှေ့ပေးမှ တွေ့မယ်။ ပိတ်ရင် ဖွင့်ခဲ့တဲ့ ခလုတ်ဆီ
+     ပြန်ပို့ပေးသည်။ key တစ်ခုစီ modal တစ်ခုစီ (plan ထဲက checkout ဖွင့်တာမျိုး
+     ထပ်နေလည်း trigger မမှားစေရ)။ */
+  var lastFocus = {};
+
+  function modalOpened(key, el, focusEl) {
+    lastFocus[key] = document.activeElement;
+    var f = focusEl || (el && el.querySelector('.close-modal, .close-search, button, [href], input'));
+    if (f && f.focus) { try { f.focus(); } catch (e) {} }
+  }
+
+  function modalClosed(key) {
+    var t = lastFocus[key];
+    lastFocus[key] = null;
+    // ကွယ်နေတဲ့ (ဥပမာ ပိတ်ပြီးသား modal ထဲက) element ဆီ focus မပို့ဘူး
+    if (t && t.focus && document.contains(t) && t.offsetParent !== null) {
+      try { t.focus(); } catch (e) {}
+    }
   }
 
   /* ---------- Sticky header ---------- */
@@ -52,13 +80,13 @@
     var wrap = document.createElement('div');
     wrap.innerHTML =
       '<div class="search-modal" id="searchModal">' +
-      '<div class="search-modal-content">' +
+      '<div class="search-modal-content" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle">' +
       '<div class="search-modal-header">' +
-      '<h2 class="search-modal-title">Search Products</h2>' +
-      '<button class="close-search" type="button" data-action="search-close"><i class="fas fa-times"></i></button>' +
+      '<h2 class="search-modal-title" id="searchModalTitle">Search Products</h2>' +
+      '<button class="close-search" type="button" data-action="search-close" aria-label="Close search"><i class="fas fa-times"></i></button>' +
       '</div>' +
       '<div class="search-input-wrapper">' +
-      '<input type="text" class="search-input" id="searchInput" placeholder="Search products... (e.g., Netflix, ChatGPT, VPN)" />' +
+      '<input type="text" class="search-input" id="searchInput" aria-label="Search products" placeholder="Search products... (e.g., Netflix, ChatGPT, VPN)" />' +
       '</div>' +
       '<div class="search-results" id="searchResults"><div class="no-results">Type to search for products</div></div>' +
       '</div></div>';
@@ -78,7 +106,7 @@
     if (!m) return;
     m.classList.add('active');
     var inp = document.getElementById('searchInput');
-    if (inp) inp.focus();
+    modalOpened('search', m, inp);
     loadData();
   }
 
@@ -90,6 +118,7 @@
     if (inp) inp.value = '';
     var res = document.getElementById('searchResults');
     if (res) res.innerHTML = '<div class="no-results">Type to search for products</div>';
+    modalClosed('search');
   }
 
   function performSearch() {
@@ -123,8 +152,11 @@
     var wrap = document.createElement('div');
     wrap.innerHTML =
       '<div id="planModal" class="modal-overlay" data-action="overlay-plan">' +
-      '<div class="modal-content">' +
-      '<span class="close-modal" data-action="plan-close">&times;</span>' +
+      '<div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">' +
+      // real <button> (span က keyboard နဲ့ နှိပ်လို့မရ) — inline style တွေက
+      // browser ရဲ့ default button chrome ကို ဖယ်ပြီး .close-modal ရဲ့ ပုံစံအတိုင်း
+      // ဆက်မြင်ရအောင် ထားသည် (CSS ဖိုင် မထိရအောင်)။
+      '<button type="button" class="close-modal" data-action="plan-close" aria-label="Close" style="background:none;border:0;padding:0;line-height:1;font-family:inherit">&times;</button>' +
       '<h2 class="modal-title" id="modalTitle">Choose Plan</h2>' +
       '<div id="modalPlans"></div>' +
       '</div></div>';
@@ -166,9 +198,9 @@
     var wrap = document.createElement('div');
     wrap.innerHTML =
       '<div id="checkoutModal" class="modal-overlay" data-action="overlay-checkout">' +
-      '<div class="modal-content">' +
-      '<span class="close-modal" data-action="checkout-close">&times;</span>' +
-      '<h2 class="modal-title">ဝယ်ယူနည်း ရွေးပါ</h2>' +
+      '<div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">' +
+      '<button type="button" class="close-modal" data-action="checkout-close" aria-label="Close" style="background:none;border:0;padding:0;line-height:1;font-family:inherit">&times;</button>' +
+      '<h2 class="modal-title" id="checkoutTitle">ဝယ်ယူနည်း ရွေးပါ</h2>' +
       '<div id="checkoutBody"></div>' +
       '</div></div>';
     document.body.appendChild(wrap.firstChild);
@@ -183,8 +215,10 @@
     injectCheckoutModal();
     var seq = ++checkoutSeq;
     var body = document.getElementById('checkoutBody');
+    var cmodal = document.getElementById('checkoutModal');
     body.innerHTML = '<div class="no-results">Loading…</div>';
-    document.getElementById('checkoutModal').style.display = 'flex';
+    cmodal.style.display = 'flex';
+    modalOpened('checkout', cmodal);
     loadData().then(function (d) {
       if (seq !== checkoutSeq) return; // closed / reopened while loading
       var product = d && d.products.find(function (p) { return p.id === productId; });
@@ -251,6 +285,7 @@
     checkoutSeq++; // abort any in-flight open (it must not re-show the modal)
     var m = document.getElementById('checkoutModal');
     if (m) m.style.display = 'none';
+    modalClosed('checkout');
   }
 
   function openModal(productId) {
@@ -261,6 +296,7 @@
     document.getElementById('modalTitle').innerText = 'Choose Plan';
     plansEl.innerHTML = '<div class="no-results">Loading…</div>';
     modal.style.display = 'flex';
+    modalOpened('plan', modal);
     loadData().then(function (d) {
       var product = d && d.products.find(function (p) { return p.id === productId; });
       if (!product) {
@@ -290,6 +326,7 @@
   function closePlanModal() {
     var m = document.getElementById('planModal');
     if (m) m.style.display = 'none';
+    modalClosed('plan');
   }
 
   /* ---------- Delegated click routing (CSP-safe, no inline handlers) ----- */
@@ -298,7 +335,16 @@
       var el = e.target.closest ? e.target.closest('[data-action]') : null;
       if (!el) return;
       var act = el.getAttribute('data-action');
-      if (act === 'back') { e.preventDefault(); window.history.back(); }
+      if (act === 'back') {
+        e.preventDefault();
+        // t.me / Facebook share ကနေ တိုက်ရိုက်ဖွင့်ထားရင် history မရှိလို့
+        // history.back() က ဘာမှ မဖြစ်ဘူး — အဲ့ဒီအခါ homepage ကို ပို့ပေးသည်။
+        if (window.history.length > 1 && document.referrer.indexOf(location.origin) === 0) {
+          window.history.back();
+        } else {
+          location.href = 'index.html';
+        }
+      }
       else if (act === 'search-open') { openSearchModal(); }
       else if (act === 'search-close') { closeSearchModal(); }          // <a> keeps navigating
       else if (act === 'plan-close') { closePlanModal(); }
@@ -338,6 +384,20 @@
         return;
       }
       var items = d.products.filter(function (p) { return p.category === slug; });
+      if (!items.length) {
+        // panel မှာ ဒီ category ထဲက product အကုန် hide/unpublish ဖြစ်သွားရင်
+        // အလွတ်ကြီး မပြစေရ — plan-less product state အတိုင်း contact လမ်းကြောင်း
+        // ပေးထားသည်။
+        var st = d.settings || {};
+        list.innerHTML =
+          '<p style="text-align:center">ဒီ category မှာ product မရှိသေးပါ။ နောက်မှ ပြန်ကြည့်ပေးပါ (သို့) Admin ကို မေးမြန်းနိုင်ပါတယ်။</p>' +
+          '<div class="plan-contact-row" style="justify-content:center">' +
+          '<a class="plan-contact-btn plan-contact-btn--tg" href="' + esc(st.telegramChannel || '#') + '" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Telegram Channel</a>' +
+          '<a class="plan-contact-btn plan-contact-btn--fb" href="' + esc(st.facebookPage || '#') + '" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i> Contact Admin</a>' +
+          '</div>' +
+          '<p style="text-align:center;margin-top:14px"><a href="index.html" style="color:#00d2ff">🏠 Home ကို ပြန်သွားမည်</a></p>';
+        return;
+      }
       list.innerHTML = items.map(function (p) {
         var cls = 'app-logo' + (p.imageClass ? ' ' + esc(p.imageClass) : '');
         return '<div class="app-item" id="app-' + esc(p.id) + '">' +
@@ -399,9 +459,17 @@
       var tail = onOrderPage
         ? 'အောက်က form ကိုဖြည့်ပြီး ငွေလွှဲ screenshot တင်ပေးပါ။'
         : 'အောက်မှာ Platform ရွေးပြီး QR နဲ့ ငွေလွှဲပါ။ ငွေလွှဲပြီးရင် screenshot ကို <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> သို့မဟုတ် <a href="order.html' + esc(safeSearch) + '" style="color:#00d2ff">ဒီ order form</a> ကနေ တင်နိုင်ပါတယ်။';
+      // Bookmark / share ထားတဲ့ link ကနေ ဖွင့်ရင် plan က stock ကုန်နေတတ်တယ် —
+      // QR နဲ့ ငွေမလွှဲခင် အနီရောင်နဲ့ ကြိုသတိပေးသည်။ order.html မှာတော့
+      // order.js က #of-stock-warn ကို ကိုယ်တိုင် ထည့်ပြီးသားမို့ ချန်ထားတယ်
+      // (မဟုတ်ရင် အနီစာ ၂ ကြောင်း ထပ်နေမယ်)။
+      var oosHtml = (!onOrderPage && plan && plan.stock === false)
+        ? '<p style="font-size:0.82rem;color:#ff6b6b;margin:6px 0 0">သတိပြုရန် — ဒီ plan က လောလောဆယ် stock မရှိပါ။ ငွေမလွှဲခင် Admin ကို အရင်မေးပေးပါ။ Order တင်ထားရင် stock ပြန်ရှိချိန် Admin က အကြောင်းပြန်ပါမယ်။</p>'
+        : '';
       host.innerHTML = '<h3><i class="fa-solid fa-cart-shopping"></i> Your Order</h3>' +
         '<p>' + esc(product.name) + (plan ? ' — ' + esc(plan.name) + (plan.desc ? ' (' + esc(plan.desc) + ')' : '') : '') + '</p>' +
         (plan && plan.price ? '<p class="os-price">' + esc(plan.price) + '</p>' : '') +
+        oosHtml +
         '<p style="font-size:0.85rem;color:rgba(255,255,255,0.65)">' + tail + '</p>';
     });
   }
@@ -409,10 +477,14 @@
   /* ---------- FAQ toggles (works with existing markup) ---------- */
   function bindFAQ() {
     document.querySelectorAll('.faq-question').forEach(function (q) {
+      // screen reader က ဖွင့်ထား/ပိတ်ထား သိရအောင် (faq.js မှာလည်း တူညီစွာ လုပ်သည်)
+      q.setAttribute('aria-expanded', q.classList.contains('active') ? 'true' : 'false');
       q.addEventListener('click', function () {
         q.classList.toggle('active');
+        var on = q.classList.contains('active');
+        q.setAttribute('aria-expanded', on ? 'true' : 'false');
         var a = q.nextElementSibling;
-        if (a) a.style.maxHeight = q.classList.contains('active') ? (a.scrollHeight + 'px') : 0;
+        if (a) a.style.maxHeight = on ? (a.scrollHeight + 'px') : 0;
       });
     });
   }

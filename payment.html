@@ -13,13 +13,14 @@
   <meta property="og:url" content="https://pstorebynamso.com/payment" />
   <meta property="og:image" content="https://pstorebynamso.com/images/p1.webp" />
   <meta name="theme-color" content="#00d2ff" />
+  <link rel="canonical" href="https://pstorebynamso.com/payment" />
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css?v=3" />
-  <link rel="stylesheet" href="assets/components.css?v=4" />
-  <link rel="stylesheet" href="assets/theme.css?v=5" />
+  <link rel="stylesheet" href="assets/components.css?v=5" />
+  <link rel="stylesheet" href="assets/theme.css?v=6" />
   <script src="assets/theme.js?v=1"></script>
 
   <style>
@@ -211,10 +212,11 @@
       .payment-selector{ padding: 12px 10px !important; }
       .qr-panel{ padding: 12px 10px !important; }
 
+      /* font-size 16px အောက်ဆို iOS Safari က focus လုပ်တိုင်း zoom ဝင်တယ် */
       .platform-select{
         border-width: 0.5px !important;
         padding: 10px 10px !important;
-        font-size: 0.9rem !important;
+        font-size: 16px !important;
       }
 
       .platform-btn{
@@ -260,25 +262,26 @@
         font-size: 0.85rem !important;
       }
 
-      /* ✅ Phone မှာ button 2 ခု တစ်တန်းတည်း ဆံ့အောင် သေးထား */
+      /* ✅ Phone မှာ button 2 ခု တစ်တန်းတည်းပဲ ထားပေမယ့် ငွေလွှဲပြီးမှ
+         နှိပ်ရမယ့် ခလုတ်တွေမို့ စာလုံးကို 0.85rem အောက် မချတော့ဘူး */
       .proof-nav{
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 6px !important;
+        gap: 8px !important;
       }
 
       .proof-nav .nav-btn{
-        padding: 7px 4px !important;
-        font-size: 0.68rem !important;
-        line-height: 1.1 !important;
-        border-radius: 10px !important;
-        gap: 3px !important;
+        padding: 10px 8px !important;
+        font-size: 0.85rem !important;
+        line-height: 1.2 !important;
+        border-radius: 12px !important;
+        gap: 6px !important;
         white-space: normal !important;
         text-align: center !important;
         min-width: 0 !important;
       }
 
       .proof-nav .nav-btn i{
-        font-size: 0.72rem !important;
+        font-size: 0.85rem !important;
         margin-right: 2px !important;
       }
     }
@@ -291,21 +294,23 @@
       }
       .payment-instruction{ font-size: 0.84rem !important; }
 
-      /* ✅ Small phone မှာလည်း 2 ခုတစ်တန်းပဲထား၊ ပိုသေးအောင်လုပ် */
+      /* ✅ Small phone မှာလည်း 2 ခုတစ်တန်းပဲထား၊ ဒါပေမယ့် စာလုံးက 0.8rem
+         (12.8px) အောက် မဆင်းရ — 2 ခုစလုံး 320px မှာတောင် ဆံ့ပါတယ် */
       .proof-nav{
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 5px !important;
+        gap: 6px !important;
       }
 
       .proof-nav .nav-btn{
-        padding: 6px 3px !important;
-        font-size: 0.60rem !important;
-        border-radius: 9px !important;
+        padding: 9px 6px !important;
+        font-size: 0.8rem !important;
+        border-radius: 11px !important;
+        gap: 5px !important;
       }
 
       .proof-nav .nav-btn i{
-        font-size: 0.64rem !important;
-        margin-right: 1px !important;
+        font-size: 0.8rem !important;
+        margin-right: 2px !important;
       }
     }
     /* iPhone auto phone link (blue) ကိုဖြုတ် */
@@ -601,6 +606,6 @@ a[href^="tel"]{
 
   <script src="assets/payment.js?v=2" defer></script>
 
-  <script src="assets/app.js?v=6" defer></script>
+  <script src="assets/app.js?v=7" defer></script>
 </body>
 </html>

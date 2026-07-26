@@ -26,8 +26,19 @@
         const ENC_LABEL = { "Automatic":"Automatic (recommended)", "AES":"AES", "ChaCha20":"ChaCha20" };
         const ENC_ORDER = ["Automatic","AES","ChaCha20"];
 
+        // /data/express-guide.json က panel ကနေ ပြင်လို့ရတာမို့ template ထဲ
+        // ထည့်တဲ့ တန်ဖိုးတိုင်းကို escape လုပ်တယ် (panel/PAT ပေါက်သွားရင်လည်း
+        // guide page ထဲ markup မထိုးနိုင်စေရ)။ PROTO_DESC / ENC_LABEL က
+        // constant ဖြစ်လို့ ဘေးကင်းသည်။
+        function esc(s){
+            return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+                return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+            });
+        }
+
         function step1(loc){
-            const isLW = loc.protocol.indexOf("Lightway") === 0;
+            const proto = String(loc.protocol || "");
+            const isLW = proto.indexOf("Lightway") === 0;
             let encBox = "";
             if(isLW){
                 const selEnc = loc.encryption || "Automatic";
@@ -57,8 +68,8 @@
                     <div class="proto-sel">
                         <span class="radio on"></span>
                         <div>
-                            <span class="pname">${loc.protocol}</span>
-                            <span class="pdesc">${PROTO_DESC[loc.protocol]||""}</span>
+                            <span class="pname">${esc(proto)}</span>
+                            <span class="pdesc">${Object.prototype.hasOwnProperty.call(PROTO_DESC, proto) ? PROTO_DESC[proto] : ""}</span>
                         </div>
                     </div>
                     ${encBox}
@@ -69,7 +80,7 @@
         function step2(loc){
             return `
             <div class="lg-card" style="background:transparent;border-color:rgba(0,210,255,0.25);">
-                <span class="lg-badge badge-cyan">STEP 2: ${loc.city} Location ချိတ်ပါ</span>
+                <span class="lg-badge badge-cyan">STEP 2: ${esc(loc.city || "")} Location ချိတ်ပါ</span>
                 <div class="conn">
                     <div class="conn-top">
                         <i class="fa-solid fa-power-off power"></i>
@@ -78,10 +89,10 @@
                     <div class="conn-body">
                         <div class="conn-block loc-row">
                             <div style="display:flex;align-items:center;gap:10px;">
-                                <span class="flag">${loc.flag}</span>
+                                <span class="flag">${esc(loc.flag || "")}</span>
                                 <div>
                                     <div class="llabel">Selected Location</div>
-                                    <div class="lname">${loc.country} - ${loc.city}</div>
+                                    <div class="lname">${esc(loc.country || "")} - ${esc(loc.city || "")}</div>
                                 </div>
                             </div>
                             <span class="change">Change <i class="fa-solid fa-location-dot"></i></span>
@@ -89,7 +100,7 @@
                         <div class="conn-block">
                             <div class="ip-row">
                                 <span class="iplab">VPN IP Address:</span>
-                                <span class="ipval">${loc.ip} <i class="fa-solid fa-rotate" style="font-size:.6rem;"></i></span>
+                                <span class="ipval">${esc(loc.ip || "")} <i class="fa-solid fa-rotate" style="font-size:.6rem;"></i></span>
                             </div>
                             <div class="map">
                                 <i class="fa-solid fa-map-location-dot"></i>
@@ -103,7 +114,7 @@
                             </div>
                             <div class="mini proto">
                                 <div class="mlab">Protocol (ရွေးချယ်မှု)</div>
-                                <div class="mval">${loc.protocol}</div>
+                                <div class="mval">${esc(loc.protocol || "")}</div>
                             </div>
                         </div>
                         <div class="sda">
@@ -120,7 +131,11 @@
         }
 
         function renderAll(updated, locations){
-            document.getElementById("locationWrap").innerHTML = locations.map(renderSet).join("");
+            // protocol မပါတဲ့ location က step1 မှာ ကျမယ် — အဲ့ဒါတွေ ကျော်ပြီး
+            // ကျန်တာ တစ်ခုမှ မရှိရင် မ render ဘဲ static fallback ကို ထားခဲ့သည်
+            const list = (locations || []).filter(function(loc){ return loc && loc.protocol; });
+            if(!list.length) return;
+            document.getElementById("locationWrap").innerHTML = list.map(renderSet).join("");
             document.getElementById("updateDate").textContent = updated;
         }
 

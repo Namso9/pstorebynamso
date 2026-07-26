@@ -231,6 +231,18 @@ html.theme-light .buy-now:hover { background: #12b56d; color: #fff; }
 html.theme-light .telegram-btn { background: #0a7cff; color: #fff; }
 html.theme-light .telegram-btn:hover { background: #0a7cff; color: #fff; }
 
+/* page-bottom Back / Back to Home controls.
+   Category pages style these with style="" attrs (white text on translucent
+   white) and the terms/reviews/guide pages with page-local classes — on the
+   light canvas both render ~invisible, so !important is the only way in. */
+html.theme-light [data-action="back"],
+html.theme-light .back-btn,
+html.theme-light .back-home-btn {
+    color: #1b2b3a !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-color: rgba(27, 43, 58, 0.14) !important;
+}
+
 html.theme-light .bot-cta-badge { color: #0668d6; background: rgba(10, 124, 255, 0.12); border-color: rgba(10, 124, 255, 0.35); }
 html.theme-light .bot-step {
     background: rgba(255, 255, 255, 0.5);
@@ -249,6 +261,11 @@ html.theme-light .of-fb-btn {
     border-color: rgba(24, 119, 242, 0.4);
     color: #1b4d9c;
 }
+
+/* FAQ accent text (was inline style="color:…" — unreachable from here) */
+html.theme-light .faq-accent-blue { color: #0668d6; }
+html.theme-light .faq-accent-green { color: #067647; }
+html.theme-light .faq-accent-red { color: #c0392b; }
 
 /* hardcoded light-blue hovers -> deep blue */
 html.theme-light .faq-question:hover { color: #0668d6; }

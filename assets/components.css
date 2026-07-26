@@ -415,6 +415,12 @@
 
 .faq-link { color: var(--mint); text-decoration: underline; font-weight: 600; }
 
+/* FAQ accent labels — same colors the answers used inline, as classes so
+   theme.css can darken them for the light canvas */
+.faq-accent-blue { color: #00d2ff; }
+.faq-accent-green { color: #2ed573; }
+.faq-accent-red { color: #ff4757; }
+
 /* ===== Plan / checkout modals ===== */
 .modal-overlay {
     display: none;
@@ -908,7 +914,11 @@
 .plan-contact-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
+    /* 44px floor = the minimum comfortable touch target; padding alone left
+       these at ~30px on phones, where they are actually tapped. */
+    min-height: 44px;
     padding: 7px 11px;
     border-radius: 999px;
     font-size: 0.8rem;
@@ -955,14 +965,15 @@
     color: var(--text);
 }
 
-.order-form-card h2 { margin: 0 0 6px; color: var(--text); font-weight: 650; letter-spacing: -0.01em; font-size: 1.25rem; }
+/* h1 = the page's real heading (order.html); h2 kept for backward compat */
+.order-form-card h1, .order-form-card h2 { margin: 0 0 6px; color: var(--text); font-weight: 650; letter-spacing: -0.01em; font-size: 1.25rem; }
 .order-form-card .of-sub { margin: 0 0 20px; color: var(--text-dim); font-size: 0.9rem; line-height: 1.55; }
 
 .of-field { margin-bottom: 16px; }
 .of-field label { display: block; font-size: 0.86rem; margin-bottom: 6px; color: var(--text-dim); }
 
 .of-field input[type="text"], .of-field input[type="tel"], .of-field input[type="email"],
-.of-field select, .of-field textarea {
+.of-field input[type="password"], .of-field select, .of-field textarea {
     width: 100%;
     padding: 12px 14px;
     border-radius: var(--r-sm);
@@ -1139,6 +1150,15 @@
   .search-btn { padding: 8px 12px; font-size: 0.9rem; }
   .search-modal-content { padding: 24px; border-radius: var(--r-lg); }
   .search-modal-title { font-size: 1.2rem; }
+
+  /* iOS Safari zooms the viewport whenever a focused control is under 16px.
+     Keep every checkout/search field at 16px and win the density back with
+     padding instead of font-size. */
+  .of-field input[type="text"], .of-field input[type="tel"], .of-field input[type="email"],
+  .of-field input[type="password"], .of-field select, .of-field textarea,
+  .search-input { font-size: 16px; }
+  .of-field input[type="text"], .of-field input[type="tel"], .of-field input[type="email"],
+  .of-field input[type="password"], .of-field select, .of-field textarea { padding: 11px 12px; }
 
   .page-header { padding: 22px 14px 10px; }
   .page-subtitle { font-size: 0.85rem; }

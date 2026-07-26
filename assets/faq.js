@@ -5,6 +5,68 @@
 (function () {
   'use strict';
 
+  /* panel ကနေ ရေးလို့ရတဲ့ HTML ကို allowlist နဲ့ သန့်စင်တယ်။ panel session (သို့)
+     data-scoped GITHUB_PAT တစ်ခုခု ပေါက်သွားရင်တောင် site ထဲ script / onclick /
+     javascript: link / page ဖုံးအုပ်တဲ့ style မဝင်နိုင်စေရ (repo access မလိုဘဲ
+     ဝယ်သူတွေဆီ ပိုက်ဆံလွှဲပြောင်း လိမ်စာ ထည့်လို့ရတဲ့ လမ်းကြောင်း ပိတ်သည်)။ */
+  var OK_TAGS = {
+    A: 1, B: 1, STRONG: 1, I: 1, EM: 1, U: 1, BR: 1, P: 1, UL: 1, OL: 1, LI: 1,
+    SPAN: 1, SMALL: 1, DIV: 1, CODE: 1,
+    // panel FAQ editor က HTML အလွတ်လပ် ရိုက်လို့ရတယ် — heading / ခွဲမျဉ်း တွေက
+    // ဘေးမဲ့ဖြစ်ပြီး သဘာဝကျလို့ ခွင့်ပြုသည် (မပါရင် တိတ်တဆိတ် ပျောက်သွားမယ်)။
+    H3: 1, H4: 1, H5: 1, HR: 1
+  };
+  var DROP_TAGS = { SCRIPT: 1, STYLE: 1, IFRAME: 1, OBJECT: 1, EMBED: 1, TEMPLATE: 1, LINK: 1, META: 1 };
+  // live FAQ content က class (faq-link / telegram-post-link) နဲ့ heading အရောင်
+  // style ကို သုံးထားလို့ အဲ့ ၂ ခုကို ကျဉ်းကျဉ်း pattern နဲ့ ခွင့်ပြုသည် —
+  // position/background/url() လို ဖုံးအုပ်နိုင်တဲ့ style တွေ လုံးဝ မဝင်နိုင်။
+  var SAFE_CLASS = /^[\w\- ]{1,80}$/;
+  var SAFE_STYLE = /^\s*color\s*:\s*(#[0-9a-f]{3,8}|rgba?\([\d\s.,%]+\)|[a-z]+)\s*;?\s*$/i;
+
+  function safeHref(v) {
+    var raw = String(v == null ? '' : v).replace(/[\u0000-\u001F\u007F]/g, '').trim();
+    if (!raw) return '';
+    var proto;
+    try { proto = new URL(raw, location.href).protocol; } catch (e) { return ''; }
+    // http ကို ခွင့်ပြုရသည် — live FAQ ထဲမှာ Office ISO download link က http ပါ
+    return (proto === 'https:' || proto === 'http:' || proto === 'mailto:' || proto === 'tel:') ? raw : '';
+  }
+
+  function scrub(node) {
+    Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+      if (n.nodeType === 3) return;                       // text node — safe
+      if (n.nodeType !== 1 || DROP_TAGS[n.tagName]) { n.parentNode.removeChild(n); return; }
+      if (!OK_TAGS[n.tagName]) {                          // unknown tag -> keep text only
+        // admin က panel ကနေ ခွင့်မပြုထားတဲ့ tag ထည့်မိရင် တိတ်တဆိတ် ပျောက်တာမို့
+        // console မှာ တစ်ကြောင်း ချန်ခဲ့ — ဘာပျောက်သွားလဲ ရှာလို့ရအောင်။
+        if (window.console && console.warn) console.warn('faq: dropped <' + n.tagName + '>');
+        n.parentNode.replaceChild(document.createTextNode(n.textContent || ''), n);
+        return;
+      }
+      scrub(n);
+      var href = n.tagName === 'A' ? safeHref(n.getAttribute('href')) : '';
+      Array.prototype.slice.call(n.attributes).forEach(function (a) {
+        var keep = (a.name === 'class' && SAFE_CLASS.test(a.value)) ||
+          (a.name === 'style' && SAFE_STYLE.test(a.value));
+        if (!keep) n.removeAttribute(a.name);
+      });
+      if (n.tagName === 'A' && href) {
+        n.setAttribute('href', href);
+        n.setAttribute('target', '_blank');
+        n.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
+  }
+
+  // string ကို inert template ထဲ parse (script မလည်၊ image မဆွဲ) → သန့်စင် →
+  // node အဖြစ် ထည့်
+  function setSafeHTML(host, html) {
+    var tpl = document.createElement('template');
+    tpl.innerHTML = String(html == null ? '' : html);
+    scrub(tpl.content);
+    host.appendChild(tpl.content);
+  }
+
   var wrap = document.querySelector('.faq-container');
   if (!wrap) return;
   var page = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
@@ -23,18 +85,31 @@
       frag.appendChild(h2);
 
       d.items.forEach(function (it) {
+        // ၂ ခုလုံး လွတ်နေတဲ့ item (panel save လွဲတာမျိုး) ကို ကျော်သည် —
+        // 'undefined' ဆိုတဲ့ စာလုံး ပေါ်မလာစေရ
+        if (!it || (!it.q && !it.a_html)) return;
         var item = document.createElement('div');
         item.className = 'faq-item';
         var btn = document.createElement('button');
         btn.className = 'faq-question';
-        btn.innerHTML = it.q + ' <i class="fa-solid fa-chevron-down"></i>';
+        btn.type = 'button';
+        btn.setAttribute('aria-expanded', 'false');
+        // မေးခွန်းက HTML ဖြစ်ဖို့ အကြောင်းမရှိ — textContent နဲ့ပဲ ထည့်ပြီး
+        // chevron icon ကို element အနေနဲ့ တွဲသည်
+        var qText = document.createElement('span');
+        qText.textContent = String(it.q || '');
+        var chev = document.createElement('i');
+        chev.className = 'fa-solid fa-chevron-down';
+        btn.appendChild(qText);
+        btn.appendChild(chev);
         var ans = document.createElement('div');
         ans.className = 'faq-answer';
-        ans.innerHTML = it.a_html;
+        setSafeHTML(ans, it.a_html || '');
         btn.addEventListener('click', function () {
           btn.classList.toggle('active');
-          ans.style.maxHeight = btn.classList.contains('active')
-            ? (ans.scrollHeight + 'px') : 0;
+          var on = btn.classList.contains('active');
+          btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+          ans.style.maxHeight = on ? (ans.scrollHeight + 'px') : 0;
         });
         item.appendChild(btn);
         item.appendChild(ans);

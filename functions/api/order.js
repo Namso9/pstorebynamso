@@ -9,6 +9,24 @@
  */
 
 const MAX_FILE = 8 * 1024 * 1024; // 8MB
+// Whole-body cap — Content-Length ကို formData() မခေါ်ခင် စစ်လို့ ကြီးလွန်းတဲ့
+// body ကို buffer + parse လုပ်ပြီးမှ ငြင်းရတာ မဖြစ်တော့ဘူး (multipart boundary /
+// field overhead အတွက် MAX_FILE ထက် အနည်းငယ် ပိုပေးထားသည်)။
+const MAX_BODY = 10 * 1024 * 1024; // 10MB
+// Telegram sendPhoto ဆီ ပို့လို့ရတဲ့ format များ။ ဒါက ငွေလွှဲပြီးမှ ရောက်တဲ့
+// form ဖြစ်လို့ စာရင်းကို ကျယ်ကျယ်ထားတယ် — iPhone/Android က screenshot ကို
+// Files ကနေ ပြန် share ရင် heic/heif/avif ထွက်တတ်ပြီး၊ အရင်က အဲ့ဒါတွေကို
+// ငြင်းလိုက်လို့ ငွေပေးပြီးသား order တွေ ဒီနေရာမှာတင် ပျက်ကုန်တယ်။
+const ALLOWED_IMAGE = [
+  'image/jpeg', 'image/jpg', 'image/png', 'image/webp',
+  'image/heic', 'image/heif', 'image/avif', 'image/gif', 'image/bmp',
+];
+// Browser form ကနေပဲ POST လာရမယ်။ Origin header မပါတဲ့ client တွေကို မပိတ်ဘူး —
+// ပါပြီး ကိုယ့် site မဟုတ်မှသာ ငြင်းတယ် (preview deploy အတွက် request ကိုယ်ပိုင်
+// origin ကိုပါ လက်ခံသည်)။
+const ALLOWED_ORIGINS = ['https://pstorebynamso.com', 'https://www.pstorebynamso.com'];
+// FB fallback link — honeypot false positive နဲ့ success path ၂ ခုလုံးက သုံးတယ်
+const FB_DEFAULT = 'https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr';
 
 // same source the /products.json proxy serves from — the live catalog
 const PRODUCTS_RAW_URL =
@@ -77,10 +95,41 @@ export async function onRequestPost({ request, env, waitUntil }) {
       return json({ ok: false, error: 'Server not configured' }, 500);
     }
 
+    // Cross-origin POST guard — form က ကိုယ့် page ကနေပဲ တင်တာ။
+    // 'null' က sandboxed iframe / privacy mode / in-app webview တွေ ပို့တဲ့
+    // တန်ဖိုး — header မပါတာနဲ့ တူတူ သဘောထားတယ်၊ မဟုတ်ရင် ငွေလွှဲပြီးသား
+    // customer တစ်ယောက် ဘာကြောင့်မှန်း မသိဘဲ 403 မိသွားမယ်။
+    const origin = request.headers.get('Origin');
+    if (origin && origin !== 'null' &&
+        ALLOWED_ORIGINS.indexOf(origin) === -1 &&
+        origin !== new URL(request.url).origin) {
+      return json({ ok: false, error: 'Forbidden origin' }, 403);
+    }
+
+    // Size cap BEFORE formData() — oversized body ကို parse တောင် မလုပ်ဘူး။
+    const declared = Number(request.headers.get('Content-Length') || 0);
+    if (declared > MAX_BODY) {
+      return json({ ok: false, error: 'File too large' }, 413);
+    }
+
     const form = await request.formData();
 
-    // honeypot — bots fill hidden fields
-    if (form.get('website')) return json({ ok: true, orderId: 'OK', fbLink: '#' });
+    // honeypot — bots fill hidden fields. နာမည်က 'extra_field_hp'; အရင်က
+    // 'website' လို့ ခေါ်ခဲ့တာကို ဖြုတ်လိုက်ပြီ — autofill / password manager
+    // တွေက 'website' ဆိုတဲ့ semantic နာမည်ကို ဖြည့်မိလို့ ငွေလွှဲပြီးသား
+    // တကယ့် order တွေ တိတ်တဆိတ် ကျသွားနိုင်တယ်။ False positive ဖြစ်သွားရင်လည်း
+    // customer က traceable ဖြစ်တဲ့ ပုံမှန် order id မြင်ရအောင် စစ်စစ် format
+    // အတိုင်း ပြန်ပေးတယ် ('OK' ဆိုတဲ့ id က ဘာမှ ရှာလို့မရ)။
+    if (form.get('extra_field_hp')) {
+      // false positive က တိတ်တဆိတ် ဖြစ်တာမို့ Pages log ထဲ မှတ်ခဲ့တယ် —
+      // ငွေလွှဲပြီးသား customer တစ်ယောက် "ရပြီ" ဆိုတဲ့ id ရပြီး order က
+      // ဘယ်တော့မှ မရောက်ဘူးဆိုရင် ဒီ log ကပဲ တစ်ခုတည်းသော သဲလွန်စ။
+      console.error('honeypot hit', {
+        name: clean(form.get('name'), 60),
+        contact: clean(form.get('contact'), 40),
+      });
+      return json({ ok: true, orderId: newOrderId(), fbLink: env.FB_PAGE_LINK || FB_DEFAULT });
+    }
 
     const name = clean(form.get('name'), 60);
     const product = clean(form.get('product'), 120);
@@ -102,14 +151,14 @@ export async function onRequestPost({ request, env, waitUntil }) {
     if (shot.size > MAX_FILE) {
       return json({ ok: false, error: 'File too large' }, 400);
     }
-    // must be an image (Telegram sendPhoto rejects anything else with a
-    // confusing error). Empty type is allowed — some browsers omit it.
-    if (shot.type && !shot.type.startsWith('image/')) {
-      return json({ ok: false, error: 'Screenshot must be an image' }, 400);
+    // must be an image Telegram sendPhoto can actually take (HEIC/PDF ဆိုရင်
+    // Telegram က ရှုပ်ထွေးတဲ့ error ပဲ ပြန်ပေးတယ်)။ Empty type is allowed —
+    // some browsers omit it.
+    if (shot.type && ALLOWED_IMAGE.indexOf(shot.type.toLowerCase().split(';')[0].trim()) === -1) {
+      return json({ ok: false, error: 'Unsupported image type' }, 400);
     }
 
-    const orderId = 'W' + Date.now().toString(36).toUpperCase() +
-      Math.random().toString(36).slice(2, 5).toUpperCase();
+    const orderId = newOrderId();
 
     // Server-side stock check (defense-in-depth vs stale tab / bookmarked /
     // forged POST). We DON'T reject — manual web orders are admin-reviewed and
@@ -167,7 +216,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       oos: Boolean(oos),
     });
 
-    const fbBase = env.FB_PAGE_LINK || 'https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr';
+    const fbBase = env.FB_PAGE_LINK || FB_DEFAULT;
     const fbRef = env.FB_PAGE_LINK && env.FB_PAGE_LINK.includes('m.me')
       ? (fbBase.includes('?') ? `&ref=${orderId}` : `?ref=${orderId}`)
       : '';
@@ -176,6 +225,13 @@ export async function onRequestPost({ request, env, waitUntil }) {
     console.error(e);
     return json({ ok: false, error: 'Server error' }, 500);
   }
+}
+
+// customer ကို ပြတဲ့ order reference — real order နဲ့ honeypot false positive
+// ၂ ခုလုံး တူညီတဲ့ format ('W' + timestamp) ကို သုံးသည်။
+function newOrderId() {
+  return 'W' + Date.now().toString(36).toUpperCase() +
+    Math.random().toString(36).slice(2, 5).toUpperCase();
 }
 
 function clean(v, max) {
