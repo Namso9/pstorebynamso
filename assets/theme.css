@@ -58,7 +58,7 @@ html.theme-light {
     --mint: #128a52;
     --mint-soft: rgba(18, 158, 85, 0.10);
     --mint-line: rgba(18, 158, 85, 0.30);
-    --gold-note: rgba(63, 57, 41, 0.52); /* plan-desc/checkout notes: quiet ink on light (gold clashes) */
+    --gold-note: rgba(63, 57, 41, 0.70); /* plan-desc/checkout notes: quiet ink on light (gold clashes); 0.52 was below readable on cream */
     --brand-amber: #b06e00;
 
     /* primary CTA — quiet 2-stop iOS-blue pill (kills the cyan/green
@@ -313,6 +313,12 @@ html.theme-light .close-search {
 html.theme-light .close-modal { color: rgba(63, 57, 41, 0.45); }
 html.theme-light .close-search:hover,
 html.theme-light .close-modal:hover { color: var(--text); }
+
+/* plan descriptions ("Windows 10 Pro > lifetime key" etc.): the base rule
+   multiplies --gold-note by opacity 0.85 — on the cream canvas that lands
+   below readable; run the light-mode ink at full strength instead */
+html.theme-light .plan-desc,
+html.theme-light .checkout-note { opacity: 1; }
 
 /* plan rows: white glass pills */
 html.theme-light .plan-btn {

@@ -797,6 +797,12 @@
 
 .review-strip img {
     width: 100%;
+    /* height:auto releases the height="" presentational hint (index.html
+       declares intrinsic 800/587/489px for CLS) — without it the images
+       render stretched to that fixed height at every viewport */
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
     border-radius: var(--r-md);
     border: 1px solid var(--stroke);
     display: block;
