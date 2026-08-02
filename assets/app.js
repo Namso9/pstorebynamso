@@ -153,10 +153,10 @@
     wrap.innerHTML =
       '<div id="planModal" class="modal-overlay" data-action="overlay-plan">' +
       '<div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">' +
-      // real <button> (span က keyboard နဲ့ နှိပ်လို့မရ) — inline style တွေက
+      // real <button> (span က keyboard နဲ့ နှိပ်လို့မရ) — .js-reset က
       // browser ရဲ့ default button chrome ကို ဖယ်ပြီး .close-modal ရဲ့ ပုံစံအတိုင်း
-      // ဆက်မြင်ရအောင် ထားသည် (CSS ဖိုင် မထိရအောင်)။
-      '<button type="button" class="close-modal" data-action="plan-close" aria-label="Close" style="background:none;border:0;padding:0;line-height:1;font-family:inherit">&times;</button>' +
+      // ဆက်မြင်ရအောင် ထားသည်။
+      '<button type="button" class="close-modal js-reset" data-action="plan-close" aria-label="Close">&times;</button>' +
       '<h2 class="modal-title" id="modalTitle">Choose Plan</h2>' +
       '<div id="modalPlans"></div>' +
       '</div></div>';
@@ -169,13 +169,13 @@
       return '<div class="plan-btn plan-btn--oos">' +
         '<div class="plan-info"><span class="plan-name">' + esc(plan.name) + '</span>' +
         '<span class="plan-desc">' + esc(plan.desc) + '</span></div>' +
-        '<div style="text-align:right">' +
-        '<span class="plan-price" style="text-decoration:line-through;opacity:0.55">' + esc(plan.price) + '</span>' +
-        '<span style="display:block;font-size:0.72rem;font-weight:600;color:#ff6b6b;white-space:nowrap">Out of stock</span>' +
+        '<div class="js-right">' +
+        '<span class="plan-price js-price-oos">' + esc(plan.price) + '</span>' +
+        '<span class="js-oos-tag">Out of stock</span>' +
         '</div></div>';
     }
     if (plan.contact) {
-      return '<div class="plan-btn" style="cursor:default">' +
+      return '<div class="plan-btn js-noclick">' +
         '<div class="plan-info"><span class="plan-name">' + esc(plan.name) + '</span>' +
         '<span class="plan-desc">' + esc(plan.desc) + '</span></div>' +
         '<div class="plan-contact-row">' +
@@ -199,7 +199,7 @@
     wrap.innerHTML =
       '<div id="checkoutModal" class="modal-overlay" data-action="overlay-checkout">' +
       '<div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">' +
-      '<button type="button" class="close-modal" data-action="checkout-close" aria-label="Close" style="background:none;border:0;padding:0;line-height:1;font-family:inherit">&times;</button>' +
+      '<button type="button" class="close-modal js-reset" data-action="checkout-close" aria-label="Close">&times;</button>' +
       '<h2 class="modal-title" id="checkoutTitle">ဝယ်ယူနည်း ရွေးပါ</h2>' +
       '<div id="checkoutBody"></div>' +
       '</div></div>';
@@ -227,7 +227,7 @@
         // fetch failed (retryable — loadData refetches) or unknown ids
         body.innerHTML =
           '<div class="no-results">အချက်အလက် မတင်နိုင်သေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပေးပါ။</div>' +
-          '<button type="button" class="view-plans-btn" style="width:100%" data-action="checkout-open" data-pid="' + esc(productId) + '" data-plid="' + esc(planId) + '">ထပ်ကြိုးစားမည်</button>';
+          '<button type="button" class="view-plans-btn js-block" data-action="checkout-open" data-pid="' + esc(productId) + '" data-plid="' + esc(planId) + '">ထပ်ကြိုးစားမည်</button>';
         return;
       }
       // Stock re-check at checkout time — the plan button may have been
@@ -235,14 +235,14 @@
       if (plan.stock === false) {
         body.innerHTML =
           '<div class="no-results">ဒီ plan လောလောဆယ် stock မရှိပါ။ နောက်မှ ပြန်စစ်ပေးပါ (သို့) တခြား plan ရွေးပေးပါ။</div>' +
-          '<button type="button" class="view-plans-btn" style="width:100%" data-action="checkout-close">ပိတ်မည်</button>';
+          '<button type="button" class="view-plans-btn js-block" data-action="checkout-close">ပိတ်မည်</button>';
         return;
       }
       var s = d.settings || {};
       var summary =
         '<div class="checkout-summary">' +
         '<span class="plan-name">' + esc(product.name) + ' — ' + esc(plan.name) +
-        (plan.desc ? ' <span style="opacity:0.7;font-weight:400">(' + esc(plan.desc) + ')</span>' : '') + '</span>' +
+        (plan.desc ? ' <span class="js-dim-soft">(' + esc(plan.desc) + ')</span>' : '') + '</span>' +
         '<span class="plan-price">' + esc(plan.price) + '</span></div>';
 
       // Telegram bot option — only when a bot mapping exists for THIS plan
@@ -303,7 +303,7 @@
         // fetch failed (retryable — loadData refetches) or unknown id
         plansEl.innerHTML =
           '<div class="no-results">Plan များ မတင်နိုင်သေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပေးပါ။</div>' +
-          '<button type="button" class="view-plans-btn" style="width:100%" data-action="view-plans" data-pid="' + esc(productId) + '">ထပ်ကြိုးစားမည်</button>';
+          '<button type="button" class="view-plans-btn js-block" data-action="view-plans" data-pid="' + esc(productId) + '">ထပ်ကြိုးစားမည်</button>';
         return;
       }
       var s = d.settings || {};
@@ -314,7 +314,7 @@
         return planButtonHTML(product, pl);
       }).join('') :
         // no plans published yet -> same look as a contact-only plan row
-        '<div class="plan-btn" style="cursor:default">' +
+        '<div class="plan-btn js-noclick">' +
         '<div class="plan-info"><span class="plan-name">ဒီ product အတွက် plan များကို Admin ကို တိုက်ရိုက် မေးမြန်းပေးပါ</span></div>' +
         '<div class="plan-contact-row">' +
         '<a class="plan-contact-btn plan-contact-btn--tg" href="' + esc(s.telegramChannel || '#') + '" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Ask price</a>' +
@@ -375,12 +375,12 @@
     var list = document.getElementById('app-list');
     if (!list) return;
     var slug = list.getAttribute('data-category');
-    list.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.6)">Loading products…</p>';
+    list.innerHTML = '<p class="js-center js-dim">Loading products…</p>';
     loadData().then(function (d) {
       if (!d) {
         list.innerHTML =
-          '<p style="text-align:center">Products များ မတင်နိုင်သေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပေးပါ။</p>' +
-          '<p style="text-align:center"><button class="view-plans-btn" type="button" data-action="list-retry">ထပ်ကြိုးစားမည်</button></p>';
+          '<p class="js-center">Products များ မတင်နိုင်သေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပေးပါ။</p>' +
+          '<p class="js-center"><button class="view-plans-btn" type="button" data-action="list-retry">ထပ်ကြိုးစားမည်</button></p>';
         return;
       }
       var items = d.products.filter(function (p) { return p.category === slug; });
@@ -390,12 +390,12 @@
         // ပေးထားသည်။
         var st = d.settings || {};
         list.innerHTML =
-          '<p style="text-align:center">ဒီ category မှာ product မရှိသေးပါ။ နောက်မှ ပြန်ကြည့်ပေးပါ (သို့) Admin ကို မေးမြန်းနိုင်ပါတယ်။</p>' +
-          '<div class="plan-contact-row" style="justify-content:center">' +
+          '<p class="js-center">ဒီ category မှာ product မရှိသေးပါ။ နောက်မှ ပြန်ကြည့်ပေးပါ (သို့) Admin ကို မေးမြန်းနိုင်ပါတယ်။</p>' +
+          '<div class="plan-contact-row js-justify-center">' +
           '<a class="plan-contact-btn plan-contact-btn--tg" href="' + esc(st.telegramChannel || '#') + '" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Telegram Channel</a>' +
           '<a class="plan-contact-btn plan-contact-btn--fb" href="' + esc(st.facebookPage || '#') + '" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i> Contact Admin</a>' +
           '</div>' +
-          '<p style="text-align:center;margin-top:14px"><a href="index.html" style="color:#00d2ff">🏠 Home ကို ပြန်သွားမည်</a></p>';
+          '<p class="js-center js-mt"><a href="index.html" class="js-link">🏠 Home ကို ပြန်သွားမည်</a></p>';
         return;
       }
       list.innerHTML = items.map(function (p) {
@@ -458,19 +458,19 @@
         (plid ? '&plan=' + encodeURIComponent(plid) : '');
       var tail = onOrderPage
         ? 'အောက်က form ကိုဖြည့်ပြီး ငွေလွှဲ screenshot တင်ပေးပါ။'
-        : 'အောက်မှာ Platform ရွေးပြီး QR နဲ့ ငွေလွှဲပါ။ ငွေလွှဲပြီးရင် screenshot ကို <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> သို့မဟုတ် <a href="order.html' + esc(safeSearch) + '" style="color:#00d2ff">ဒီ order form</a> ကနေ တင်နိုင်ပါတယ်။';
+        : 'အောက်မှာ Platform ရွေးပြီး QR နဲ့ ငွေလွှဲပါ။ ငွေလွှဲပြီးရင် screenshot ကို <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" class="js-link">Page Messenger</a> သို့မဟုတ် <a href="order.html' + esc(safeSearch) + '" class="js-link">ဒီ order form</a> ကနေ တင်နိုင်ပါတယ်။';
       // Bookmark / share ထားတဲ့ link ကနေ ဖွင့်ရင် plan က stock ကုန်နေတတ်တယ် —
       // QR နဲ့ ငွေမလွှဲခင် အနီရောင်နဲ့ ကြိုသတိပေးသည်။ order.html မှာတော့
       // order.js က #of-stock-warn ကို ကိုယ်တိုင် ထည့်ပြီးသားမို့ ချန်ထားတယ်
       // (မဟုတ်ရင် အနီစာ ၂ ကြောင်း ထပ်နေမယ်)။
       var oosHtml = (!onOrderPage && plan && plan.stock === false)
-        ? '<p style="font-size:0.82rem;color:#ff6b6b;margin:6px 0 0">သတိပြုရန် — ဒီ plan က လောလောဆယ် stock မရှိပါ။ ငွေမလွှဲခင် Admin ကို အရင်မေးပေးပါ။ Order တင်ထားရင် stock ပြန်ရှိချိန် Admin က အကြောင်းပြန်ပါမယ်။</p>'
+        ? '<p class="js-warn">သတိပြုရန် — ဒီ plan က လောလောဆယ် stock မရှိပါ။ ငွေမလွှဲခင် Admin ကို အရင်မေးပေးပါ။ Order တင်ထားရင် stock ပြန်ရှိချိန် Admin က အကြောင်းပြန်ပါမယ်။</p>'
         : '';
       host.innerHTML = '<h3><i class="fa-solid fa-cart-shopping"></i> Your Order</h3>' +
         '<p>' + esc(product.name) + (plan ? ' — ' + esc(plan.name) + (plan.desc ? ' (' + esc(plan.desc) + ')' : '') : '') + '</p>' +
         (plan && plan.price ? '<p class="os-price">' + esc(plan.price) + '</p>' : '') +
         oosHtml +
-        '<p style="font-size:0.85rem;color:rgba(255,255,255,0.65)">' + tail + '</p>';
+        '<p class="js-note">' + tail + '</p>';
     });
   }
 

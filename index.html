@@ -10,15 +10,15 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pstorebynamso.com/" />
   <meta property="og:image" content="https://pstorebynamso.com/images/p1.webp" />
-  <meta name="theme-color" content="#00d2ff" />
+  <meta name="theme-color" content="#4d9fff" />
   <link rel="canonical" href="https://pstorebynamso.com/" />
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
   <link rel="preload" as="image" href="images/bg.webp" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="style.css?v=3" />
-  <link rel="stylesheet" href="assets/components.css?v=8" />
-  <link rel="stylesheet" href="assets/theme.css?v=11" />
+  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="assets/components.css?v=9" />
+  <link rel="stylesheet" href="assets/theme.css?v=12" />
   <script src="assets/theme.js?v=1"></script>
   <!-- JSON-LD is a DATA block (never executed), so CSP script-src 'self' does
        not apply to it. Prices/stock stay out on purpose: products.json is
@@ -55,11 +55,29 @@
 </head>
 <body>
 
-  <div class="header">
-    <h1>Premium Store မှ ဝယ်ယူရရှိနိုင်မည့် Digital Products များ</h1>
+  <div class="hero">
+    <span class="hero-badge"><i class="fa-solid fa-bolt"></i> Premium Digital Marketplace</span>
+    <h1 class="hero-title">Premium Store မှ ဝယ်ယူရရှိနိုင်မည့် Digital Products များ</h1>
+    <p class="hero-sub">
+      Netflix, Spotify, VPN, AI apps နှင့် premium subscription များကို စျေးနှုန်းချိုသာစွာ
+      Telegram Bot ဖြင့် အလွယ်တကူ မှာယူနိုင်ပါသည်။
+    </p>
+    <div class="hero-ctas">
+      <a href="https://t.me/PSNamso_bot" target="_blank" rel="noopener" class="hero-cta">
+        <i class="fa-brands fa-telegram"></i> Telegram Bot ဖြင့်ဝယ်ယူရန်
+      </a>
+      <a href="#products" class="hero-cta hero-cta--ghost">
+        <i class="fa-solid fa-grid-2"></i> Products ကြည့်ရန်
+      </a>
+    </div>
+    <div class="trust-chips">
+      <span class="trust-chip"><i class="fa-solid fa-bolt"></i> Instant Bot Delivery</span>
+      <span class="trust-chip"><i class="fa-solid fa-credit-card"></i> KBZPay · WavePay · AYA Pay</span>
+      <span class="trust-chip"><i class="fa-solid fa-star"></i> Real Customer Reviews</span>
+    </div>
   </div>
 
-  <div class="product-container">
+  <div class="product-container" id="products">
     <a href="creative-apps.html" class="card-link">
       <div class="product-card">
         <!-- first card = LCP candidate: eager + high priority, never lazy -->
@@ -134,6 +152,29 @@
       </div>
     </a>
 </div>
+
+  <div class="trust-grid">
+    <div class="trust-card">
+      <i class="fa-solid fa-bolt"></i>
+      <h3>Instant Bot Delivery</h3>
+      <p>Stock ရှိတဲ့ Digital Product များကို Telegram Bot ထဲမှာ Wallet Balance နဲ့ ချက်ချင်း ဝယ်ယူနိုင်ပါတယ်။</p>
+    </div>
+    <div class="trust-card">
+      <i class="fa-solid fa-money-bill-wave"></i>
+      <h3>Local Payments</h3>
+      <p>KBZPay, WavePay, AYA Pay ဖြင့် လွယ်ကူလုံခြုံစွာ ငွေပေးချေနိုင်ပါတယ်။</p>
+    </div>
+    <div class="trust-card">
+      <i class="fa-solid fa-star"></i>
+      <h3>Verified Reviews</h3>
+      <p>Customer များ၏ Screenshot Review အစစ်အမှန်များကို ကြည့်ရှု စိတ်ချစွာ ဝယ်ယူနိုင်ပါတယ်။</p>
+    </div>
+    <div class="trust-card">
+      <i class="fa-solid fa-headset"></i>
+      <h3>Telegram Support</h3>
+      <p>အကူအညီလိုအပ်ပါက Telegram Channel နှင့် Bot မှတဆင့် အမြန် ဆက်သွယ်နိုင်ပါတယ်။</p>
+    </div>
+  </div>
 
   <div class="review-preview">
     <div class="review-preview-head">
@@ -231,15 +272,39 @@
   </div>
 
   <footer class="site-footer">
-    <div class="footer-content">
+    <div class="site-footer-cols">
+      <div class="footer-col">
+        <p class="footer-brand-name">PREMIUM <b>STORE</b></p>
+        <p class="footer-tagline">
+          Digital products &amp; premium subscriptions များကို
+          စျေးနှုန်းချိုသာစွာ၊ လုံခြုံစိတ်ချစွာ ဝယ်ယူနိုင်သော
+          Premium Store by Namso ဖြစ်ပါတယ်။
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a href="index.html">Home</a>
+        <a href="payment.html">Payment Methods</a>
+        <a href="reviews.html">Customer Reviews</a>
+        <a href="order.html">Order Form</a>
+      </div>
+      <div class="footer-col">
+        <h4>Official Channels</h4>
+        <a href="https://t.me/premiumstorebzzz" target="_blank" rel="noopener">Telegram Channel</a>
+        <a href="https://t.me/PSNamso_bot" target="_blank" rel="noopener">Telegram Bot</a>
+        <a href="https://t.me/Premiumstorezz" target="_blank" rel="noopener">Telegram Support</a>
+        <a href="https://www.facebook.com/share/1MyXdbrK9s/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook Page</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Premium Store by Namso. All rights reserved.</span>
       <div class="footer-links">
         <a href="terms-of-service-vpn.html">VPN Terms</a>
-        <span style="color: rgba(255,255,255,0.3);">|</span>
         <a href="terms-of-service.html">Shop Terms</a>
       </div>
     </div>
   </footer>
 
-  <script src="assets/app.js?v=7" defer></script>
+  <script src="assets/app.js?v=8" defer></script>
 </body>
 </html>

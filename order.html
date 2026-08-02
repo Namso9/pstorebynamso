@@ -10,14 +10,14 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pstorebynamso.com/order" />
   <meta property="og:image" content="https://pstorebynamso.com/images/p1.webp" />
-  <meta name="theme-color" content="#00d2ff" />
+  <meta name="theme-color" content="#4d9fff" />
   <link rel="canonical" href="https://pstorebynamso.com/order" />
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="style.css?v=3" />
-  <link rel="stylesheet" href="assets/components.css?v=8" />
-  <link rel="stylesheet" href="assets/theme.css?v=11" />
+  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="assets/components.css?v=9" />
+  <link rel="stylesheet" href="assets/theme.css?v=12" />
   <script src="assets/theme.js?v=1"></script>
 </head>
 <body>
@@ -26,7 +26,7 @@
 
   <div class="order-form-card">
     <h1><i class="fa-solid fa-file-invoice"></i> Order တင်ရန်</h1>
-    <p class="of-sub"> ငွေလွှဲပြီး screenshot တင်လိုက်ပါ။ Admin က <strong>Viber or Telegram</strong> ကနေ ပြန်ဆက်သွယ်ပါမယ်။<br/>Form မတင်ချင်ရင်  <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> ကို screenshot တိုက်ရိုက်ပို့လို့လည်း ရပါတယ်။</p>
+    <p class="of-sub"> ငွေလွှဲပြီး screenshot တင်လိုက်ပါ။ Admin က <strong>Viber or Telegram</strong> ကနေ ပြန်ဆက်သွယ်ပါမယ်။<br/>Form မတင်ချင်ရင်  <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" class="js-link">Page Messenger</a> ကို screenshot တိုက်ရိုက်ပို့လို့လည်း ရပါတယ်။</p>
 
     <form id="orderForm">
       <!-- machine-readable ids from the ?product=&plan= prefill so the server
@@ -47,14 +47,14 @@
       <div class="of-field" id="of-mail-field" style="display:none">
         <label for="of-mail" id="of-mail-label">Upgrade လုပ်မည့် သင့် Email *</label>
         <input type="email" id="of-mail" name="customer_mail" maxlength="120" placeholder="yourname@gmail.com" autocomplete="off" />
-        <p id="of-mail-hint" style="font-size:0.78rem;color:rgba(255,255,255,0.55);margin:6px 0 0"></p>
+        <p id="of-mail-hint" class="js-hint"></p>
       </div>
 
       <div class="of-field" id="of-pw-field" style="display:none">
         <label for="of-pw">Gmail Password (optional)</label>
         <input type="password" id="of-pw" name="customer_pw" maxlength="100" placeholder="Gmail password" autocomplete="off" />
-        <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;margin-top:6px;opacity:0.8;cursor:pointer">
-          <input type="checkbox" id="of-pw-show" style="width:auto" /> Password ပြရန်
+        <label class="js-check">
+          <input type="checkbox" id="of-pw-show" class="js-wauto" /> Password ပြရန်
         </label>
       </div>
 
@@ -101,7 +101,7 @@
     <div class="of-result" id="of-result"></div>
   </div>
 
-  <script src="assets/app.js?v=7" defer></script>
-  <script src="assets/order.js?v=6" defer></script>
+  <script src="assets/app.js?v=8" defer></script>
+  <script src="assets/order.js?v=7" defer></script>
 </body>
 </html>

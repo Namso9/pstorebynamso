@@ -160,7 +160,7 @@
           if (plan && plan.stock === false && !document.getElementById('of-stock-warn')) {
             var warn = document.createElement('p');
             warn.id = 'of-stock-warn';
-            warn.style.cssText = 'font-size:0.78rem;color:#ff6b6b;margin:6px 0 0';
+            warn.className = 'js-warn';
             warn.textContent = 'သတိပြုရန် — ဒီ plan က လောလောဆယ် stock မရှိပါ။ Order တင်ထားရင် stock ပြန်ရှိချိန် Admin က အကြောင်းပြန်ပါမယ်။';
             productInput.parentNode.appendChild(warn);
           }
@@ -238,8 +238,8 @@
             var msg = String((err && err.message) || '');
             var name = String((err && err.name) || '');
             // ဘယ် error မှာမဆို အရန်လမ်းကြောင်း ၂ ခု ပြထားပေးသည်
-            var fallback = ' (သို့) Telegram Bot <a href="https://t.me/PSNamso_bot" target="_blank" rel="noopener" style="color:#00d2ff">@PSNamso_bot</a> ' +
-              '(သို့) <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" style="color:#00d2ff">Page Messenger</a> ကနေ ဆက်သွယ်နိုင်ပါတယ်။';
+            var fallback = ' (သို့) Telegram Bot <a href="https://t.me/PSNamso_bot" target="_blank" rel="noopener" class="js-link">@PSNamso_bot</a> ' +
+              '(သို့) <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener" class="js-link">Page Messenger</a> ကနေ ဆက်သွယ်နိုင်ပါတယ်။';
             var html;
             if (name === 'AbortError') {
               // abort က browser ဘက်ကပဲ ရပ်တာ — server ဘက်မှာ order က
