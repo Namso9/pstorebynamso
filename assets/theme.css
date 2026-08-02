@@ -673,6 +673,19 @@ html.theme-light :focus-visible { outline-color: #1f6feb; }
     html.theme-light .hdr-btn { padding: 8px 10px; }
 }
 
+/* phones: the floating pill leaves a gap at the top where page content
+   peeks through while scrolling — dock the header flush to the top edge */
+@media (max-width: 768px) {
+    html.theme-light .site-header {
+        top: 0;
+        margin: 0;
+        border-radius: 0 0 20px 20px;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
+}
+
 /* ==========================================================
    PERFORMANCE (applies to BOTH themes — no visual redesign)
    backdrop-filter cost scales ~radius²: phones get the same

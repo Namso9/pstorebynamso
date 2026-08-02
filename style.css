@@ -516,13 +516,11 @@ a:hover { color: #8fc2ff; }
     max-width: 1000px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
 }
-
-.footer-copy { font-size: 0.8rem; }
 
 .footer-links {
     display: flex;
