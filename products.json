@@ -250,7 +250,7 @@
         {
           "name": "1 Month",
           "desc": "Monthly",
-          "price": "30,000 Ks",
+          "price": "29,000 Ks",
           "id": "1_month",
           "bot": true
         },
