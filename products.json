@@ -255,24 +255,24 @@
           "bot": true
         },
         {
-          "name": "4 Months",
-          "desc": "3 Months + 30 Days Promo",
+          "name": "3 Months",
+          "desc": "Quarterly",
           "price": "85,000 Ks",
-          "id": "4_months",
+          "id": "3_months",
           "bot": true
         },
         {
-          "name": "8 Months",
-          "desc": "6 Months + 60 Days Promo",
-          "price": "178,000 Ks",
-          "id": "8_months",
+          "name": "6 Months",
+          "desc": "⭐ Most Popular",
+          "price": "169,000 Ks",
+          "id": "6_months",
           "bot": true
         },
         {
-          "name": "16 Months",
-          "desc": "1 Year + 120 Days Promo",
-          "price": "349,000 Ks",
-          "id": "16_months",
+          "name": "1 Year",
+          "desc": "🔥 Best Value",
+          "price": "329,000 Ks",
+          "id": "1_year",
           "bot": true
         }
       ]
