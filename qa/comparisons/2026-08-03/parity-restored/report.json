@@ -1,0 +1,1542 @@
+[
+  {
+    "route": "home",
+    "target": "production",
+    "width": 390,
+    "url": "https://pstorebynamso.com/",
+    "metrics": {
+      "title": "PREMIUM STORE — Digital Products & Subscriptions",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 20,
+        "y": 200,
+        "width": 350,
+        "height": 116.7
+      },
+      "catalog": {
+        "x": 0,
+        "y": 773.4,
+        "width": 390,
+        "height": 1570.9
+      },
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 4758.5,
+        "width": 390,
+        "height": 538.3
+      },
+      "landmarks": {
+        "trust": {
+          "x": 0,
+          "y": 2344.3,
+          "width": 390,
+          "height": 707.6
+        },
+        "reviews": {
+          "x": 0,
+          "y": 3051.9,
+          "width": 390,
+          "height": 395
+        },
+        "bot": {
+          "x": 0,
+          "y": 3496.9,
+          "width": 390,
+          "height": 550.1
+        },
+        "purchase": {
+          "x": 0,
+          "y": 4061,
+          "width": 390,
+          "height": 436.7
+        },
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 9,
+      "productCards": 9,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "home",
+    "target": "preview",
+    "width": 390,
+    "url": "http://localhost:8788/",
+    "metrics": {
+      "title": "PREMIUM STORE — Digital Products & Subscriptions",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 12,
+        "y": 207.6,
+        "width": 366,
+        "height": 116.7
+      },
+      "catalog": {
+        "x": 12,
+        "y": 767.3,
+        "width": 366,
+        "height": 1560.5
+      },
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 5290.2,
+        "width": 390,
+        "height": 694.1
+      },
+      "landmarks": {
+        "trust": {
+          "x": 12,
+          "y": 2383.8,
+          "width": 366,
+          "height": 683.4
+        },
+        "reviews": {
+          "x": 12,
+          "y": 3115.2,
+          "width": 366,
+          "height": 457.2
+        },
+        "bot": {
+          "x": 12,
+          "y": 3620.3,
+          "width": 366,
+          "height": 581.6
+        },
+        "purchase": {
+          "x": 12,
+          "y": 4250,
+          "width": 366,
+          "height": 489.4
+        },
+        "channels": {
+          "x": 12,
+          "y": 4809.4,
+          "width": 366,
+          "height": 432.8
+        }
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [
+        {
+          "className": "store-hero",
+          "y": 59,
+          "height": 708.3
+        },
+        {
+          "className": "",
+          "y": 767.3,
+          "height": 1560.5
+        },
+        {
+          "className": "home-section",
+          "y": 2383.8,
+          "height": 683.4
+        },
+        {
+          "className": "home-section review-preview",
+          "y": 3115.2,
+          "height": 457.2
+        },
+        {
+          "className": "home-section bot-callout",
+          "y": 3620.3,
+          "height": 581.6
+        },
+        {
+          "className": "home-section purchase-guide",
+          "y": 4250,
+          "height": 489.4
+        },
+        {
+          "className": "home-section",
+          "y": 4809.4,
+          "height": 432.8
+        }
+      ],
+      "categoryCards": 9,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "creative-apps",
+    "target": "production",
+    "width": 390,
+    "url": "https://pstorebynamso.com/creative-apps.html",
+    "metrics": {
+      "title": "Creative Apps — Canva, CapCut, Adobe | Premium Store by Namso",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 1.9,
+        "y": 40,
+        "width": 386.3,
+        "height": 59
+      },
+      "heading": {
+        "x": 87.1,
+        "y": 121,
+        "width": 215.8,
+        "height": 26
+      },
+      "catalog": null,
+      "productGrid": {
+        "x": 15,
+        "y": 196.7,
+        "width": 360,
+        "height": 431
+      },
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 4,
+      "productColumns": 2
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "creative-apps",
+    "target": "preview",
+    "width": 390,
+    "url": "http://localhost:8788/creative-apps/",
+    "metrics": {
+      "title": "Creative Apps — Canva, CapCut, Adobe | Premium Store by Namso",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 2,
+        "y": 40,
+        "width": 386,
+        "height": 60
+      },
+      "heading": {
+        "x": 15,
+        "y": 122,
+        "width": 360,
+        "height": 23.9
+      },
+      "catalog": null,
+      "productGrid": {
+        "x": 15,
+        "y": 198.3,
+        "width": 360,
+        "height": 418
+      },
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 4,
+      "productColumns": 2
+    },
+    "interactions": {
+      "search": true,
+      "plans": true,
+      "faq": true
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "payment",
+    "target": "production",
+    "width": 390,
+    "url": "https://pstorebynamso.com/payment.html",
+    "metrics": {
+      "title": "Payment Methods | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 14,
+        "y": 89,
+        "width": 362,
+        "height": 31
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": {
+        "x": 10,
+        "y": 156,
+        "width": 370,
+        "height": 648
+      },
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 840,
+        "width": 390,
+        "height": 113.2
+      },
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": {
+          "x": 0,
+          "y": 156,
+          "width": 390,
+          "height": 648
+        },
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "payment",
+    "target": "preview",
+    "width": 390,
+    "url": "http://localhost:8788/payment/",
+    "metrics": {
+      "title": "Payment Methods | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 10,
+        "y": 89,
+        "width": 370,
+        "height": 31.2
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": {
+        "x": 10,
+        "y": 156.2,
+        "width": 370,
+        "height": 648
+      },
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 840.2,
+        "width": 390,
+        "height": 104.8
+      },
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "order",
+    "target": "production",
+    "width": 390,
+    "url": "https://pstorebynamso.com/order.html",
+    "metrics": {
+      "title": "Order Without Telegram | PREMIUM STORE",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 43,
+        "y": 120,
+        "width": 304,
+        "height": 43
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": {
+        "x": 16,
+        "y": 89,
+        "width": 358,
+        "height": 927.3
+      },
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "order",
+    "target": "preview",
+    "width": 390,
+    "url": "http://localhost:8788/order/",
+    "metrics": {
+      "title": "Order Without Telegram | PREMIUM STORE",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 43,
+        "y": 120,
+        "width": 304,
+        "height": 43
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": {
+        "x": 16,
+        "y": 89,
+        "width": 358,
+        "height": 915.6
+      },
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "reviews",
+    "target": "production",
+    "width": 390,
+    "url": "https://pstorebynamso.com/reviews.html",
+    "metrics": {
+      "title": "Customer Reviews | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": null,
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": {
+        "x": 16,
+        "y": 599.2,
+        "width": 358,
+        "height": 2776
+      },
+      "footer": {
+        "x": 21,
+        "y": 3602.9,
+        "width": 348,
+        "height": 80
+      },
+      "landmarks": {
+        "trust": null,
+        "reviews": {
+          "x": 0,
+          "y": 471,
+          "width": 390,
+          "height": 2924.2
+        },
+        "bot": null,
+        "purchase": {
+          "x": 0,
+          "y": 3409.2,
+          "width": 390,
+          "height": 348.7
+        },
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "reviews",
+    "target": "preview",
+    "width": 390,
+    "url": "http://localhost:8788/reviews/",
+    "metrics": {
+      "title": "Customer Reviews | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 16,
+        "y": 495,
+        "width": 358,
+        "height": 25.9
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": {
+        "x": 16,
+        "y": 605.7,
+        "width": 358,
+        "height": 2776
+      },
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": {
+          "x": 16,
+          "y": 3426.7,
+          "width": 358,
+          "height": 312.5
+        }
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "expressvpn-location-guide",
+    "target": "production",
+    "width": 390,
+    "url": "https://pstorebynamso.com/expressvpn-location-guide.html",
+    "metrics": {
+      "title": "Express VPN Location Guide | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 16,
+        "y": 113,
+        "width": 358,
+        "height": 81
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 22,
+        "y": 5604.2,
+        "width": 346,
+        "height": 80
+      },
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": {
+          "x": 0,
+          "y": 5409.4,
+          "width": 390,
+          "height": 348.7
+        },
+        "channels": null
+      },
+      "guideSets": [
+        {
+          "y": 296,
+          "height": 716.5
+        },
+        {
+          "y": 1042.5,
+          "height": 1023.8
+        },
+        {
+          "y": 2096.3,
+          "height": 675.1
+        },
+        {
+          "y": 2801.4,
+          "height": 670.4
+        },
+        {
+          "y": 3501.8,
+          "height": 1003.2
+        },
+        {
+          "y": 4535,
+          "height": 716.5
+        }
+      ],
+      "guideCards": [
+        {
+          "y": 296,
+          "height": 213.1
+        },
+        {
+          "y": 539.1,
+          "height": 473.4
+        },
+        {
+          "y": 1042.5,
+          "height": 520.4
+        },
+        {
+          "y": 1592.9,
+          "height": 473.4
+        },
+        {
+          "y": 2096.3,
+          "height": 171.7
+        },
+        {
+          "y": 2298,
+          "height": 473.4
+        },
+        {
+          "y": 2801.4,
+          "height": 151
+        },
+        {
+          "y": 2982.4,
+          "height": 489.4
+        },
+        {
+          "y": 3501.8,
+          "height": 499.8
+        },
+        {
+          "y": 4031.6,
+          "height": 473.4
+        },
+        {
+          "y": 4535,
+          "height": 213.1
+        },
+        {
+          "y": 4778,
+          "height": 473.4
+        }
+      ],
+      "guideParts": [
+        {
+          "className": "conn",
+          "y": 572.1,
+          "height": 421.4
+        },
+        {
+          "className": "conn-top",
+          "y": 573.1,
+          "height": 86.4
+        },
+        {
+          "className": "conn-body",
+          "y": 659.5,
+          "height": 333
+        },
+        {
+          "className": "conn-block loc-row",
+          "y": 673.5,
+          "height": 57
+        },
+        {
+          "className": "conn-block",
+          "y": 741.5,
+          "height": 118
+        },
+        {
+          "className": "grid2",
+          "y": 870.5,
+          "height": 60
+        },
+        {
+          "className": "sda",
+          "y": 941.5,
+          "height": 37
+        },
+        {
+          "className": "conn",
+          "y": 1625.9,
+          "height": 421.4
+        },
+        {
+          "className": "conn-top",
+          "y": 1626.9,
+          "height": 86.4
+        },
+        {
+          "className": "conn-body",
+          "y": 1713.3,
+          "height": 333
+        },
+        {
+          "className": "conn-block loc-row",
+          "y": 1727.3,
+          "height": 57
+        },
+        {
+          "className": "conn-block",
+          "y": 1795.3,
+          "height": 118
+        },
+        {
+          "className": "grid2",
+          "y": 1924.3,
+          "height": 60
+        },
+        {
+          "className": "sda",
+          "y": 1995.3,
+          "height": 37
+        },
+        {
+          "className": "conn",
+          "y": 2331,
+          "height": 421.4
+        },
+        {
+          "className": "conn-top",
+          "y": 2332,
+          "height": 86.4
+        },
+        {
+          "className": "conn-body",
+          "y": 2418.4,
+          "height": 333
+        },
+        {
+          "className": "conn-block loc-row",
+          "y": 2432.4,
+          "height": 57
+        },
+        {
+          "className": "conn-block",
+          "y": 2500.4,
+          "height": 118
+        },
+        {
+          "className": "grid2",
+          "y": 2629.4,
+          "height": 60
+        },
+        {
+          "className": "sda",
+          "y": 2700.4,
+          "height": 37
+        },
+        {
+          "className": "conn",
+          "y": 3015.4,
+          "height": 437.4
+        },
+        {
+          "className": "conn-top",
+          "y": 3016.4,
+          "height": 86.4
+        },
+        {
+          "className": "conn-body",
+          "y": 3102.8,
+          "height": 349
+        },
+        {
+          "className": "conn-block loc-row",
+          "y": 3116.8,
+          "height": 57
+        },
+        {
+          "className": "conn-block",
+          "y": 3184.8,
+          "height": 118
+        },
+        {
+          "className": "grid2",
+          "y": 3313.8,
+          "height": 76
+        },
+        {
+          "className": "sda",
+          "y": 3400.8,
+          "height": 37
+        },
+        {
+          "className": "conn",
+          "y": 4064.6,
+          "height": 421.4
+        },
+        {
+          "className": "conn-top",
+          "y": 4065.6,
+          "height": 86.4
+        },
+        {
+          "className": "conn-body",
+          "y": 4152,
+          "height": 333
+        },
+        {
+          "className": "conn-block loc-row",
+          "y": 4166,
+          "height": 57
+        },
+        {
+          "className": "conn-block",
+          "y": 4234,
+          "height": 118
+        },
+        {
+          "className": "grid2",
+          "y": 4363,
+          "height": 60
+        },
+        {
+          "className": "sda",
+          "y": 4434,
+          "height": 37
+        },
+        {
+          "className": "conn",
+          "y": 4811,
+          "height": 421.4
+        },
+        {
+          "className": "conn-top",
+          "y": 4812,
+          "height": 86.4
+        },
+        {
+          "className": "conn-body",
+          "y": 4898.4,
+          "height": 333
+        },
+        {
+          "className": "conn-block loc-row",
+          "y": 4912.4,
+          "height": 57
+        },
+        {
+          "className": "conn-block",
+          "y": 4980.4,
+          "height": 118
+        },
+        {
+          "className": "grid2",
+          "y": 5109.4,
+          "height": 60
+        },
+        {
+          "className": "sda",
+          "y": 5180.4,
+          "height": 37
+        }
+      ],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "expressvpn-location-guide",
+    "target": "preview",
+    "width": 390,
+    "url": "http://localhost:8788/expressvpn-location-guide/",
+    "metrics": {
+      "title": "Express VPN Location Guide | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 14,
+        "y": 113,
+        "width": 362,
+        "height": 79
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": {
+          "x": 14,
+          "y": 5409.8,
+          "width": 362,
+          "height": 312.5
+        }
+      },
+      "guideSets": [
+        {
+          "y": 295.9,
+          "height": 716.4
+        },
+        {
+          "y": 1042.3,
+          "height": 1023.4
+        },
+        {
+          "y": 2095.7,
+          "height": 679.3
+        },
+        {
+          "y": 2804.9,
+          "height": 673.1
+        },
+        {
+          "y": 3508,
+          "height": 1003.4
+        },
+        {
+          "y": 4541.4,
+          "height": 716.4
+        }
+      ],
+      "guideCards": [
+        {
+          "y": 295.9,
+          "height": 213
+        },
+        {
+          "y": 538.9,
+          "height": 473.4
+        },
+        {
+          "y": 1042.3,
+          "height": 520
+        },
+        {
+          "y": 1592.3,
+          "height": 473.4
+        },
+        {
+          "y": 2095.7,
+          "height": 175.9
+        },
+        {
+          "y": 2301.5,
+          "height": 473.4
+        },
+        {
+          "y": 2804.9,
+          "height": 151
+        },
+        {
+          "y": 2985.9,
+          "height": 492.1
+        },
+        {
+          "y": 3508,
+          "height": 500
+        },
+        {
+          "y": 4038,
+          "height": 473.4
+        },
+        {
+          "y": 4541.4,
+          "height": 213
+        },
+        {
+          "y": 4784.4,
+          "height": 473.4
+        }
+      ],
+      "guideParts": [
+        {
+          "className": "connection-shell",
+          "y": 571.9,
+          "height": 427.4
+        },
+        {
+          "className": "connection-status",
+          "y": 572.9,
+          "height": 84
+        },
+        {
+          "className": "connection-body",
+          "y": 656.9,
+          "height": 341.4
+        },
+        {
+          "className": "selected-location",
+          "y": 670.9,
+          "height": 64.5
+        },
+        {
+          "className": "connection-ip-block",
+          "y": 746.4,
+          "height": 118
+        },
+        {
+          "className": "connection-details",
+          "y": 875.4,
+          "height": 60.9
+        },
+        {
+          "className": "connection-assistant",
+          "y": 947.3,
+          "height": 37
+        },
+        {
+          "className": "connection-shell",
+          "y": 1625.3,
+          "height": 427.4
+        },
+        {
+          "className": "connection-status",
+          "y": 1626.3,
+          "height": 84
+        },
+        {
+          "className": "connection-body",
+          "y": 1710.3,
+          "height": 341.4
+        },
+        {
+          "className": "selected-location",
+          "y": 1724.3,
+          "height": 64.5
+        },
+        {
+          "className": "connection-ip-block",
+          "y": 1799.8,
+          "height": 118
+        },
+        {
+          "className": "connection-details",
+          "y": 1928.8,
+          "height": 60.9
+        },
+        {
+          "className": "connection-assistant",
+          "y": 2000.7,
+          "height": 37
+        },
+        {
+          "className": "connection-shell",
+          "y": 2334.5,
+          "height": 427.4
+        },
+        {
+          "className": "connection-status",
+          "y": 2335.5,
+          "height": 84
+        },
+        {
+          "className": "connection-body",
+          "y": 2419.5,
+          "height": 341.4
+        },
+        {
+          "className": "selected-location",
+          "y": 2433.5,
+          "height": 64.5
+        },
+        {
+          "className": "connection-ip-block",
+          "y": 2509,
+          "height": 118
+        },
+        {
+          "className": "connection-details",
+          "y": 2638,
+          "height": 60.9
+        },
+        {
+          "className": "connection-assistant",
+          "y": 2709.9,
+          "height": 37
+        },
+        {
+          "className": "connection-shell",
+          "y": 3018.9,
+          "height": 446.1
+        },
+        {
+          "className": "connection-status",
+          "y": 3019.9,
+          "height": 84
+        },
+        {
+          "className": "connection-body",
+          "y": 3103.9,
+          "height": 360.1
+        },
+        {
+          "className": "selected-location",
+          "y": 3117.9,
+          "height": 64.5
+        },
+        {
+          "className": "connection-ip-block",
+          "y": 3193.4,
+          "height": 118
+        },
+        {
+          "className": "connection-details",
+          "y": 3322.4,
+          "height": 79.6
+        },
+        {
+          "className": "connection-assistant",
+          "y": 3413,
+          "height": 37
+        },
+        {
+          "className": "connection-shell",
+          "y": 4071,
+          "height": 427.4
+        },
+        {
+          "className": "connection-status",
+          "y": 4072,
+          "height": 84
+        },
+        {
+          "className": "connection-body",
+          "y": 4156,
+          "height": 341.4
+        },
+        {
+          "className": "selected-location",
+          "y": 4170,
+          "height": 64.5
+        },
+        {
+          "className": "connection-ip-block",
+          "y": 4245.5,
+          "height": 118
+        },
+        {
+          "className": "connection-details",
+          "y": 4374.5,
+          "height": 60.9
+        },
+        {
+          "className": "connection-assistant",
+          "y": 4446.4,
+          "height": 37
+        },
+        {
+          "className": "connection-shell",
+          "y": 4817.4,
+          "height": 427.4
+        },
+        {
+          "className": "connection-status",
+          "y": 4818.4,
+          "height": 84
+        },
+        {
+          "className": "connection-body",
+          "y": 4902.4,
+          "height": 341.4
+        },
+        {
+          "className": "selected-location",
+          "y": 4916.4,
+          "height": 64.5
+        },
+        {
+          "className": "connection-ip-block",
+          "y": 4991.9,
+          "height": 118
+        },
+        {
+          "className": "connection-details",
+          "y": 5120.9,
+          "height": 60.9
+        },
+        {
+          "className": "connection-assistant",
+          "y": 5192.8,
+          "height": 37
+        }
+      ],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "terms-of-service",
+    "target": "production",
+    "width": 390,
+    "url": "https://pstorebynamso.com/terms-of-service.html",
+    "metrics": {
+      "title": "Terms of Service | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 27,
+        "y": 113.1,
+        "width": 336,
+        "height": 24.4
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "terms-of-service",
+    "target": "preview",
+    "width": 390,
+    "url": "http://localhost:8788/terms-of-service/",
+    "metrics": {
+      "title": "Terms of Service | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 31,
+        "y": 113,
+        "width": 328,
+        "height": 27
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "terms-of-service-vpn",
+    "target": "production",
+    "width": 390,
+    "url": "https://pstorebynamso.com/terms-of-service-vpn.html",
+    "metrics": {
+      "title": "VPN Terms of Service | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 27,
+        "y": 112.9,
+        "width": 336,
+        "height": 48
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "terms-of-service-vpn",
+    "target": "preview",
+    "width": 390,
+    "url": "http://localhost:8788/terms-of-service-vpn/",
+    "metrics": {
+      "title": "VPN Terms of Service | Premium Store",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 59
+      },
+      "heading": {
+        "x": 31,
+        "y": 113,
+        "width": 328,
+        "height": 54
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  }
+]

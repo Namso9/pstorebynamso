@@ -1,0 +1,72 @@
+# Changelog
+
+## Unreleased
+
+### Added
+
+- A mobile-first Next.js App Router shell with persistent light, dark, and
+  system themes, accessible navigation, reusable status states, and
+  Motion-based modals.
+- A typed live catalog that starts with indexable static content and revalidates
+  `/products.json` without requiring a frontend rebuild.
+- The migrated home page and eight statically exported category routes.
+- Product search, product hash links, plan selection, fresh checkout stock
+  checks, Telegram bot deep links, and website-payment query forwarding.
+- Live FAQ accordions, the customer-review gallery and lightbox, the ExpressVPN
+  location guide, both terms pages, official-channel panels, and a branded
+  not-found page.
+- Migrated payment selection for KBZPay, WavePay, and AyaPay with the current QR
+  assets, instructions, payment warnings, and order-query forwarding.
+- A mobile-first order form that preserves catalog prefill, conditional account
+  fields, stock warnings, native screenshot upload, API response guidance, and
+  the existing multipart submission contract.
+- Lightweight Motion entrances, viewport reveals, staggered cards, modal and
+  lightbox transitions, FAQ expansion, and short route transitions with a
+  no-animation path for reduced-motion users.
+- Preserved route metadata and home structured data, aligned the sitemap with
+  canonical trailing-slash URLs, and added permanent redirects from every
+  legacy content `.html` URL to its clean route.
+- Production-versus-Next mobile comparison screenshots for the home and
+  Creative Apps pages at 360px, 390px, and 430px.
+
+### Fixed
+
+- Aligned Zoom with the new ordered 1/3/6/12-month package contract, prices,
+  public plan IDs, exclusive Most Popular/Best Value badges, Telegram deep
+  links, and website payment query flow in both catalog copies.
+- Applied the owner-approved Kimi polish to the preview, including centered
+  desktop search, cleaner purchase-guide spacing, order-page back controls,
+  selective liquid-glass depth, and normalized requested product-logo tiles.
+- Made the ChatGPT logo and other fresh visual updates reliable for returning
+  browsers by requiring revalidation of Next.js CSS/JavaScript chunks whose
+  filenames can be reused across static exports.
+- Restored production-like header typography, spacing, backgrounds, home hero
+  density, catalog position, and the ExpressVPN guide home card.
+- Restored image-first two-column mobile category cards, compact payment/order
+  layouts, square mobile review cards, two-column official links, and the
+  detailed ExpressVPN protocol/connection presentation.
+- Kept the migrated Motion, hydration, static-export CSP, theme switching, and
+  responsive improvements while correcting visual hierarchy and route spacing.
+- Kept all small-screen header controls at a 44px touch target.
+- Increased the migrated home hero's line height so Burmese combining marks do
+  not crowd adjacent title lines on narrow mobile screens.
+- Removed the conflicting generic immutable directive from payment QR responses
+  while preserving immutable caching for other static images.
+- Added the Premium Store brand strip to the View Plans dialog so screenshots of
+  any plan also carry the store identity, plus product icons beside plan names.
+- Centered the search dialog on all viewports and kept it usable from any scroll
+  position by closing the body lock cleanly.
+- Fixed scrolling image flicker and refresh-like behavior with y-only viewport
+  reveals, eager first-row catalog images, stable `?v=` image URLs, and no
+  background-attachment parallax on mobile.
+- Moved modals into a `document.body` portal with an iOS-safe fixed-body scroll
+  lock that restores the exact scroll position, and removed the `overflow-x:
+  clip` rule that broke the sticky header in Chrome.
+- Added immediate touch feedback on buttons and cards while keeping
+  reduced-motion support and avoiding expensive animated properties.
+
+### Security
+
+- Static-export CSP compatibility for Next.js bootstrap and Flight scripts via
+  intentional `'unsafe-inline'`, while `script-src-attr 'none'` continues to
+  block inline event handlers.

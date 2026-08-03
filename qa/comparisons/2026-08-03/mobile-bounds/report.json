@@ -1,0 +1,1078 @@
+[
+  {
+    "route": "home",
+    "target": "production",
+    "width": 360,
+    "url": "https://pstorebynamso.com/",
+    "metrics": {
+      "title": "PREMIUM STORE — Digital Products & Subscriptions",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 59
+      },
+      "heading": {
+        "x": 20,
+        "y": 200,
+        "width": 320,
+        "height": 116.7
+      },
+      "catalog": {
+        "x": 0,
+        "y": 801.9,
+        "width": 360,
+        "height": 1515.9
+      },
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 4767.1,
+        "width": 360,
+        "height": 538.3
+      },
+      "landmarks": {
+        "trust": {
+          "x": 0,
+          "y": 2317.8,
+          "width": 360,
+          "height": 750.9
+        },
+        "reviews": {
+          "x": 0,
+          "y": 3068.8,
+          "width": 360,
+          "height": 365
+        },
+        "bot": {
+          "x": 0,
+          "y": 3483.8,
+          "width": 360,
+          "height": 571.9
+        },
+        "purchase": {
+          "x": 0,
+          "y": 4069.7,
+          "width": 360,
+          "height": 436.7
+        },
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 9,
+      "productCards": 9,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "home",
+    "target": "preview",
+    "width": 360,
+    "url": "http://localhost:8788/",
+    "metrics": {
+      "title": "PREMIUM STORE — Digital Products & Subscriptions",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 59
+      },
+      "heading": {
+        "x": 12,
+        "y": 203,
+        "width": 336,
+        "height": 116.7
+      },
+      "catalog": {
+        "x": 12,
+        "y": 786.6,
+        "width": 336,
+        "height": 1506.3
+      },
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 5309.6,
+        "width": 360,
+        "height": 694.1
+      },
+      "landmarks": {
+        "trust": {
+          "x": 12,
+          "y": 2348.9,
+          "width": 336,
+          "height": 705
+        },
+        "reviews": {
+          "x": 12,
+          "y": 3101.9,
+          "width": 336,
+          "height": 427.2
+        },
+        "bot": {
+          "x": 12,
+          "y": 3577.1,
+          "width": 336,
+          "height": 603.4
+        },
+        "purchase": {
+          "x": 12,
+          "y": 4228.5,
+          "width": 336,
+          "height": 530.4
+        },
+        "channels": {
+          "x": 12,
+          "y": 4828.8,
+          "width": 336,
+          "height": 432.8
+        }
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [
+        {
+          "className": "store-hero",
+          "y": 59,
+          "height": 727.6
+        },
+        {
+          "className": "",
+          "y": 786.6,
+          "height": 1506.3
+        },
+        {
+          "className": "home-section",
+          "y": 2348.9,
+          "height": 705
+        },
+        {
+          "className": "home-section review-preview",
+          "y": 3101.9,
+          "height": 427.2
+        },
+        {
+          "className": "home-section bot-callout",
+          "y": 3577.1,
+          "height": 603.4
+        },
+        {
+          "className": "home-section purchase-guide",
+          "y": 4228.5,
+          "height": 530.4
+        },
+        {
+          "className": "home-section",
+          "y": 4828.8,
+          "height": 432.8
+        }
+      ],
+      "categoryCards": 9,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "creative-apps",
+    "target": "production",
+    "width": 360,
+    "url": "https://pstorebynamso.com/creative-apps.html",
+    "metrics": {
+      "title": "Creative Apps — Canva, CapCut, Adobe | Premium Store by Namso",
+      "viewportWidth": 368,
+      "scrollWidth": 368,
+      "theme": "light",
+      "header": {
+        "x": -8.3,
+        "y": 40,
+        "width": 376.5,
+        "height": 59
+      },
+      "heading": {
+        "x": 72.1,
+        "y": 121,
+        "width": 215.8,
+        "height": 26
+      },
+      "catalog": null,
+      "productGrid": {
+        "x": 15,
+        "y": 196.7,
+        "width": 330,
+        "height": 431
+      },
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 4,
+      "productColumns": 2
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "creative-apps",
+    "target": "preview",
+    "width": 360,
+    "url": "http://localhost:8788/creative-apps/",
+    "metrics": {
+      "title": "Creative Apps — Canva, CapCut, Adobe | Premium Store by Namso",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "theme": "light",
+      "header": {
+        "x": 2,
+        "y": 40,
+        "width": 356,
+        "height": 60
+      },
+      "heading": {
+        "x": 15,
+        "y": 122,
+        "width": 330,
+        "height": 23.9
+      },
+      "catalog": null,
+      "productGrid": {
+        "x": 15,
+        "y": 198.3,
+        "width": 330,
+        "height": 436
+      },
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 4,
+      "productColumns": 2
+    },
+    "interactions": {
+      "search": true,
+      "plans": true,
+      "faq": true
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "payment",
+    "target": "production",
+    "width": 360,
+    "url": "https://pstorebynamso.com/payment.html",
+    "metrics": {
+      "title": "Payment Methods | Premium Store",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 59
+      },
+      "heading": {
+        "x": 14,
+        "y": 89,
+        "width": 332,
+        "height": 31
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": {
+        "x": 10,
+        "y": 156,
+        "width": 340,
+        "height": 648
+      },
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 840,
+        "width": 360,
+        "height": 113.2
+      },
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": {
+          "x": 0,
+          "y": 156,
+          "width": 360,
+          "height": 648
+        },
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "payment",
+    "target": "preview",
+    "width": 360,
+    "url": "http://localhost:8788/payment/",
+    "metrics": {
+      "title": "Payment Methods | Premium Store",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 59
+      },
+      "heading": {
+        "x": 10,
+        "y": 89,
+        "width": 340,
+        "height": 31.2
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": {
+        "x": 10,
+        "y": 156.2,
+        "width": 340,
+        "height": 657.5
+      },
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 849.7,
+        "width": 360,
+        "height": 104.8
+      },
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "order",
+    "target": "production",
+    "width": 360,
+    "url": "https://pstorebynamso.com/order.html",
+    "metrics": {
+      "title": "Order Without Telegram | PREMIUM STORE",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 59
+      },
+      "heading": {
+        "x": 43,
+        "y": 120,
+        "width": 274,
+        "height": 43
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": {
+        "x": 16,
+        "y": 89,
+        "width": 328,
+        "height": 949.6
+      },
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "order",
+    "target": "preview",
+    "width": 360,
+    "url": "http://localhost:8788/order/",
+    "metrics": {
+      "title": "Order Without Telegram | PREMIUM STORE",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 59
+      },
+      "heading": {
+        "x": 43,
+        "y": 120,
+        "width": 274,
+        "height": 43
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": {
+        "x": 16,
+        "y": 89,
+        "width": 328,
+        "height": 937.9
+      },
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "home",
+    "target": "production",
+    "width": 430,
+    "url": "https://pstorebynamso.com/",
+    "metrics": {
+      "title": "PREMIUM STORE — Digital Products & Subscriptions",
+      "viewportWidth": 430,
+      "scrollWidth": 430,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 430,
+        "height": 59
+      },
+      "heading": {
+        "x": 20,
+        "y": 200,
+        "width": 390,
+        "height": 77.8
+      },
+      "catalog": {
+        "x": 0,
+        "y": 734.5,
+        "width": 430,
+        "height": 1645.9
+      },
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 4847,
+        "width": 430,
+        "height": 538.3
+      },
+      "landmarks": {
+        "trust": {
+          "x": 0,
+          "y": 2380.4,
+          "width": 430,
+          "height": 707.6
+        },
+        "reviews": {
+          "x": 0,
+          "y": 3088,
+          "width": 430,
+          "height": 435
+        },
+        "bot": {
+          "x": 0,
+          "y": 3573,
+          "width": 430,
+          "height": 550.1
+        },
+        "purchase": {
+          "x": 0,
+          "y": 4137.1,
+          "width": 430,
+          "height": 438.1
+        },
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 9,
+      "productCards": 9,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "home",
+    "target": "preview",
+    "width": 430,
+    "url": "http://localhost:8788/",
+    "metrics": {
+      "title": "PREMIUM STORE — Digital Products & Subscriptions",
+      "viewportWidth": 430,
+      "scrollWidth": 430,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 430,
+        "height": 59
+      },
+      "heading": {
+        "x": 12.9,
+        "y": 196,
+        "width": 404.2,
+        "height": 77.8
+      },
+      "catalog": {
+        "x": 12.9,
+        "y": 734,
+        "width": 404.2,
+        "height": 1638.3
+      },
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 5350.8,
+        "width": 430,
+        "height": 694.1
+      },
+      "landmarks": {
+        "trust": {
+          "x": 12.9,
+          "y": 2428.3,
+          "width": 404.2,
+          "height": 683.4
+        },
+        "reviews": {
+          "x": 12.9,
+          "y": 3159.6,
+          "width": 404.2,
+          "height": 495.4
+        },
+        "bot": {
+          "x": 12.9,
+          "y": 3703,
+          "width": 404.2,
+          "height": 559.6
+        },
+        "purchase": {
+          "x": 12.9,
+          "y": 4310.6,
+          "width": 404.2,
+          "height": 489.4
+        },
+        "channels": {
+          "x": 12.9,
+          "y": 4870,
+          "width": 404.2,
+          "height": 432.8
+        }
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [
+        {
+          "className": "store-hero",
+          "y": 59,
+          "height": 675
+        },
+        {
+          "className": "",
+          "y": 734,
+          "height": 1638.3
+        },
+        {
+          "className": "home-section",
+          "y": 2428.3,
+          "height": 683.4
+        },
+        {
+          "className": "home-section review-preview",
+          "y": 3159.6,
+          "height": 495.4
+        },
+        {
+          "className": "home-section bot-callout",
+          "y": 3703,
+          "height": 559.6
+        },
+        {
+          "className": "home-section purchase-guide",
+          "y": 4310.6,
+          "height": 489.4
+        },
+        {
+          "className": "home-section",
+          "y": 4870,
+          "height": 432.8
+        }
+      ],
+      "categoryCards": 9,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "creative-apps",
+    "target": "production",
+    "width": 430,
+    "url": "https://pstorebynamso.com/creative-apps.html",
+    "metrics": {
+      "title": "Creative Apps — Canva, CapCut, Adobe | Premium Store by Namso",
+      "viewportWidth": 430,
+      "scrollWidth": 430,
+      "theme": "light",
+      "header": {
+        "x": 21.8,
+        "y": 40,
+        "width": 386.3,
+        "height": 59
+      },
+      "heading": {
+        "x": 107.1,
+        "y": 121,
+        "width": 215.8,
+        "height": 26
+      },
+      "catalog": null,
+      "productGrid": {
+        "x": 15,
+        "y": 196.7,
+        "width": 400,
+        "height": 431
+      },
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 4,
+      "productColumns": 2
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "creative-apps",
+    "target": "preview",
+    "width": 430,
+    "url": "http://localhost:8788/creative-apps/",
+    "metrics": {
+      "title": "Creative Apps — Canva, CapCut, Adobe | Premium Store by Namso",
+      "viewportWidth": 430,
+      "scrollWidth": 430,
+      "theme": "light",
+      "header": {
+        "x": 2,
+        "y": 40,
+        "width": 426,
+        "height": 60
+      },
+      "heading": {
+        "x": 15,
+        "y": 122,
+        "width": 400,
+        "height": 23.9
+      },
+      "catalog": null,
+      "productGrid": {
+        "x": 15,
+        "y": 198.3,
+        "width": 400,
+        "height": 437
+      },
+      "paymentCard": null,
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 4,
+      "productColumns": 2
+    },
+    "interactions": {
+      "search": true,
+      "plans": true,
+      "faq": true
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "payment",
+    "target": "production",
+    "width": 430,
+    "url": "https://pstorebynamso.com/payment.html",
+    "metrics": {
+      "title": "Payment Methods | Premium Store",
+      "viewportWidth": 430,
+      "scrollWidth": 430,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 430,
+        "height": 59
+      },
+      "heading": {
+        "x": 14,
+        "y": 89,
+        "width": 402,
+        "height": 31
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": {
+        "x": 12,
+        "y": 156,
+        "width": 406,
+        "height": 574
+      },
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 766,
+        "width": 430,
+        "height": 113.2
+      },
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": {
+          "x": 0,
+          "y": 156,
+          "width": 430,
+          "height": 574
+        },
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "payment",
+    "target": "preview",
+    "width": 430,
+    "url": "http://localhost:8788/payment/",
+    "metrics": {
+      "title": "Payment Methods | Premium Store",
+      "viewportWidth": 430,
+      "scrollWidth": 430,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 430,
+        "height": 59
+      },
+      "heading": {
+        "x": 12,
+        "y": 89,
+        "width": 406,
+        "height": 31.2
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": {
+        "x": 12,
+        "y": 156.2,
+        "width": 406,
+        "height": 583.5
+      },
+      "orderCard": null,
+      "reviewGrid": null,
+      "footer": {
+        "x": 0,
+        "y": 827.2,
+        "width": 430,
+        "height": 104.8
+      },
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  },
+  {
+    "route": "order",
+    "target": "production",
+    "width": 430,
+    "url": "https://pstorebynamso.com/order.html",
+    "metrics": {
+      "title": "Order Without Telegram | PREMIUM STORE",
+      "viewportWidth": 430,
+      "scrollWidth": 430,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 430,
+        "height": 59
+      },
+      "heading": {
+        "x": 43,
+        "y": 120,
+        "width": 344,
+        "height": 43
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": {
+        "x": 16,
+        "y": 89,
+        "width": 398,
+        "height": 927.3
+      },
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": null,
+    "browserErrors": [
+      "Loading the script 'https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496' violates the following Content Security Policy directive: \"script-src 'self'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+    ]
+  },
+  {
+    "route": "order",
+    "target": "preview",
+    "width": 430,
+    "url": "http://localhost:8788/order/",
+    "metrics": {
+      "title": "Order Without Telegram | PREMIUM STORE",
+      "viewportWidth": 430,
+      "scrollWidth": 430,
+      "theme": "light",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 430,
+        "height": 59
+      },
+      "heading": {
+        "x": 43,
+        "y": 120,
+        "width": 344,
+        "height": 43
+      },
+      "catalog": null,
+      "productGrid": null,
+      "paymentCard": null,
+      "orderCard": {
+        "x": 16,
+        "y": 89,
+        "width": 398,
+        "height": 915.6
+      },
+      "reviewGrid": null,
+      "footer": null,
+      "landmarks": {
+        "trust": null,
+        "reviews": null,
+        "bot": null,
+        "purchase": null,
+        "channels": null
+      },
+      "guideSets": [],
+      "guideCards": [],
+      "guideParts": [],
+      "homeSections": [],
+      "categoryCards": 0,
+      "productCards": 0,
+      "productColumns": 0
+    },
+    "interactions": {
+      "search": true,
+      "plans": null,
+      "faq": null
+    },
+    "browserErrors": []
+  }
+]

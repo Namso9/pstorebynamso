@@ -1,1 +1,12 @@
 .DS_Store
+node_modules/
+.next/
+out/
+.wrangler/
+*.tsbuildinfo
+
+# Local-only environment values and Cloudflare secrets.
+.env*
+.dev.vars*
+!.env.example
+!.dev.vars.example

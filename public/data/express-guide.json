@@ -1,0 +1,51 @@
+{
+  "updated": "10 Jun 2026",
+  "locations": [
+    {
+      "flag": "🇺🇸",
+      "country": "USA",
+      "city": "Little Rock",
+      "ip": "xxx.xx.xx.xxx",
+      "protocol": "Automatic"
+    },
+    {
+      "flag": "🇯🇵",
+      "country": "Japan",
+      "city": "Yokohama",
+      "ip": "xxx.xx.xx.xxx",
+      "protocol": "Lightway - UDP",
+      "encryption": "ChaCha20",
+      "natHeartbeats": true
+    },
+    {
+      "flag": "🇯🇵",
+      "country": "Japan",
+      "city": "Tokyo",
+      "ip": "xxx.xx.xx.xxx",
+      "protocol": "IKEv2"
+    },
+    {
+      "flag": "🇺🇸",
+      "country": "USA",
+      "city": "New York",
+      "ip": "xxx.xx.xx.xxx",
+      "protocol": "Automatic or Wireguard"
+    },
+    {
+      "flag": "🇳🇵",
+      "country": "Nepal",
+      "city": "Nepal",
+      "ip": "xxx.xx.xx.xxx",
+      "protocol": "Lightway - TCP",
+      "encryption": "ChaCha20",
+      "natHeartbeats": true
+    },
+    {
+      "flag": "🇺🇸",
+      "country": "USA",
+      "city": "Dallas",
+      "ip": "xxx.xx.xx.xxx",
+      "protocol": "Automatic"
+    }
+  ]
+}

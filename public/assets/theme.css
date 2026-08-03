@@ -1,0 +1,754 @@
+/* ==========================================================
+   PREMIUM STORE — light theme (v5, clean neutral "Apple Store")
+   Dark stays the DEFAULT look (all existing CSS untouched).
+   theme.js puts .theme-light on <html> — everything here is
+   scoped under it, so with the class absent this file
+   changes NOTHING.
+
+   Design language (light, v5):
+   · neutral cool-gray canvas; white cards carry the tone
+   · solid-ink headlines, no gradients, no glow
+   · premium-blue interactive accent (#1f6feb),
+     green reserved for purchase/price
+   · 20–24px radii, 200–350ms motion, soft layered shadows
+   ========================================================== */
+
+/* Claude-style type — loaded for BOTH themes (owner request) */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap');
+
+:root { color-scheme: dark; }
+html.theme-light { color-scheme: light; }
+
+/* ---------- type: Claude-style serif — applies to BOTH themes ----------
+   (owner request: light + dark identical; `html body` outranks the
+   page-level body rules regardless of load order) */
+html body,
+html button, html input, html select, html textarea {
+    font-family: 'Lora', 'Noto Sans Myanmar', 'Myanmar Text', Georgia, 'Noto Serif Myanmar', serif;
+}
+html .search-modal-title, html .modal-title { font-family: inherit; }
+
+/* ---------- design tokens (mirror style.css/components.css) ---------- */
+html.theme-light {
+    --bg-ink: #f5f6f8;
+
+    /* white glass (base CSS applies backdrop-filter via --blur) */
+    --glass: rgba(255, 255, 255, 0.55);
+    --glass-hi: rgba(255, 255, 255, 0.75);
+    --glass-deep: rgba(255, 255, 255, 0.55);
+    --glass-solid: rgba(255, 255, 255, 0.92);
+
+    /* hairline where glass meets light — cool slate, barely there */
+    --stroke: rgba(15, 23, 42, 0.08);
+    --stroke-hi: rgba(15, 23, 42, 0.16);
+
+    /* solid-ink type scale */
+    --text: #0f172a;
+    --text-dim: rgba(30, 41, 59, 0.60);
+
+    /* single interactive accent: premium blue */
+    --accent: #1f6feb;
+    --accent-soft: rgba(31, 111, 235, 0.10);
+    --accent-line: rgba(31, 111, 235, 0.35);
+    --accent-ink: #eaf2ff;
+
+    /* green = purchase / price only */
+    --mint: #128a52;
+    --mint-soft: rgba(18, 158, 85, 0.10);
+    --mint-line: rgba(18, 158, 85, 0.30);
+    --gold-note: rgba(30, 41, 59, 0.70); /* plan-desc/checkout notes: quiet ink on light */
+    --brand-amber: #1f6feb;
+
+    /* primary CTA — quiet 2-stop blue pill (kills the cyan/green
+       gradient everywhere --grad-cta is used, without renaming it) */
+    --grad-cta: linear-gradient(180deg, #2f7ef7, #1b62e0); /* @kind color */
+
+    /* geometry: generous corners (light only) */
+    --r-xl: 28px;
+    --r-lg: 22px;
+    --r-md: 16px;
+    --r-sm: 12px;
+
+    /* glass optics: deeper blur + glossy top highlight */
+    --blur: blur(30px) saturate(1.8); /* @kind other */
+    --blur-soft: blur(16px) saturate(1.5); /* @kind other */
+    --edge: inset 0 1px 0 rgba(255, 255, 255, 0.95),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.35); /* @kind shadow */
+    --lift: 0 24px 60px rgba(15, 23, 42, 0.10);
+
+    /* calm motion (200–350ms) */
+    --t-fast: 0.2s; /* @kind other */
+    --t-med: 0.35s; /* @kind other */
+
+    /* expressvpn-location-guide page-shell tokens (cards re-darken below) */
+    --bg: #f5f6f8;
+    --txt: #0f172a;
+    --txt-dim: rgba(30, 41, 59, 0.60);
+    --txt-dim2: rgba(30, 41, 59, 0.42);
+}
+
+/* ---------- canvas: airy neutral light — visible but calm ---------- */
+html.theme-light body {
+    background:
+        radial-gradient(1100px 560px at 50% -10%, rgba(31, 111, 235, 0.05), transparent 62%),
+        radial-gradient(950px 660px at 106% 16%, rgba(31, 111, 235, 0.04), transparent 58%),
+        radial-gradient(1000px 700px at -8% 86%, rgba(100, 116, 139, 0.05), transparent 58%),
+        radial-gradient(700px 480px at 78% 105%, rgba(31, 111, 235, 0.03), transparent 60%),
+        linear-gradient(180deg, #fcfcfd 0%, #f5f6f8 45%, #eef0f4 100%);
+    background-attachment: fixed;
+    color: var(--text);
+}
+@media (max-width: 768px) {
+    html.theme-light body { background-attachment: scroll; }
+}
+
+html.theme-light ::selection { background: rgba(31, 111, 235, 0.15); color: var(--text); }
+/* :where() keeps specificity at 0 so class-styled anchors
+   (.bot-primary-btn, .plan-btn, .card-link …) keep their own colors */
+:where(html.theme-light) a { color: #1f6feb; }
+:where(html.theme-light) a:where(:hover) { color: #175cd3; }
+/* pages with their own <style> re-declare `a{color:#00d2ff}` after theme.css
+   loads — outrank them for unclassed links only (classed pills keep theirs) */
+html.theme-light a:not([class]) { color: #1f6feb; }
+html.theme-light a:not([class]):hover { color: #175cd3; }
+
+/* ---------- display headings: solid ink, no gradient, no glow ---------- */
+html.theme-light .header h1,
+html.theme-light .page-title,
+html.theme-light .payment-title,
+html.theme-light .proof-title,
+html.theme-light .lg-title {
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    -webkit-text-fill-color: #0f172a;
+    color: #0f172a;
+    text-shadow: none;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+}
+/* drop gradient underline bars — clean headline
+   (payment/reviews/vpn-guide define their own ::after in inline styles) */
+html.theme-light .header h1::after,
+html.theme-light .page-title::after,
+html.theme-light .payment-title::after,
+html.theme-light .proof-title::after,
+html.theme-light .lg-title::after { display: none; }
+html.theme-light .header h1,
+html.theme-light .page-title { padding-bottom: 2px; }
+
+html.theme-light .search-modal-title,
+html.theme-light .modal-title {
+    color: #0f172a;
+    text-shadow: none;
+    font-family: inherit;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+html.theme-light .app-info h3 { color: #0f172a; text-shadow: none; }
+html.theme-light .page-subtitle { color: var(--text-dim); }
+
+/* ---------- hero / trust (index) ---------- */
+html.theme-light .hero-badge { color: var(--accent); }
+html.theme-light .trust-chip {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(15, 23, 42, 0.08);
+}
+html.theme-light .trust-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: var(--edge), 0 10px 26px rgba(15, 23, 42, 0.06);
+}
+html.theme-light .trust-card:hover {
+    border-color: var(--accent-line);
+    box-shadow: var(--edge), 0 16px 36px rgba(15, 23, 42, 0.10);
+}
+html.theme-light .hero-cta { box-shadow: 0 10px 24px rgba(31, 111, 235, 0.25); }
+html.theme-light .hero-cta--ghost {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(15, 23, 42, 0.10);
+    color: var(--text);
+}
+html.theme-light .hero-cta--ghost:hover { background: #ffffff; color: var(--text); }
+
+/* ---------- floating pill nav (sticky header detaches from edges) ----- */
+html.theme-light .site-header {
+    top: 10px;
+    width: auto;
+    margin: 10px clamp(10px, 3vw, 20px) 0;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.65));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                0 0 0 1px rgba(15, 23, 42, 0.04),
+                0 1px 1px rgba(15, 23, 42, 0.03),
+                0 12px 32px rgba(15, 23, 42, 0.08);
+}
+html.theme-light .hdr-btn {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(15, 23, 42, 0.08);
+    color: var(--text);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+html.theme-light .hdr-btn:hover { background: #ffffff; border-color: rgba(15, 23, 42, 0.14); color: var(--text); }
+html.theme-light .hdr-btn--bot { background: var(--grad-cta); border-color: transparent; color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 20px rgba(31, 111, 235, 0.28); }
+html.theme-light .hdr-btn--bot:hover { color: #fff; }
+html.theme-light .site-brand .site-logo { box-shadow: 0 2px 8px rgba(15, 23, 42, 0.14); }
+html.theme-light .search-btn {
+    background: var(--grad-cta);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 20px rgba(31, 111, 235, 0.25);
+}
+
+/* ---------- glass panels: floating layers, soft neutral depth ---------- */
+html.theme-light .product-card,
+html.theme-light .app-item,
+html.theme-light .category-card,
+html.theme-light .guide-box,
+html.theme-light .payment-card,
+html.theme-light .faq-container,
+html.theme-light .order-form-card {
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.90), rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0.72));
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: var(--edge),
+                0 0 0 1px rgba(15, 23, 42, 0.04),
+                0 1px 1px rgba(15, 23, 42, 0.03),
+                0 12px 32px rgba(15, 23, 42, 0.07);
+}
+/* modal sheets stay milkier for readability, but still glass */
+html.theme-light .search-modal-content,
+html.theme-light .modal-content {
+    border-color: rgba(255, 255, 255, 0.75);
+    box-shadow: var(--edge),
+                0 0 0 1px rgba(15, 23, 42, 0.03),
+                0 24px 60px rgba(15, 23, 42, 0.14);
+}
+html.theme-light .product-card:hover,
+html.theme-light .card-link:hover .product-card {
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.70) 50%, rgba(255, 255, 255, 0.85));
+    border-color: rgba(31, 111, 235, 0.30);
+    box-shadow: var(--edge), 0 0 0 1px rgba(15, 23, 42, 0.03), 0 2px 2px rgba(15, 23, 42, 0.03), var(--lift);
+}
+html.theme-light .app-item:hover,
+html.theme-light .category-card:hover {
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.70) 50%, rgba(255, 255, 255, 0.85));
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--edge), 0 0 0 1px rgba(15, 23, 42, 0.03), 0 2px 2px rgba(15, 23, 42, 0.03), 0 18px 44px rgba(15, 23, 42, 0.11);
+}
+
+/* bot CTA: plain white glass — its buttons carry the color */
+html.theme-light .bot-cta-card {
+    background:
+        radial-gradient(circle at top left, rgba(31, 111, 235, 0.05), transparent 42%),
+        radial-gradient(circle at bottom right, rgba(31, 111, 235, 0.04), transparent 42%),
+        linear-gradient(155deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.50) 55%, rgba(255, 255, 255, 0.66));
+    border-color: rgba(255, 255, 255, 0.85);
+}
+html.theme-light .bot-primary-btn { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 26px rgba(31, 111, 235, 0.28); }
+html.theme-light .bot-secondary-btn { background: rgba(255, 255, 255, 0.7); border-color: rgba(15, 23, 42, 0.10); }
+html.theme-light .bot-secondary-btn:hover { background: #ffffff; border-color: rgba(15, 23, 42, 0.16); }
+
+html.theme-light .product-card img { background: rgba(255, 255, 255, 0.55); }
+/* card titles are inside <a> wrappers — keep them ink, not link-blue */
+html.theme-light .product-card h3 { color: #0f172a; }
+
+/* app tiles: quiet squircle plate */
+html.theme-light .app-item img {
+    background: linear-gradient(145deg, #f8fafc, #eef2f7);
+    border-color: rgba(15, 23, 42, 0.06);
+    box-shadow: inset 0 1px 0 #ffffff, 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+/* logo plates forced white via !important in components.css — re-tint
+   so they don't read as flat white squares on the light cards */
+html.theme-light .adobe-logo, html.theme-light .picsart-logo, html.theme-light .peacock-logo,
+html.theme-light .chatgpt-logo, html.theme-light .grok-logo, html.theme-light .perplexity-logo,
+html.theme-light .disney-logo, html.theme-light .hiddify-logo, html.theme-light .jumpjump-logo,
+html.theme-light .nord-logo {
+    background: linear-gradient(145deg, #f8fafc, #e9eef5) !important;
+    border-color: rgba(15, 23, 42, 0.07) !important;
+}
+/* gamma/tidal ship white-forced via filter in components.css — a CSS filter
+   flattens the element's OWN background too, so a dark plate can never show
+   through it. Drop the filter instead: both marks are natively dark (tidal
+   black, gamma navy) and sit fine on the light tile plate. */
+html.theme-light .gamma-logo, html.theme-light .tidal-logo { filter: none; }
+/* CTA buttons on tiles: solid premium blue */
+html.theme-light .view-plans-btn { box-shadow: 0 6px 16px rgba(31, 111, 235, 0.22); }
+html.theme-light .view-plans-btn:hover { box-shadow: 0 10px 22px rgba(31, 111, 235, 0.30); }
+html.theme-light .contact-btn.telegram { background: var(--grad-cta); color: #fff; }
+html.theme-light .contact-btn.messenger {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    color: #1f6feb;
+}
+
+/* ---------- modals / search: airy scrim, frosted white sheet ---------- */
+html.theme-light .search-modal,
+html.theme-light .modal-overlay { background: rgba(23, 28, 38, 0.22); }
+
+html.theme-light .search-input,
+html.theme-light .of-field input[type="text"],
+html.theme-light .of-field input[type="tel"],
+html.theme-light .of-field input[type="email"],
+html.theme-light .of-field input[type="password"],
+html.theme-light .of-field select,
+html.theme-light .of-field textarea {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(15, 23, 42, 0.12);
+    color: var(--text);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+html.theme-light .search-input:focus,
+html.theme-light .of-field input:focus,
+html.theme-light .of-field select:focus,
+html.theme-light .of-field textarea:focus {
+    background: #ffffff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.12);
+}
+html.theme-light .search-input::placeholder { color: rgba(30, 41, 59, 0.55); }
+html.theme-light .of-field select option { background: #ffffff; color: #0f172a; }
+html.theme-light .of-file {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(15, 23, 42, 0.18);
+}
+html.theme-light .of-file:hover,
+html.theme-light .of-file.has-file { background: var(--accent-soft); border-color: var(--accent); color: #1f6feb; }
+html.theme-light .of-submit { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 26px rgba(18, 158, 85, 0.25); }
+
+html.theme-light .search-result-item {
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(15, 23, 42, 0.06);
+}
+html.theme-light .search-result-item:hover { background: rgba(31, 111, 235, 0.07); border-color: var(--accent-line); }
+html.theme-light .close-search {
+    background: rgba(15, 23, 42, 0.05);
+    border-color: transparent;
+    color: rgba(30, 41, 59, 0.55);
+}
+html.theme-light .close-modal { color: rgba(30, 41, 59, 0.60); }
+html.theme-light .close-search:hover,
+html.theme-light .close-modal:hover { color: var(--text); }
+
+/* plan descriptions ("Windows 10 Pro > lifetime key" etc.): the base rule
+   multiplies --gold-note by opacity 0.85 — run the light-mode ink at full
+   strength instead */
+html.theme-light .plan-desc,
+html.theme-light .checkout-note { opacity: 1; }
+
+/* plan rows: white glass pills */
+html.theme-light .plan-btn {
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(15, 23, 42, 0.07);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+html.theme-light .plan-btn:hover { background: #ffffff; border-color: var(--accent-line); }
+html.theme-light .plan-btn:hover .plan-price { color: #0d6b40; }
+html.theme-light .plan-note,
+html.theme-light .faq-answer { background: rgba(15, 23, 42, 0.03); }
+html.theme-light .checkout-opt {
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(15, 23, 42, 0.07);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+html.theme-light .checkout-opt:hover { background: #ffffff; }
+html.theme-light .checkout-opt--bot { border-color: var(--accent-line); }
+html.theme-light .checkout-opt--bot:hover { border-color: var(--accent); box-shadow: 0 6px 20px rgba(31, 111, 235, 0.14); }
+html.theme-light .checkout-opt--web:hover { border-color: var(--mint-line); }
+
+/* ---------- pills, badges, small buttons ---------- */
+html.theme-light .nav-btn {
+    color: #0f172a;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: inset 0 1px 0 #ffffff, 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+html.theme-light .nav-btn:hover {
+    color: #0f172a;
+    background: #ffffff;
+    box-shadow: inset 0 1px 0 #ffffff, 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+html.theme-light .buy-now { background: #149e55; color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 20px rgba(18, 158, 85, 0.25); }
+html.theme-light .buy-now:hover { background: #149e55; color: #fff; }
+html.theme-light .telegram-btn { background: var(--grad-cta); color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 20px rgba(31, 111, 235, 0.25); }
+html.theme-light .telegram-btn:hover { background: var(--grad-cta); color: #fff; }
+
+html.theme-light .bot-cta-badge { color: #1f6feb; background: var(--accent-soft); border-color: rgba(31, 111, 235, 0.25); }
+html.theme-light .bot-step {
+    background: rgba(255, 255, 255, 0.65);
+    border-color: rgba(15, 23, 42, 0.06);
+}
+html.theme-light .bot-step i { color: var(--accent); }
+html.theme-light .category-card .cat-count { background: rgba(15, 23, 42, 0.05); }
+html.theme-light .product-card .cat-count { color: #1f6feb; border-color: rgba(31, 111, 235, 0.25); }
+html.theme-light .footer-links a { background: rgba(255, 255, 255, 0.6); border-color: rgba(15, 23, 42, 0.07); color: var(--text-dim); }
+html.theme-light .footer-sep { color: rgba(30, 41, 59, 0.30); }
+
+html.theme-light .footer-col h4 { color: var(--text-dim); }
+html.theme-light .footer-col a { color: var(--text-dim); }
+html.theme-light .footer-col a:hover { color: var(--accent); }
+html.theme-light .footer-brand-name { color: #0f172a; }
+html.theme-light .footer-bottom { border-top-color: rgba(15, 23, 42, 0.08); }
+
+html.theme-light .plan-contact-btn--tg { color: #1f6feb; border-color: rgba(31, 111, 235, 0.35); }
+html.theme-light .plan-contact-btn--fb { color: rgba(30, 41, 59, 0.75); border-color: rgba(30, 41, 59, 0.22); }
+html.theme-light .plan-contact-btn:hover { background: var(--accent-soft); }
+html.theme-light .of-fb-btn {
+    background: rgba(30, 41, 59, 0.05);
+    border-color: rgba(30, 41, 59, 0.20);
+    color: rgba(30, 41, 59, 0.75);
+}
+
+/* hardcoded light-blue hovers -> premium blue */
+html.theme-light .faq-question:hover { color: #1f6feb; }
+html.theme-light .review-preview-head a:hover { color: #175cd3; }
+
+/* result banners */
+html.theme-light .of-result.ok { background: var(--mint-soft); border-color: var(--mint-line); }
+html.theme-light .of-result.err { background: rgba(214, 69, 69, 0.08); border-color: rgba(214, 69, 69, 0.35); }
+
+/* inline-styled links/hints (style="" attrs need !important) */
+html.theme-light .of-sub a,
+html.theme-light .order-summary a { color: #1f6feb !important; }
+html.theme-light #of-mail-hint { color: rgba(30, 41, 59, 0.6) !important; }
+/* show-password checkbox label stacks inline opacity:0.8 on --text-dim */
+html.theme-light #of-pw-field label { opacity: 1; }
+/* order-submit FAILURE box: the two recovery links (bot / messenger) are
+   inline cyan — err box only, so the ok box's .of-fb-btn keeps its color */
+html.theme-light .of-result.err a { color: #1f6feb !important; }
+/* order form prefilled-plan OOS warning (inline cssText #ff6b6b) */
+html.theme-light #of-stock-warn { color: #b83232 !important; }
+/* payment-page order-summary OOS warning: the generic .order-summary p
+   !important rule above would repaint the red danger text as plain ink —
+   this higher-specificity rule keeps it red on light */
+html.theme-light .order-summary p[style*="#ff6b6b"] { color: #b83232 !important; }
+/* empty-category "Home ကို ပြန်သွားမည်" link (inline cyan) */
+html.theme-light .app-list p a { color: #1f6feb !important; }
+/* Customer Reviews heading star (inline gold #f5c518 — invisible on light) */
+html.theme-light .review-preview-head h2 i { color: #b45309 !important; }
+
+/* ---------- JS-generated markup hooks (both themes) ------------------
+   app.js used to paint these inline (style="…"); they are classes now so
+   both themes can reach them. Dark defaults first, light overrides below. */
+.js-link { color: #4d9fff; }
+.js-dim { color: rgba(233, 242, 249, 0.62); }
+.js-oos { color: #ff6b6b; }
+.js-center { text-align: center; }
+.js-block { width: 100%; }
+.js-strike { text-decoration: line-through; }
+.js-noclick { cursor: default; }
+html.theme-light .js-link { color: #1f6feb; }
+html.theme-light .js-dim { color: rgba(30, 41, 59, 0.60); }
+html.theme-light .js-oos { color: #b83232; }
+html.theme-light .js-oos-tag,
+html.theme-light .js-warn { color: #b83232; }
+html.theme-light .js-note { color: rgba(30, 41, 59, 0.65); }
+html.theme-light .js-hint { color: rgba(30, 41, 59, 0.60); }
+
+/* ---------- shared back buttons (category pages, terms, 404) ---------
+   base dark style lives here because the terms pages only defined their
+   own inline copies; theme-light overrides follow below. */
+.back-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 30px 0 20px;
+}
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 18px;
+    min-height: 44px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--stroke);
+    transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.back-btn:hover { background: rgba(255, 255, 255, 0.10); border-color: var(--stroke-hi); color: var(--text); }
+html.theme-light .back-btn {
+    color: #0f172a;
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: inset 0 1px 0 #ffffff, 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+html.theme-light .back-btn:hover {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.16);
+    color: #0f172a;
+}
+
+/* ---------- inline dark-theme styles baked into page HTML/app.js ------
+   (white text / ghost-white pills — invisible on light; need !important) */
+html.theme-light .app-list > p { color: var(--text-dim) !important; }
+html.theme-light .app-detail-page > div > button[data-action="back"],
+html.theme-light .app-detail-page > div > a[href="index.html"] {
+    color: #0f172a !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    box-shadow: inset 0 1px 0 #ffffff, 0 4px 14px rgba(15, 23, 42, 0.08);
+    transition: box-shadow var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+html.theme-light .app-detail-page > div > button[data-action="back"]:hover,
+html.theme-light .app-detail-page > div > a[href="index.html"]:hover {
+    background: #ffffff !important;
+    box-shadow: inset 0 1px 0 #ffffff, 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+html.theme-light .order-summary p { color: rgba(30, 41, 59, 0.70) !important; }
+html.theme-light .order-summary .os-price { color: var(--mint) !important; }
+html.theme-light .footer-links > span { color: rgba(30, 41, 59, 0.30) !important; }
+
+/* order summary strip */
+html.theme-light .order-summary {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(31, 111, 235, 0.30);
+}
+html.theme-light .order-summary h3 { color: #1f6feb; }
+
+/* ---------- payment page (inline <style> hardcodes darks) ---------- */
+html.theme-light .payment-subtitle { color: var(--text-dim); }
+html.theme-light .payment-selector,
+html.theme-light .qr-panel {
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.60), rgba(255, 255, 255, 0.30) 50%, rgba(255, 255, 255, 0.44));
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 0 0 1px rgba(15, 23, 42, 0.04), 0 1px 1px rgba(15, 23, 42, 0.03), 0 12px 32px rgba(15, 23, 42, 0.07);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+}
+html.theme-light .platform-select {
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--text);
+    border-color: rgba(15, 23, 42, 0.12);
+}
+html.theme-light .platform-btn {
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--text);
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: inset 0 1px 0 #ffffff, 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+html.theme-light .platform-btn.active {
+    background: var(--accent-soft);
+    border-color: rgba(31, 111, 235, 0.45);
+    color: #1f6feb;
+    box-shadow: 0 6px 18px rgba(31, 111, 235, 0.14);
+}
+html.theme-light .pay-icon { border-color: rgba(15, 23, 42, 0.08); }
+html.theme-light .badge {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(15, 23, 42, 0.08);
+    color: var(--text);
+}
+html.theme-light .qr-single img {
+    border-color: rgba(15, 23, 42, 0.08);
+    background: #ffffff;
+}
+html.theme-light .bot-note {
+    background: var(--mint-soft);
+    border-color: var(--mint-line);
+}
+/* payment page: bot top-up CTA (inline gradient !important) + red disclaimer */
+html.theme-light .bot-topup-btn {
+    background: var(--grad-cta) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 24px rgba(31, 111, 235, 0.25);
+}
+html.theme-light .disclaimer-box {
+    background: rgba(214, 48, 49, 0.05) !important;
+    border-color: rgba(214, 48, 49, 0.55) !important;
+}
+html.theme-light .disclaimer-box p { color: #b83232 !important; }
+/* app.js renders "Out of stock" with inline #ff6b6b — too pale on light;
+   the base row also drops to opacity 0.6, compounding it — 0.85 keeps the
+   de-emphasis while landing the red at readable contrast on the white pill */
+html.theme-light .plan-btn--oos { opacity: 0.85; }
+html.theme-light .plan-btn--oos div span + span { color: #b83232 !important; }
+html.theme-light .plan-btn--oos .plan-price { opacity: 0.7 !important; }
+/* forced-white iOS link overrides in payment.html must flip to ink */
+html.theme-light a[href^="tel"],
+html.theme-light .payment-instruction a,
+html.theme-light .payment-instruction span,
+html.theme-light .payment-instruction strong,
+html.theme-light .payment-instruction a:link,
+html.theme-light .payment-instruction a:visited { color: #0f172a !important; }
+
+/* ---------- reviews page ---------- */
+/* page <style> hardcodes dark-theme values on these */
+html.theme-light .guide-box h2 { color: var(--text); }
+html.theme-light .back-home-btn {
+    color: #0f172a;
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: inset 0 1px 0 #ffffff, 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+html.theme-light .back-home-btn:hover {
+    color: #0f172a;
+    background: #ffffff;
+    border-color: rgba(31, 111, 235, 0.35);
+    box-shadow: inset 0 1px 0 #ffffff, 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+html.theme-light .proof-hint {
+    border-color: rgba(15, 23, 42, 0.07);
+    background: rgba(255, 255, 255, 0.65);
+    color: var(--text-dim);
+}
+html.theme-light .proof-item {
+    border-color: rgba(15, 23, 42, 0.07);
+    background: rgba(255, 255, 255, 0.62);
+}
+html.theme-light .proof-item:hover {
+    border-color: rgba(31, 111, 235, 0.35);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+}
+/* lightbox intentionally stays dark — best for viewing photos */
+
+/* ---------- terms of service pages ---------- */
+html.theme-light .terms-card {
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(15, 23, 42, 0.07);
+    color: var(--text);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+html.theme-light .terms-card h1 { color: #0f172a; }
+html.theme-light .last-update { color: var(--text-dim); }
+html.theme-light .terms-section p,
+html.theme-light .terms-card p,
+html.theme-light .terms-card li { color: rgba(30, 41, 59, 0.78); }
+/* cyan list bullets drawn by the page-local ::before rule */
+html.theme-light .terms-section li::before { color: #1f6feb; }
+/* telegram-bot box + its gradient button */
+html.theme-light .bot-terms-box { background: var(--accent-soft); border-color: rgba(31, 111, 235, 0.25); }
+html.theme-light .bot-terms-btn {
+    background: var(--grad-cta);
+    color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 20px rgba(31, 111, 235, 0.25);
+}
+/* the heading inside the bot box is cyan !important in the page CSS */
+html.theme-light .bot-terms-box h2 {
+    color: #1f6feb !important;
+    border-left-color: rgba(31, 111, 235, 0.45) !important;
+}
+
+/* ---------- expressvpn guide ----------
+   Page shell goes light; the two step cards mimic the real
+   ExpressVPN app's dark UI, so they stay DARK ISLANDS. */
+html.theme-light .lg-update { background: rgba(255, 255, 255, 0.7); border-color: rgba(15, 23, 42, 0.08); }
+html.theme-light .lg-card {
+    background: #101826 !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.20);
+    color: #ffffff;
+}
+/* re-darken card text directly (page CSS reads --txt* tokens, which are
+   ink in the light shell — direct rules keep the cards' white type) */
+html.theme-light .lg-card .proto-label,
+html.theme-light .lg-card .pdesc,
+html.theme-light .lg-card .etitle,
+html.theme-light .lg-card .ename,
+html.theme-light .lg-card .iplab,
+html.theme-light .lg-card .sda { color: rgba(255, 255, 255, 0.65); }
+html.theme-light .lg-card .ename.on { color: #ffffff; }
+html.theme-light .lg-card .ndesc,
+html.theme-light .lg-card .llabel,
+html.theme-light .lg-card .change,
+html.theme-light .lg-card .mlab { color: rgba(255, 255, 255, 0.45); }
+/* one inline style="color:var(--txt-dim2)" span in expressvpn-guide.js */
+html.theme-light .lg-card .mval span { color: rgba(255, 255, 255, 0.45) !important; }
+html.theme-light .footer-links a:hover { background: #ffffff; color: var(--text); border-color: rgba(15, 23, 42, 0.12); }
+
+/* ---------- theme toggle button ---------- */
+.theme-toggle-btn { min-width: 38px; justify-content: center; }
+
+/* keyboard focus ring: --accent-line is 35%-alpha blue on light — use the
+   solid accent for the outline only so it stays findable on the canvas */
+html.theme-light :focus-visible { outline-color: #1f6feb; }
+
+/* pill nav insets the header by 10px/side that dark mode doesn't have —
+   claw the space back on very narrow phones so the buttons never clip */
+@media (max-width: 360px) {
+    html.theme-light .site-header { margin: 10px 6px 0; }
+    html.theme-light .hdr-btn { padding: 8px 10px; }
+}
+
+/* phones: the floating pill leaves a gap at the top where page content
+   peeks through while scrolling — dock the header flush to the top edge */
+@media (max-width: 768px) {
+    html.theme-light .site-header {
+        top: 0;
+        margin: 0;
+        border-radius: 0 0 20px 20px;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
+}
+
+/* ==========================================================
+   PERFORMANCE (applies to BOTH themes — no visual redesign)
+   backdrop-filter cost scales ~radius²: phones get the same
+   glass look at a fraction of the GPU work. Below-the-fold
+   sections skip rendering until scrolled near (DOM intact,
+   so app.js bindFAQ/lightbox behavior is unaffected).
+   ========================================================== */
+@media (max-width: 768px) {
+    :root, html.theme-light {
+        --blur: blur(10px) saturate(1.4);
+        --blur-soft: blur(6px) saturate(1.3);
+    }
+    /* hardcoded blurs outside the tokens */
+    .search-modal,
+    .modal-overlay {
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
+    html.theme-light .payment-selector,
+    html.theme-light .qr-panel {
+        backdrop-filter: blur(8px) saturate(1.3);
+        -webkit-backdrop-filter: blur(8px) saturate(1.3);
+    }
+}
+
+/* lazy-render below-the-fold blocks (FAQ lists are huge).
+   Placeholder heights are per-block: one flat 600px estimate made the page
+   jump ~400px when a 12-item FAQ rendered and shrink when the short review
+   strip did. These track the real rendered heights on a phone. */
+.faq-container {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1000px;
+}
+.review-preview {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 350px;
+}
+.bot-cta-container {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
+}
+.proof-item {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 260px;
+}
+
+/* page-bottom Back / Back to Home controls — generic catch-all.
+   Category pages style these with style="" attrs (white text on
+   translucent white); the scoped rules above only re-style
+   .back-btn/.back-home-btn and an .app-detail-page-scoped
+   [data-action="back"], so category-page back buttons outside
+   that scope would stay invisible without this broader rule. */
+html.theme-light [data-action="back"],
+html.theme-light .back-btn,
+html.theme-light .back-home-btn {
+    color: #0f172a !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+/* FAQ accent text (was inline style="color:…" — unreachable from
+   theme.css otherwise). Inert until data/faq.json (panel-managed)
+   actually emits these classes. */
+html.theme-light .faq-accent-blue { color: #1f6feb; }
+html.theme-light .faq-accent-green { color: var(--mint); }
+html.theme-light .faq-accent-red { color: #b83232; }
