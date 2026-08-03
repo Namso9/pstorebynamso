@@ -34,6 +34,8 @@
 - Aligned Zoom with the new ordered 1/3/6/12-month package contract, prices,
   public plan IDs, exclusive Most Popular/Best Value badges, Telegram deep
   links, and website payment query flow in both catalog copies.
+- Completed the coordinated production rollout across the storefront, sale bot,
+  and Admin Panel; the owner confirmed the resulting production UI is correct.
 - Applied the owner-approved Kimi polish to the preview, including centered
   desktop search, cleaner purchase-guide spacing, order-page back controls,
   selective liquid-glass depth, and normalized requested product-logo tiles.

@@ -9,9 +9,9 @@ Real Android Chrome, mid-range Android Motion, and physical iPhone Safari checks
 pass. The owner confirmed that an embedded WebView/app wrapper is not required
 for this SaaS website. The build-time hash CSP and production cutover are now
 complete. Preview deployment `ad0964b4-7aa3-4448-a8e1-37e53adbb2ef` is live on
-`next-preview`, and Production deployment
-`1193282b-51a8-45de-938c-aeb20f800db5` is live on `pstorebynamso.com`; routes,
-static/data assets, hydration, CSP enforcement, and browser interactions pass.
+`next-preview`. Current Production is `b341d690`; routes, static/data assets,
+hydration, CSP enforcement, browser interactions, and the Zoom contract pass on
+`pstorebynamso.com`.
 
 The App Router scaffold and static export are verified and the approved Next.js
 build is now Production. The legacy source remains in the repository and the
@@ -36,7 +36,8 @@ bugfix (body portal + iOS-safe scroll lock + restored sticky header), and
 the Premium Store brand strip in View Plans. Production deployments
 `0f34fdb1` → `4648c406` → `0e50330a` → `b341d690` (current) were made with
 the owner's instruction, and the full worktree — migration, polish passes,
-QA scripts, and reports — is now committed.
+QA scripts, and reports — is captured in local commit `243d49a`. That commit is
+not pushed.
 
 ## Zoom Package Contract (2026-08-04)
 
@@ -50,9 +51,9 @@ QA scripts, and reports — is now committed.
 - [x] Owner rollout: commit/push the contract, deploy Production, apply the
   bot-owned SQLite migration with backup, restart Bot/Admin, and verify live
   catalog, payment/order/Telegram endpoints, and Bot public-ID mappings.
-- [ ] Perform one literal production browser click smoke when browser control is
-  available; its runtime failed to initialize in the rollout session. The live
-  HTTP and runtime contract checks already pass.
+- [x] Close production UI acceptance. The owner confirmed everything is fine;
+  recorded real View Plans interaction tests, live HTTP checks, and Bot runtime
+  mappings cover the package selection/link flow.
 
 ## Completed Planning
 
@@ -326,8 +327,8 @@ untouched. Full write-up: `qa/overnight/2026-08-03/KIMI_UI_UX_REPORT.md`.
 - [x] Obtain approval before replacing production. The owner explicitly
   approved replacement after CSP hardening on 2026-08-03.
 - [x] Replace production only after the hardened Preview passed. Current
-  Production is `1193282b-51a8-45de-938c-aeb20f800db5`; the custom domain passes
-  route, asset, exact-hash CSP, hydration, interaction, and console checks.
+  Production is `b341d690`; the custom domain passes route, asset, exact-hash
+  CSP, hydration, interaction, console, and Zoom catalog checks.
 - [x] Keep a rollback path to the last static HTML deployment. The legacy files
   and Pages Functions remain in the repository, and deployment
   `93b28c45-798c-42e8-9e42-e21d605c9b45` is the recorded pre-cutover rollback

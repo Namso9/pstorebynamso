@@ -200,8 +200,9 @@ Functions, URLs, SEO metadata, and production integrations.
   plus two-tier card depth, opaque `@supports` fallbacks, and a 440ms
   section reveal. The targeted follow-up also centers the desktop search modal,
   improves purchase-guide spacing, adds the order-page back controls, and
-  normalizes the requested product-logo tiles. All final checks pass and this
-  working-tree design is now on `next-preview`; it remains uncommitted. See
+  normalizes the requested product-logo tiles. All final checks pass; this
+  design was later captured with the full migration/polish tree in `243d49a`.
+  See
   `qa/overnight/2026-08-03/KIMI_UI_UX_REPORT.md` and
   `KIMI_SMALL_POLISH_REPORT.md`.
 - Kimi's final mobile pass reduces phone product-logo tiles to 48px, centers
@@ -252,16 +253,22 @@ Functions, URLs, SEO metadata, and production integrations.
   Production is `b341d690`, which also serves the Zoom catalog contract from
   `44f9ee4` (verified in the live `/products.json`). Rollback chain:
   `0e50330a` → `4648c406` → `0f34fdb1-e06d-412c-9c71-cbcee34bfd55`.
+- The full Next.js migration, owner-approved UI/UX polish series, QA scripts,
+  reports, and synchronized public assets are captured in local commit
+  `243d49a`. That commit is not pushed; no remote history was changed during
+  the final handoff pass.
 - The Zoom catalog uses the approved ordered 1/3/6/12-month plans, prices,
-  public IDs, and exclusive badges in both catalog copies. The catalog change is
-  committed/pushed at `44f9ee4` and Production deployment
-  `7f039f71-961d-4983-98df-ac4cb9a43416` is live on `pstorebynamso.com`.
+  public IDs, and exclusive badges in both catalog copies. The catalog change
+  is committed/pushed at `44f9ee4`; initial Zoom rollout deployment
+  `7f039f71-961d-4983-98df-ac4cb9a43416` was superseded by current Production
+  `b341d690`, which retains the same verified catalog contract.
 - The dedicated contract check, lint, typecheck, static build, CSP verification,
   dependency audit, live catalog checks, and payment/order/Telegram endpoint
   checks pass. The bot-owned production SQLite migration and required Bot/Admin
-  restarts are complete. A literal in-app-browser click smoke remains unverified
-  because the browser-control runtime could not initialize; live HTTP and bot
-  runtime mapping checks cover the same product/plan/link contract.
+  restarts are complete. The owner subsequently confirmed the production UI is
+  fine; the earlier browser-controller limitation is closed by that owner
+  acceptance together with the recorded real View Plans interaction tests,
+  live HTTP checks, and bot runtime mapping checks.
 
 ## Documentation Reading Rules
 
