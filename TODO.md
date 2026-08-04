@@ -71,6 +71,15 @@ not pushed.
   (Android 16): production Chrome 150 kept the soft keyboard open through a
   full search and rendered the plan-dialog backdrop blur, and Samsung
   Internet 30 passed the same flows (`qa/shots/device-check/`).
+- [x] Owner phone-testing follow-ups: keep the search input focused across
+  every keystroke (the Modal open-effect depended on the inline `onClose`
+  handler's identity, so each keystroke blurred/refocused the input; it now
+  reads the handler via `onCloseRef` and depends on the open state only —
+  `qa/kimi-search-focus-check.mjs`), and keep a lone phone search result at
+  natural height (`align-content: start` on the flexed results grid).
+  Deployed as `a821e236` and `677b1794`; owner confirmed all fixed
+  on-device. Committed and pushed to `origin/main` on the owner's
+  instruction.
 
 ## Zoom Package Contract (2026-08-04)
 

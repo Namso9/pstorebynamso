@@ -232,6 +232,22 @@ Functions, URLs, SEO metadata, and production integrations.
   Samsung Internet 30 passed the same search-typing and plan-dialog checks
   (`qa/kimi-device-check.mjs`, `qa/kimi-device-plan-check.mjs`,
   `qa/shots/device-check/`).
+- Same-day follow-ups (owner phone testing): (1) the search input lost focus
+  on every keystroke — the dialog open-effect in
+  `src/components/common/Modal.tsx` depended on the `onClose` prop, and
+  `ProductSearch` passes an inline handler whose identity changes per render,
+  so each keystroke tore the effect down (cleanup returned focus to the
+  header button, collapsing the keyboard) and re-ran it (refocusing the
+  input). The effect now reads the latest handler through `onCloseRef` and is
+  bound to the open state only; `qa/kimi-search-focus-check.mjs` proves
+  focus, node identity, and cursor position stay stable across a full typed
+  sentence. (2) A lone phone search result rendered as one giant
+  vertically-centred card — the constant-height results grid stretched a
+  single row via its `align-content` default; `align-content: start` pins
+  rows to the top at natural height. Both verified headless and on the live
+  site, deployed to Production as `a821e236` then `677b1794`; rollback chain
+  `a821e236` → `b9c4adfc`. The owner confirmed on-device that everything is
+  fine. Committed and pushed to `origin/main` on the owner's instruction.
 - Kimi's owner-approved final polish (2026-08-03) added a
   four-token glass system applied selectively to the sticky header, the
   Telegram wallet CTA panel, the order-summary info panel, and modal chrome,
