@@ -66,6 +66,20 @@
   clip` rule that broke the sticky header in Chrome.
 - Added immediate touch feedback on buttons and cards while keeping
   reduced-motion support and avoiding expensive animated properties.
+- Restored backdrop blur in every Chrome browser (Android and desktop): the
+  source listed the standard `backdrop-filter` before its `-webkit-` twin and
+  the Tailwind 4 minifier dropped the standard declaration, so the deployed
+  CSS only carried `-webkit-backdrop-filter`, which Chrome ignores. The
+  prefixed line now comes first in all six blur pairs.
+- Darkened the modal overlay to 80% where `backdrop-filter` is unsupported
+  (older/GPU-blocklisted Android Chrome, older Samsung Internet) so page copy
+  no longer stays readable behind dialogs; the dialog panel stays opaque.
+- Extended `touch-action: manipulation` to FAQ questions, review cards,
+  checkout options, platform buttons, the order file picker, and back
+  controls, removing double-tap-zoom delay on those tap targets.
+- Moved the Google Fonts stylesheet from a chained CSS `@import` behind the
+  globals bundle to a parallel `<link>` in the root layout head, so mobile
+  text paint no longer waits for the full app CSS first.
 
 ### Security
 

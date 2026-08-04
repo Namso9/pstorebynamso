@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme inline {
@@ -204,8 +203,13 @@ html[data-theme="light"] {
   border-bottom: 1px solid var(--border);
   background: var(--header);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(22px) saturate(1.45);
+  /* Keep the prefixed line FIRST everywhere in this file: the Tailwind 4 /
+     Lightning CSS minifier drops a standard `backdrop-filter` that precedes
+     its `-webkit-` twin, and Chrome ignores `-webkit-backdrop-filter` — the
+     old order blurred Safari but left every Chrome (Android + desktop) with
+     no blur at all. */
   -webkit-backdrop-filter: blur(22px) saturate(1.45);
+  backdrop-filter: blur(22px) saturate(1.45);
 }
 
 .site-header__inner {
@@ -446,8 +450,8 @@ html[data-theme="light"] {
     12px
     max(12px, env(safe-area-inset-bottom, 0px));
   background: rgba(2, 6, 12, 0.64);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .modal-panel {
@@ -603,8 +607,8 @@ html[data-theme="light"] {
   padding: 24px 20px;
   background: var(--surface);
   box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
-  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
 }
 
 .shared-feature-card h2 {
@@ -2797,8 +2801,8 @@ html[data-theme="light"] body {
   border-bottom-color: var(--border);
   background: color-mix(in srgb, var(--header) 92%, transparent);
   box-shadow: 0 8px 22px rgba(15, 23, 42, 0.07);
-  backdrop-filter: blur(16px) saturate(1.4);
   -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
 }
 
 .site-header__inner {
@@ -4175,8 +4179,8 @@ html.theme-light .payment-selector-next {
   box-shadow:
     inset 0 1px 0 var(--glass-hi),
     var(--glass-shadow);
-  backdrop-filter: blur(18px) saturate(1.3);
   -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
 }
 
 /* Order summary: a compact floating info panel with the same language. */
@@ -4186,8 +4190,8 @@ html.theme-light .payment-selector-next {
   box-shadow:
     inset 0 1px 0 var(--glass-hi),
     0 14px 34px color-mix(in srgb, var(--ink) 9%, transparent);
-  backdrop-filter: blur(14px) saturate(1.25);
   -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  backdrop-filter: blur(14px) saturate(1.25);
 }
 
 /* Modal chrome: the panel stays opaque so copy never sits on blurred page
@@ -4219,6 +4223,15 @@ html.theme-light .payment-selector-next {
     background:
       radial-gradient(circle at 100% 0%, var(--accent-soft), transparent 46%),
       var(--surface-strong);
+  }
+
+  /* The dialog overlay leaned on the blur to quiet the page behind it. Where
+     backdrop-filter is missing (older/GPU-blocklisted Android Chrome, older
+     Samsung Internet), page copy stayed readable through the 64% overlay, so
+     the dialog looked messy. Darken the overlay itself — the dialog panel is
+     already opaque, so the visual result matches blurred browsers. */
+  .modal-backdrop {
+    background: rgba(2, 6, 12, 0.8);
   }
 }
 
@@ -4613,10 +4626,16 @@ button {
 
 .button,
 .icon-button,
+.back-control,
 .product-card,
 .category-card,
 .plan-row,
+.checkout-option,
 .search-result,
+.faq-question,
+.review-card,
+.platform-button-next,
+.order-file,
 .official-channel-grid a,
 .trust-card,
 .bot-steps li,

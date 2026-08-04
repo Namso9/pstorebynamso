@@ -62,6 +62,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* A head stylesheet loads the font CSS in parallel with the app CSS;
+            the old CSS `@import` chained the font request behind the whole
+            globals bundle, delaying text paint on mobile. `display=swap` and
+            the CSP style-src/font-src allowlists are unchanged. */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font -- App Router: this is the root layout, so the font loads for every route. */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap"
+        />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
       </head>
       <body>

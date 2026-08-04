@@ -39,6 +39,28 @@ the owner's instruction, and the full worktree — migration, polish passes,
 QA scripts, and reports — is captured in local commit `243d49a`. That commit is
 not pushed.
 
+## Mobile Performance & Cross-Browser Pass (2026-08-04)
+
+- [x] Root-cause "blur works on iOS Safari but not Android Chrome": the source
+  wrote standard `backdrop-filter` before its `-webkit-` twin and the
+  Tailwind 4 minifier dropped the standard declaration, leaving only
+  `-webkit-backdrop-filter`, which Chrome ignores. All six blur pairs now
+  list the prefixed line first; the export carries both declarations again.
+- [x] Add an 80%-opacity modal-overlay fallback to the existing
+  `@supports not (backdrop-filter)` block for older/GPU-blocklisted Android
+  Chrome and Samsung Internet; the dialog panel stays opaque.
+- [x] Extend `touch-action: manipulation` to FAQ questions, review cards,
+  checkout options, platform buttons, the order file picker, and back
+  controls.
+- [x] Move the Google Fonts stylesheet from a chained CSS `@import` to a
+  parallel head `<link>` in the root layout.
+- [x] Verify lint, typecheck, production build, CSP, Zoom contract, and the
+  new `qa/kimi-overlay-touch-check.mjs` browser checks (Chrome computes
+  `blur(10px)` on the backdrop; exact scroll lock/restore; zero console
+  errors). Deployed to Production on the owner's instruction (`711e7d92`);
+  rollback point `b341d690`. Pre-existing `undici` audit advisories in the
+  wrangler dev toolchain remain; package updates were out of scope.
+
 ## Zoom Package Contract (2026-08-04)
 
 - [x] Publish the ordered `1 Month`, `3 Months`, `6 Months`, `1 Year` catalog

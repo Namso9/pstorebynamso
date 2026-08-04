@@ -194,6 +194,28 @@ Functions, URLs, SEO metadata, and production integrations.
   architecture. The implemented build-time hash strategy preserves static
   export; a nonce migration would require a separately approved architecture
   change.
+- Kimi's mobile performance and cross-browser pass (2026-08-04,
+  owner-requested) found the real cause of "blur works on iOS Safari but not
+  Android Chrome": the source wrote the standard `backdrop-filter` before its
+  `-webkit-` twin, and the Tailwind 4 / Lightning CSS minifier dropped the
+  standard declaration, so the deployed CSS carried only
+  `-webkit-backdrop-filter` — which Chrome ignores entirely. All six blur
+  pairs now put the prefixed line first, and the minified export contains
+  both declarations again. The modal overlay also gained an 80%-opacity
+  fallback inside the existing `@supports not (backdrop-filter)` block for
+  older/GPU-blocklisted Android Chrome and Samsung Internet, while the dialog
+  panel stays opaque. `touch-action: manipulation` was extended to FAQ
+  questions, review cards, checkout options, platform buttons, the order file
+  picker, and back controls, and the Google Fonts stylesheet moved from a
+  chained CSS `@import` to a parallel head `<link>` so text paint no longer
+  waits for the full app CSS. Lint, typecheck, build, CSP, Zoom contract, and
+  the QA browser checks pass (`qa/kimi-overlay-touch-check.mjs`): Chrome now
+  computes `backdrop-filter: blur(10px)` on the dialog backdrop, body scroll
+  lock/restore is exact, and there are zero console errors. Deployed to
+  Production on the owner's instruction (`711e7d92`, branch main); rollback
+  point `b341d690`. The three `npm audit` findings are pre-existing `undici`
+  advisories inside the `wrangler` dev-only preview toolchain; package
+  updates were out of scope for this pass.
 - Kimi's owner-approved final polish (2026-08-03) added a
   four-token glass system applied selectively to the sticky header, the
   Telegram wallet CTA panel, the order-summary info panel, and modal chrome,
