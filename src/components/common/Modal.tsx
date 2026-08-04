@@ -93,6 +93,18 @@ export function Modal({
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
+  // Consumers pass inline `onClose` handlers whose identity changes on every
+  // parent render. If the effect below depended on `onClose` directly, any
+  // state update while the dialog is open (e.g. each keystroke in the search
+  // input) would tear it down and re-run it: the cleanup moved focus back to
+  // the trigger element and the setup focused the dialog again, so mobile
+  // keyboards collapsed and reopened on every character. Reading the latest
+  // handler through a ref keeps the effect bound to `open` only.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
   useEffect(() => {
     if (!open) return;
 
@@ -109,7 +121,7 @@ export function Modal({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -137,7 +149,7 @@ export function Modal({
       unlockBodyScroll();
       if (bodyLockCount === 0) returnFocusRef.current?.focus();
     };
-  }, [initialFocusRef, onClose, open]);
+  }, [initialFocusRef, open]);
 
   const handleBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) onClose();

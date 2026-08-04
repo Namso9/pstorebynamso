@@ -86,6 +86,14 @@
   focused input — Android dismisses the IME when the focused editable shifts
   mid-typing. The phone dialog now keeps a constant height and the results
   scroll inside it, so the input's geometry never changes while typing.
+- Kept the search input focused and the mobile keyboard open across every
+  keystroke: the dialog's open effect depended on the `onClose` prop, and the
+  search parent passes an inline handler whose identity changes per render, so
+  each typed character tore the effect down (returning focus to the header
+  button, collapsing the keyboard) and re-ran it (refocusing the input). The
+  effect now reads the latest handler through a ref and is bound to the open
+  state only, so the input is never blurred, remounted, or refocused while
+  typing and the cursor stays put.
 
 ### Security
 
