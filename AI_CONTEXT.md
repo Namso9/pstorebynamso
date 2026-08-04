@@ -92,13 +92,15 @@ Functions, URLs, SEO metadata, and production integrations.
   static fallbacks plus live `/data/*` revalidation. FAQ rich text is rendered
   through an allowlist parser; unsafe tags, event handlers, and script URLs are
   not inserted into the page.
-- The FAQ runtime crash caused by rich-text `<br>` elements is fixed locally.
-  The allowlist renderer now creates void elements without a `children`
-  argument, avoiding React error #137. A production-parity browser guard opens
-  all 49 FAQ entries, collapses them, and reopens three on both 390px mobile and
-  1280px desktop with no Next error boundary, runtime/console/network error,
-  hydration marker, or horizontal overflow. This fix is not deployed,
-  committed, or pushed.
+- The FAQ runtime crash caused by rich-text `<br>` elements is fixed in
+  Production deployment `c7f279ed-c605-44aa-8662-95ec45d29632` from runtime
+  commit `ea9484c`, which is pushed to `origin/main`. The allowlist renderer now
+  creates void elements without a `children` argument, avoiding React error
+  #137. The production-parity browser guard opens all 49 FAQ entries, collapses
+  them, and reopens three on both 390px mobile and 1280px desktop with no Next
+  error boundary, runtime/console/network error, hydration marker, or
+  horizontal overflow; the same complete matrix passes on
+  `pstorebynamso.com` after deployment propagation.
 - The payment page preserves KBZPay, WavePay, and AyaPay QR assets,
   instructions, cache exceptions, and product/plan query forwarding. The order
   page preserves the exact 11-field multipart contract, product/plan prefill,
@@ -264,11 +266,13 @@ Functions, URLs, SEO metadata, and production integrations.
   Next.js bugs. Production was restored by re-running the direct-upload
   deploy of `out/` (`9e26a2a3`); both `pstorebynamso.com` and
   `pstorebynamso.pages.dev` serve the Next.js export again and the wordmark
-  fits at 360/384/412px. OPEN RISK: every future push to `main` flips
-  production back to the legacy site until the Pages build settings are
-  fixed in the dashboard (build command `npm run build`, output `out`) or
-  automatic deployments are disabled. Do not push before the owner resolves
-  this.
+  fits at 360/384/412px. OPEN RISK: an ordinary future push to `main` can flip
+  production back to the legacy site until the Pages build settings are fixed
+  in the dashboard (build command `npm run build`, output `out`) or automatic
+  deployments are disabled. The FAQ rollout used Cloudflare's build-skip commit
+  prefix (recorded as idle deployment `8c647e33`) and then direct-uploaded the
+  verified export as `c7f279ed`; future pushes require the same guarded pattern
+  until the project setting is corrected.
 - Kimi's owner-approved final polish (2026-08-03) added a
   four-token glass system applied selectively to the sticky header, the
   Telegram wallet CTA panel, the order-summary info panel, and modal chrome,

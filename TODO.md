@@ -9,7 +9,7 @@ Real Android Chrome, mid-range Android Motion, and physical iPhone Safari checks
 pass. The owner confirmed that an embedded WebView/app wrapper is not required
 for this SaaS website. The build-time hash CSP and production cutover are now
 complete. Preview deployment `ad0964b4-7aa3-4448-a8e1-37e53adbb2ef` is live on
-`next-preview`. Current Production is `9e26a2a3`; routes, static/data assets,
+`next-preview`. Current Production is `c7f279ed`; routes, static/data assets,
 hydration, CSP enforcement, browser interactions, and the Zoom contract pass on
 `pstorebynamso.com`.
 
@@ -56,10 +56,13 @@ not pushed.
   mobile interaction regression checks. `npm audit` still reports the three
   documented pre-existing `undici` advisories in the Wrangler/Miniflare
   development toolchain; no dependency changed in this fix.
-- [ ] Commit, push, or deploy the fix only with explicit owner authorization.
-  Production remains deployment `9e26a2a3`, and pushing `main` remains unsafe
-  until the Cloudflare Pages Git build settings are corrected or auto-deploys
-  are disabled.
+- [x] With explicit owner authorization, commit and push runtime commit
+  `ea9484c`, using Cloudflare's build-skip prefix so the Git integration records
+  only idle deployment `8c647e33`, then direct-upload the verified `out` export
+  as Production deployment `c7f279ed-c605-44aa-8662-95ec45d29632`. The full
+  mobile/desktop FAQ matrix and maintained interaction regression suite pass on
+  `pstorebynamso.com`. Ordinary pushes to `main` remain unsafe until the Pages
+  Git build settings are corrected or automatic deployments are disabled.
 
 ## Mobile Performance & Cross-Browser Pass (2026-08-04)
 
