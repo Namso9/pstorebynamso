@@ -92,6 +92,13 @@ Functions, URLs, SEO metadata, and production integrations.
   static fallbacks plus live `/data/*` revalidation. FAQ rich text is rendered
   through an allowlist parser; unsafe tags, event handlers, and script URLs are
   not inserted into the page.
+- The FAQ runtime crash caused by rich-text `<br>` elements is fixed locally.
+  The allowlist renderer now creates void elements without a `children`
+  argument, avoiding React error #137. A production-parity browser guard opens
+  all 49 FAQ entries, collapses them, and reopens three on both 390px mobile and
+  1280px desktop with no Next error boundary, runtime/console/network error,
+  hydration marker, or horizontal overflow. This fix is not deployed,
+  committed, or pushed.
 - The payment page preserves KBZPay, WavePay, and AyaPay QR assets,
   instructions, cache exceptions, and product/plan query forwarding. The order
   page preserves the exact 11-field multipart contract, product/plan prefill,

@@ -130,6 +130,7 @@ function renderNode(node: RichNode, key: string): ReactNode {
     props.target = "_blank";
     props.rel = "noopener noreferrer";
   }
+  if (voidTags.has(node.tag)) return createElement(node.tag, props);
   return createElement(
     node.tag,
     props,

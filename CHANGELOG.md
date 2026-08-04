@@ -31,6 +31,9 @@
 
 ### Fixed
 
+- Prevented FAQ answers containing HTML line breaks from crashing the whole
+  Next.js page. The allowlist rich-text renderer now creates void elements
+  such as `<br>` and `<hr>` without an invalid React `children` argument.
 - Aligned Zoom with the new ordered 1/3/6/12-month package contract, prices,
   public plan IDs, exclusive Most Popular/Best Value badges, Telegram deep
   links, and website payment query flow in both catalog copies.

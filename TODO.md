@@ -9,7 +9,7 @@ Real Android Chrome, mid-range Android Motion, and physical iPhone Safari checks
 pass. The owner confirmed that an embedded WebView/app wrapper is not required
 for this SaaS website. The build-time hash CSP and production cutover are now
 complete. Preview deployment `ad0964b4-7aa3-4448-a8e1-37e53adbb2ef` is live on
-`next-preview`. Current Production is `b341d690`; routes, static/data assets,
+`next-preview`. Current Production is `9e26a2a3`; routes, static/data assets,
 hydration, CSP enforcement, browser interactions, and the Zoom contract pass on
 `pstorebynamso.com`.
 
@@ -38,6 +38,28 @@ the Premium Store brand strip in View Plans. Production deployments
 the owner's instruction, and the full worktree — migration, polish passes,
 QA scripts, and reports — is captured in local commit `243d49a`. That commit is
 not pushed.
+
+## FAQ Accordion Runtime Fix (2026-08-04)
+
+- [x] Reproduce the reported Next error page in the local production-parity
+  preview. FAQ answers containing `<br>` trigger React error #137 because the
+  safe rich-text renderer passes an empty `children` argument to a void tag;
+  FAQ data/API requests remain 200 with no network failure.
+- [x] Render allowlisted void tags (`br` and `hr`) without a `children`
+  argument while leaving FAQ state, Motion expansion, routing, live-data
+  loading, and sanitization unchanged.
+- [x] Add `qa/faq-accordion-check.mjs` and verify all 49 FAQ entries across all
+  eight category routes at 390x844 mobile and 1280x900 desktop: single, two,
+  three-plus, all-open, all-collapsed, and three-reopened states pass with no
+  error boundary, runtime/console/network error, hydration marker, or overflow.
+- [x] Run lint, typecheck, production build, CSP, Zoom contract, and existing
+  mobile interaction regression checks. `npm audit` still reports the three
+  documented pre-existing `undici` advisories in the Wrangler/Miniflare
+  development toolchain; no dependency changed in this fix.
+- [ ] Commit, push, or deploy the fix only with explicit owner authorization.
+  Production remains deployment `9e26a2a3`, and pushing `main` remains unsafe
+  until the Cloudflare Pages Git build settings are corrected or auto-deploys
+  are disabled.
 
 ## Mobile Performance & Cross-Browser Pass (2026-08-04)
 
