@@ -248,6 +248,20 @@ Functions, URLs, SEO metadata, and production integrations.
   site, deployed to Production as `a821e236` then `677b1794`; rollback chain
   `a821e236` → `b9c4adfc`. The owner confirmed on-device that everything is
   fine. Committed and pushed to `origin/main` on the owner's instruction.
+- REGRESSION INCIDENT (2026-08-04, later the same day): that `git push`
+  triggered the Cloudflare Pages Git integration, whose build settings do NOT
+  run the Next.js build — it published the legacy repo-root site as
+  production deployment `f2c96254`. The owner's subsequent bug reports
+  ("PREMIUM …" ellipsis brand, blue tap-highlight bar on button press, large
+  highlight behind pressed buttons) were all legacy-site symptoms, not
+  Next.js bugs. Production was restored by re-running the direct-upload
+  deploy of `out/` (`9e26a2a3`); both `pstorebynamso.com` and
+  `pstorebynamso.pages.dev` serve the Next.js export again and the wordmark
+  fits at 360/384/412px. OPEN RISK: every future push to `main` flips
+  production back to the legacy site until the Pages build settings are
+  fixed in the dashboard (build command `npm run build`, output `out`) or
+  automatic deployments are disabled. Do not push before the owner resolves
+  this.
 - Kimi's owner-approved final polish (2026-08-03) added a
   four-token glass system applied selectively to the sticky header, the
   Telegram wallet CTA panel, the order-summary info panel, and modal chrome,

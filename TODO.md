@@ -80,6 +80,13 @@ not pushed.
   Deployed as `a821e236` and `677b1794`; owner confirmed all fixed
   on-device. Committed and pushed to `origin/main` on the owner's
   instruction.
+- [x] Incident: that push triggered the Pages Git auto-build, which published
+  the legacy repo-root site as production `f2c96254`; the owner's follow-up
+  UI reports (ellipsis brand, blue tap highlight) were legacy symptoms.
+  Production restored via direct-upload deploy `9e26a2a3` and re-verified.
+  WARNING: pushing `main` again re-breaks production until the Pages build
+  settings are fixed (build command `npm run build`, output `out`) or Git
+  auto-deploys are disabled — owner dashboard action required.
 
 ## Zoom Package Contract (2026-08-04)
 
