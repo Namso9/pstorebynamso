@@ -4720,11 +4720,27 @@ button {
 
 /* Same guarantee on phones: the results list shrinks first, so the whole
    dialog stays compact and visually centered even with 12 results, and the
-   close button always sits well clear of the browser chrome. */
+   close button always sits well clear of the browser chrome.
+
+   Android Chrome keyboard fix (2026-08-04): the centered dialog used to size
+   to its content, so every keystroke shrank the result list, resized and
+   re-centered the panel, and moved the focused search input — Android Chrome
+   collapses the IME when the focused editable shifts mid-typing, and it
+   popped straight back because focus was kept (iOS overlays the keyboard and
+   never does this). Give the open dialog a constant height and let the
+   results flex/scroll inside it, so typing never moves the input. */
 @media (max-width: 639px) {
+  .search-panel {
+    display: flex;
+    height: 84vh; /* fallback for browsers without dvh */
+    height: 84dvh;
+    flex-direction: column;
+  }
+
   .search-results {
-    max-height: 42vh;
-    max-height: 42dvh;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
   }
 }
 

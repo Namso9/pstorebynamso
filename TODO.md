@@ -60,6 +60,15 @@ not pushed.
   errors). Deployed to Production on the owner's instruction (`711e7d92`);
   rollback point `b341d690`. Pre-existing `undici` audit advisories in the
   wrangler dev toolchain remain; package updates were out of scope.
+- [x] Follow-up owner report: Android Chrome collapsed the on-screen keyboard
+  on every search keystroke. The centered search dialog sized to its content,
+  so each keystroke shrank the results, re-centered the panel, and moved the
+  focused input — Android dismisses the IME when the focused editable shifts
+  mid-typing. The phone dialog now keeps a constant 84dvh height with the
+  results scrolling inside; `qa/kimi-search-typing-check.mjs` verifies the
+  panel and input geometry stay pixel-identical across keystrokes. Deployed
+  as `b9c4adfc`; physical-device keyboard confirmation remains an owner-only
+  check.
 
 ## Zoom Package Contract (2026-08-04)
 

@@ -216,6 +216,17 @@ Functions, URLs, SEO metadata, and production integrations.
   point `b341d690`. The three `npm audit` findings are pre-existing `undici`
   advisories inside the `wrangler` dev-only preview toolchain; package
   updates were out of scope for this pass.
+- Follow-up the same day: the owner reported Android Chrome collapsing the
+  on-screen keyboard on every search keystroke (iOS unaffected). Root cause:
+  the centered phone search dialog sized to its content, so each keystroke
+  shrank the result list, re-centered the panel, and moved the focused
+  input — Android dismisses the IME when the focused editable shifts
+  mid-typing. The phone dialog now keeps a constant 84dvh flex height with
+  the results scrolling inside (`qa/kimi-search-typing-check.mjs` proves the
+  panel/input geometry is pixel-identical across keystrokes). Lint,
+  typecheck, build, and CSP pass; deployed to Production as `b9c4adfc`;
+  rollback chain `711e7d92` → `b341d690`. Physical-device keyboard
+  confirmation is an owner-only check.
 - Kimi's owner-approved final polish (2026-08-03) added a
   four-token glass system applied selectively to the sticky header, the
   Telegram wallet CTA panel, the order-summary info panel, and modal chrome,

@@ -80,6 +80,12 @@
 - Moved the Google Fonts stylesheet from a chained CSS `@import` behind the
   globals bundle to a parallel `<link>` in the root layout head, so mobile
   text paint no longer waits for the full app CSS first.
+- Stopped the Android Chrome on-screen keyboard from collapsing on every
+  search keystroke: the centered search dialog sized to its content, so each
+  keystroke shrank the result list, re-centered the panel, and moved the
+  focused input — Android dismisses the IME when the focused editable shifts
+  mid-typing. The phone dialog now keeps a constant height and the results
+  scroll inside it, so the input's geometry never changes while typing.
 
 ### Security
 
