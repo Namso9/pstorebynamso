@@ -225,8 +225,13 @@ Functions, URLs, SEO metadata, and production integrations.
   the results scrolling inside (`qa/kimi-search-typing-check.mjs` proves the
   panel/input geometry is pixel-identical across keystrokes). Lint,
   typecheck, build, and CSP pass; deployed to Production as `b9c4adfc`;
-  rollback chain `711e7d92` → `b341d690`. Physical-device keyboard
-  confirmation is an owner-only check.
+  rollback chain `711e7d92` → `b341d690`. Confirmed on the owner's physical
+  Samsung SM-S948B (Android 16) over adb: in production Chrome 150 the soft
+  keyboard stayed open through a full "netflix" search and the plan-dialog
+  backdrop computed `blur(10px)` with a visibly blurred page behind it, and
+  Samsung Internet 30 passed the same search-typing and plan-dialog checks
+  (`qa/kimi-device-check.mjs`, `qa/kimi-device-plan-check.mjs`,
+  `qa/shots/device-check/`).
 - Kimi's owner-approved final polish (2026-08-03) added a
   four-token glass system applied selectively to the sticky header, the
   Telegram wallet CTA panel, the order-summary info panel, and modal chrome,

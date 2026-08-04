@@ -67,8 +67,10 @@ not pushed.
   mid-typing. The phone dialog now keeps a constant 84dvh height with the
   results scrolling inside; `qa/kimi-search-typing-check.mjs` verifies the
   panel and input geometry stay pixel-identical across keystrokes. Deployed
-  as `b9c4adfc`; physical-device keyboard confirmation remains an owner-only
-  check.
+  as `b9c4adfc`. Verified on the owner's physical Samsung SM-S948B
+  (Android 16): production Chrome 150 kept the soft keyboard open through a
+  full search and rendered the plan-dialog backdrop blur, and Samsung
+  Internet 30 passed the same flows (`qa/shots/device-check/`).
 
 ## Zoom Package Contract (2026-08-04)
 
