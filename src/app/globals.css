@@ -4741,6 +4741,11 @@ button {
     flex: 1 1 auto;
     min-height: 0;
     max-height: none;
+    /* The flexed grid container fills the constant-height panel; without an
+       explicit align-content the grid's stretch default would blow a single
+       result row up to the full area (one giant vertically-centred card).
+       Keep rows at natural height, pinned to the top. */
+    align-content: start;
   }
 }
 

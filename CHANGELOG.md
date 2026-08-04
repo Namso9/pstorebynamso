@@ -94,6 +94,10 @@
   effect now reads the latest handler through a ref and is bound to the open
   state only, so the input is never blurred, remounted, or refocused while
   typing and the cursor stays put.
+- Kept a lone search result at natural height on phones: the constant-height
+  results area is a grid whose stretch default blew a single row up to fill
+  the whole panel (one giant vertically-centred card). `align-content: start`
+  pins rows to the top at their real height.
 
 ### Security
 
