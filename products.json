@@ -792,9 +792,8 @@
         {
           "name": "1 Year",
           "desc": "Pro Plan (Official Price 200$)",
-          "price": "320,000 Ks",
           "id": "1_year",
-          "bot": true
+          "contact": true
         }
       ]
     },
