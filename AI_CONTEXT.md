@@ -39,6 +39,20 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- **Already-open tab revalidation follow-up is DEPLOYED (2026-08-07,
+  `6186a36`).** The panel successfully published both Stealth Writer plans as
+  canonical `contact:true` in commits `b887c3d` and `9edb150`; the remaining
+  mismatch was a storefront client that fetched catalog and live content only
+  once after hydration. Visible tabs now revalidate catalog, FAQ, reviews, and
+  guide data every five seconds and immediately on focus/visibility return,
+  while background tabs do not poll. Production deployment
+  `d1f676f1-f293-4a45-ac26-c7389154e39a` serves runtime commit `6186a36`.
+  Both Stealth plans pass plan/direct/payment/order Ask Price checks on the
+  custom domain, including focus-triggered catalog revalidation. The full
+  49-item/98-open FAQ matrix also passes on mobile and desktop with
+  focus-triggered FAQ revalidation and zero runtime, console, network,
+  hydration, or overflow failures; maintained mobile/CSP checks pass. Rollback
+  deployment: `c7bf779e-2182-4aac-a771-d00e15f57f8c`.
 - **Ask Price + live content reliability fix is DEPLOYED (2026-08-07,
   `78066e9`).** The storefront now treats both canonical `contact:true` and
   the panel's legacy `"0 Ks"` sentinel as Ask Price in plan, direct category,

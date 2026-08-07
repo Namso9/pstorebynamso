@@ -9,7 +9,7 @@ Real Android Chrome, mid-range Android Motion, and physical iPhone Safari checks
 pass. The owner confirmed that an embedded WebView/app wrapper is not required
 for this SaaS website. The build-time hash CSP and production cutover are now
 complete. Preview deployment `ad0964b4-7aa3-4448-a8e1-37e53adbb2ef` is live on
-`next-preview`. Current Production is `c7bf779e`; routes, static/data assets,
+`next-preview`. Current Production is `d1f676f1`; routes, static/data assets,
 hydration, CSP enforcement, browser interactions, and the Zoom contract pass on
 `pstorebynamso.com`.
 
@@ -36,6 +36,21 @@ recorded pre-cutover Pages deployment remains the rollback point.
   direct category, payment, and order links are contact-only; both JSON sources
   return `no-store`, and the full FAQ/mobile browser suites pass. No synthetic
   admin edit was made because that would mutate the real public catalog/content.
+- [x] Trace the reported Stealth Writer follow-up through panel-generated
+  commits `b887c3d` and `9edb150` and the live `github-live` response. Both
+  plans were already canonical `contact:true`; the remaining stale display was
+  isolated to already-open storefront tabs that never fetched again.
+- [x] Revalidate catalog, FAQ, reviews, and guide content immediately when a
+  visible tab regains focus/visibility and every five seconds while it stays
+  visible, with no background-tab interval requests.
+- [x] Add focus-revalidation guards to the parameterized Ask Price browser test
+  and the full FAQ matrix. Local and production tests prove an additional
+  `products.json`/`data/faq.json` request after focus.
+- [x] Push runtime commit `6186a36` and direct-upload the verified export as
+  Production `d1f676f1-f293-4a45-ac26-c7389154e39a`. On the custom domain,
+  both Stealth plans pass plan/direct/payment/order Ask Price flows, the
+  49-item/98-open FAQ matrix has zero errors, and maintained mobile/CSP checks
+  pass. Rollback is `c7bf779e-2182-4aac-a771-d00e15f57f8c`.
 
 A local overnight visual-polish pass ran on 2026-08-03 (see the section below
 and `qa/overnight/2026-08-03/REPORT.md`). Its fixes remain uncommitted but are

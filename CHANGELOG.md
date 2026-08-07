@@ -31,6 +31,9 @@
 
 ### Fixed
 
+- Refresh catalog, FAQ, reviews, and guide data in already-open visible tabs
+  every five seconds and immediately when the tab regains focus or visibility,
+  so panel edits appear without a manual page reload.
 - Treat admin price `0` as Ask Price across plan, direct category, payment, and
   order URLs so a legacy `"0 Ks"` publication cannot open a free checkout.
 - Refresh GitHub-backed catalog, FAQ, reviews, and guide data through a
