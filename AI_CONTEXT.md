@@ -273,6 +273,18 @@ Functions, URLs, SEO metadata, and production integrations.
   prefix (recorded as idle deployment `8c647e33`) and then direct-uploaded the
   verified export as `c7f279ed`; future pushes require the same guarded pattern
   until the project setting is corrected.
+- RISK CLOSED (2026-08-07): the regression recurred during 2026-08-05..07 —
+  the admin panel commits to `main` on every FAQ edit and stock sync, and
+  seven `panel: faq edit` pushes each republished the legacy root site over
+  the Next.js production (owner-visible symptom: no brand letterhead or
+  product icon in the View Plans dialog). Two fixes, both live: (1) the panel
+  (pstore-adminpanel `ac3e02a`) now prefixes every GitHub commit it makes
+  with `[CF-Pages-Skip]`, so panel activity can never trigger the Pages
+  build; (2) the owner corrected the Pages build configuration in the
+  dashboard (framework preset None, build command `npm run build`, output
+  `out`, root directory blank), so an ordinary git build now publishes the
+  Next.js export instead of the legacy root. This commit is itself the first
+  push under the corrected settings and doubles as its verification.
 - Kimi's owner-approved final polish (2026-08-03) added a
   four-token glass system applied selectively to the sticky header, the
   Telegram wallet CTA panel, the order-summary info panel, and modal chrome,
