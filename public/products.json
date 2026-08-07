@@ -710,7 +710,7 @@
         {
           "name": "1 Year 5000 credits",
           "desc": "AI Agent",
-          "price": "390,000 Ks",
+          "price": "0 Ks",
           "id": "1_year_5000_credits",
           "bot": true
         }

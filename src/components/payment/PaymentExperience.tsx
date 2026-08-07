@@ -5,7 +5,10 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { orderQuery } from "@/services/order";
+import { useCatalog } from "@/hooks/useCatalog";
+import { isAskPricePlan } from "@/services/catalog";
+import { orderQuery, resolveCatalogSelection } from "@/services/order";
+import type { CatalogData } from "@/types/catalog";
 import { BackButton } from "@/components/layout/BackButton";
 
 type PlatformId = "kpay" | "wave" | "aya";
@@ -55,11 +58,15 @@ const platforms: Record<
   },
 };
 
-export function PaymentExperience() {
+export function PaymentExperience({ initialCatalog }: { initialCatalog: CatalogData }) {
   const searchParams = useSearchParams();
+  const { catalog = initialCatalog } = useCatalog(initialCatalog);
   const [selected, setSelected] = useState<PlatformId | "">("");
   const panelRef = useRef<HTMLDivElement>(null);
-  const query = orderQuery(searchParams.get("product"), searchParams.get("plan"));
+  const productId = searchParams.get("product");
+  const planId = searchParams.get("plan");
+  const query = orderQuery(productId, planId);
+  const selection = resolveCatalogSelection(catalog, productId, planId);
   const platform = selected ? platforms[selected] : null;
 
   const choosePlatform = (next: PlatformId) => {
@@ -73,6 +80,33 @@ export function PaymentExperience() {
       });
     });
   };
+
+  if (selection?.plan && isAskPricePlan(selection.plan)) {
+    return (
+      <div className="payment-card-next checkout-unavailable" role="status">
+        <p>ဒီ plan အတွက် ငွေမလွှဲခင် လက်ရှိစျေးနှုန်းနဲ့ order availability ကို Admin ကို အရင်မေးပေးပါ။</p>
+        <div className="plan-contact-row">
+          <a
+            className="button button--primary button--md"
+            href={catalog.settings.telegramChannel || "https://t.me/Premiumstorezz"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ask on Telegram
+          </a>
+          <a
+            className="button button--secondary button--md"
+            href={catalog.settings.facebookPage || "https://www.messenger.com/t/happyyou2020"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Facebook
+          </a>
+        </div>
+        <BackButton embedded />
+      </div>
+    );
+  }
 
   return (
     <div className="payment-card-next">

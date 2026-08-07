@@ -17,6 +17,24 @@ The App Router scaffold and static export are verified and the approved Next.js
 build is now Production. The legacy source remains in the repository and the
 recorded pre-cutover Pages deployment remains the rollback point.
 
+## Ask Price and Live Content Reliability (2026-08-07)
+
+- [x] Reproduce the cross-surface mismatch: the bot interprets price `0` as Ask
+  Price while the current website receives the legacy `"0 Ks"` publication.
+- [x] Treat canonical `contact:true` and legacy numeric-zero price strings as
+  contact-only in plan, direct category, payment, and order flows.
+- [x] Remove browser caching from live JSON responses, reduce the Pages
+  subrequest window to five seconds with a rolling raw-GitHub URL, validate the
+  payload, and retain a static fallback.
+- [x] Synchronize root `products.json` and all three root `data/*.json` files
+  into their `public/` build fallbacks before every build.
+- [x] Verify lint, typecheck, build, CSP, Zoom, proxy unit checks, Ask Price
+  browser routes, the complete 49-item FAQ browser matrix, maintained mobile
+  interactions, and `npm audit` (0 vulnerabilities) with Wrangler 4.120.0.
+- [ ] With explicit owner authorization, commit/push the local tree and deploy
+  the verified export to Production; then confirm Manus and one newly edited
+  FAQ item on `pstorebynamso.com` after the five-second refresh window.
+
 A local overnight visual-polish pass ran on 2026-08-03 (see the section below
 and `qa/overnight/2026-08-03/REPORT.md`). Its fixes remain uncommitted but are
 included in the current `next-preview` deployment.

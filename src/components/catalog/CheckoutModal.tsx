@@ -6,6 +6,7 @@ import { ErrorState, LoadingState } from "@/components/common/StatusState";
 import { Modal } from "@/components/common/Modal";
 import {
   fetchCatalog,
+  isAskPricePlan,
   paymentHref,
   telegramCheckoutHref,
 } from "@/services/catalog";
@@ -108,6 +109,32 @@ function CheckoutOptions({
         >
           ပိတ်မည်
         </button>
+      </div>
+    );
+  }
+
+  if (isAskPricePlan(plan)) {
+    return (
+      <div className="checkout-unavailable" role="status">
+        <p>ဒီ plan ရဲ့ လက်ရှိစျေးနှုန်းနဲ့ order availability ကို Admin ကို အရင်မေးပေးပါ။</p>
+        <div className="plan-contact-row">
+          <a
+            className="button button--primary button--md"
+            href={catalog.settings.telegramChannel || "https://t.me/Premiumstorezz"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ask on Telegram
+          </a>
+          <a
+            className="button button--secondary button--md"
+            href={catalog.settings.facebookPage || "https://www.messenger.com/t/happyyou2020"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Facebook
+          </a>
+        </div>
       </div>
     );
   }

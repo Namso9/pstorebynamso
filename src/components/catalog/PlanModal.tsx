@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import { Modal } from "@/components/common/Modal";
-import { publicAssetPath } from "@/services/catalog";
+import { isAskPricePlan, publicAssetPath } from "@/services/catalog";
 import type {
   CatalogPlan,
   CatalogProduct,
@@ -133,7 +133,7 @@ function PlanRow({
     );
   }
 
-  if (plan.contact) {
+  if (isAskPricePlan(plan)) {
     return (
       <div className="plan-row plan-row--contact">
         <PlanDetails plan={plan} />

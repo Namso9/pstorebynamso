@@ -39,6 +39,19 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- **Ask Price + live content reliability fix is LOCAL and NOT DEPLOYED
+  (2026-08-07).** The storefront now treats both canonical `contact:true` and
+  the panel's legacy `"0 Ks"` sentinel as Ask Price in plan, direct category,
+  payment, and order URLs, so no zero-price checkout can be opened. Pages
+  Functions now revalidate the GitHub-backed catalog/FAQ/reviews/guide on a
+  five-second rolling key and return `no-store`; invalid or oversized upstream
+  JSON falls back to the build snapshot. `scripts/sync-live-data.mjs` keeps all
+  four `public/` fallbacks byte-equal to the panel-written root files before
+  every build. The current FAQ and Manus fallback snapshots are synchronized.
+  Local Wrangler 4.120.0 browser checks, the full 49-item FAQ matrix, maintained
+  mobile interaction checks, lint, typecheck, build, CSP, Zoom, proxy tests,
+  audit (0 vulnerabilities), and diff checks pass. Production still runs the
+  earlier source; commit/push and production deployment require owner approval.
 - Planning and repository inspection are complete.
 - P1 Next.js foundation is complete and verified.
 - P2 shared mobile-first UI is complete and verified.

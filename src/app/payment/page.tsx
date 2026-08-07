@@ -28,7 +28,7 @@ export default function PaymentPage() {
       </header>
       <Suspense fallback={null}>
         <OrderSummary initialCatalog={staticCatalog} location="payment" />
-        <PaymentExperience />
+        <PaymentExperience initialCatalog={staticCatalog} />
       </Suspense>
     </div>
   );

@@ -120,6 +120,18 @@ export async function fetchCatalog(signal?: AbortSignal): Promise<CatalogData> {
   return parseCatalogData(await response.json());
 }
 
+export function isAskPricePlan(plan: CatalogPlan) {
+  if (plan.contact === true) return true;
+  if (typeof plan.price !== "string") return false;
+
+  // SQLite price=0 is the bot/admin contract for "Ask Price". Older panel
+  // publications exposed that sentinel as the literal string "0 Ks" instead
+  // of Gamma's contact:true shape, so the storefront accepts both forms while
+  // the panel-side writer migrates future edits to the canonical shape.
+  const numeric = plan.price.replace(/,/g, "").match(/-?\d+(?:\.\d+)?/)?.[0];
+  return numeric !== undefined && Number(numeric) === 0;
+}
+
 // Versioned asset URLs: the hosting cache headers mark /images/* as
 // immutable, so content updates to an existing file need a new URL to show
 // up. Bump this when image files change; unchanged images stay cached and

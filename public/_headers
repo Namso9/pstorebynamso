@@ -26,7 +26,7 @@
   Cache-Control: public, max-age=0, must-revalidate
 
 /products.json
-  Cache-Control: public, max-age=300, must-revalidate
+  Cache-Control: no-store, max-age=0
 
 # Next 16's static export can reuse chunk filenames across rebuilds. Require
 # browser revalidation so a new preview/deployment cannot strand returning

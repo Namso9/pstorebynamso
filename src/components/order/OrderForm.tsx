@@ -18,6 +18,7 @@ import {
   resolveProductIdFromText,
   selectionLabel,
 } from "@/services/order";
+import { isAskPricePlan } from "@/services/catalog";
 import type { CatalogData } from "@/types/catalog";
 import { Icon } from "@/components/common/Icon";
 
@@ -157,6 +158,33 @@ function OrderFormState({ initialCatalog, productId, planId }: OrderFormStatePro
   const showMailField = mailRequired || geminiNeedsCredentials;
   const showPasswordField = geminiNeedsCredentials;
   const showOutOfStock = prefillActive && activePrefill?.plan?.stock === false;
+
+  if (activePrefill?.plan && isAskPricePlan(activePrefill.plan)) {
+    return (
+      <section className="order-form-card-next checkout-unavailable" role="status">
+        <h1 id="order-form-title"><Icon name="file" />Order မတင်ခင် မေးပေးပါ</h1>
+        <p>ဒီ plan အတွက် ငွေမလွှဲခင် လက်ရှိစျေးနှုန်းနဲ့ order availability ကို Admin ကို အရင်မေးပေးပါ။</p>
+        <div className="plan-contact-row">
+          <a
+            className="button button--primary button--md"
+            href={catalog.settings.telegramChannel || "https://t.me/Premiumstorezz"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ask on Telegram
+          </a>
+          <a
+            className="button button--secondary button--md"
+            href={catalog.settings.facebookPage || "https://www.messenger.com/t/happyyou2020"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Facebook
+          </a>
+        </div>
+      </section>
+    );
+  }
 
   const updateProduct = (value: string) => {
     setProductText(value);

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 import { useCatalog } from "@/hooks/useCatalog";
+import { isAskPricePlan } from "@/services/catalog";
 import { orderQuery, resolveCatalogSelection } from "@/services/order";
 import type { CatalogData } from "@/types/catalog";
 
@@ -31,7 +32,11 @@ export function OrderSummary({ initialCatalog, location }: OrderSummaryProps) {
         <strong>{product.name}</strong>
         {plan ? ` — ${plan.name}${plan.desc ? ` (${plan.desc})` : ""}` : ""}
       </p>
-      {plan?.price ? <p className="order-summary-next__price">{plan.price}</p> : null}
+      {plan && (isAskPricePlan(plan) || plan.price) ? (
+        <p className="order-summary-next__price">
+          {isAskPricePlan(plan) ? "Ask Price" : plan.price}
+        </p>
+      ) : null}
       {plan?.stock === false ? (
         <p className="order-stock-warning" role="alert">
           သတိပြုရန် — ဒီ plan က လောလောဆယ် stock မရှိပါ။
