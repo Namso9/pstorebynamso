@@ -31,6 +31,11 @@
 
 ### Fixed
 
+- Treat admin price `0` as Ask Price across plan, direct category, payment, and
+  order URLs so a legacy `"0 Ks"` publication cannot open a free checkout.
+- Refresh GitHub-backed catalog, FAQ, reviews, and guide data through a
+  five-second rolling cache key with browser `no-store`, while synchronizing and
+  validating the build fallbacks for upstream failure.
 - Prevented FAQ answers containing HTML line breaks from crashing the whole
   Next.js page. The allowlist rich-text renderer now creates void elements
   such as `<br>` and `<hr>` without an invalid React `children` argument.

@@ -9,7 +9,7 @@ Real Android Chrome, mid-range Android Motion, and physical iPhone Safari checks
 pass. The owner confirmed that an embedded WebView/app wrapper is not required
 for this SaaS website. The build-time hash CSP and production cutover are now
 complete. Preview deployment `ad0964b4-7aa3-4448-a8e1-37e53adbb2ef` is live on
-`next-preview`. Current Production is `c7f279ed`; routes, static/data assets,
+`next-preview`. Current Production is `c7bf779e`; routes, static/data assets,
 hydration, CSP enforcement, browser interactions, and the Zoom contract pass on
 `pstorebynamso.com`.
 
@@ -31,9 +31,11 @@ recorded pre-cutover Pages deployment remains the rollback point.
 - [x] Verify lint, typecheck, build, CSP, Zoom, proxy unit checks, Ask Price
   browser routes, the complete 49-item FAQ browser matrix, maintained mobile
   interactions, and `npm audit` (0 vulnerabilities) with Wrangler 4.120.0.
-- [ ] With explicit owner authorization, commit/push the local tree and deploy
-  the verified export to Production; then confirm Manus and one newly edited
-  FAQ item on `pstorebynamso.com` after the five-second refresh window.
+- [x] With explicit owner authorization, push commit `78066e9` and direct-upload
+  the verified export/Functions as Production `c7bf779e`. Live Manus plan,
+  direct category, payment, and order links are contact-only; both JSON sources
+  return `no-store`, and the full FAQ/mobile browser suites pass. No synthetic
+  admin edit was made because that would mutate the real public catalog/content.
 
 A local overnight visual-polish pass ran on 2026-08-03 (see the section below
 and `qa/overnight/2026-08-03/REPORT.md`). Its fixes remain uncommitted but are
