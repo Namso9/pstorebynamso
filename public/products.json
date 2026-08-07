@@ -762,16 +762,14 @@
         {
           "name": "1 Month",
           "desc": "Starter Plan (Official Price 20$)",
-          "price": "60,000 Ks",
           "id": "1_month",
-          "bot": true
+          "contact": true
         },
         {
           "name": "1 Month",
           "desc": "Plus Plan (Official Price 50$)",
-          "price": "100,000 Ks",
           "id": "1_month_2",
-          "bot": true
+          "contact": true
         }
       ]
     },

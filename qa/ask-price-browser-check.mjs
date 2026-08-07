@@ -6,6 +6,10 @@ import path from "node:path";
 
 const chromeBinary = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const origin = process.argv[2] || "http://127.0.0.1:8791";
+const productId = process.argv[3] || "manus";
+const planId = process.argv[4] || "1_year_5000_credits";
+const expectedTitle = process.argv[5] || "Manus";
+const categorySlug = process.argv[6] || "ai-apps";
 const profile = await mkdtemp(path.join(tmpdir(), "pstore-ask-price-"));
 const port = 9950 + Math.floor(Math.random() * 30);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -69,6 +73,16 @@ class Cdp {
     });
   }
 
+  on(method, listener) {
+    this.listeners.set(method, [...(this.listeners.get(method) || []), listener]);
+    return () => {
+      this.listeners.set(
+        method,
+        (this.listeners.get(method) || []).filter((item) => item !== listener),
+      );
+    };
+  }
+
   close() {
     this.socket.close();
   }
@@ -122,6 +136,11 @@ try {
   await cdp.open();
   await cdp.call("Page.enable");
   await cdp.call("Runtime.enable");
+  await cdp.call("Network.enable");
+  let productRequestCount = 0;
+  const stopCountingRequests = cdp.on("Network.requestWillBeSent", ({ request }) => {
+    if (new URL(request.url).pathname === "/products.json") productRequestCount += 1;
+  });
   await cdp.call("Emulation.setDeviceMetricsOverride", {
     width: 390,
     height: 844,
@@ -129,7 +148,7 @@ try {
     mobile: true,
   });
 
-  await navigate(cdp, `${origin}/ai-apps/#app-manus`);
+  await navigate(cdp, `${origin}/${categorySlug}/#app-${productId}`);
   await waitForText(
     cdp,
     `document.querySelector('[role="dialog"]')?.textContent || ''`,
@@ -146,14 +165,26 @@ try {
       };
     })()`,
   );
-  assert.match(planModal.title, /Manus/i);
+  assert.match(planModal.title, new RegExp(expectedTitle, "i"));
   assert.match(planModal.text, /Ask on Telegram/);
   assert.doesNotMatch(planModal.text, /0\s*Ks/i);
   assert.equal(planModal.overflow, false);
 
+  const requestCountBeforeFocus = productRequestCount;
+  await sleep(1100);
+  await evaluate(cdp, `window.dispatchEvent(new Event("focus")); true`);
+  for (let attempt = 0; attempt < 50; attempt += 1) {
+    if (productRequestCount > requestCountBeforeFocus) break;
+    await sleep(100);
+  }
+  assert.ok(
+    productRequestCount > requestCountBeforeFocus,
+    "Returning to an open storefront tab must revalidate products.json",
+  );
+
   await navigate(
     cdp,
-    `${origin}/ai-apps/?product=manus&plan=1_year_5000_credits`,
+    `${origin}/${categorySlug}/?product=${productId}&plan=${planId}`,
   );
   await waitForText(
     cdp,
@@ -173,7 +204,7 @@ try {
 
   await navigate(
     cdp,
-    `${origin}/payment/?product=manus&plan=1_year_5000_credits`,
+    `${origin}/payment/?product=${productId}&plan=${planId}`,
   );
   await waitForText(cdp, `document.body.textContent || ''`, "Ask on Telegram");
   const paymentPage = await evaluate(cdp, `document.body.textContent || ''`);
@@ -182,15 +213,19 @@ try {
 
   await navigate(
     cdp,
-    `${origin}/order/?product=manus&plan=1_year_5000_credits`,
+    `${origin}/order/?product=${productId}&plan=${planId}`,
   );
   await waitForText(cdp, `document.body.textContent || ''`, "Ask on Telegram");
   const orderPage = await evaluate(cdp, `document.body.textContent || ''`);
   assert.match(orderPage, /Ask on Telegram/);
   assert.doesNotMatch(orderPage, /Screenshot ရွေးရန် နှိပ်ပါ/);
 
+  stopCountingRequests();
   cdp.close();
-  console.log("Ask Price browser checks passed (plan, direct, payment, and order links).");
+  console.log(
+    `Ask Price browser checks passed for ${productId}:${planId} ` +
+      "(plan, direct, payment, and order links).",
+  );
 } finally {
   const exited = new Promise((resolve) => chrome.once("exit", resolve));
   chrome.kill("SIGTERM");

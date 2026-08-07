@@ -5,6 +5,8 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchCatalog } from "@/services/catalog";
 import type { CatalogData } from "@/types/catalog";
 
+import { useLiveRevalidation } from "./useLiveRevalidation";
+
 type CatalogStatus = "idle" | "loading" | "ready" | "refreshing" | "error";
 
 export function useCatalog(
@@ -17,6 +19,11 @@ export function useCatalog(
   );
   const [error, setError] = useState<string | null>(null);
   const [requestVersion, setRequestVersion] = useState(0);
+  const requestRefresh = useCallback(() => {
+    setRequestVersion((version) => version + 1);
+  }, []);
+
+  useLiveRevalidation(requestRefresh, enabled);
 
   useEffect(() => {
     if (!enabled) return;
@@ -49,8 +56,8 @@ export function useCatalog(
 
   const refresh = useCallback(() => {
     setStatus(catalog ? "refreshing" : "loading");
-    setRequestVersion((version) => version + 1);
-  }, [catalog]);
+    requestRefresh();
+  }, [catalog, requestRefresh]);
 
   return { catalog, status, error, refresh };
 }

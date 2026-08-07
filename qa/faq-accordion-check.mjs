@@ -25,6 +25,14 @@ const viewports = [
 const sleep = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
 
+async function waitFor(predicate, message, attempts = 50) {
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    if (predicate()) return;
+    await sleep(100);
+  }
+  throw new Error(message);
+}
+
 async function waitForJson(url, attempts = 80) {
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     try {
@@ -162,6 +170,7 @@ const chrome = spawn(
 const report = {
   origin,
   results: [],
+  faqFocusRevalidation: null,
   runtimeExceptions: [],
   consoleErrors: [],
   failedRequests: [],
@@ -182,6 +191,8 @@ try {
   await connection.call("Log.enable");
   await connection.call("Network.enable");
 
+  let faqRequestCount = 0;
+
   connection.on("Runtime.exceptionThrown", ({ exceptionDetails }) => {
     report.runtimeExceptions.push(describeException(exceptionDetails));
   });
@@ -197,6 +208,11 @@ try {
   connection.on("Network.loadingFailed", (event) => {
     if (!event.canceled) {
       report.failedRequests.push(`${event.errorText}: ${event.requestId}`);
+    }
+  });
+  connection.on("Network.requestWillBeSent", ({ request }) => {
+    if (new URL(request.url).pathname === "/data/faq.json") {
+      faqRequestCount += 1;
     }
   });
   connection.on("Network.responseReceived", ({ response }) => {
@@ -221,6 +237,23 @@ try {
 
     for (const route of routes) {
       await navigate(connection, `${origin}/${route}/`);
+      if (report.faqFocusRevalidation === null) {
+        await waitFor(
+          () => faqRequestCount > 0,
+          "The storefront did not request /data/faq.json after hydration",
+        );
+        await sleep(600);
+        const beforeFocus = faqRequestCount;
+        await evaluate(connection, 'window.dispatchEvent(new Event("focus"))');
+        await waitFor(
+          () => faqRequestCount > beforeFocus,
+          "Returning to an open storefront tab must revalidate /data/faq.json",
+        );
+        report.faqFocusRevalidation = {
+          beforeFocus,
+          afterFocus: faqRequestCount,
+        };
+      }
       const result = await evaluate(
         connection,
         `(async () => {
@@ -292,6 +325,7 @@ try {
 const summary = {
   origin,
   scenarios: report.results.length,
+  faqFocusRevalidation: report.faqFocusRevalidation,
   faqItemsPerViewport:
     report.results
       .filter((result) => result.viewport === viewports[0].name)
@@ -325,6 +359,9 @@ const summary = {
 console.log(JSON.stringify(verbose ? report : summary, null, 2));
 
 const failed =
+  report.faqFocusRevalidation === null ||
+  report.faqFocusRevalidation.afterFocus <=
+    report.faqFocusRevalidation.beforeFocus ||
   report.results.some(
     (result) =>
       result.itemCount < 3 ||

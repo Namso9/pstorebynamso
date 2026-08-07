@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { useLiveRevalidation } from "./useLiveRevalidation";
+
 type ContentStatus = "refreshing" | "ready" | "error";
 
 export function useLiveContent<T>(
@@ -12,6 +14,11 @@ export function useLiveContent<T>(
   const [status, setStatus] = useState<ContentStatus>("refreshing");
   const [error, setError] = useState<string | null>(null);
   const [requestVersion, setRequestVersion] = useState(0);
+  const requestRefresh = useCallback(() => {
+    setRequestVersion((version) => version + 1);
+  }, []);
+
+  useLiveRevalidation(requestRefresh);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -35,8 +42,8 @@ export function useLiveContent<T>(
 
   const refresh = useCallback(() => {
     setStatus("refreshing");
-    setRequestVersion((version) => version + 1);
-  }, []);
+    requestRefresh();
+  }, [requestRefresh]);
 
   return { value, status, error, refresh };
 }
