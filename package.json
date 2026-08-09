@@ -12,6 +12,7 @@
     "csp:check": "node scripts/generate-static-csp.mjs --check",
     "zoom:check": "node scripts/check-zoom-contract.mjs",
     "live-data:check": "node qa/live-data-proxy-check.mjs",
+    "content-source:check": "node scripts/sync-live-data.mjs --faq-review-only && node qa/content-source-check.mjs",
     "review-flow:check": "node qa/review-flow-check.mjs",
     "ask-price:check": "node qa/ask-price-browser-check.mjs",
     "lint": "eslint .",

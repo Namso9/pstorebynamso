@@ -10,3 +10,12 @@ out/
 .dev.vars*
 !.env.example
 !.dev.vars.example
+
+# Build-generated live-content fallbacks. Canonical sources are data/*.json and
+# root images/reviewN.*; prebuild recreates these mirrors for ASSETS fallback.
+public/data/faq.json
+public/data/reviews.json
+public/images/review[0-9]*.webp
+public/images/review[0-9]*.jpg
+public/images/review[0-9]*.jpeg
+public/images/review[0-9]*.png

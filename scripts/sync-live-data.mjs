@@ -3,12 +3,16 @@ import { copyFile, readFile, readdir, unlink, writeFile } from "node:fs/promises
 import path from "node:path";
 
 const projectRoot = process.cwd();
-const liveFiles = [
+const allLiveFiles = [
   "products.json",
   "data/faq.json",
   "data/reviews.json",
   "data/express-guide.json",
 ];
+const faqReviewOnly = process.argv.includes("--faq-review-only");
+const liveFiles = faqReviewOnly
+  ? ["data/faq.json", "data/reviews.json"]
+  : allLiveFiles;
 
 for (const relativePath of liveFiles) {
   const sourcePath = path.join(projectRoot, relativePath);

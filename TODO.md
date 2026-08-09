@@ -45,6 +45,22 @@ recorded pre-cutover Pages deployment remains the rollback point.
   Do not use a synthetic customer review in production merely to close this
   checkbox.
 
+## Canonical FAQ Source (2026-08-09)
+
+- [x] Confirm `data/faq.json` is the Admin writer and live website source, while
+  the tracked `public/data/faq.json` mismatch is a stale build-fallback symptom.
+- [x] Remove FAQ/review generated mirrors from Git tracking, ignore them, and
+  regenerate exact JSON/image mirrors during every prebuild.
+- [x] Make successful FAQ and review-list Admin commits trigger Pages rebuilds;
+  keep immediate GitHub-live, rolling-key, no-store runtime delivery.
+- [x] Verify Admin FAQ create/edit/delete, exact `q`/`a_html`, ambiguous GitHub
+  confirmation, definite-failure behavior, and draft preservation.
+- [x] Verify the sale bot has no separate FAQ data/cache and links to the
+  storefront canonical consumer.
+- [x] Complete combined Review + FAQ regression gates, including the 49-item /
+  98-open browser FAQ matrix and mirror tracking checks.
+- [ ] Complete the authorized production rollout and read-only verification.
+
 ## Ask Price and Live Content Reliability (2026-08-07)
 
 - [x] Reproduce the cross-surface mismatch: the bot interprets price `0` as Ask
