@@ -1,10 +1,9 @@
 /**
- * Cloudflare Pages Function: GET /img/<name> — panel-uploaded images.
+ * Cloudflare Pages Function: GET /img/<name> — legacy panel-uploaded images.
  *
- * Panel က review photo အသစ်တွေကို repo ရဲ့ images/uploads/ ထဲ GitHub API နဲ့
- * commit လုပ်တယ် — static build ထဲမပါသေးလည်း ဒီ function က GitHub raw ကနေ
- * တိုက်ရိုက် serve လုပ်လို့ deploy မလိုဘဲ ချက်ချင်းပေါ်တယ်။
- * (data/reviews.json ထဲက "img/<name>" entries တွေက ဒီကို ညွှန်တယ်)
+ * Older Admin Panel versions committed timestamp-named review photos to
+ * images/uploads/. New uploads use canonical /images/reviewN.<ext>; keep this
+ * route so any historical "img/<name>" JSON entry remains readable.
  *
  * Whitelist regex — image filename ပုံစံပဲခွင့်ပြု (path traversal မဖြစ်ရ)။
  */
