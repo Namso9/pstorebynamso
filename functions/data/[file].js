@@ -8,11 +8,11 @@
  */
 
 const ALLOWED = new Set(['faq.json', 'reviews.json', 'express-guide.json']);
-const RAW_BASE =
-  'https://github.com/Namso9/pstorebynamso/raw/refs/heads/main/data/';
+const GITHUB_REPO = 'Namso9/pstorebynamso';
+const GITHUB_BRANCH = 'main';
 
 import {
-  fetchLiveJson,
+  fetchGitHubLiveJson,
   freshFallbackResponse,
   freshJsonHeaders,
 } from '../_shared/live-json.js';
@@ -21,7 +21,11 @@ export async function onRequestGet({ params, request, env }) {
   const file = String(params.file || '');
   if (!ALLOWED.has(file)) return new Response('not found', { status: 404 });
   try {
-    const body = await fetchLiveJson(RAW_BASE + file);
+    const body = await fetchGitHubLiveJson(
+      GITHUB_REPO,
+      GITHUB_BRANCH,
+      `data/${file}`,
+    );
     return new Response(body, {
       headers: freshJsonHeaders('X-Data-Source', 'github-live'),
     });

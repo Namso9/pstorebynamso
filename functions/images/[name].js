@@ -7,8 +7,8 @@
  * fallback, and unrelated /images/* requests pass straight to ASSETS.
  */
 
-const RAW_BASE =
-  'https://github.com/Namso9/pstorebynamso/raw/refs/heads/main/images/';
+const GITHUB_REPO = 'Namso9/pstorebynamso';
+const GITHUB_BRANCH = 'main';
 const REVIEW_NAME_RE = /^review\d+\.(webp|jpg|jpeg|png)$/i;
 const TYPES = {
   webp: 'image/webp',
@@ -17,52 +17,47 @@ const TYPES = {
   png: 'image/png',
 };
 
+import {
+  fetchGitHubBranchHead,
+  immutableGitHubRawUrl,
+  IMMUTABLE_GITHUB_TTL_SECONDS,
+} from '../_shared/live-json.js';
+
+function imageResponse(body, ext, source) {
+  return new Response(body, {
+    headers: {
+      'Content-Type': TYPES[ext] || 'application/octet-stream',
+      'Cache-Control': 'no-store, max-age=0',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Image-Source': source,
+    },
+  });
+}
+
 export async function onRequestGet({ params, request, env }) {
   const name = String(params.name || '');
   if (!REVIEW_NAME_RE.test(name) || name.includes('..')) {
     return env.ASSETS.fetch(request);
   }
 
+  const ext = name.split('.').pop().toLowerCase();
+  const snapshot = await env.ASSETS.fetch(request);
+  if (snapshot.ok) return imageResponse(snapshot.body, ext, 'static-build');
+
   try {
-    const rollingKey = Math.floor(Date.now() / 5000);
+    const sha = await fetchGitHubBranchHead(GITHUB_REPO, GITHUB_BRANCH);
     const upstream = await fetch(
-      `${RAW_BASE}${encodeURIComponent(name)}?v=${rollingKey}`,
+      immutableGitHubRawUrl(GITHUB_REPO, sha, `images/${name}`),
       {
-        headers: {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
+        cf: {
+          cacheTtl: IMMUTABLE_GITHUB_TTL_SECONDS,
+          cacheEverything: true,
         },
-        cf: { cacheTtl: 5, cacheEverything: true },
       },
     );
-    if (upstream.ok) {
-      const ext = name.split('.').pop().toLowerCase();
-      return new Response(upstream.body, {
-        headers: {
-          'Content-Type': TYPES[ext] || 'application/octet-stream',
-          // A deleted highest number may be reused by max+1 allocation. Do not
-          // let a browser pin the prior image under that sequential URL.
-          'Cache-Control': 'no-store, max-age=0',
-          'X-Content-Type-Options': 'nosniff',
-          'X-Image-Source': 'github-live',
-        },
-      });
-    }
+    if (upstream.ok) return imageResponse(upstream.body, ext, 'github-live');
   } catch (_error) {
-    // Fall through to the build snapshot.
-  }
-
-  const fallback = await env.ASSETS.fetch(request);
-  if (fallback.ok) {
-    const headers = new Headers(fallback.headers);
-    headers.set('Cache-Control', 'no-store, max-age=0');
-    headers.set('X-Content-Type-Options', 'nosniff');
-    headers.set('X-Image-Source', 'static-fallback');
-    return new Response(fallback.body, {
-      status: fallback.status,
-      statusText: fallback.statusText,
-      headers,
-    });
+    // Fall through to a clean 404. The build snapshot was checked first.
   }
   return new Response('not found', {
     status: 404,

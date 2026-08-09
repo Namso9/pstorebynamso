@@ -6,6 +6,7 @@ import {
 } from "../functions/products.json.js";
 import { onRequestGet as getData } from "../functions/data/[file].js";
 import {
+  IMMUTABLE_GITHUB_TTL_SECONDS,
   LIVE_JSON_MAX_BYTES,
   LIVE_JSON_TTL_SECONDS,
 } from "../functions/_shared/live-json.js";
@@ -13,6 +14,7 @@ import {
 const originalFetch = globalThis.fetch;
 const originalNow = Date.now;
 const calls = [];
+const branchHead = "a".repeat(40);
 const liveCatalog = JSON.stringify({ settings: {}, categories: [], products: [] });
 const liveFaq = JSON.stringify({ "ai-apps": { title: "FAQ", items: [] } });
 
@@ -29,6 +31,9 @@ try {
   Date.now = () => 1_786_110_000_000;
   globalThis.fetch = async (url, options) => {
     calls.push({ url: String(url), options });
+    if (String(url).includes("/commits/main.atom")) {
+      return new Response(`<id>tag:github.com,2008:Grit::Commit/${branchHead}</id>`);
+    }
     const body = String(url).includes("/data/") ? liveFaq : liveCatalog;
     return new Response(body, { status: 200 });
   };
@@ -52,10 +57,18 @@ try {
   assert.equal(new URL(calls[1].url).hostname, "github.com");
   assert.equal(
     new URL(calls[1].url).pathname,
-    "/Namso9/pstorebynamso/raw/refs/heads/main/data/faq.json",
+    "/Namso9/pstorebynamso/commits/main.atom",
   );
+  assert.equal(new URL(calls[2].url).hostname, "raw.githubusercontent.com");
+  assert.equal(
+    new URL(calls[2].url).pathname,
+    `/Namso9/pstorebynamso/${branchHead}/data/faq.json`,
+  );
+  assert.equal(calls[2].options.cf.cacheTtl, IMMUTABLE_GITHUB_TTL_SECONDS);
+  assert.equal(calls[2].options.cf.cacheEverything, true);
 
-  for (const call of calls) {
+  for (const call of calls.filter(({ url }) =>
+    new URL(url).searchParams.has("pstore_live_rev"))) {
     const url = new URL(call.url);
     assert.equal(
       url.searchParams.get("pstore_live_rev"),

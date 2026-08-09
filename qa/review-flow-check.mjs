@@ -39,19 +39,24 @@ assert.deepEqual(
 
 const originalFetch = globalThis.fetch;
 try {
-  let upstreamUrl = "";
-  let upstreamOptions;
+  const upstreamCalls = [];
+  const branchHead = "b".repeat(40);
   let assetCalls = 0;
+  let assetStatus = 404;
   globalThis.fetch = async (url, options) => {
-    upstreamUrl = String(url);
-    upstreamOptions = options;
+    upstreamCalls.push({ url: String(url), options });
+    if (String(url).includes("/commits/main.atom")) {
+      return new Response(`<id>tag:github.com,2008:Grit::Commit/${branchHead}</id>`);
+    }
     return new Response(new Uint8Array([1, 2, 3]), { status: 200 });
   };
   const env = {
     ASSETS: {
       fetch: async () => {
         assetCalls += 1;
-        return new Response("static", { status: 200 });
+        return new Response(assetStatus === 200 ? "static" : "missing", {
+          status: assetStatus,
+        });
       },
     },
   };
@@ -65,41 +70,48 @@ try {
   assert.equal(canonical.headers.get("content-type"), "image/webp");
   assert.equal(canonical.headers.get("cache-control"), "no-store, max-age=0");
   assert.equal(canonical.headers.get("x-image-source"), "github-live");
-  assert.match(upstreamUrl, /\/images\/review31\.webp\?v=\d+$/);
-  assert.equal(new URL(upstreamUrl).hostname, "github.com");
-  assert.equal(
-    new Headers(upstreamOptions.headers).get("Cache-Control"),
-    "no-cache",
+  assert.equal(new URL(upstreamCalls[0].url).hostname, "github.com");
+  assert.match(upstreamCalls[0].url, /\/commits\/main\.atom\?pstore_live_rev=\d+$/);
+  assert.equal(new URL(upstreamCalls[1].url).hostname, "raw.githubusercontent.com");
+  assert.match(
+    upstreamCalls[1].url,
+    new RegExp(`/${branchHead}/images/review31\\.webp$`),
   );
-  assert.equal(new Headers(upstreamOptions.headers).get("Pragma"), "no-cache");
-  assert.equal(assetCalls, 0);
+  assert.equal(assetCalls, 1);
 
   const head = await canonicalImageHead(canonicalCtx);
   assert.equal(head.status, 200);
   assert.equal((await head.arrayBuffer()).byteLength, 0);
 
-  upstreamUrl = "";
+  const callsBeforeUnrelated = upstreamCalls.length;
+  assetStatus = 200;
   const unrelated = await canonicalImageGet({
     params: { name: "brand-logo.png" },
     request: new Request("https://example.test/images/brand-logo.png"),
     env,
   });
   assert.equal(await unrelated.text(), "static");
-  assert.equal(upstreamUrl, "", "unrelated images must not be proxied through GitHub");
+  assert.equal(
+    upstreamCalls.length,
+    callsBeforeUnrelated,
+    "unrelated images must not be proxied through GitHub",
+  );
 
-  globalThis.fetch = async () => new Response("missing", { status: 404 });
+  const callsBeforeStatic = upstreamCalls.length;
   const fallback = await canonicalImageGet(canonicalCtx);
   assert.equal(await fallback.text(), "static", "GitHub failure must use build snapshot");
   assert.equal(fallback.headers.get("cache-control"), "no-store, max-age=0");
-  assert.equal(fallback.headers.get("x-image-source"), "static-fallback");
+  assert.equal(fallback.headers.get("x-image-source"), "static-build");
+  assert.equal(upstreamCalls.length, callsBeforeStatic);
 
+  assetStatus = 404;
   globalThis.fetch = async (url) => {
-    upstreamUrl = String(url);
+    upstreamCalls.push({ url: String(url) });
     return new Response(new Uint8Array([4]), { status: 200 });
   };
   const legacy = await legacyImageGet({ params: { name: "review-123.webp" } });
   assert.equal(legacy.status, 200);
-  assert.ok(upstreamUrl.endsWith("/images/uploads/review-123.webp"));
+  assert.ok(upstreamCalls.at(-1).url.endsWith("/images/uploads/review-123.webp"));
 } finally {
   globalThis.fetch = originalFetch;
 }
