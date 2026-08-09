@@ -32,7 +32,7 @@ recorded pre-cutover Pages deployment remains the rollback point.
 - [x] Verify the 31-entry root/public JSON contract, byte-identical review31
   mirror, admin template path, sequential max+1 with gaps, create-only collision
   retries, binary/list rollback, exact deletion, and delete-failure list restore.
-- [x] Pass 29 admin tests, Python compilation, clean dependency audit, lint,
+- [x] Pass 36 admin tests, Python compilation, clean dependency audit, lint,
   typecheck, production build, CSP, Zoom, review-flow QA, and local Wrangler
   route checks.
 - [x] Deploy and production-check the canonical `/images/reviewN.*` support
@@ -40,7 +40,8 @@ recorded pre-cutover Pages deployment remains the rollback point.
   `835ff6ba-8041-4fcd-ba68-029a66428e63`).
 - [x] Owner authorization received to commit, push, and deploy the verified
   storefront and Admin Panel changes.
-- [ ] Migrate the review31 GitHub file/JSON and deploy the Admin Panel runtime.
+- [x] Migrate the review31 GitHub file/JSON and deploy the Admin Panel runtime
+  (`af443c4`, `2d4c5f1`).
 - [ ] Owner acceptance: perform one genuine upload + display + delete cycle.
   Do not use a synthetic customer review in production merely to close this
   checkbox.
@@ -59,7 +60,8 @@ recorded pre-cutover Pages deployment remains the rollback point.
   storefront canonical consumer.
 - [x] Complete combined Review + FAQ regression gates, including the 49-item /
   98-open browser FAQ matrix and mirror tracking checks.
-- [ ] Complete the authorized production rollout and read-only verification.
+- [x] Complete the authorized production rollout and read-only verification
+  (`c5683eff-101d-493a-9e65-2997e0686377`; live FAQ/review paths and browser QA pass).
 
 ## Ask Price and Live Content Reliability (2026-08-07)
 
