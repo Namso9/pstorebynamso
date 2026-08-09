@@ -58,6 +58,9 @@ try {
     );
     assert.equal(call.options.cf.cacheTtl, LIVE_JSON_TTL_SECONDS);
     assert.equal(call.options.cf.cacheEverything, true);
+    const requestHeaders = new Headers(call.options.headers);
+    assert.equal(requestHeaders.get("Cache-Control"), "no-cache");
+    assert.equal(requestHeaders.get("Pragma"), "no-cache");
   }
 
   const missing = await getData({
