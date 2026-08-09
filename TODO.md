@@ -42,9 +42,12 @@ recorded pre-cutover Pages deployment remains the rollback point.
   storefront and Admin Panel changes.
 - [x] Migrate the review31 GitHub file/JSON and deploy the Admin Panel runtime
   (`af443c4`, `2d4c5f1`).
-- [ ] Owner acceptance: perform one genuine upload + display + delete cycle.
-  Do not use a synthetic customer review in production merely to close this
-  checkbox.
+- [x] Owner-authorized production acceptance: a clearly disposable
+  `review32.webp` was uploaded through the real Admin, matched byte-for-byte in
+  GitHub and at the live canonical URL, rendered 800×800 on the storefront,
+  then was deleted through Admin. Final JSON hash returned to
+  `d846e13e…`, GitHub image is absent, production returns 404, and no test or
+  customer artifact remains.
 
 ## Canonical FAQ Source (2026-08-09)
 
@@ -62,6 +65,13 @@ recorded pre-cutover Pages deployment remains the rollback point.
   98-open browser FAQ matrix and mirror tracking checks.
 - [x] Complete the authorized production rollout and read-only verification
   (`c5683eff-101d-493a-9e65-2997e0686377`; live FAQ/review paths and browser QA pass).
+- [x] Complete real Admin FAQ create/edit/delete acceptance twice, including a
+  final post-fix cycle. GitHub canonical, live JSON, and rendered storefront
+  matched after every mutation; cleanup returned FAQ to original hash
+  `eb5c8425…` with zero temporary markers.
+- [x] Replace stale branch-raw reads with a five-second GitHub commit-feed head
+  lookup plus immutable raw blob fetch (`0ef0175`). Final cleanup deployment
+  `ce058647-54bc-4a88-af4d-6cb46d6b1d77` is active at source `f82df0a`.
 
 ## Ask Price and Live Content Reliability (2026-08-07)
 
