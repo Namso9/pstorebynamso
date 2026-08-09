@@ -17,6 +17,34 @@ The App Router scaffold and static export are verified and the approved Next.js
 build is now Production. The legacy source remains in the repository and the
 recorded pre-cutover Pages deployment remains the rollback point.
 
+## Canonical Review Upload Flow (2026-08-09)
+
+- [x] Prove the existing source path (`images/review1.webp`…`review30.webp`) and
+  the live `data/reviews.json` → `ReviewGallery` rendering path.
+- [x] Prove the panel's old split contract (`images/uploads/review-<timestamp>`
+  plus public `img/<name>`) from code, Git history, and production read-only
+  responses.
+- [x] Add a canonical `/images/reviewN.*` Pages Function with GitHub-live
+  serving, build-snapshot fallback, unrelated-asset passthrough, and legacy
+  `/img` compatibility.
+- [x] Migrate the current random 31st WebP to `images/review31.webp` locally and
+  make prebuild mirror canonical root review binaries to `public/images/`.
+- [x] Verify the 31-entry root/public JSON contract, byte-identical review31
+  mirror, admin template path, sequential max+1 with gaps, create-only collision
+  retries, binary/list rollback, exact deletion, and delete-failure list restore.
+- [x] Pass 29 admin tests, Python compilation, clean dependency audit, lint,
+  typecheck, production build, CSP, Zoom, review-flow QA, and local Wrangler
+  route checks.
+- [x] Deploy and production-check the canonical `/images/reviewN.*` support
+  layer before changing the live review JSON/file contract (Cloudflare
+  `835ff6ba-8041-4fcd-ba68-029a66428e63`).
+- [x] Owner authorization received to commit, push, and deploy the verified
+  storefront and Admin Panel changes.
+- [ ] Migrate the review31 GitHub file/JSON and deploy the Admin Panel runtime.
+- [ ] Owner acceptance: perform one genuine upload + display + delete cycle.
+  Do not use a synthetic customer review in production merely to close this
+  checkbox.
+
 ## Ask Price and Live Content Reliability (2026-08-07)
 
 - [x] Reproduce the cross-surface mismatch: the bot interprets price `0` as Ask

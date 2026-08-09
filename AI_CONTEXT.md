@@ -39,6 +39,21 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- **Canonical sequential review flow rollout is IN PROGRESS (2026-08-09).**
+  Repository evidence confirmed original reviews in
+  `images/review1.webp`…`review30.webp`, while the panel's 31st upload used the
+  separate `images/uploads/review-1786262153.webp` / `img/...` contract. The
+  pending tree migrates that file to `images/review31.webp`, updates both review
+  JSON fallbacks, adds a canonical `/images/reviewN.*` GitHub-live Function with
+  static fallback, rolling upstream cache key and no-store browser caching, and mirrors canonical review
+  binaries from root `images/` to `public/images/` before builds. The old `/img`
+  Function remains for legacy paths. Review QA, lint, typecheck, build, CSP, and
+  Zoom checks pass; local Wrangler returns the built review31 and preserves
+  unrelated image routes. The build-only PostCSS dependency now resolves the
+  patched `nanoid@3.3.18`, and `npm audit` reports zero vulnerabilities.
+  The canonical Function support layer is live at Cloudflare deployment
+  `835ff6ba-8041-4fcd-ba68-029a66428e63`; the review31 JSON/file migration and
+  Admin Panel runtime are not deployed yet.
 - **Already-open tab revalidation follow-up is DEPLOYED (2026-08-07,
   `6186a36`).** The panel successfully published both Stealth Writer plans as
   canonical `contact:true` in commits `b887c3d` and `9edb150`; the remaining
