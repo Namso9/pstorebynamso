@@ -49,7 +49,17 @@ export async function onRequestGet({ params, request, env }) {
   }
 
   const fallback = await env.ASSETS.fetch(request);
-  if (fallback.ok) return fallback;
+  if (fallback.ok) {
+    const headers = new Headers(fallback.headers);
+    headers.set('Cache-Control', 'no-store, max-age=0');
+    headers.set('X-Content-Type-Options', 'nosniff');
+    headers.set('X-Image-Source', 'static-fallback');
+    return new Response(fallback.body, {
+      status: fallback.status,
+      statusText: fallback.statusText,
+      headers,
+    });
+  }
   return new Response('not found', {
     status: 404,
     headers: { 'Cache-Control': 'no-store, max-age=0' },
