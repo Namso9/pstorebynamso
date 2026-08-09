@@ -9,7 +9,7 @@
 
 const ALLOWED = new Set(['faq.json', 'reviews.json', 'express-guide.json']);
 const RAW_BASE =
-  'https://raw.githubusercontent.com/Namso9/pstorebynamso/main/data/';
+  'https://github.com/Namso9/pstorebynamso/raw/refs/heads/main/data/';
 
 import {
   fetchLiveJson,

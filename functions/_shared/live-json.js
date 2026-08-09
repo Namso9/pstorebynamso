@@ -5,8 +5,8 @@ export const LIVE_JSON_MAX_BYTES = 2_000_000;
 export function versionedRawUrl(rawUrl, now = Date.now()) {
   const url = new URL(rawUrl);
   // Keep each Cloudflare edge entry short-lived. The request headers below
-  // force raw.githubusercontent.com to revalidate its advertised five-minute
-  // cache whenever a new edge entry is populated.
+  // force GitHub's branch-aware raw route to resolve the current branch head
+  // whenever a new edge entry is populated.
   url.searchParams.set(
     'pstore_live_rev',
     String(Math.floor(now / (LIVE_JSON_TTL_SECONDS * 1000))),

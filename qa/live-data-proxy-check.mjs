@@ -49,6 +49,11 @@ try {
   assert.equal(faqResponse.headers.get("Cache-Control"), "no-store, max-age=0");
   assert.equal(faqResponse.headers.get("X-Data-Source"), "github-live");
   assert.deepEqual(await faqResponse.json(), JSON.parse(liveFaq));
+  assert.equal(new URL(calls[1].url).hostname, "github.com");
+  assert.equal(
+    new URL(calls[1].url).pathname,
+    "/Namso9/pstorebynamso/raw/refs/heads/main/data/faq.json",
+  );
 
   for (const call of calls) {
     const url = new URL(call.url);

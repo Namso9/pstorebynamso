@@ -8,7 +8,7 @@
  */
 
 const RAW_BASE =
-  'https://raw.githubusercontent.com/Namso9/pstorebynamso/main/images/';
+  'https://github.com/Namso9/pstorebynamso/raw/refs/heads/main/images/';
 const REVIEW_NAME_RE = /^review\d+\.(webp|jpg|jpeg|png)$/i;
 const TYPES = {
   webp: 'image/webp',
@@ -28,7 +28,11 @@ export async function onRequestGet({ params, request, env }) {
     const upstream = await fetch(
       `${RAW_BASE}${encodeURIComponent(name)}?v=${rollingKey}`,
       {
-      cf: { cacheTtl: 5, cacheEverything: true },
+        headers: {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+        },
+        cf: { cacheTtl: 5, cacheEverything: true },
       },
     );
     if (upstream.ok) {

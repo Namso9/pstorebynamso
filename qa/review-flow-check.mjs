@@ -40,9 +40,11 @@ assert.deepEqual(
 const originalFetch = globalThis.fetch;
 try {
   let upstreamUrl = "";
+  let upstreamOptions;
   let assetCalls = 0;
-  globalThis.fetch = async (url) => {
+  globalThis.fetch = async (url, options) => {
     upstreamUrl = String(url);
+    upstreamOptions = options;
     return new Response(new Uint8Array([1, 2, 3]), { status: 200 });
   };
   const env = {
@@ -64,6 +66,12 @@ try {
   assert.equal(canonical.headers.get("cache-control"), "no-store, max-age=0");
   assert.equal(canonical.headers.get("x-image-source"), "github-live");
   assert.match(upstreamUrl, /\/images\/review31\.webp\?v=\d+$/);
+  assert.equal(new URL(upstreamUrl).hostname, "github.com");
+  assert.equal(
+    new Headers(upstreamOptions.headers).get("Cache-Control"),
+    "no-cache",
+  );
+  assert.equal(new Headers(upstreamOptions.headers).get("Pragma"), "no-cache");
   assert.equal(assetCalls, 0);
 
   const head = await canonicalImageHead(canonicalCtx);
