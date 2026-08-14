@@ -657,9 +657,9 @@
       "modalTitle": "ChatGPT 1 Month Plus Plan",
       "plans": [
         {
-          "name": "30 days warranty",
+          "name": "1 Month",
           "desc": "Our Mail (Private Acc)",
-          "price": "55,000 Ks",
+          "price": "65,000 Ks",
           "id": "30_days_warranty",
           "bot": true
         },
