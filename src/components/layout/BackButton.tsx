@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Icon } from "@/components/common/Icon";
 
 export function BackButton({ embedded = false }: { embedded?: boolean }) {
@@ -21,11 +22,17 @@ export function BackButton({ embedded = false }: { embedded?: boolean }) {
 
   return (
     <div className="back-row">
-      <button type="button" className="back-control" onClick={goBack}>
+      <button
+        type="button"
+        className="back-control"
+        data-haptic="light"
+        onClick={goBack}
+      >
         <Icon name="arrow-left" />
         <span>Back</span>
+        <HapticSwitch />
       </button>
-      <Link className="back-control" href="/" prefetch={false}>
+      <Link className="back-control" href="/" prefetch={false} data-haptic="light">
         <Icon name="home" />
         <span>Back to Home</span>
       </Link>

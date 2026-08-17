@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { motion } from "motion/react";
 
+import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { CategoryCard } from "./CategoryCard";
 
 import { categoryPresentations } from "@/data/category-presentations";
@@ -34,8 +35,9 @@ export function HomeCatalog({ initialCatalog }: HomeCatalogProps) {
       {status === "error" ? (
         <div className="catalog-notice" role="status">
           <span>Live update မရသေးပါ။ နောက်ဆုံး build data ကို ပြထားပါတယ်။</span>
-          <button type="button" onClick={refresh}>
+          <button type="button" data-haptic="light" onClick={refresh}>
             Retry
+            <HapticSwitch />
           </button>
           <span className="sr-only">{error}</span>
         </div>

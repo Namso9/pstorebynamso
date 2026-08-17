@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import {
   type ChangeEvent,
   type FormEvent,
+  useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -20,7 +22,10 @@ import {
 } from "@/services/order";
 import { isAskPricePlan } from "@/services/catalog";
 import type { CatalogData } from "@/types/catalog";
+import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Icon } from "@/components/common/Icon";
+import { OrderSummary } from "@/components/order/OrderSummary";
+import { vibrate } from "@/lib/haptics";
 
 type SubmitResult =
   | { status: "idle" }
@@ -45,6 +50,7 @@ type OrderFormProps = {
 type OrderFormStateProps = OrderFormProps & {
   productId: string | null;
   planId: string | null;
+  onDone: (done: boolean) => void;
 };
 
 const MAIL_REQUIRED_PRODUCTS = new Set(["zoom", "canva", "duolingo"]);
@@ -118,7 +124,12 @@ function ErrorMessage({ kind }: { kind: Extract<SubmitResult, { status: "error" 
   return <>Order ပို့မရသေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပါ{fallback}</>;
 }
 
-function OrderFormState({ initialCatalog, productId, planId }: OrderFormStateProps) {
+function OrderFormState({
+  initialCatalog,
+  productId,
+  planId,
+  onDone,
+}: OrderFormStateProps) {
   const { catalog = initialCatalog } = useCatalog(initialCatalog);
   const initialSelection = useMemo(
     () => resolveCatalogSelection(initialCatalog, productId, planId),
@@ -128,6 +139,7 @@ function OrderFormState({ initialCatalog, productId, planId }: OrderFormStatePro
   const prefillSelection = liveSelection ?? initialSelection;
   const initialProductText = initialSelection ? selectionLabel(initialSelection) : "";
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const [name, setName] = useState("");
   const [productText, setProductText] = useState(initialProductText);
@@ -141,6 +153,28 @@ function OrderFormState({ initialCatalog, productId, planId }: OrderFormStatePro
   const [honeypot, setHoneypot] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<SubmitResult>({ status: "idle" });
+
+  // Drives the Done step of the checkout rail, which lives one level up so it
+  // can render above the summary card.
+  useEffect(() => {
+    onDone(result.status === "success");
+  }, [onDone, result.status]);
+
+  // Outcome haptic, plus bringing the outcome into view — on a phone both the
+  // success panel and the error panel render below a form taller than the
+  // screen. `result` (not `result.status`) is the dependency on purpose: every
+  // setResult produces a new object, so a second failed attempt buzzes again
+  // instead of staying silent.
+  useEffect(() => {
+    if (result.status !== "success" && result.status !== "error") return;
+    vibrate(result.status === "success" ? "success" : "error");
+    resultRef.current?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "center",
+    });
+  }, [result]);
 
   const activePrefill = prefillActive ? prefillSelection : null;
   const currentProductId = activePrefill
@@ -217,6 +251,26 @@ function OrderFormState({ initialCatalog, productId, planId }: OrderFormStatePro
     const nextFile = event.target.files?.[0] ?? null;
     setFile(nextFile);
     if (result.status === "error") setResult({ status: "idle" });
+  };
+
+  // Editing the form after an outcome starts a fresh attempt: the success
+  // panel and the rail's Done step both belong to the order that was already
+  // sent, and leaving them up would mark an unsubmitted second order as done.
+  const clearOutcome = (event: FormEvent<HTMLFormElement>) => {
+    // The iOS haptic overlay is an unnamed checkbox inside this form, and its
+    // toggle fires a bubbling `input` event that is NOT the customer editing
+    // anything. It arrives after the submit handler has run, so without this
+    // guard a screenshot-missing error would be raised and then wiped in the
+    // same tap and the customer would see no explanation at all.
+    const target = event.target;
+    if (target instanceof Element && target.classList.contains("haptic-tap")) {
+      return;
+    }
+    setResult((current) =>
+      current.status === "success" || current.status === "error"
+        ? { status: "idle" }
+        : current,
+    );
   };
 
   const resetForm = () => {
@@ -308,7 +362,7 @@ function OrderFormState({ initialCatalog, productId, planId }: OrderFormStatePro
         ကို screenshot တိုက်ရိုက်ပို့လို့လည်း ရပါတယ်။
       </p>
 
-      <form onSubmit={submitOrder}>
+      <form onSubmit={submitOrder} onInput={clearOutcome}>
         <input
           type="hidden"
           name="product_id"
@@ -449,9 +503,13 @@ function OrderFormState({ initialCatalog, productId, planId }: OrderFormStatePro
             accept="image/*"
             onChange={updateFile}
           />
+          {/* No overlay switch here: this label's job is to activate the file
+              input, and an interactive child would become the activation
+              target and stop the picker from opening. */}
           <label
             className={file ? "order-file order-file--selected" : "order-file"}
             htmlFor="order-screenshot"
+            data-haptic="light"
           >
             <span aria-hidden="true">▣</span>
             <span>{file?.name || FILE_IDLE_TEXT}</span>
@@ -486,14 +544,23 @@ function OrderFormState({ initialCatalog, productId, planId }: OrderFormStatePro
         <button
           className="button button--primary order-submit"
           type="submit"
+          data-haptic="medium"
           disabled={result.status === "submitting"}
         >
           {result.status === "submitting" ? "ပို့နေသည်…" : "Order တင်မယ်"}
+          {/* `submit` mode: on iOS the tap lands on the overlay switch, which
+              would otherwise become the activation target and silently cancel
+              the submission. It re-runs `requestSubmit()` on this button. */}
+          <HapticSwitch mode="submit" />
         </button>
       </form>
 
       {result.status === "success" ? (
-        <div className="order-result order-result--success" role="status">
+        <div
+          className="order-result order-result--success"
+          role="status"
+          ref={resultRef}
+        >
           <strong>✓ Order တင်ပြီးပါပြီ!</strong>
           <p>
             Order ID: <strong>{result.orderId}</strong>
@@ -515,7 +582,11 @@ function OrderFormState({ initialCatalog, productId, planId }: OrderFormStatePro
       ) : null}
 
       {result.status === "error" ? (
-        <div className="order-result order-result--error" role="alert">
+        <div
+          className="order-result order-result--error"
+          role="alert"
+          ref={resultRef}
+        >
           <ErrorMessage kind={result.kind} />
         </div>
       ) : null}
@@ -527,13 +598,30 @@ export function OrderForm({ initialCatalog }: OrderFormProps) {
   const searchParams = useSearchParams();
   const productId = searchParams.get("product");
   const planId = searchParams.get("plan");
+  const selectionKey = `${productId ?? ""}:${planId ?? ""}`;
+  // Completion is stored as the selection that completed, not a bare boolean:
+  // switching product mid-session would otherwise show the new, unsubmitted
+  // order as Done until the remounted child's effect got around to clearing it.
+  const [doneKey, setDoneKey] = useState<string | null>(null);
+  const handleDone = useCallback(
+    (done: boolean) => setDoneKey(done ? selectionKey : null),
+    [selectionKey],
+  );
 
   return (
-    <OrderFormState
-      key={`${productId ?? ""}:${planId ?? ""}`}
-      initialCatalog={initialCatalog}
-      productId={productId}
-      planId={planId}
-    />
+    <>
+      <OrderSummary
+        initialCatalog={initialCatalog}
+        location="order"
+        done={doneKey === selectionKey}
+      />
+      <OrderFormState
+        key={selectionKey}
+        initialCatalog={initialCatalog}
+        productId={productId}
+        planId={planId}
+        onDone={handleDone}
+      />
+    </>
   );
 }

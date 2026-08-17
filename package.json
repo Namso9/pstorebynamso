@@ -15,6 +15,7 @@
     "content-source:check": "node scripts/sync-live-data.mjs --faq-review-only && node qa/content-source-check.mjs",
     "review-flow:check": "node qa/review-flow-check.mjs",
     "ask-price:check": "node qa/ask-price-browser-check.mjs",
+    "haptics:check": "node qa/haptics-steps-check.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "preview": "wrangler pages dev out --compatibility-date=2026-08-02"

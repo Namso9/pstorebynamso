@@ -1,11 +1,16 @@
 import type { ButtonHTMLAttributes } from "react";
 
+import { HapticSwitch } from "./HapticSwitch";
+import type { HapticIntensity } from "@/lib/haptics";
+
 type ButtonVariant = "primary" | "secondary" | "quiet" | "danger";
 type ButtonSize = "sm" | "md" | "lg";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  /** Tap feedback strength, or `false` to leave this button silent. */
+  haptic?: HapticIntensity | false;
 };
 
 export function buttonClassName({
@@ -27,13 +32,21 @@ export function Button({
   size = "md",
   className,
   type = "button",
+  haptic = "light",
+  children,
   ...props
 }: ButtonProps) {
   return (
     <button
       type={type}
       className={buttonClassName({ variant, size, className })}
+      data-haptic={haptic || undefined}
       {...props}
-    />
+    >
+      {children}
+      {haptic ? (
+        <HapticSwitch mode={type === "submit" ? "submit" : "bubble"} />
+      ) : null}
+    </button>
   );
 }

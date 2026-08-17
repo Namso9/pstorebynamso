@@ -3,24 +3,61 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
+import { CheckoutSteps } from "@/components/checkout/CheckoutSteps";
 import { useCatalog } from "@/hooks/useCatalog";
 import { isAskPricePlan } from "@/services/catalog";
 import { orderQuery, resolveCatalogSelection } from "@/services/order";
 import type { CatalogData } from "@/types/catalog";
 
+type OrderSummaryLocation = "payment" | "order";
+
 type OrderSummaryProps = {
   initialCatalog: CatalogData;
-  location: "payment" | "order";
+  location: OrderSummaryLocation;
+  /** Set once the order has actually been submitted (order page only). */
+  done?: boolean;
 };
 
-export function OrderSummary({ initialCatalog, location }: OrderSummaryProps) {
+type Selection = NonNullable<ReturnType<typeof resolveCatalogSelection>>;
+
+/**
+ * The checkout rail plus, when a plan was selected, the summary card.
+ *
+ * The rail names the step and nothing else. It deliberately gives no
+ * instruction about transferring money: an Ask Price plan, an out-of-stock
+ * plan, or a plan edited since the last build must not be told to pay, and the
+ * page body below — which resolves the same live catalog and already carries
+ * every one of those guards — stays the single source of truth for what this
+ * particular customer should do.
+ */
+export function OrderSummary({
+  initialCatalog,
+  location,
+  done = false,
+}: OrderSummaryProps) {
   const searchParams = useSearchParams();
   const { catalog = initialCatalog } = useCatalog(initialCatalog);
   const productId = searchParams.get("product");
   const planId = searchParams.get("plan");
   const selection = resolveCatalogSelection(catalog, productId, planId);
-  if (!selection) return null;
 
+  return (
+    <>
+      <CheckoutSteps current={done ? "done" : "payment"} />
+      {selection ? (
+        <SummaryCard selection={selection} location={location} />
+      ) : null}
+    </>
+  );
+}
+
+function SummaryCard({
+  selection,
+  location,
+}: {
+  selection: Selection;
+  location: OrderSummaryLocation;
+}) {
   const { product, plan } = selection;
   const query = orderQuery(product.id, plan?.id || null);
 

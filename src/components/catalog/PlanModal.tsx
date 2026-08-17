@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 import { isAskPricePlan, publicAssetPath } from "@/services/catalog";
 import type {
@@ -143,9 +144,15 @@ function PlanRow({
   }
 
   return (
-    <button className="plan-row" type="button" onClick={onCheckout}>
+    <button
+      className="plan-row"
+      type="button"
+      data-haptic="medium"
+      onClick={onCheckout}
+    >
       <PlanDetails plan={plan} />
       <span className="plan-row__price">{plan.price}</span>
+      <HapticSwitch />
     </button>
   );
 }

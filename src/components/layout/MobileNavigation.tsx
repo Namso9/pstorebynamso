@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useState } from "react";
 
 import { Icon } from "@/components/common/Icon";
+import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 
 import { primaryNavigation } from "./navigation";
@@ -19,9 +20,11 @@ export function MobileNavigation() {
         className="icon-button mobile-menu-button"
         aria-label="Open navigation"
         aria-expanded={open}
+        data-haptic="selection"
         onClick={() => setOpen(true)}
       >
         <Icon name="menu" />
+        <HapticSwitch />
       </button>
 
       <Modal
@@ -35,6 +38,7 @@ export function MobileNavigation() {
             <Link
               href={item.href}
               key={item.href}
+              data-haptic="selection"
               onClick={close}
               prefetch={false}
             >

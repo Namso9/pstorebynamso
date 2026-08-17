@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Icon, type IconName } from "@/components/common/Icon";
 
 type ThemeMode = "system" | "light" | "dark";
@@ -80,9 +81,11 @@ export function ThemeToggle() {
       className="icon-button header-theme-button"
       aria-label={`${details.label}. Activate ${modeDetails[details.next].label}.`}
       title={details.label}
+      data-haptic="selection"
       onClick={cycleTheme}
     >
       <Icon name={details.icon} />
+      <HapticSwitch />
     </button>
   );
 }

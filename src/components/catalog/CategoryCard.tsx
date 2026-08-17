@@ -37,6 +37,7 @@ export function CategoryCard({
       className="category-card"
       href={categoryHref(category.slug)}
       prefetch={false}
+      data-haptic="light"
       {...revealMotion}
     >
       <div className="category-card__media">

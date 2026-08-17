@@ -4793,3 +4793,155 @@ button {
 .plan-modal-brand__text strong {
   color: var(--ink);
 }
+
+/* ── Haptics ─────────────────────────────────────────────────────────────
+   Both rules serve iOS/iPadOS only; on Android and desktop neither element
+   is ever rendered (see src/lib/haptics.ts).
+
+   `.haptic-tap` is an invisible `<input type="checkbox" switch>` laid over a
+   button so the user's real tap toggles it — that toggle is the only way a web
+   page can reach the Taptic Engine in WebKit. Do NOT add `appearance`,
+   `display: none` or `visibility: hidden` here: the switch has to keep its
+   native rendering or Safari plays nothing. */
+.haptic-tap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(button):has(> .haptic-tap) {
+  position: relative;
+}
+
+/* A disabled host does not disable a nested control, so without this a tap on
+   a submitting order button would still toggle the switch and buzz while
+   nothing happens. */
+button:disabled > .haptic-tap {
+  pointer-events: none;
+}
+
+/* The shared switch for controls that cannot carry an overlay (links). Kept
+   painted but out of sight and out of hit-testing. */
+.haptic-pulse {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  width: 52px;
+  height: 32px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Checkout progress rail (Order → Payment → Done) ─────────────────── */
+/* Full width of whichever page container holds it; /order/ zeroes its own
+   padding, so that page re-states the inset its summary card already uses. */
+.checkout-steps {
+  width: 100%;
+  margin: 0 0 16px;
+}
+
+.checkout-steps__rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checkout-steps__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.checkout-steps__line {
+  width: clamp(10px, 3vw, 22px);
+  height: 1px;
+  flex: 0 0 auto;
+  background: var(--border-strong);
+}
+
+.checkout-steps__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 5px 12px 5px 5px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.checkout-steps__badge {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--surface-hover);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.checkout-steps__item[data-state="current"] .checkout-steps__pill {
+  border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.checkout-steps__item[data-state="current"] .checkout-steps__badge {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.checkout-steps__item[data-state="done"] .checkout-steps__pill {
+  color: var(--ink);
+}
+
+.checkout-steps__item[data-state="done"] .checkout-steps__badge {
+  background: color-mix(in srgb, var(--success) 22%, transparent);
+  color: var(--success);
+}
+
+/* Only the connectors the customer has already walked past are filled in. */
+.checkout-steps__item[data-state="done"] + .checkout-steps__item .checkout-steps__line {
+  background: color-mix(in srgb, var(--success) 55%, var(--border-strong));
+}
+
+.checkout-steps__caption {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+/* The order page has no container padding of its own. */
+.order-page-next .checkout-steps {
+  width: calc(100% - 32px);
+  max-width: 900px;
+  margin: 24px auto 12px;
+}
+
+@media (max-width: 360px) {
+  .checkout-steps__pill {
+    padding-right: 9px;
+    font-size: 0.75rem;
+  }
+}

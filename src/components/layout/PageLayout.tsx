@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { HapticRoot } from "@/components/common/HapticRoot";
 import { RouteTransition } from "@/components/common/RouteTransition";
 
 import { BackButton } from "./BackButton";
@@ -22,6 +23,7 @@ export function PageLayout({ children }: PageLayoutProps) {
         <BackButton />
       </main>
       <SiteFooter />
+      <HapticRoot />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { ErrorState, LoadingState } from "@/components/common/StatusState";
+import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 import {
   fetchCatalog,
@@ -105,9 +106,11 @@ function CheckoutOptions({
         <button
           type="button"
           className="button button--secondary button--md"
+          data-haptic="light"
           onClick={onClose}
         >
           ပိတ်မည်
+          <HapticSwitch />
         </button>
       </div>
     );
@@ -163,6 +166,7 @@ function CheckoutOptions({
           href={telegramHref}
           target="_blank"
           rel="noopener noreferrer"
+          data-haptic="medium"
         >
           <strong>Telegram Bot ကနေ ဝယ်မည်</strong>
           <span>အမြန်ဆုံး · auto delivery · wallet/VIP အကျိုးရ (Recommended)</span>
@@ -172,6 +176,7 @@ function CheckoutOptions({
       <a
         className="checkout-option"
         href={paymentHref(product.id, plan.id)}
+        data-haptic="medium"
       >
         <strong>Website ကနေ Order Form တင်မည်</strong>
         <span>Payment screenshot တင် · admin က manual ပြန်ဆက်သွယ်</span>

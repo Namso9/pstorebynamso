@@ -10,6 +10,7 @@ import { isAskPricePlan } from "@/services/catalog";
 import { orderQuery, resolveCatalogSelection } from "@/services/order";
 import type { CatalogData } from "@/types/catalog";
 import { BackButton } from "@/components/layout/BackButton";
+import { HapticSwitch } from "@/components/common/HapticSwitch";
 
 type PlatformId = "kpay" | "wave" | "aya";
 
@@ -143,11 +144,13 @@ export function PaymentExperience({ initialCatalog }: { initialCatalog: CatalogD
                 type="button"
                 className={selected === id ? "platform-button-next platform-button-next--active" : "platform-button-next"}
                 aria-pressed={selected === id}
+                data-haptic="medium"
                 onClick={() => choosePlatform(id)}
                 key={id}
               >
                 <Image src={item.icon} alt={item.iconAlt} width={30} height={30} />
                 {item.label}
+                <HapticSwitch />
               </button>
             ),
           )}

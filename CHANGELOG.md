@@ -28,6 +28,16 @@
   legacy content `.html` URL to its clean route.
 - Production-versus-Next mobile comparison screenshots for the home and
   Creative Apps pages at 360px, 390px, and 430px.
+- Physical-button tap feedback on the controls that decide something —
+  plan rows, checkout links, payment platform pickers, the order submit and its
+  success/failure outcome, dialog and navigation toggles, FAQ rows and review
+  cards — with the strength tuned per place. Android (Chrome, Firefox, Samsung
+  Internet, DuckDuckGo, Edge) uses `navigator.vibrate` on press-down; iOS and
+  iPadOS, where no browser implements that API, get the WebKit switch haptic
+  through an invisible `<input type="checkbox" switch>` laid over each button.
+  `localStorage["ps-haptics"] = "off"` disables the lot.
+- An Order → Payment → Done progress rail across the payment and order pages,
+  with the order outcome scrolled into view when it lands.
 
 ### Fixed
 

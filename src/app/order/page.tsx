@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { OrderForm } from "@/components/order/OrderForm";
-import { OrderSummary } from "@/components/order/OrderSummary";
 import { staticCatalog } from "@/lib/static-catalog";
 
 export const metadata: Metadata = {
@@ -23,8 +22,9 @@ export const metadata: Metadata = {
 export default function OrderPage() {
   return (
     <div className="content-page order-page-next">
+      {/* OrderForm owns the checkout rail and the order summary: the Done
+          step depends on the submit result, which only it knows. */}
       <Suspense fallback={null}>
-        <OrderSummary initialCatalog={staticCatalog} location="order" />
         <OrderForm initialCatalog={staticCatalog} />
       </Suspense>
     </div>
