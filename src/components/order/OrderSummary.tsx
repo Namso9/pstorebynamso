@@ -47,7 +47,10 @@ export function OrderSummary({
   return (
     <>
       <CheckoutSteps current={done ? "done" : "payment"} />
-      {selection ? (
+      {/* The Done step keeps the rail and nothing else: what was bought is
+          restated inside the confirmation, and a live "Your Order" card next
+          to a sent order reads like there is still something to do. */}
+      {selection && !done ? (
         <SummaryCard
           selection={selection}
           location={location}

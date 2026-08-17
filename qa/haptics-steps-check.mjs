@@ -317,6 +317,56 @@ try {
   );
   assert.equal(cleared, true);
 
+  // --- the Done step keeps the confirmation and nothing else ---------------
+  // The order API is not reachable from a static preview, so the success state
+  // is driven straight into the React tree the way a real response would.
+  const doneState = await waitFor(
+    cdp,
+    `(() => {
+      const card = document.querySelector(".order-form-card-next");
+      const key = Object.keys(card || {}).find((k) => k.startsWith("__reactFiber$"));
+      if (!key) return null;
+      let fiber = card[key];
+      while (fiber) {
+        const state = fiber.memoizedState;
+        let node = state;
+        while (node) {
+          const value = node.memoizedState;
+          if (value && value.status === "idle" && node.queue?.dispatch) {
+            node.queue.dispatch({ status: "success", orderId: "QA-1", fbLink: "https://m.me/x" });
+            return "dispatched";
+          }
+          node = node.next;
+        }
+        fiber = fiber.return;
+      }
+      return null;
+    })()`,
+  );
+  assert.equal(doneState, "dispatched");
+
+  const donePage = await waitFor(
+    cdp,
+    `(() => {
+      const rail = document.querySelector(".checkout-steps__rail");
+      if (!rail) return null;
+      const states = [...rail.querySelectorAll(".checkout-steps__item")].map((i) => i.dataset.state);
+      if (states[2] !== "current") return null;
+      return {
+        states,
+        summary: !!document.querySelector(".order-summary-next"),
+        payment: !!document.querySelector(".payment-card-next"),
+        form: !!document.querySelector("form"),
+        success: !!document.querySelector(".order-result--success"),
+      };
+    })()`,
+  );
+  assert.deepEqual(donePage.states, ["done", "done", "current"]);
+  assert.equal(donePage.summary, false, "the product summary must go on Done");
+  assert.equal(donePage.payment, false, "the payment card must go on Done");
+  assert.equal(donePage.form, false, "the order form must go on Done");
+  assert.equal(donePage.success, true, "only the confirmation stays");
+
   // --- an out-of-stock plan must not be shown a QR or a "transfer now" form
   await navigate(cdp, `${origin}/payment/?product=${soldOutProduct}&plan=${soldOutPlan}`);
   const soldOut = await waitFor(

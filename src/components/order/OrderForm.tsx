@@ -3,6 +3,7 @@
 import {
   type ChangeEvent,
   type FormEvent,
+  type RefObject,
   useEffect,
   useMemo,
   useRef,
@@ -18,7 +19,7 @@ import {
   selectionLabel,
 } from "@/services/order";
 import { isAskPricePlan } from "@/services/catalog";
-import type { CatalogData } from "@/types/catalog";
+import type { CatalogData, CatalogSettings } from "@/types/catalog";
 import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Icon } from "@/components/common/Icon";
 import { vibrate } from "@/lib/haptics";
@@ -150,6 +151,71 @@ function ErrorMessage({ kind }: { kind: Extract<SubmitResult, { status: "error" 
   return <>Order ပို့မရသေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပါ{fallback}</>;
 }
 
+/**
+ * Step 3. Nothing else survives here on purpose: the product summary, the QR
+ * and the form all describe an order that has already been sent, and leaving
+ * them on screen invites a second one.
+ */
+function OrderDoneCard({
+  result,
+  settings,
+  panelRef,
+  headingLevel,
+}: {
+  result: Extract<SubmitResult, { status: "success" }>;
+  settings: CatalogSettings;
+  panelRef: RefObject<HTMLDivElement | null>;
+  headingLevel: "h1" | "h2";
+}) {
+  // This card replaces the form, so it also inherits its place in the document
+  // outline — on /order/ it is the page's only heading.
+  const Heading = headingLevel;
+  return (
+    <section
+      className="order-form-card-next order-form-card-next--done"
+      aria-labelledby="order-done-title"
+    >
+      <div
+        className="order-result order-result--success"
+        role="status"
+        ref={panelRef}
+      >
+        <Heading id="order-done-title" className="order-result__title">
+          ✓ Order တင်ပြီးပါပြီ!
+        </Heading>
+        <p>
+          Order ID: <strong>{result.orderId}</strong>
+        </p>
+        <p>
+          Admin က သင့် Viber (သို့) Telegram ကနေ မကြာခင် ဆက်သွယ်ပြီး Account
+          ပို့ပေးပါမယ်။
+        </p>
+        <p>မေးစရာရှိရင် Order ID နဲ့ ဆက်သွယ်ပါ။</p>
+        <div className="order-result__actions">
+          <a
+            className="button button--primary button--md"
+            href={settings.telegramChannel || "https://t.me/Premiumstorezz"}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-haptic="light"
+          >
+            Telegram
+          </a>
+          <a
+            className="button button--secondary button--md"
+            href={result.fbLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-haptic="light"
+          >
+            Page Messenger
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function OrderFormCard({
   initialCatalog,
   catalog,
@@ -234,6 +300,17 @@ export function OrderFormCard({
   const showMailField = mailRequired || geminiNeedsCredentials;
   const showPasswordField = geminiNeedsCredentials;
   const showOutOfStock = prefillActive && activePrefill?.plan?.stock === false;
+
+  if (result.status === "success") {
+    return (
+      <OrderDoneCard
+        result={result}
+        settings={catalog.settings}
+        panelRef={resultRef}
+        headingLevel={headingLevel}
+      />
+    );
+  }
 
   if (
     activePrefill?.plan &&
@@ -602,44 +679,6 @@ export function OrderFormCard({
           <HapticSwitch mode="submit" />
         </button>
       </form>
-
-      {result.status === "success" ? (
-        <div
-          className="order-result order-result--success"
-          role="status"
-          ref={resultRef}
-        >
-          <strong>✓ Order တင်ပြီးပါပြီ!</strong>
-          <p>
-            Order ID: <strong>{result.orderId}</strong>
-          </p>
-          <p>
-            Admin က သင့် Viber (သို့) Telegram ကနေ မကြာခင် ဆက်သွယ်ပြီး Account
-            ပို့ပေးပါမယ်။
-          </p>
-          <p>မေးစရာရှိရင် Order ID နဲ့ ဆက်သွယ်ပါ။</p>
-          <div className="order-result__actions">
-            <a
-              className="button button--primary button--md"
-              href={catalog.settings.telegramChannel || "https://t.me/Premiumstorezz"}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-haptic="light"
-            >
-              Telegram
-            </a>
-            <a
-              className="button button--secondary button--md"
-              href={result.fbLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-haptic="light"
-            >
-              Page Messenger
-            </a>
-          </div>
-        </div>
-      ) : null}
 
       {result.status === "error" ? (
         <div

@@ -2402,9 +2402,12 @@ button.plan-row:active {
   color: var(--muted);
 }
 
-.order-summary-next a,
-.order-form-card-next a,
-.order-result a {
+/* Prose links only. A `.button` inside these cards has its own colour and
+   shape; letting this rule reach it painted accent-blue text onto the primary
+   button's accent-blue fill, which was unreadable. */
+.order-summary-next a:not(.button),
+.order-form-card-next a:not(.button),
+.order-result a:not(.button) {
   color: var(--accent-hover);
   /* Prose links sat on colour alone and were only 18px tall. Underline them
      and pad the hit area without changing the inline text flow. */
@@ -2414,9 +2417,9 @@ button.plan-row:active {
   text-underline-offset: 3px;
 }
 
-.order-summary-next a:hover,
-.order-form-card-next a:hover,
-.order-result a:hover {
+.order-summary-next a:not(.button):hover,
+.order-form-card-next a:not(.button):hover,
+.order-result a:not(.button):hover {
   text-decoration-thickness: 2px;
 }
 
@@ -4945,6 +4948,18 @@ button:disabled > .haptic-tap {
   width: 100%;
   max-width: none;
   margin: 18px 0 40px;
+}
+
+/* The Done card holds only the confirmation, so the panel's separating margin
+   would just be dead space at the top of it. */
+.order-form-card-next--done .order-result {
+  margin-top: 0;
+}
+
+/* A real heading now that it carries the page's outline, styled by the card's
+   existing h1/h2 rules — only the default margin has to go. */
+.order-form-card-next .order-result__title {
+  margin: 0;
 }
 
 /* Contact routes on the success panel: offered once the order exists, never

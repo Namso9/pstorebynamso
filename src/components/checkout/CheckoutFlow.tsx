@@ -74,13 +74,15 @@ export function CheckoutFlow({
 
   const selection = resolveCatalogSelection(catalog, productId, planId);
   const engaged = engagedKey === selectionKey;
+  const done = doneKey === selectionKey;
   // Out of stock is a payment-page stop, not an order-page one: /order/ still
   // accepts the order so the admin can call back.
   const soldOut = withPayment && selection?.plan?.stock === false;
 
   // The QR and its "transfer now" copy go the moment stock does — nobody
-  // should be invited to pay for something that cannot be delivered.
-  const showPayment = withPayment && !soldOut;
+  // should be invited to pay for something that cannot be delivered — and
+  // again once the order is in, where they would only invite a second one.
+  const showPayment = withPayment && !soldOut && !done;
   // The form only goes if there is nothing to lose. A background refresh lands
   // every five seconds, and unmounting a form mid-session would discard
   // everything typed, the screenshot chosen, and — worst — the success panel
@@ -93,9 +95,9 @@ export function CheckoutFlow({
       <OrderSummary
         catalog={catalog}
         location={withPayment ? "payment" : "order"}
-        done={doneKey === selectionKey}
+        done={done}
       />
-      {soldOut ? (
+      {soldOut && !done ? (
         <SoldOutNotice settings={catalog.settings} engaged={engaged} />
       ) : null}
       {showPayment ? (
