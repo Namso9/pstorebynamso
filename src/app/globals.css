@@ -1484,6 +1484,7 @@ button.plan-row:active {
 .plan-contact-row {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
 }
 
@@ -1567,6 +1568,11 @@ button.plan-row:active {
 
 .checkout-unavailable {
   display: grid;
+  /* Pack the rows at the top. Grid's default `align-content` stretches
+     auto-sized tracks into any spare height, and `.payment-card-next` reserves
+     a fixed height at phone widths — which blew the contact buttons up into
+     170px-tall circles on the 390px screens most customers use. */
+  align-content: start;
   gap: 16px;
   color: var(--danger);
 }
@@ -2571,17 +2577,6 @@ button.plan-row:active {
   line-height: 1.65;
 }
 
-.send-proof-next__links {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin: 14px 0;
-}
-
-.send-proof-next__links > :last-child {
-  grid-column: 1 / -1;
-}
-
 .bot-note-next {
   border: 1px solid color-mix(in srgb, var(--success) 35%, var(--border));
   border-radius: 14px;
@@ -3242,18 +3237,6 @@ html[data-theme="light"] body {
   background: var(--surface-strong);
 }
 
-.payment-card-next > .back-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin: 34px 0 0;
-  padding: 0;
-}
-
-.payment-card-next > .back-row .back-control {
-  width: 100%;
-}
-
 .payment-card-next .payment-selector-next {
   padding: 10px;
 }
@@ -3347,14 +3330,19 @@ html[data-theme="light"] body {
   font-weight: 650;
 }
 
-.order-form-card-next h1 {
+/* The card's heading drops to h2 on /payment/, where the page owns the h1 —
+   the icon sizing has to follow it or the inline SVG renders at its intrinsic
+   size and swamps the card. */
+.order-form-card-next h1,
+.order-form-card-next h2 {
   display: flex;
   min-height: 43px;
   align-items: center;
   gap: 7px;
 }
 
-.order-form-card-next h1 svg {
+.order-form-card-next h1 svg,
+.order-form-card-next h2 svg {
   width: 21px;
   height: 21px;
   flex: 0 0 auto;
@@ -4084,8 +4072,11 @@ html.theme-light .payment-selector-next {
   }
 }
 
+/* Reserve the QR flow's height so selecting a platform does not jolt the page
+   — but only when there IS a QR flow. An unavailable notice has nothing to
+   reserve for. */
 @media (min-width: 361px) and (max-width: 400px) {
-  .payment-card-next {
+  .payment-card-next:not(.checkout-unavailable) {
     min-height: 648px;
   }
 }
@@ -4943,5 +4934,29 @@ button:disabled > .haptic-tap {
   .checkout-steps__pill {
     padding-right: 9px;
     font-size: 0.75rem;
+  }
+}
+
+/* ── Merged payment step ────────────────────────────────────────────────
+   /payment/ now renders the order form directly under the QR panel, so the
+   card drops the standalone page's narrow centred measure and lines up with
+   the payment card above it. */
+.payment-page-next .order-form-card-next {
+  width: 100%;
+  max-width: none;
+  margin: 18px 0 40px;
+}
+
+/* Contact routes on the success panel: offered once the order exists, never
+   before it. */
+.order-result__actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+@media (min-width: 480px) {
+  .order-result__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

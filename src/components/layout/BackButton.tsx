@@ -6,14 +6,13 @@ import { usePathname } from "next/navigation";
 import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Icon } from "@/components/common/Icon";
 
-export function BackButton({ embedded = false }: { embedded?: boolean }) {
+export function BackButton() {
   const pathname = usePathname();
-  // The home page has nothing to go back to, and the payment page renders its
-  // own embedded back row after its content, so the shared row skips both.
-  // Every other internal page (including /order/) gets the shared bottom row.
-  if (embedded ? pathname !== "/payment/" : pathname === "/" || pathname === "/payment/") {
-    return null;
-  }
+  // The home page has nothing to go back to. Every other internal page gets
+  // this row at the bottom of <main> — including /payment/, which used to end
+  // with its own copy in the middle of the page now that the order form
+  // follows the QR panel.
+  if (pathname === "/") return null;
 
   const goBack = () => {
     if (window.history.length > 1) window.history.back();

@@ -39,6 +39,19 @@
 - An Order → Payment → Done progress rail across the payment and order pages,
   with the order outcome scrolled into view when it lands.
 
+### Changed
+
+- Paying and filing the order are one step. The order form now renders under
+  the QR panel on `/payment/`, so a customer never leaves the page between
+  transferring and attaching the screenshot, and the platform they scanned
+  fills the form's payment field. The Telegram and Messenger hand-offs that sat
+  between those two halves are gone — contact is offered on the success panel,
+  after the order exists, together with what the admin will do next. The
+  Telegram bot top-up route stays. A single `CheckoutFlow` owns one live
+  catalog subscription for the whole step, so its payment and order guards can
+  no longer disagree, and a plan that sells out mid-session drops the QR
+  without ever unmounting a form the customer has already started.
+
 ### Fixed
 
 - Refresh catalog, FAQ, reviews, and guide data in already-open visible tabs

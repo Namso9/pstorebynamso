@@ -19,9 +19,9 @@ const STEPS: { key: CheckoutStepKey; label: string }[] = [
  * body below the rail is what resolves that.
  */
 const CAPTIONS: Record<CheckoutStepKey, string> = {
-  order: "အဆင့် ၁ / ၃ — ဝယ်လိုတဲ့ Plan ကို ရွေးပါ။",
-  payment: "အဆင့် ၂ / ၃ — ငွေပေးချေမှု အဆင့်။ အောက်က အချက်အလက်အတိုင်း လုပ်ပါ။",
-  done: "အဆင့် ၃ / ၃ — Order ရောက်ပါပြီ။ Admin က ပြန်ဆက်သွယ်ပါမယ်။",
+  order: "အဆင့် ၁ / ၃ — Plan ရွေးပါ။",
+  payment: "အဆင့် ၂ / ၃ — ငွေပေးချေမှု အဆင့်။",
+  done: "အဆင့် ၃ / ၃ — Order ရောက်ပါပြီ။",
 };
 
 const STATE_LABELS = {

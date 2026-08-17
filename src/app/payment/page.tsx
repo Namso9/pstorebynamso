@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { OrderSummary } from "@/components/order/OrderSummary";
-import { PaymentExperience } from "@/components/payment/PaymentExperience";
+import { CheckoutFlow } from "@/components/checkout/CheckoutFlow";
 import { staticCatalog } from "@/lib/static-catalog";
 
 export const metadata: Metadata = {
@@ -26,9 +25,10 @@ export default function PaymentPage() {
       <header className="content-hero">
         <h1>Payment Methods</h1>
       </header>
+      {/* Transfer and proof-of-transfer are one step: the order form renders
+          under the QR panel, so the customer never leaves this page. */}
       <Suspense fallback={null}>
-        <OrderSummary initialCatalog={staticCatalog} location="payment" />
-        <PaymentExperience initialCatalog={staticCatalog} />
+        <CheckoutFlow initialCatalog={staticCatalog} withPayment />
       </Suspense>
     </div>
   );

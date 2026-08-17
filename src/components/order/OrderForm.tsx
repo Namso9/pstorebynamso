@@ -1,17 +1,14 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import {
   type ChangeEvent,
   type FormEvent,
-  useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 
-import { useCatalog } from "@/hooks/useCatalog";
 import {
   MAX_SCREENSHOT_BYTES,
   ORDER_TIMEOUT_MS,
@@ -24,7 +21,6 @@ import { isAskPricePlan } from "@/services/catalog";
 import type { CatalogData } from "@/types/catalog";
 import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Icon } from "@/components/common/Icon";
-import { OrderSummary } from "@/components/order/OrderSummary";
 import { vibrate } from "@/lib/haptics";
 
 type SubmitResult =
@@ -43,14 +39,44 @@ type SubmitResult =
         | "generic";
     };
 
-type OrderFormProps = {
+export type OrderFormCardProps = {
+  /**
+   * The build-time catalog, kept separate from the live one so the prefilled
+   * product text stays stable while a background refresh lands.
+   */
   initialCatalog: CatalogData;
-};
-
-type OrderFormStateProps = OrderFormProps & {
+  /** The one live catalog `CheckoutFlow` resolves for the whole step. */
+  catalog: CatalogData;
   productId: string | null;
   planId: string | null;
   onDone: (done: boolean) => void;
+  /**
+   * Fired the moment the customer puts anything into this form. The step above
+   * uses it to stop swapping the form out for a stock notice once there is
+   * work — or a submitted order — to lose.
+   */
+  onEngaged?: () => void;
+  /**
+   * The platform whose QR the customer actually scanned, used as the payment
+   * field's value until they pick something else themselves. Without it the
+   * two controls can disagree and the admin receives a screenshot that does
+   * not match the declared method.
+   */
+  defaultPayment?: string;
+  /**
+   * The step above's view of engagement, which is wider than this card's own:
+   * scanning a QR counts, and that customer may already have transferred. It
+   * is ORed with the local latch so an availability change can never leave
+   * them with no way to send the proof.
+   */
+  engaged?: boolean;
+  /**
+   * True when the payment step renders above this card and has already shown
+   * the Ask Price notice — this card must not repeat it.
+   */
+  askPriceHandledAbove?: boolean;
+  /** `h2` where the page already carries its own `h1` above the card. */
+  headingLevel?: "h1" | "h2";
 };
 
 const MAIL_REQUIRED_PRODUCTS = new Set(["zoom", "canva", "duolingo"]);
@@ -124,13 +150,19 @@ function ErrorMessage({ kind }: { kind: Extract<SubmitResult, { status: "error" 
   return <>Order ပို့မရသေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပါ{fallback}</>;
 }
 
-function OrderFormState({
+export function OrderFormCard({
   initialCatalog,
+  catalog,
   productId,
   planId,
   onDone,
-}: OrderFormStateProps) {
-  const { catalog = initialCatalog } = useCatalog(initialCatalog);
+  onEngaged,
+  defaultPayment = "",
+  engaged = false,
+  askPriceHandledAbove = false,
+  headingLevel = "h1",
+}: OrderFormCardProps) {
+  const Heading = headingLevel;
   const initialSelection = useMemo(
     () => resolveCatalogSelection(initialCatalog, productId, planId),
     [initialCatalog, planId, productId],
@@ -153,6 +185,16 @@ function OrderFormState({
   const [honeypot, setHoneypot] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<SubmitResult>({ status: "idle" });
+  // Mirrors what `onEngaged` reports upward, because this card has its own
+  // reason to care: the Ask Price guard below reads the LIVE catalog, and once
+  // there is typed input, a chosen screenshot or a sent order on screen, no
+  // catalogue change may take the form away.
+  const [touched, setTouched] = useState(false);
+
+  const markEngaged = () => {
+    setTouched(true);
+    onEngaged?.();
+  };
 
   // Drives the Done step of the checkout rail, which lives one level up so it
   // can render above the summary card.
@@ -193,10 +235,16 @@ function OrderFormState({
   const showPasswordField = geminiNeedsCredentials;
   const showOutOfStock = prefillActive && activePrefill?.plan?.stock === false;
 
-  if (activePrefill?.plan && isAskPricePlan(activePrefill.plan)) {
+  if (
+    activePrefill?.plan &&
+    isAskPricePlan(activePrefill.plan) &&
+    !touched &&
+    !engaged
+  ) {
+    if (askPriceHandledAbove) return null;
     return (
       <section className="order-form-card-next checkout-unavailable" role="status">
-        <h1 id="order-form-title"><Icon name="file" />Order မတင်ခင် မေးပေးပါ</h1>
+        <Heading id="order-form-title"><Icon name="file" />Order မတင်ခင် မေးပေးပါ</Heading>
         <p>ဒီ plan အတွက် ငွေမလွှဲခင် လက်ရှိစျေးနှုန်းနဲ့ order availability ကို Admin ကို အရင်မေးပေးပါ။</p>
         <div className="plan-contact-row">
           <a
@@ -248,6 +296,7 @@ function OrderFormState({
   };
 
   const updateFile = (event: ChangeEvent<HTMLInputElement>) => {
+    markEngaged();
     const nextFile = event.target.files?.[0] ?? null;
     setFile(nextFile);
     if (result.status === "error") setResult({ status: "idle" });
@@ -266,6 +315,7 @@ function OrderFormState({
     if (target instanceof Element && target.classList.contains("haptic-tap")) {
       return;
     }
+    markEngaged();
     setResult((current) =>
       current.status === "success" || current.status === "error"
         ? { status: "idle" }
@@ -290,6 +340,7 @@ function OrderFormState({
 
   const submitOrder = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    markEngaged();
     const form = event.currentTarget;
 
     if (!file) {
@@ -348,18 +399,13 @@ function OrderFormState({
 
   return (
     <section className="order-form-card-next" aria-labelledby="order-form-title">
-      <h1 id="order-form-title"><Icon name="file" />Order တင်ရန်</h1>
+      <Heading id="order-form-title"><Icon name="file" />Order တင်ရန်</Heading>
+      {/* A customer reading this has already transferred money. Anything that
+          reads as "or do something else instead" belongs before that point,
+          not here — say what to do and what happens next. */}
       <p className="order-form-card-next__intro">
-        ငွေလွှဲပြီး screenshot တင်လိုက်ပါ။ Admin က <strong>Viber or Telegram</strong>{" "}
-        ကနေ ပြန်ဆက်သွယ်ပါမယ်။<br />Form မတင်ချင်ရင်{" "}
-        <a
-          href="https://www.messenger.com/t/happyyou2020"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Page Messenger
-        </a>{" "}
-        ကို screenshot တိုက်ရိုက်ပို့လို့လည်း ရပါတယ်။
+        အချက်အလက်ဖြည့်ပြီး ငွေလွှဲ screenshot တင်ပါ။ Admin က သင့်{" "}
+        <strong>Viber (သို့) Telegram</strong> ကနေ Account ပို့ပေးပါမယ်။
       </p>
 
       <form onSubmit={submitOrder} onInput={clearOutcome}>
@@ -462,7 +508,9 @@ function OrderFormState({
             id="order-payment"
             name="payment"
             required
-            value={payment}
+            /* The scanned platform wins until the customer chooses for
+               themselves; after that their own choice sticks. */
+            value={payment || defaultPayment}
             onChange={(event) => setPayment(event.target.value)}
           >
             <option value="">ရွေးပါ</option>
@@ -566,18 +614,30 @@ function OrderFormState({
             Order ID: <strong>{result.orderId}</strong>
           </p>
           <p>
-            Admin က သင်ပေးထားတဲ့ Contact (Viber / Telegram) အတိုင်း မကြာခင်
-            ပြန်ဆက်သွယ်ပါမယ်။
+            Admin က သင့် Viber (သို့) Telegram ကနေ မကြာခင် ဆက်သွယ်ပြီး Account
+            ပို့ပေးပါမယ်။
           </p>
-          <p>Facebook နဲ့လည်း ဆက်သွယ်နိုင်ပါတယ် — Order ID ကို ပို့ထားပါ:</p>
-          <a
-            className="button button--secondary button--md"
-            href={result.fbLink}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Facebook Page ကို စာပို့မယ်
-          </a>
+          <p>မေးစရာရှိရင် Order ID နဲ့ ဆက်သွယ်ပါ။</p>
+          <div className="order-result__actions">
+            <a
+              className="button button--primary button--md"
+              href={catalog.settings.telegramChannel || "https://t.me/Premiumstorezz"}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-haptic="light"
+            >
+              Telegram
+            </a>
+            <a
+              className="button button--secondary button--md"
+              href={result.fbLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-haptic="light"
+            >
+              Page Messenger
+            </a>
+          </div>
         </div>
       ) : null}
 
@@ -591,37 +651,5 @@ function OrderFormState({
         </div>
       ) : null}
     </section>
-  );
-}
-
-export function OrderForm({ initialCatalog }: OrderFormProps) {
-  const searchParams = useSearchParams();
-  const productId = searchParams.get("product");
-  const planId = searchParams.get("plan");
-  const selectionKey = `${productId ?? ""}:${planId ?? ""}`;
-  // Completion is stored as the selection that completed, not a bare boolean:
-  // switching product mid-session would otherwise show the new, unsubmitted
-  // order as Done until the remounted child's effect got around to clearing it.
-  const [doneKey, setDoneKey] = useState<string | null>(null);
-  const handleDone = useCallback(
-    (done: boolean) => setDoneKey(done ? selectionKey : null),
-    [selectionKey],
-  );
-
-  return (
-    <>
-      <OrderSummary
-        initialCatalog={initialCatalog}
-        location="order"
-        done={doneKey === selectionKey}
-      />
-      <OrderFormState
-        key={selectionKey}
-        initialCatalog={initialCatalog}
-        productId={productId}
-        planId={planId}
-        onDone={handleDone}
-      />
-    </>
   );
 }

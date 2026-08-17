@@ -1,18 +1,17 @@
 "use client";
 
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 import { CheckoutSteps } from "@/components/checkout/CheckoutSteps";
-import { useCatalog } from "@/hooks/useCatalog";
 import { isAskPricePlan } from "@/services/catalog";
-import { orderQuery, resolveCatalogSelection } from "@/services/order";
+import { resolveCatalogSelection } from "@/services/order";
 import type { CatalogData } from "@/types/catalog";
 
 type OrderSummaryLocation = "payment" | "order";
 
 type OrderSummaryProps = {
-  initialCatalog: CatalogData;
+  /** The one live catalog `CheckoutFlow` resolves for the whole step. */
+  catalog: CatalogData;
   location: OrderSummaryLocation;
   /** Set once the order has actually been submitted (order page only). */
   done?: boolean;
@@ -31,21 +30,29 @@ type Selection = NonNullable<ReturnType<typeof resolveCatalogSelection>>;
  * particular customer should do.
  */
 export function OrderSummary({
-  initialCatalog,
+  catalog,
   location,
   done = false,
 }: OrderSummaryProps) {
   const searchParams = useSearchParams();
-  const { catalog = initialCatalog } = useCatalog(initialCatalog);
   const productId = searchParams.get("product");
   const planId = searchParams.get("plan");
   const selection = resolveCatalogSelection(catalog, productId, planId);
+  const plan = selection?.plan ?? null;
+  // The note tells the customer to pay. A plan whose price has to be asked, or
+  // one that is out of stock, is told the opposite two lines below — so it
+  // gets no note at all.
+  const payable = plan ? !isAskPricePlan(plan) && plan.stock !== false : false;
 
   return (
     <>
       <CheckoutSteps current={done ? "done" : "payment"} />
       {selection ? (
-        <SummaryCard selection={selection} location={location} />
+        <SummaryCard
+          selection={selection}
+          location={location}
+          payable={payable}
+        />
       ) : null}
     </>
   );
@@ -54,12 +61,13 @@ export function OrderSummary({
 function SummaryCard({
   selection,
   location,
+  payable,
 }: {
   selection: Selection;
   location: OrderSummaryLocation;
+  payable: boolean;
 }) {
   const { product, plan } = selection;
-  const query = orderQuery(product.id, plan?.id || null);
 
   return (
     <section className="order-summary-next" aria-labelledby="order-summary-title">
@@ -82,20 +90,13 @@ function SummaryCard({
             : " Order တင်ထားရင် stock ပြန်ရှိချိန် Admin က အကြောင်းပြန်ပါမယ်။"}
         </p>
       ) : null}
-      {location === "payment" ? (
+      {payable ? (
         <p className="order-summary-next__note">
-          အောက်မှာ Platform ရွေးပြီး QR နဲ့ ငွေလွှဲပါ။ ပြီးရင် screenshot ကို{" "}
-          <a href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener noreferrer">
-            Page Messenger
-          </a>{" "}
-          သို့မဟုတ်{" "}
-          <Link href={`/order/${query}`} prefetch={false}>ဒီ order form</Link> ကနေ တင်နိုင်ပါတယ်။
+          {location === "payment"
+            ? "ငွေပေးချမှု နည်းလမ်း ရွေးချယ်ပါ (KPay / Wave Money / AYA Pay)"
+            : "ငွေလွှဲ screenshot နဲ့ Order တင်ပါ။"}
         </p>
-      ) : (
-        <p className="order-summary-next__note">
-          အောက်က form ကိုဖြည့်ပြီး ငွေလွှဲ screenshot တင်ပေးပါ။
-        </p>
-      )}
+      ) : null}
     </section>
   );
 }

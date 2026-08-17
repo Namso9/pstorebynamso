@@ -18,6 +18,8 @@ const chromeBinary = "/Applications/Google Chrome.app/Contents/MacOS/Google Chro
 const origin = process.argv[2] || "http://127.0.0.1:8791";
 const productId = process.argv[3] || "netflix_tv";
 const planId = process.argv[4] || "1_month";
+const soldOutProduct = process.argv[5] || "quillbot";
+const soldOutPlan = process.argv[6] || "3_months";
 const profile = await mkdtemp(path.join(tmpdir(), "pstore-haptics-"));
 const port = 9990 + Math.floor(Math.random() * 8);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -160,6 +162,12 @@ try {
   await cdp.open();
   await cdp.call("Page.enable");
   await cdp.call("Runtime.enable");
+  await cdp.call("Network.enable");
+
+  let catalogRequests = 0;
+  cdp.on("Network.requestWillBeSent", ({ request }) => {
+    if (new URL(request.url).pathname === "/products.json") catalogRequests += 1;
+  });
 
   const consoleErrors = [];
   cdp.on("Runtime.exceptionThrown", ({ exceptionDetails }) => {
@@ -191,16 +199,52 @@ try {
   assert.equal(payment.pulses, 0, "the iOS fallback switch must not render off iOS");
   assert.ok(payment.haptics > 0, "payment controls must carry data-haptic");
 
-  // Selecting a platform still works with the haptic attributes in place.
+  // The payment step is one step: summary, QR panel and order form on one
+  // page, with no hand-off to Messenger or Telegram in the middle of it.
+  assert.match(
+    await evaluate(cdp, `document.querySelector(".order-summary-next__note")?.textContent || ""`),
+    /ငွေပေးချမှု နည်းလမ်း ရွေးချယ်ပါ/,
+  );
+  assert.equal(
+    await evaluate(cdp, `document.querySelectorAll("h1").length`),
+    1,
+    "the payment page owns the only h1",
+  );
+  assert.ok(
+    await evaluate(cdp, `!!document.querySelector(".order-form-card-next")`),
+    "the order form must render on the payment page",
+  );
+
   await evaluate(
     cdp,
     `document.querySelectorAll(".platform-button-next")[0].click(), true`,
   );
-  const qrShown = await waitFor(
+  const proof = await waitFor(
     cdp,
-    `!!document.querySelector(".qr-panel-next") || null`,
+    `(() => {
+      const panel = document.querySelector(".send-proof-next");
+      if (!panel) return null;
+      return {
+        qr: !!document.querySelector(".qr-panel-next"),
+        text: panel.textContent || "",
+        offsite: panel.querySelectorAll('a[href*="messenger.com"], a[href*="t.me/Premiumstorezz"]').length,
+        bot: panel.querySelectorAll('a[href*="PSNamso_bot"]').length,
+      };
+    })()`,
   );
-  assert.ok(qrShown);
+  assert.equal(proof.qr, true);
+  assert.match(proof.text, /Order Form မှာ ပူးတွဲပြီး/);
+  assert.equal(proof.offsite, 0, "no off-site hand-off inside the payment step");
+  assert.equal(proof.bot, 1, "the Telegram bot top-up route stays");
+
+  // The summary, the payment panel and the order form must share ONE catalog
+  // subscription — separate snapshots could leave one guard inviting a
+  // transfer while another says to ask the admin first.
+  assert.equal(
+    catalogRequests,
+    1,
+    `the payment step must open exactly one catalog subscription (saw ${catalogRequests})`,
+  );
 
   // --- order page --------------------------------------------------------
   await navigate(cdp, `${origin}/order/?product=${productId}&plan=${planId}`);
@@ -272,6 +316,73 @@ try {
     `document.querySelector(".order-result--error") ? null : true`,
   );
   assert.equal(cleared, true);
+
+  // --- an out-of-stock plan must not be shown a QR or a "transfer now" form
+  await navigate(cdp, `${origin}/payment/?product=${soldOutProduct}&plan=${soldOutPlan}`);
+  const soldOut = await waitFor(
+    cdp,
+    `(() => {
+      const notice = document.querySelector(".checkout-unavailable");
+      if (!notice) return null;
+      return {
+        text: notice.textContent || "",
+        selector: !!document.querySelector(".payment-selector-next"),
+        form: !!document.querySelector("form"),
+      };
+    })()`,
+  );
+  assert.match(soldOut.text, /stock မရှိ/);
+  assert.equal(soldOut.selector, false, "no platform picker for a sold-out plan");
+  assert.equal(soldOut.form, false, "no order form inviting payment for a sold-out plan");
+
+  // Scanning a QR fills the form's payment field, so the declared method
+  // cannot disagree with the screenshot the admin receives.
+  await navigate(cdp, `${origin}/payment/?product=${productId}&plan=${planId}`);
+  await waitFor(cdp, `!!document.querySelector(".platform-button-next") || null`);
+  await evaluate(
+    cdp,
+    `document.querySelectorAll(".platform-button-next")[1].click(), true`,
+  );
+  assert.equal(
+    await waitFor(cdp, `document.getElementById("order-payment")?.value || null`),
+    "Wave Pay",
+    "the scanned platform must populate the order form's payment field",
+  );
+  await evaluate(
+    cdp,
+    `(() => {
+      const field = document.getElementById("order-payment");
+      Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value").set
+        .call(field, "Other");
+      field.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`,
+  );
+  await evaluate(
+    cdp,
+    `document.querySelectorAll(".platform-button-next")[0].click(), true`,
+  );
+  await sleep(200);
+  assert.equal(
+    await evaluate(cdp, `document.getElementById("order-payment").value`),
+    "Other",
+    "a method the customer chose themselves must not be overwritten",
+  );
+
+  // /order/ deliberately still accepts the order so the admin can call back,
+  // and it must open exactly one catalog subscription of its own.
+  catalogRequests = 0;
+  await navigate(cdp, `${origin}/order/?product=${soldOutProduct}&plan=${soldOutPlan}`);
+  assert.ok(
+    await waitFor(cdp, `!!document.querySelector(".order-submit") || null`),
+    "/order/ must still let a sold-out plan be filed",
+  );
+  await sleep(300);
+  assert.equal(
+    catalogRequests,
+    1,
+    `/order/ must open exactly one catalog subscription (saw ${catalogRequests})`,
+  );
 
   // --- home page ---------------------------------------------------------
   await navigate(cdp, `${origin}/`);

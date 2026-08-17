@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { OrderForm } from "@/components/order/OrderForm";
+import { CheckoutFlow } from "@/components/checkout/CheckoutFlow";
 import { staticCatalog } from "@/lib/static-catalog";
 
 export const metadata: Metadata = {
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
 export default function OrderPage() {
   return (
     <div className="content-page order-page-next">
-      {/* OrderForm owns the checkout rail and the order summary: the Done
-          step depends on the submit result, which only it knows. */}
+      {/* The same checkout step as /payment/, minus the QR panel — for
+          customers who already transferred and only need to file the order. */}
       <Suspense fallback={null}>
-        <OrderForm initialCatalog={staticCatalog} />
+        <CheckoutFlow initialCatalog={staticCatalog} />
       </Suspense>
     </div>
   );

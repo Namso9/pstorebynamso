@@ -1,23 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { useCatalog } from "@/hooks/useCatalog";
 import { isAskPricePlan } from "@/services/catalog";
-import { orderQuery, resolveCatalogSelection } from "@/services/order";
+import { resolveCatalogSelection } from "@/services/order";
 import type { CatalogData } from "@/types/catalog";
-import { BackButton } from "@/components/layout/BackButton";
 import { HapticSwitch } from "@/components/common/HapticSwitch";
 
 type PlatformId = "kpay" | "wave" | "aya";
 
+/**
+ * `formValue` must match one of the order form's payment options exactly — it
+ * is what gets submitted, so a mismatch would silently blank the field.
+ */
 const platforms: Record<
   PlatformId,
   {
     label: string;
+    formValue: string;
     icon: string;
     iconAlt: string;
     qr: string;
@@ -29,6 +31,7 @@ const platforms: Record<
 > = {
   kpay: {
     label: "KBZPay",
+    formValue: "KBZ Pay",
     icon: "/images/kpayicon.webp",
     iconAlt: "KBZPay Icon",
     qr: "/images/kpay-qr.webp?v=2",
@@ -39,6 +42,7 @@ const platforms: Record<
   },
   wave: {
     label: "WavePay",
+    formValue: "Wave Pay",
     icon: "/images/wavepayicon.webp",
     iconAlt: "WavePay Icon",
     qr: "/images/wavepay-qr.webp?v=2",
@@ -49,6 +53,7 @@ const platforms: Record<
   },
   aya: {
     label: "AyaPay",
+    formValue: "AYA Pay",
     icon: "/images/aya.webp",
     iconAlt: "AyaPay Icon",
     qr: "/images/ayapay-qr.webp",
@@ -59,19 +64,25 @@ const platforms: Record<
   },
 };
 
-export function PaymentExperience({ initialCatalog }: { initialCatalog: CatalogData }) {
+export function PaymentExperience({
+  catalog,
+  onPlatformChange,
+}: {
+  catalog: CatalogData;
+  /** Reports the platform the customer actually scanned, to the step above. */
+  onPlatformChange?: (formValue: string) => void;
+}) {
   const searchParams = useSearchParams();
-  const { catalog = initialCatalog } = useCatalog(initialCatalog);
   const [selected, setSelected] = useState<PlatformId | "">("");
   const panelRef = useRef<HTMLDivElement>(null);
   const productId = searchParams.get("product");
   const planId = searchParams.get("plan");
-  const query = orderQuery(productId, planId);
   const selection = resolveCatalogSelection(catalog, productId, planId);
   const platform = selected ? platforms[selected] : null;
 
   const choosePlatform = (next: PlatformId) => {
     setSelected(next);
+    onPlatformChange?.(platforms[next].formValue);
     window.requestAnimationFrame(() => {
       panelRef.current?.scrollIntoView({
         behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -104,7 +115,6 @@ export function PaymentExperience({ initialCatalog }: { initialCatalog: CatalogD
             Facebook
           </a>
         </div>
-        <BackButton embedded />
       </div>
     );
   }
@@ -178,32 +188,21 @@ export function PaymentExperience({ initialCatalog }: { initialCatalog: CatalogD
 
       {platform ? (
         <section className="send-proof-next" aria-live="polite">
+          {/* One route out of this step on purpose: the order form is the next
+              thing on the page. Offering a Messenger/Telegram hand-off here
+              sent paying customers off-site mid-checkout. */}
           <p>
             ✅ <strong>{platform.label}</strong> နဲ့ ငွေလွှဲပြီးပါက screenshot ကို
-            Page Messenger သို့ပို့ပါ သို့မဟုတ် Order Form ကနေ Order တင်ပေးပါ။
+            Order Form မှာ ပူးတွဲပြီး Order တင်ပေးပါ။
           </p>
-          <div className="send-proof-next__links">
-            <a className="button button--secondary button--md" href="https://t.me/Premiumstorezz" target="_blank" rel="noopener noreferrer">
-              Telegram
-            </a>
-            <a className="button button--secondary button--md" href="https://www.messenger.com/t/happyyou2020" target="_blank" rel="noopener noreferrer">
-              Messenger
-            </a>
-            <Link className="button button--primary button--md" href={`/order/${query}`} prefetch={false}>
-              Order Form ကနေတင်မယ်
-            </Link>
-          </div>
           <p className="bot-note-next">
-            🤖 အမြန်နည်းလမ်း: Telegram သုံးတတ်ရင် Bot ထဲမှာ Wallet Top Up
-            ဖြည့်ပြီး Stock ရှိတဲ့ Product များကို တန်းဝယ်နိုင်ပါသည်။
+            🤖 Telegram Bot မှာ Wallet ဖြည့်ပြီး တန်းဝယ်လို့လည်း ရပါတယ်။
           </p>
           <a className="button button--primary button--md" href="https://t.me/PSNamso_bot" target="_blank" rel="noopener noreferrer">
             Open Telegram Bot (Top Up)
           </a>
         </section>
       ) : null}
-
-      <BackButton embedded />
     </div>
   );
 }
