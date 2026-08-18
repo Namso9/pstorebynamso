@@ -239,6 +239,11 @@ Functions, URLs, SEO metadata, and production integrations.
   payment/order layout, square review grid, official-channel layout, and the
   detailed ExpressVPN protocol/connection panels without removing the Next.js,
   Motion, CSP, responsive, or theme behavior.
+- ⚠️ 2026-08-18: the SCREENSHOTS behind every approval set below were deleted
+  (632 captures, 245 MB, commit `1ff2b68`) — the acceptance they record still
+  stands, and the `report.json` summaries and written reports remain. The images
+  are in this repo's git history and in `~/.Trash/pstore-cleanup-20260818/`.
+  Every `qa/*.mjs` check still runs and regenerates what it needs.
 - The production-versus-Next approval set in `qa/comparisons/2026-08-03/` now
   covers home, Creative Apps, payment, order, reviews, ExpressVPN guide, and both
   terms pages at 390px, plus primary-flow bounds at 360px and 430px. Key section
