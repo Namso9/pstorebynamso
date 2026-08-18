@@ -329,7 +329,7 @@ Functions, URLs, SEO metadata, and production integrations.
   backdrop computed `blur(10px)` with a visibly blurred page behind it, and
   Samsung Internet 30 passed the same search-typing and plan-dialog checks
   (`qa/kimi-device-check.mjs`, `qa/kimi-device-plan-check.mjs`,
-  `qa/shots/device-check/`).
+  `qa/shots/device-check/`). (⚠️ those captures were deleted 2026-08-18 in `1ff2b68`; recover with `git show 1ff2b68^:<path>`)
 - Same-day follow-ups (owner phone testing): (1) the search input lost focus
   on every keystroke — the dialog open-effect in
   `src/components/common/Modal.tsx` depended on the `onClose` prop, and

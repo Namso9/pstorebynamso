@@ -1,5 +1,11 @@
 # Mobile Production Comparison
 
+> ⚠️ **THE SCREENSHOTS THIS REPORT REFERENCES WERE DELETED ON 2026-08-18**
+> (632 captures, 245 MB, storefront commit `1ff2b68`). The findings and the
+> acceptance recorded below still stand — only the image files are gone. Recover
+> any one of them with `git show 1ff2b68^:<path>` from the storefront repo. Every
+> `qa/*.mjs` check still runs and regenerates its own captures.
+
 Captured on 2026-08-03 for the PStore Next.js migration approval review.
 
 ## Current coverage
@@ -12,7 +18,8 @@ Captured on 2026-08-03 for the PStore Next.js migration approval review.
   unchanged production site with the deployed `next-preview` alias at 390px.
 - Each directory includes a machine-readable `report.json` with geometry,
   overflow, browser-error, hydration, Motion, theme, plan-modal, and FAQ checks.
-- The older root-level JPG pairs are retained as the pre-correction baseline.
+- ⚠️ The older root-level JPG pairs are NOT retained any more — they were part of
+  the 2026-08-18 deletion. The `report.json` files in each directory survive.
 
 ## Automated checks during capture
 

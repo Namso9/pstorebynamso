@@ -9,7 +9,9 @@ Real Android Chrome, mid-range Android Motion, and physical iPhone Safari checks
 pass. The owner confirmed that an embedded WebView/app wrapper is not required
 for this SaaS website. The build-time hash CSP and production cutover are now
 complete. Preview deployment `ad0964b4-7aa3-4448-a8e1-37e53adbb2ef` is live on
-`next-preview`. Current Production is `d1f676f1`; routes, static/data assets,
+`next-preview`. Production **was** `d1f676f1` when this was written (dated note —
+see `../STATUS.md` → 📍 CURRENT STATE, and read the live deployment id in the
+Cloudflare dashboard; this file must not assert it as current); routes, static/data assets,
 hydration, CSP enforcement, browser interactions, and the Zoom contract pass on
 `pstorebynamso.com`.
 
@@ -201,7 +203,7 @@ not pushed.
   as `b9c4adfc`. Verified on the owner's physical Samsung SM-S948B
   (Android 16): production Chrome 150 kept the soft keyboard open through a
   full search and rendered the plan-dialog backdrop blur, and Samsung
-  Internet 30 passed the same flows (`qa/shots/device-check/`).
+  Internet 30 passed the same flows (`qa/shots/device-check/`). (⚠️ those captures were deleted 2026-08-18 in `1ff2b68`; recover with `git show 1ff2b68^:<path>`)
 - [x] Owner phone-testing follow-ups: keep the search input focused across
   every keystroke (the Modal open-effect depended on the inline `onClose`
   handler's identity, so each keystroke blurred/refocused the input; it now
@@ -507,7 +509,8 @@ untouched. Full write-up: `qa/overnight/2026-08-03/KIMI_UI_UX_REPORT.md`.
 - [x] Obtain approval before replacing production. The owner explicitly
   approved replacement after CSP hardening on 2026-08-03.
 - [x] Replace production only after the hardened Preview passed. Current
-  Production is `b341d690`; the custom domain passes route, asset, exact-hash
+  Production **was** `b341d690` at that time (dated; later deployments exist — the
+  authority is the Cloudflare dashboard); the custom domain passes route, asset, exact-hash
   CSP, hydration, interaction, console, and Zoom catalog checks.
 - [x] Keep a rollback path to the last static HTML deployment. The legacy files
   and Pages Functions remain in the repository, and deployment
