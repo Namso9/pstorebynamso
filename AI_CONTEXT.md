@@ -242,7 +242,10 @@ Functions, URLs, SEO metadata, and production integrations.
 - ⚠️ 2026-08-18: the SCREENSHOTS behind every approval set below were deleted
   (632 captures, 245 MB, commit `1ff2b68`) — the acceptance they record still
   stands, and the `report.json` summaries and written reports remain. The images
-  are in this repo's git history and in `~/.Trash/pstore-cleanup-20260818/`.
+  are recoverable from THIS REPO'S GIT HISTORY only — `git show 1ff2b68^:<path>`.
+  They were removed with `git rm`, which deletes from disk, so they are NOT in the
+  Trash bundle from that day (an earlier version of this note wrongly said they
+  were; an independent review caught it).
   Every `qa/*.mjs` check still runs and regenerates what it needs.
 - The production-versus-Next approval set in `qa/comparisons/2026-08-03/` now
   covers home, Creative Apps, payment, order, reviews, ExpressVPN guide, and both
