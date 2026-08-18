@@ -3,8 +3,9 @@
 > ⚠️ **THE SCREENSHOTS THIS REPORT REFERENCES WERE DELETED ON 2026-08-18**
 > (632 captures, 245 MB, storefront commit `1ff2b68`). The findings and the
 > acceptance recorded below still stand — only the image files are gone. Recover
-> any one of them with `git show 1ff2b68^:<path>` from the storefront repo. Every
-> `qa/*.mjs` check still runs and regenerates its own captures.
+> any one of them with `git show 1ff2b68^:<path>` from the storefront repo. All 22
+> `qa/*.mjs` checks still run; the capture-producing ones regenerate their own
+> screenshots (several, like `content-source-check.mjs`, produce no images at all).
 
 ## Deployment
 
