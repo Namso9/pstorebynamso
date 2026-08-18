@@ -48,8 +48,9 @@ Functions, URLs, SEO metadata, and production integrations.
   one step — the order form renders under the QR panel on `/payment/`, the
   scanned platform fills the form's payment field, and the Done step keeps only
   the confirmation. `CheckoutFlow` owns the single live catalog subscription for
-  the step. **Owner functional test: haptics PASS on device (2026-08-18); the
-  end-to-end purchase (plan → QR → screenshot → order) is NOT signed off yet.**
+  the step. **Owner functional test: PASS (2026-08-18) — haptics on device, and
+  one end-to-end purchase from plan selection through the QR and screenshot to
+  an order the admin received.**
   Checks: `qa/haptics-steps-check.mjs` and `qa/checkout-stock-flip-check.mjs`,
   both passing against production.
 

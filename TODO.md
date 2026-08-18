@@ -29,8 +29,8 @@ recorded pre-cutover Pages deployment remains the rollback point.
 - [x] Done step keeps only the confirmation — summary, QR and form all go.
 - [x] Browser checks: `npm run haptics:check`, `npm run stock-flip:check`.
 - [x] Owner functional test — haptics confirmed working on device.
-- [ ] Owner functional test — one end-to-end purchase (plan → QR → screenshot →
-  order submitted → admin receives it).
+- [x] Owner functional test — end-to-end purchase confirmed: plan → QR →
+  screenshot → order submitted → **admin received the order**.
 
 ## Canonical Review Upload Flow (2026-08-09)
 
