@@ -39,6 +39,20 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- **Checkout haptics and the one-step Order → Payment → Done flow are LIVE
+  (2026-08-18, `1f81eda` → `8f3f337` → `a5556a0`).** Tap feedback runs off one
+  delegated `pointerdown` listener and `data-haptic` on Android, and off an
+  invisible `<input type="checkbox" switch>` overlaid on each button for
+  iOS/iPadOS 18+, where no browser implements the Vibration API; iOS 17.4-17.x
+  falls back to the programmatic switch toggle. Paying and filing the order are
+  one step — the order form renders under the QR panel on `/payment/`, the
+  scanned platform fills the form's payment field, and the Done step keeps only
+  the confirmation. `CheckoutFlow` owns the single live catalog subscription for
+  the step. **Owner functional test: haptics PASS on device (2026-08-18); the
+  end-to-end purchase (plan → QR → screenshot → order) is NOT signed off yet.**
+  Checks: `qa/haptics-steps-check.mjs` and `qa/checkout-stock-flip-check.mjs`,
+  both passing against production.
+
 - **FAQ/review source-of-truth hardening and production acceptance are COMPLETE
   (2026-08-09).** Canonical sources are
   `data/faq.json`, `data/reviews.json`, and

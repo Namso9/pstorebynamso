@@ -17,6 +17,21 @@ The App Router scaffold and static export are verified and the approved Next.js
 build is now Production. The legacy source remains in the repository and the
 recorded pre-cutover Pages deployment remains the rollback point.
 
+## Checkout Haptics and One-Step Flow (2026-08-18)
+
+- [x] Cross-browser haptics on the controls that decide something, with the
+  strength tuned per place; Android via `navigator.vibrate`, iOS 18+ via the
+  WebKit switch overlay, `localStorage["ps-haptics"] = "off"` to disable.
+- [x] Order → Payment → Done rail on `/payment/` and `/order/`.
+- [x] Merge paying and filing the order into one step, with the scanned
+  platform populating the form's payment field and no off-site hand-off inside
+  the step.
+- [x] Done step keeps only the confirmation — summary, QR and form all go.
+- [x] Browser checks: `npm run haptics:check`, `npm run stock-flip:check`.
+- [x] Owner functional test — haptics confirmed working on device.
+- [ ] Owner functional test — one end-to-end purchase (plan → QR → screenshot →
+  order submitted → admin receives it).
+
 ## Canonical Review Upload Flow (2026-08-09)
 
 - [x] Prove the existing source path (`images/review1.webp`…`review30.webp`) and
