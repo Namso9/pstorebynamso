@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { promisify } from "node:util";
 
 // Plan-dialog backdrop blur verification on the connected Android device.
@@ -7,6 +7,9 @@ import { promisify } from "node:util";
 // Usage: node qa/kimi-device-plan-check.mjs [outDir]
 const run = promisify(execFile);
 const outDir = process.argv[2] || "qa/shots/device-check";
+// qa/shots/ is not in git any more (its captures were deleted 2026-08-18), so the
+// directory may not exist — create it instead of failing on the first write.
+await mkdir(outDir, { recursive: true });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const screencap = async (name) => {
   const { stdout } = await run("adb", ["exec-out", "screencap", "-p"], {

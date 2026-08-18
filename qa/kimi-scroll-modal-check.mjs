@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -10,6 +10,9 @@ const chromeBinary =
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const origin = process.argv[2] || "http://127.0.0.1:8797";
 const outputDirectory = process.argv[3] || path.resolve("qa/shots/tmp-scroll-check");
+// qa/shots/ is not in git any more (its captures were deleted 2026-08-18), so the
+// directory may not exist — create it instead of failing on the first write.
+await mkdir(outputDirectory, { recursive: true });
 const emulateMobile = process.argv[4] !== "desktop";
 const viewWidth = emulateMobile ? 390 : 1280;
 const viewHeight = emulateMobile ? 844 : 800;

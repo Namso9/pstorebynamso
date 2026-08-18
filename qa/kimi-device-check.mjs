@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { promisify } from "node:util";
 
 // Real-device verification on a USB-connected Android (Samsung SM-S948B):
@@ -9,6 +9,9 @@ import { promisify } from "node:util";
 // Usage: node qa/kimi-device-check.mjs [outDir]
 const run = promisify(execFile);
 const outDir = process.argv[2] || "qa/shots/device-check";
+// qa/shots/ is not in git any more (its captures were deleted 2026-08-18), so the
+// directory may not exist — create it instead of failing on the first write.
+await mkdir(outDir, { recursive: true });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const adb = async (...args) => (await run("adb", args)).stdout.trim();
