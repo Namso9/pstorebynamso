@@ -662,7 +662,7 @@
           "desc": "Our Mail (Private Acc)",
           "price": "65,000 Ks",
           "id": "30_days_warranty",
-          "bot": true
+          "stock": false
         },
         {
           "name": "15 days warranty",
