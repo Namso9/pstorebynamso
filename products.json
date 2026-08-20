@@ -669,7 +669,7 @@
           "desc": "Our Mail (Private Acc)",
           "price": "40,000 Ks",
           "id": "15_days_warranty",
-          "bot": true
+          "stock": false
         }
       ]
     },
