@@ -983,7 +983,8 @@
           "desc": "One Device",
           "price": "20,000 Ks",
           "id": "3_months",
-          "bot": true
+          "bot": true,
+          "stock": false
         }
       ]
     }
