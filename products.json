@@ -413,7 +413,7 @@
           "desc": "No Ads (Monthly Change)",
           "price": "10,000 Ks",
           "id": "1_month_our_mail",
-          "bot": true
+          "stock": false
         },
         {
           "name": "3 Month cus mail",
@@ -662,14 +662,14 @@
           "desc": "Our Mail (Private Acc)",
           "price": "65,000 Ks",
           "id": "30_days_warranty",
-          "bot": true
+          "stock": false
         },
         {
           "name": "15 days warranty",
           "desc": "Our Mail (Private Acc)",
           "price": "40,000 Ks",
           "id": "15_days_warranty",
-          "bot": true
+          "stock": false
         }
       ]
     },
@@ -982,7 +982,8 @@
           "desc": "One Device",
           "price": "20,000 Ks",
           "id": "3_months",
-          "bot": true
+          "bot": true,
+          "stock": false
         }
       ]
     }
