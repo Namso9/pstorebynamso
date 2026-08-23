@@ -4,6 +4,14 @@
 
 ### Added
 
+- An animated light/dark theme switch in the header, replacing the plain
+  Sun/Moon icon button. The pill track is a small painted scene — a day sky
+  with drifting clouds that cross-fades into a night sky with rising stars —
+  while the knob morphs from a glowing sun into a cratered moon as it slides
+  across. Every toggle also cross-fades the whole page's backgrounds, text,
+  borders, and shadows instead of snapping, and reduced-motion users get an
+  instant swap. The switch flips Light ↔ Dark directly, keeps the existing
+  `ps-theme` persistence and system default, and reloads stay flash-free.
 - A Bioscope download page at `/bioscope-download/`. One device rail — Phone &
   Tablet, TV & TV Box, Computer — drives both the download list and the install
   steps beneath it, and the visitor's own device is selected for them from the

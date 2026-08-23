@@ -39,6 +39,26 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- **The animated theme switch is BUILT, NOT YET DEPLOYED (2026-08-23).** The
+  header's plain Sun/Moon icon button is now a `role="switch"` control with a
+  painted day/night scene: the pill track cross-fades between a clouded day
+  sky and a starred night sky while the thumb morphs from a glowing sun to a
+  cratered moon and slides across with overshoot. Each toggle adds a
+  `theme-transition` class to `<html>` for one beat so token-driven surfaces
+  cross-fade (340ms) instead of snapping; reduced-motion collapses everything
+  to an instant swap. Behaviour contract is unchanged — same `ps-theme` key,
+  same untouched pre-hydration bootstrap (no flash), system
+  `prefers-color-scheme` as the unset default; "system" is no longer a
+  separate UI state (the switch toggles Light ↔ Dark and the first tap stores
+  an explicit choice). `npm run typecheck`, `npm run build`,
+  `npm run csp:check`, and `npm run theme:check`
+  (`qa/theme-switch-check.mjs`: animated flip, reload persistence both ways,
+  system default, reduced motion, 44px target, wordmark/switch fit at
+  360/430/768/1024px, zero console errors/overflow) all pass; lint remains
+  machine-blocked (pre-existing). Scene captures live in
+  `qa/shots/theme-switch/`. Awaiting owner on-device review and separate
+  commit/push/deploy authorization.
+
 - **The Bioscope download page is LIVE-READY (2026-08-23).**
   `/bioscope-download/` ships the official download links for Android, Android
   TV, the three iOS TestFlight slots, Windows and Mac behind one device rail

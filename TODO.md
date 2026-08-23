@@ -46,43 +46,70 @@ Decisions:
 - Keep the existing architecture: extend `ps-theme`, the bootstrap script
   (only if needed), and the token system. No new theme library.
 - The new control toggles Light ↔ Dark directly. With no stored choice it
-  still resolves from `prefers-color-scheme`; the first tap stores an
-  explicit choice. (Decide during implementation whether "system" remains
-  reachable — e.g. long-press — or is dropped from the UI.)
+  still resolves from `prefers-color-scheme` (and follows OS changes live);
+  the first tap stores an explicit choice. "System" is no longer a UI state —
+  it is only the unset default, matching the owner's Light ↔ Dark request.
 - Keep the 44px touch target, `data-haptic="selection"`, aria-labels, and
   `prefers-reduced-motion` behavior.
 - CSP: the bootstrap script is SHA-256 hashed at build time by
   `scripts/generate-static-csp.mjs`; if the inline script changes, the hash
   regenerates with `npm run build` — no manual CSP edit.
 
+Implemented (2026-08-23):
+
+- `src/components/layout/ThemeToggle.tsx` is now a `role="switch"` control
+  whose track is a tiny painted scene: day sky gradient with drifting
+  clouds, night sky gradient with stars that rise on the left; the thumb
+  morphs from a glowing sun to a cratered moon while sliding across with a
+  slight overshoot and tilt. Pure CSS keyed off `aria-checked`.
+- Each toggle adds `theme-transition` to `<html>` for one beat (520ms), so
+  every token-driven surface cross-fades (`background-color`, `border-color`,
+  `color`, `box-shadow`, `fill`, `stroke`, `opacity`, 340ms) instead of
+  snapping. The class is never present on first paint, and the switch itself
+  is excluded so its own choreography keeps its timing.
+- Persistence, no-flash, and system default are unchanged in contract:
+  same `ps-theme` key, same untouched head bootstrap script.
+- Verification: `npm run theme:check` (`qa/theme-switch-check.mjs`) covers
+  system default both ways, the animated flip with the cross-fade class,
+  reload persistence for both themes, reduced-motion collapse, the 44px
+  target, the full wordmark + switch fit at 360/430/768/1024px, and zero
+  console errors/overflow on home and a category route. `qa/theme-switch-shots.mjs`
+  captures the day/night scenes to `qa/shots/theme-switch/`.
+- `npm run typecheck`, `npm run build`, `npm run csp:check` all pass;
+  `npm run lint` still cannot run on this machine (pre-existing
+  `eslint-config-next` import hang).
+
 Tasks:
 
 - [x] Audit the existing theme system (bootstrap, tokens, toggle, header
       placement) and capture the reference interaction concept.
-- [ ] Redesign `ThemeToggle` as an animated switch control: a pill track with
+- [x] Redesign `ThemeToggle` as an animated switch control: a pill track with
       a sliding knob, sun/moon icon morph (rotate/scale/rays transition), and
       detail accents (e.g. stars/cloud dots) built from the existing
       `--accent` / surface tokens. No emoji, no copied assets.
-- [ ] Add a theme-change transition layer: on toggle only (not on first
+- [x] Add a theme-change transition layer: on toggle only (not on first
       paint), transition `background-color`, `color`, `border-color`, and
       `box-shadow` on themed surfaces; keep it under ~300ms, skip it entirely
       for reduced-motion users, and do not break the sticky header or the
       `backdrop-filter` minifier ordering rules documented in `globals.css`.
-- [ ] Verify persistence and no-flash: stored dark → reload stays dark;
+- [x] Verify persistence and no-flash: stored dark → reload stays dark;
       stored light → reload stays light; no stored choice → system; no
       light-then-dark flash on any route (bootstrap script must stay first in
       `<head>`).
-- [ ] Place the switch without cluttering the header at 360/390/430px; keep
+- [x] Place the switch without cluttering the header at 360/390/430px; keep
       the full `PREMIUM STORE` wordmark visible; verify 768/1024px and the
       mobile menu.
-- [ ] Add `qa/theme-switch-check.mjs`: toggle animates and flips
+- [x] Add `qa/theme-switch-check.mjs`: toggle animates and flips
       `data-theme`, reload persistence for both themes, system default,
       reduced-motion instant switch, zero console errors, zero horizontal
       overflow, 44px target retained.
-- [ ] Run `npm run lint` (if the machine allows), `npm run typecheck`,
+- [x] Run `npm run lint` (if the machine allows), `npm run typecheck`,
       `npm run build`, `npm run csp:check`; browser-check both themes on key
-      routes (home, a category, payment, order).
-- [ ] Update `AI_CONTEXT.md` Current Status and `CHANGELOG.md` on completion.
+      routes (home, a category, payment, order). Lint is machine-blocked
+      (pre-existing); browser checks covered home and a category route plus
+      the 360-1024px width matrix — payment/order share the same header and
+      token layer.
+- [x] Update `AI_CONTEXT.md` Current Status and `CHANGELOG.md` on completion.
 - [ ] Owner: review the switch on a real phone; authorize commit/push/deploy
       separately.
 

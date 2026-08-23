@@ -3,88 +3,108 @@
 import { useEffect, useState } from "react";
 
 import { HapticSwitch } from "@/components/common/HapticSwitch";
-import { Icon, type IconName } from "@/components/common/Icon";
 
-type ThemeMode = "system" | "light" | "dark";
+type ResolvedTheme = "light" | "dark";
 
 const storageKey = "ps-theme";
+const transitionMs = 520;
 
-const modeDetails: Record<
-  ThemeMode,
-  { label: string; icon: IconName; next: ThemeMode }
-> = {
-  system: { label: "Theme: System", icon: "theme", next: "light" },
-  light: { label: "Theme: Light", icon: "sun", next: "dark" },
-  dark: { label: "Theme: Dark", icon: "moon", next: "system" },
-};
-
-function isThemeMode(value: string | null): value is Exclude<ThemeMode, "system"> {
-  return value === "light" || value === "dark";
+function readStoredTheme(): ResolvedTheme | null {
+  try {
+    const stored = window.localStorage.getItem(storageKey);
+    return stored === "light" || stored === "dark" ? stored : null;
+  } catch {
+    // Storage may be disabled in private or embedded browsers.
+    return null;
+  }
 }
 
-function applyTheme(mode: ThemeMode) {
-  const resolved =
-    mode === "system"
-      ? window.matchMedia("(prefers-color-scheme: light)").matches
-        ? "light"
-        : "dark"
-      : mode;
-  document.documentElement.dataset.theme = resolved;
-  document.documentElement.dataset.themeMode = mode;
-  document.documentElement.style.colorScheme = resolved;
+function systemTheme(): ResolvedTheme {
+  return window.matchMedia("(prefers-color-scheme: light)").matches
+    ? "light"
+    : "dark";
 }
 
+function applyTheme(theme: ResolvedTheme, explicit: boolean) {
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.dataset.themeMode = explicit ? theme : "system";
+  document.documentElement.style.colorScheme = theme;
+}
+
+/**
+ * Animated light/dark switch. The track is a tiny scene — day sky with
+ * drifting clouds, night sky with rising stars — and the thumb morphs
+ * between a glowing sun and a cratered moon while sliding across it. All of
+ * the artwork is CSS keyed off `aria-checked`, so the choreography also
+ * collapses cleanly under the global reduced-motion rule.
+ *
+ * Behaviour: with no stored choice the switch follows the OS theme; the
+ * first tap stores an explicit `ps-theme` light/dark choice (the same key
+ * the head bootstrap script reads, so reloads stay flash-free). Each toggle
+ * also adds `theme-transition` to `<html>` for one beat so every
+ * token-driven surface cross-fades instead of snapping.
+ */
 export function ThemeToggle() {
-  const [mode, setMode] = useState<ThemeMode | null>(null);
+  const [theme, setTheme] = useState<ResolvedTheme | null>(null);
+  const [explicit, setExplicit] = useState(false);
 
   useEffect(() => {
-    let stored: string | null = null;
-    try {
-      stored = window.localStorage.getItem(storageKey);
-    } catch {
-      // Storage may be disabled in private or embedded browsers.
-    }
+    const stored = readStoredTheme();
     const frame = window.requestAnimationFrame(() => {
-      setMode(isThemeMode(stored) ? stored : "system");
+      setExplicit(stored !== null);
+      setTheme(stored ?? systemTheme());
     });
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
-    if (mode === null) return;
-    applyTheme(mode);
+    if (explicit) return;
     const media = window.matchMedia("(prefers-color-scheme: light)");
     const handleChange = () => {
-      if (mode === "system") applyTheme("system");
+      const next = systemTheme();
+      applyTheme(next, false);
+      setTheme(next);
     };
     media.addEventListener?.("change", handleChange);
     return () => media.removeEventListener?.("change", handleChange);
-  }, [mode]);
+  }, [explicit]);
 
-  const cycleTheme = () => {
-    const current = mode ?? "system";
-    const next = modeDetails[current].next;
+  const toggleTheme = () => {
+    const next = (theme ?? systemTheme()) === "dark" ? "light" : "dark";
     try {
-      if (next === "system") window.localStorage.removeItem(storageKey);
-      else window.localStorage.setItem(storageKey, next);
+      window.localStorage.setItem(storageKey, next);
     } catch {
       // The active page still changes even when storage is unavailable.
     }
-    applyTheme(next);
-    setMode(next);
+    const root = document.documentElement;
+    root.classList.add("theme-transition");
+    applyTheme(next, true);
+    window.setTimeout(() => root.classList.remove("theme-transition"), transitionMs);
+    setExplicit(true);
+    setTheme(next);
   };
 
-  const details = modeDetails[mode ?? "system"];
+  const isDark = theme === "dark";
+  const label = isDark
+    ? "Dark mode. Switch to light mode."
+    : "Light mode. Switch to dark mode.";
+
   return (
     <button
       type="button"
-      className="icon-button header-theme-button"
-      aria-label={`${details.label}. Activate ${modeDetails[details.next].label}.`}
-      title={details.label}
+      className="theme-switch header-theme-button"
+      role="switch"
+      aria-checked={isDark}
+      aria-label={label}
+      title={label}
       data-haptic="selection"
-      onClick={cycleTheme}
+      onClick={toggleTheme}
     >
-      <Icon name={details.icon} />
+      <span className="theme-switch__track" aria-hidden="true">
+        <span className="theme-switch__stars" />
+        <span className="theme-switch__clouds" />
+        <span className="theme-switch__thumb" />
+      </span>
       <HapticSwitch />
     </button>
   );
