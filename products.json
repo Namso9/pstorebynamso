@@ -9,46 +9,11 @@
   },
   "categories": [
     {
-      "slug": "creative-apps",
-      "title": "Creative Apps",
-      "subtitle": "Design & Editing Tools",
-      "icon": "fa-palette",
-      "page": "creative-apps.html"
-    },
-    {
-      "slug": "music-apps",
-      "title": "Music Apps",
-      "subtitle": "Premium Music Streaming",
-      "icon": "fa-music",
-      "page": "music-apps.html"
-    },
-    {
-      "slug": "communication-apps",
-      "title": "Communication Apps",
-      "subtitle": "Chat & Meeting Tools",
-      "icon": "fa-comments",
-      "page": "communication-apps.html"
-    },
-    {
       "slug": "streaming-apps",
       "title": "Streaming Apps",
       "subtitle": "Movies & TV Shows",
       "icon": "fa-clapperboard",
       "page": "streaming-apps.html"
-    },
-    {
-      "slug": "computer-keys-and-office-apps",
-      "title": "Computer Keys & Office",
-      "subtitle": "Windows & Office Licenses",
-      "icon": "fa-laptop",
-      "page": "computer-keys-and-office-apps.html"
-    },
-    {
-      "slug": "learning-apps",
-      "title": "Learning Apps",
-      "subtitle": "Education & Study Tools",
-      "icon": "fa-graduation-cap",
-      "page": "learning-apps.html"
     },
     {
       "slug": "ai-apps",
@@ -63,6 +28,26 @@
       "subtitle": "Secure & Fast VPNs",
       "icon": "fa-shield-halved",
       "page": "premium-vpn-apps.html"
+    },
+    {
+      "slug": "mobile-data",
+      "title": "Mobile Data",
+      "subtitle": "Atom & Mytel Data Packs",
+      "icon": "fa-signal"
+    },
+    {
+      "slug": "music-apps",
+      "title": "Music Apps",
+      "subtitle": "Premium Music Streaming",
+      "icon": "fa-music",
+      "page": "music-apps.html"
+    },
+    {
+      "slug": "creative-apps",
+      "title": "Creative & Work",
+      "subtitle": "Design, Office & Study Tools",
+      "icon": "fa-palette",
+      "page": "creative-apps.html"
     }
   ],
   "products": [
@@ -240,7 +225,7 @@
     },
     {
       "id": "zoom",
-      "category": "communication-apps",
+      "category": "creative-apps",
       "name": "Zoom Pro",
       "subtitle": "100 Participants Plan",
       "image": "images/zoom.svg",
@@ -279,7 +264,7 @@
     },
     {
       "id": "telegram",
-      "category": "communication-apps",
+      "category": "creative-apps",
       "name": "Telegram Premium",
       "subtitle": "Exclusive Features",
       "image": "images/telegram.svg",
@@ -518,7 +503,7 @@
     },
     {
       "id": "windows",
-      "category": "computer-keys-and-office-apps",
+      "category": "creative-apps",
       "name": "Windows Lifetime Keys",
       "subtitle": "Win 10 / 11 (Home & Pro)",
       "image": "images/windows.svg",
@@ -563,7 +548,7 @@
     },
     {
       "id": "office",
-      "category": "computer-keys-and-office-apps",
+      "category": "creative-apps",
       "name": "Office 365 Pro Plus",
       "subtitle": "Full Apps Suite",
       "image": "images/office365.svg",
@@ -581,7 +566,7 @@
     },
     {
       "id": "quillbot",
-      "category": "learning-apps",
+      "category": "creative-apps",
       "name": "Quillbot Premium",
       "subtitle": "Paraphrasing Tool",
       "image": "images/quillbot.webp",
@@ -607,7 +592,7 @@
     },
     {
       "id": "duolingo",
-      "category": "learning-apps",
+      "category": "creative-apps",
       "name": "Duolingo Super",
       "subtitle": "Language Learning",
       "image": "images/duolingo.svg",
@@ -625,7 +610,7 @@
     },
     {
       "id": "duolingocrack",
-      "category": "learning-apps",
+      "category": "creative-apps",
       "name": "Duolingo Crack Acc Plan",
       "subtitle": "Better Value",
       "image": "images/duolingo.svg",
@@ -984,6 +969,191 @@
           "id": "3_months",
           "bot": true,
           "stock": false
+        }
+      ]
+    },
+    {
+      "id": "atom-data",
+      "category": "mobile-data",
+      "name": "Atom Data",
+      "subtitle": "Data + Atom Mins + SMS",
+      "image": "images/atom.svg",
+      "imageClass": "",
+      "modalTitle": "Atom Data Packs",
+      "plans": [
+        {
+          "name": "24 GB",
+          "desc": "30 Days · 8000 Atom Mins · 5000 Atom SMS",
+          "price": "15,000 Ks",
+          "id": "24gb_30d"
+        },
+        {
+          "name": "130 GB",
+          "desc": "30 Days · 8000 Atom Mins · 5000 Atom SMS",
+          "price": "31,000 Ks",
+          "id": "130gb_30d"
+        }
+      ]
+    },
+    {
+      "id": "mytel-data",
+      "category": "mobile-data",
+      "name": "Mytel Data",
+      "subtitle": "Data Only — No Mins, No SMS",
+      "image": "images/mytel.svg",
+      "imageClass": "",
+      "modalTitle": "Mytel Data Packs",
+      "plans": [
+        {
+          "name": "22 GB",
+          "desc": "30 Days · Data only",
+          "price": "16,000 Ks",
+          "id": "22gb_30d"
+        },
+        {
+          "name": "40 GB",
+          "desc": "30 Days · Data only",
+          "price": "21,000 Ks",
+          "id": "40gb_30d"
+        },
+        {
+          "name": "120 GB",
+          "desc": "30 Days · Data only",
+          "price": "35,000 Ks",
+          "id": "120gb_30d"
+        }
+      ]
+    },
+    {
+      "id": "bioscope",
+      "category": "streaming-apps",
+      "name": "Bioscope Premium",
+      "subtitle": "Myanmar Streaming App",
+      "image": "images/bioscope.svg",
+      "imageClass": "",
+      "modalTitle": "Bioscope Premium Plans",
+      "planPicker": "duration",
+      "plans": [
+        {
+          "name": "1 Month",
+          "price": "5,000 Ks",
+          "id": "1_month",
+          "bot": true
+        },
+        {
+          "name": "2 Months",
+          "price": "10,000 Ks",
+          "id": "2_months",
+          "bot": true,
+          "bonus": "+7 days"
+        },
+        {
+          "name": "3 Months",
+          "price": "15,000 Ks",
+          "id": "3_months",
+          "bot": true,
+          "bonus": "+7 days"
+        },
+        {
+          "name": "4 Months",
+          "price": "25,000 Ks",
+          "id": "4_months",
+          "bot": true,
+          "bonus": "+7 days"
+        },
+        {
+          "name": "6 Months",
+          "price": "30,000 Ks",
+          "id": "6_months",
+          "bot": true,
+          "bonus": "+30 days"
+        },
+        {
+          "name": "7 Months",
+          "price": "35,000 Ks",
+          "id": "7_months",
+          "bot": true,
+          "bonus": "+30 days"
+        },
+        {
+          "name": "9 Months",
+          "price": "45,000 Ks",
+          "id": "9_months",
+          "bot": true,
+          "bonus": "+37 days"
+        },
+        {
+          "name": "10 Months",
+          "price": "50,000 Ks",
+          "id": "10_months",
+          "bot": true,
+          "bonus": "+37 days"
+        },
+        {
+          "name": "11 Months",
+          "price": "55,000 Ks",
+          "id": "11_months",
+          "bot": true,
+          "bonus": "+37 days"
+        },
+        {
+          "name": "12 Months",
+          "price": "60,000 Ks",
+          "id": "12_months",
+          "bot": true,
+          "bonus": "+60 days"
+        }
+      ]
+    },
+    {
+      "id": "meitu",
+      "category": "creative-apps",
+      "name": "Meitu Premium",
+      "subtitle": "AI Photo & Video Editor",
+      "image": "images/meitu.svg",
+      "imageClass": "",
+      "modalTitle": "Meitu VIP & SVIP Plans",
+      "plans": [
+        {
+          "header": "Meitu VIP — 2 Devices"
+        },
+        {
+          "name": "1 Month",
+          "desc": "VIP · 2 Devices",
+          "price": "25,000 Ks",
+          "id": "vip_1_month",
+          "bot": true
+        },
+        {
+          "name": "1 Year",
+          "desc": "VIP · 2 Devices",
+          "price": "150,000 Ks",
+          "id": "vip_1_year",
+          "bot": true
+        },
+        {
+          "header": "Meitu SVIP — 4 Devices"
+        },
+        {
+          "name": "1 Month",
+          "desc": "SVIP · 4 Devices",
+          "price": "35,000 Ks",
+          "id": "svip_1_month",
+          "bot": true
+        },
+        {
+          "name": "3 Months",
+          "desc": "SVIP · 4 Devices",
+          "price": "100,000 Ks",
+          "id": "svip_3_months",
+          "bot": true
+        },
+        {
+          "name": "1 Year",
+          "desc": "SVIP · 4 Devices",
+          "price": "250,000 Ks",
+          "id": "svip_1_year",
+          "bot": true
         }
       ]
     }
