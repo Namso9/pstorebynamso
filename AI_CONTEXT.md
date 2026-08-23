@@ -39,25 +39,34 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
-- **The animated theme switch is BUILT, NOT YET DEPLOYED (2026-08-23).** The
-  header's plain Sun/Moon icon button is now a `role="switch"` control with a
-  painted day/night scene: the pill track cross-fades between a clouded day
-  sky and a starred night sky while the thumb morphs from a glowing sun to a
-  cratered moon and slides across with overshoot. Each toggle adds a
-  `theme-transition` class to `<html>` for one beat so token-driven surfaces
-  cross-fade (340ms) instead of snapping; reduced-motion collapses everything
-  to an instant swap. Behaviour contract is unchanged — same `ps-theme` key,
-  same untouched pre-hydration bootstrap (no flash), system
-  `prefers-color-scheme` as the unset default; "system" is no longer a
-  separate UI state (the switch toggles Light ↔ Dark and the first tap stores
-  an explicit choice). `npm run typecheck`, `npm run build`,
+- **The animated theme switch is DEPLOYED (2026-08-23, commit `1e15e4e`).**
+  The header's plain Sun/Moon icon button is now a `role="switch"` control
+  with a painted day/night scene: the pill track cross-fades between a
+  clouded day sky and a starred night sky while the thumb morphs from a
+  glowing sun to a cratered moon and slides across with overshoot. Each
+  toggle adds a `theme-transition` class to `<html>` for one beat so
+  token-driven surfaces cross-fade (340ms) instead of snapping;
+  reduced-motion collapses everything to an instant swap. Behaviour contract
+  is unchanged — same `ps-theme` key, same untouched pre-hydration bootstrap
+  (no flash), system `prefers-color-scheme` as the unset default; "system"
+  is no longer a separate UI state (the switch toggles Light ↔ Dark and the
+  first tap stores an explicit choice). `npm run typecheck`, `npm run build`,
   `npm run csp:check`, and `npm run theme:check`
-  (`qa/theme-switch-check.mjs`: animated flip, reload persistence both ways,
-  system default, reduced motion, 44px target, wordmark/switch fit at
-  360/430/768/1024px, zero console errors/overflow) all pass; lint remains
-  machine-blocked (pre-existing). Scene captures live in
-  `qa/shots/theme-switch/`. Awaiting owner on-device review and separate
-  commit/push/deploy authorization.
+  (`qa/theme-switch-check.mjs`) all pass locally AND against production
+  `pstorebynamso.com` (animated flip, reload persistence both ways, system
+  default, reduced motion, 44px target, wordmark/switch fit at
+  360/430/768/1024px, zero console errors/overflow). Scene captures live in
+  `qa/shots/theme-switch/`. Note: the theme CSS rode along inside the
+  Bioscope commit `e049fd8` (it swept the then-dirty `globals.css`), while
+  the component itself shipped in `1e15e4e`.
+  ⚠️ Deploy-path finding: local `wrangler pages deploy` now fails with API
+  code 10000 — the current OAuth login (`yeminphyo0000@gmail.com`, account
+  `1177852b…`) has no Pages projects; the project lives in account
+  `02dc0fa8…` (still cached in `node_modules/.cache/wrangler`, which was
+  cleared). This deploy went out through the Pages Git integration on push
+  (corrected build settings: `npm run build` → `out`), which published
+  production within minutes. Future direct uploads need the owner to
+  re-authenticate wrangler against the `02dc0fa8…` account.
 
 - **The Bioscope download page is LIVE-READY (2026-08-23).**
   `/bioscope-download/` ships the official download links for Android, Android

@@ -110,8 +110,12 @@ Tasks:
       the 360-1024px width matrix — payment/order share the same header and
       token layer.
 - [x] Update `AI_CONTEXT.md` Current Status and `CHANGELOG.md` on completion.
-- [ ] Owner: review the switch on a real phone; authorize commit/push/deploy
-      separately.
+- [x] Owner: authorize commit/push/deploy — done 2026-08-23 as commit
+      `1e15e4e`; production deploy went through the Pages Git integration
+      (local wrangler OAuth no longer maps to the Pages account — see
+      `AI_CONTEXT.md`). `npm run theme:check` passes on
+      `pstorebynamso.com`.
+- [ ] Owner: review the switch on a real phone.
 
 ## Bioscope Download Page (2026-08-23)
 
