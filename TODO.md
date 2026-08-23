@@ -2,21 +2,28 @@
 
 ## Status
 
-Current stage: P0 technical review and owner approval, production-parity
-restoration for P2-P5, and the P5 payment/order implementation and Preview
-integration checks are complete. P3-P7 and the P8 QA matrix are complete.
-Real Android Chrome, mid-range Android Motion, and physical iPhone Safari checks
-pass. The owner confirmed that an embedded WebView/app wrapper is not required
-for this SaaS website. The build-time hash CSP and production cutover are now
-complete. Preview deployment `ad0964b4-7aa3-4448-a8e1-37e53adbb2ef` is live on
-`next-preview`. Production **was** `d1f676f1` when this was written (dated note —
-see `../STATUS.md` → 📍 CURRENT STATE, and read the live deployment id in the
-Cloudflare dashboard; this file must not assert it as current); routes, static/data assets,
-hydration, CSP enforcement, browser interactions, and the Zoom contract pass on
-`pstorebynamso.com`.
+Current stage (2026-08-23): the migration (P0-P9) and all follow-up polish,
+haptics, FAQ/review, Ask Price, and checkout work are complete and live. Two
+2026-08-23 additions are now shipped:
+
+- **Bioscope download page** — `/bioscope-download/` is served on
+  `pstorebynamso.com` (returns 200, verified 2026-08-23). Remaining items are
+  owner content tasks (real logo, Admin Panel product/plans, possible iOS
+  screenshot re-shoot) — see its section below.
+- **Animated theme switch** — DEPLOYED as commit `1e15e4e` (docs `0ea1317`);
+  `npm run theme:check` passes against production. Only the owner's
+  on-device review remains.
+
+Deployment path note: production deploys currently go through the Pages Git
+integration on push (build command `npm run build`, output `out`) — the
+local wrangler OAuth login no longer maps to the Pages account, so
+`wrangler pages deploy` fails with API code 10000 until the owner
+re-authenticates wrangler against the project's account. The live
+deployment id authority remains the Cloudflare dashboard and
+`../STATUS.md`; this file must not assert one as current.
 
 The App Router scaffold and static export are verified and the approved Next.js
-build is now Production. The legacy source remains in the repository and the
+build is Production. The legacy source remains in the repository and the
 recorded pre-cutover Pages deployment remains the rollback point.
 
 ## Animated Theme Switch (2026-08-23)
@@ -27,7 +34,7 @@ reference site (an SMM panel storefront) and a motion-design pin the owner
 shared. Concept only — no visual copying; the result must match Premium
 Store's brand tokens and mobile-first design.
 
-Current state (verified 2026-08-23):
+Starting state (verified 2026-08-23, before the change — kept for context):
 
 - Theme system already exists and works: `ps-theme` localStorage key
   (`light`/`dark`, absent = system), pre-hydration bootstrap script in
