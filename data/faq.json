@@ -40,9 +40,29 @@
       }
     ]
   },
-  "communication-apps": {
+  "creative-apps": {
     "title": "မေးလေ့ရှိသည့် မေးခွန်းများ",
     "items": [
+      {
+        "q": "Picsart, Capcut, Adobe ဝယ်ရင် ဘာတွေပေးရမလဲ?",
+        "a_html": "<p>\nငွေလွှဲပြီး Screenshot လေးပေးရင်ရပါပြီ။ ဒီဘက်က Mail နဲ့ Password ပို့ပေးမှာပါခင်ဗျ။\n        </p>"
+      },
+      {
+        "q": "Canva ဝယ်ရင်ဘာတွေပေးရမလဲ?",
+        "a_html": "<p>\nCanva ဖွင့်ထားတဲ့ Gmail လေးပို့ပေးရင်ရပါပြီ။ Invite လုပ်ပေးပြီးတာနဲ့ Mail ဝင်လာမှာပါ။\nAccept လုပ်ပြီး Pro features တွေ သုံးလို့ရပါပြီ။\n        </p>"
+      },
+      {
+        "q": "CapCut Whole Acc က Device ဘယ်နှခုရလဲ?",
+        "a_html": "<p>\n• Whole Acc: 2-3 devices (Phone + PC) ရပါတယ်ဗျ။\n\n• Shared Acc: One Device (တစ်လုံး) ပဲ ရပါတယ်ဗျ။\n        </p>"
+      },
+      {
+        "q": "Meitu ဝယ်ရင် ဘာတွေပေးရမလဲ?",
+        "a_html": "<p>\n• ဒီဘက်က Account နဲ့ ဝယ်ယူနိုင်ပါတယ်<br>\n• User ရဲ့ Own Account နဲ့လည်း ဝယ်ယူနိုင်ပါတယ်\n</p>"
+      },
+      {
+        "q": "Meitu VIP နှင့် SVIP ဘာကွာလဲ?",
+        "a_html": "<p>\n<strong class=\"faq-accent-blue\">Meitu VIP</strong> — Mobile app only · 2 Devices\n</p>\n<ul>\n<li>Export: 1080p အထိ</li>\n<li>Advanced AI tools: အကန့်အသတ်ရှိ</li>\n<li>Video editing: standard mobile tools</li>\n<li>Processing speed: standard</li>\n</ul>\n<p>\n<strong class=\"faq-accent-green\">Meitu SVIP</strong> — Mobile, PC &amp; Web · 4 Devices\n</p>\n<ul>\n<li>Export: 4K အထိ</li>\n<li>Advanced AI tools: အားလုံး ရ</li>\n<li>AI features: Face Swap, AI Drawing နှင့် အခြား</li>\n<li>Video editing: advanced video features</li>\n<li>Processing speed: priority GPU servers — 40% အထိ ပိုမြန်</li>\n</ul>"
+      },
       {
         "q": "Telegram Premium ဝယ်ရင် ဘာတွေပေးရမလဲ?",
         "a_html": "<p>\nUsername ပေးရင်ရပါပြီ။ ဒီဘက်က Gift Link ပို့ပေးမှာပါ။ နှိပ်ပြီးတာနဲ့ Premium ဖြစ်ပါပြီ။\n        </p>"
@@ -54,12 +74,7 @@
       {
         "q": "Zoom က 300p, 500p, 1000p plan တွေရော ရှိလား?",
         "a_html": "<p>\nရှိပါတယ်ခင်ဗျ။ Business Plan အတွက်ဆို Admin ကိုစာပို့ပြီး ကိုယ်လိုချင်တဲ့ Plan ဝယ်ယူလို့ရပါတယ်ခင်ဗျ။ Website မှာ 100p အတွက်ပဲ Plan လေး ထည့်ထားပေးတာပါ။\n        </p>"
-      }
-    ]
-  },
-  "computer-keys-and-office-apps": {
-    "title": "မေးလေ့ရှိသည့် မေးခွန်းများ",
-    "items": [
+      },
       {
         "q": "Office 365 Pro Plus ဝယ်ရင် ဘာတွေပေးရမလဲ?",
         "a_html": "<p>\nဒီဘက်က အသုံးပြုရမယ့် Mail and Password ပြန်ပို့ပေးမှာပါ။\n(1-YR FULL WARRANTY SUPPORT)\n\n1 Random နာမည်ဖြင့် ရပါမည်။\n2 OneDrive 100GB ပါဝင်ပါတယ် \n3 ဖိုင်တွေကို ကိုယ့်ဖုန်း/PC ထဲမှာပါ သိမ်းလို့ရပါမယ်\n4 Password Reset မရသည့်အတွက် Password ကို သေချာမှတ်ပေးရပါမည်\n5 5 Devices အသုံးပြုလို့ရပါမယ် ( Web/Windows/Mac/IOS/Android )\n        </p>"
@@ -75,29 +90,7 @@
       {
         "q": "Office 365 Pro Plus က File တွေကို Cloud Save လို့ရလား?",
         "a_html": "<p>\n- OneDrive ပါဝင်ပေမယ့် Budget Plan မို့ အခန့်မသင့်ရင် အချိန်မရွေး ပျက်တတ်တာကြောင့် Data များကို သေချာစွာ Backup ယူထားဖို့လိုပါမယ်\n\n- ဖုန်း/PC ထဲမှာပါ ဖိုင်တွေကို သိမ်းဆည်းလို့ရပါတယ်\n        </p>"
-      }
-    ]
-  },
-  "creative-apps": {
-    "title": "မေးလေ့ရှိသည့် မေးခွန်းများ",
-    "items": [
-      {
-        "q": "Picsart, Capcut, Adobe ဝယ်ရင် ဘာတွေပေးရမလဲ?",
-        "a_html": "<p>\nငွေလွှဲပြီး Screenshot လေးပေးရင်ရပါပြီ။ ဒီဘက်က Mail နဲ့ Password ပို့ပေးမှာပါခင်ဗျ။\n        </p>"
       },
-      {
-        "q": "Canva ဝယ်ရင်ဘာတွေပေးရမလဲ?",
-        "a_html": "<p>\nCanva ဖွင့်ထားတဲ့ Gmail လေးပို့ပေးရင်ရပါပြီ။ Invite လုပ်ပေးပြီးတာနဲ့ Mail ဝင်လာမှာပါ။\nAccept လုပ်ပြီး Pro features တွေ သုံးလို့ရပါပြီ။\n        </p>"
-      },
-      {
-        "q": "CapCut Whole Acc က Device ဘယ်နှခုရလဲ?",
-        "a_html": "<p>\n• Whole Acc: 2-3 devices (Phone + PC) ရပါတယ်ဗျ။\n\n• Shared Acc: One Device (တစ်လုံး) ပဲ ရပါတယ်ဗျ။\n        </p>"
-      }
-    ]
-  },
-  "learning-apps": {
-    "title": "မေးလေ့ရှိသည့် မေးခွန်းများ",
-    "items": [
       {
         "q": "Duolingo ဝယ်ရင် ဘာတွေပေးရမလဲ?",
         "a_html": "<p>\nမိမိ ရဲ့ Duolingo Mail and Password ပေးရင်ရပါပြီ။ ဒီဘက်က Super Plan Upgrade ပြီးပြန်ပို့ပေးမှာပါ။\n        </p>"
@@ -232,6 +225,27 @@
       {
         "q": "📺 YouTube Plan တွေ ဘာကွာလဲ?",
         "a_html": "<p>\n💎 1 Month Plan\n1 လ Plan မှာတော့ Admin ဘက်က Gmail & Password အဆင်သင့်ပေးတဲ့ပုံစံ ဖြစ်ပါတယ်။\nPlan ကာလပြီးသွားရင် Account အသစ်ထပ်ဝယ်သုံးရမှာဖြစ်ပြီး Renew မရပါ။\n\n🔗 3 Months / 1 Year Plan\n3 Months နဲ့ 1 Year Plan တွေမှာတော့ User ဘက်က ကိုယ်ပိုင် Gmail & Password ပေးရပါတယ်။\nပြီးရင် Admin ဘက်က Plan Join ပေးမှာဖြစ်ပြီး တစ်ဆက်တည်း အသုံးပြုနိုင်ပါတယ်။\nလစဉ် Account ပြောင်းသုံးစရာ မလိုပါ။\n\n⚠️ Important Notice\nတစ်ချို့ Gmail Account တွေမှာ Family / Premium Join မရတဲ့အခြေအနေတွေ ရှိနိုင်ပါတယ်။\nအဲ့လိုအခြေအနေဆိုရင်တော့ 1 Month Plan ပဲ ရယူနိုင်မှာဖြစ်ပါတယ်။        </p>"
+      }
+    ]
+  },
+  "mobile-data": {
+    "title": "မေးလေ့ရှိသည့် မေးခွန်းများ",
+    "items": [
+      {
+        "q": "Atom / Mytel data ဝယ်ရင် ဘာတွေပေးရမလဲ?",
+        "a_html": "<p>\nData ထည့်ပေးရမည့် ဖုန်းနံပါတ်နှင့် ငွေလွှဲ Screenshot လေး ပေးရင် ရပါပြီ။<br>\nWebsite order form မှာ ဖုန်းနံပါတ် ထည့်ရမည့် ကွက်လပ် ပါပြီးသားပါ — အတိအကျ ရေးပေးပါ။\n</p>"
+      },
+      {
+        "q": "ဘယ်လို ကဒ်တွေ မရလဲ?",
+        "a_html": "<p>\n• Bill ချေးထားတဲ့ ကဒ် မရပါ<br>\n• Plan ကဒ်တွေ မရပါ\n</p>"
+      },
+      {
+        "q": "Atom data ကို အချိန်မရွေး ဝယ်လို့ရလား?",
+        "a_html": "<p>\n• Atom data က ည ၉ နာရီ ကျော်ရင် မရပါ<br>\n• Mytel အတွက် အချိန် ကန့်သတ်ချက် မရှိပါ\n</p>"
+      },
+      {
+        "q": "Mytel data package မှာ mins / SMS ပါလား?",
+        "a_html": "<p>\nMytel က <strong>data သီးသန့်</strong>ပါ — mins နှင့် SMS မပါပါ။<br>\nAtom package များမှာမူ Atom mins နှင့် Atom SMS ပါဝင်ပါတယ်။\n</p>"
       }
     ]
   }
