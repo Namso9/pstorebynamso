@@ -52,7 +52,8 @@ function isPlanEntry(value: unknown): value is CatalogPlanEntry {
     isOptionalString(value.price) &&
     isOptionalBoolean(value.bot) &&
     isOptionalBoolean(value.contact) &&
-    isOptionalBoolean(value.stock)
+    isOptionalBoolean(value.stock) &&
+    isOptionalString(value.bonus)
   );
 }
 
@@ -66,6 +67,7 @@ function isProduct(value: unknown): value is CatalogProduct {
     typeof value.image === "string" &&
     isOptionalString(value.imageClass) &&
     isOptionalString(value.modalTitle) &&
+    (value.planPicker === undefined || value.planPicker === "duration") &&
     Array.isArray(value.plans) &&
     value.plans.every(isPlanEntry)
   );

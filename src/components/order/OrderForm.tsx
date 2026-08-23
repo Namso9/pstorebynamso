@@ -35,6 +35,7 @@ type SubmitResult =
         | "file-too-large"
         | "unsupported-file"
         | "missing-fields"
+        | "bad-phone"
         | "delivery"
         | "timeout"
         | "generic";
@@ -81,17 +82,38 @@ export type OrderFormCardProps = {
 };
 
 const MAIL_REQUIRED_PRODUCTS = new Set(["zoom", "canva", "duolingo"]);
+/**
+ * Products whose order cannot be fulfilled without the SIM number the data is
+ * loaded onto. Mirrored server-side in `functions/api/order.js` — a client-side
+ * `required` is not a validation. Keep the two lists in step, and note that
+ * `resolveProductIdFromText` in `src/services/order.ts` is what makes a
+ * hand-typed "Atom 24GB" resolve to an id in this set.
+ */
+const PHONE_REQUIRED_PRODUCTS = new Set(["atom-data", "mytel-data"]);
 const GEMINI_PRODUCT_ID = "gemini";
 const GEMINI_LINK_PLAN_ID = "18_months";
 const FILE_IDLE_TEXT = "Screenshot ရွေးရန် နှိပ်ပါ";
+/**
+ * The same free-text rule the server applies in `functions/api/order.js`.
+ * It MUST be checked here too: the server gates on this text as well as on
+ * `product_id`, and `resolveProductIdFromText` returns on the first catalog
+ * NAME match before it reaches its atom/mytel fallbacks — so "Tidal + Mytel
+ * 22GB" resolves to `tidal`. Without this clause the field would be hidden
+ * while the server demanded it, and the customer, who has already transferred
+ * the money, would get a 400 with nothing on screen left to fill in.
+ */
+const PHONE_REQUIRED_TEXT = /\b(atom|mytel)\b/i;
+/** The Myanmar-mobile half of the contact rule, reused by the SIM field. */
+const MM_PHONE_PATTERN = "09\\d{7,9}";
 const CONTACT_PATTERN =
-  "09\\d{7,9}|\\+?95\\d{7,10}|@?[A-Za-z0-9_]{4,32}";
+  `${MM_PHONE_PATTERN}|\\+?95\\d{7,10}|@?[A-Za-z0-9_]{4,32}`;
 
 function errorKind(message: string, name: string): Extract<SubmitResult, { status: "error" }> ["kind"] {
   if (name === "AbortError") return "timeout";
   if (message.includes("Unsupported image type")) return "unsupported-file";
   if (message.includes("File too large")) return "file-too-large";
   if (message.includes("Screenshot required")) return "missing-file";
+  if (message.includes("Invalid phone")) return "bad-phone";
   if (message.includes("Missing fields")) return "missing-fields";
   if (message.includes("Delivery failed")) return "delivery";
   return "generic";
@@ -135,6 +157,14 @@ function ErrorMessage({ kind }: { kind: Extract<SubmitResult, { status: "error" 
   }
   if (kind === "missing-fields") {
     return <>လိုအပ်တဲ့ အချက်အလက် မပြည့်စုံသေးပါ — * ပါတဲ့ အကွက်အားလုံး ဖြည့်ပေးပါ။</>;
+  }
+  if (kind === "bad-phone") {
+    return (
+      <>
+        Data ထည့်မည့် ဖုန်းနံပါတ်ကို <strong>09xxxxxxxxx</strong> ပုံစံဖြင့်
+        ပြန်ရေးပေးပါ။{fallback}
+      </>
+    );
   }
   if (kind === "delivery") {
     return <>Order က Admin ဆီ မရောက်သေးပါ။ ခဏနေ ထပ်ကြိုးစားပါ{fallback}</>;
@@ -246,6 +276,7 @@ export function OrderFormCard({
   const [customerPw, setCustomerPw] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [payment, setPayment] = useState("");
+  const [phone, setPhone] = useState("");
   const [contact, setContact] = useState("");
   const [note, setNote] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -291,6 +322,9 @@ export function OrderFormCard({
   const prefilledPlanId = activePrefill?.plan?.id ?? "";
   const planNeedsMail = prefillActive && prefilledPlanId.includes("cus_mail");
   const mailRequired = MAIL_REQUIRED_PRODUCTS.has(currentProductId) || planNeedsMail;
+  const phoneRequired =
+    PHONE_REQUIRED_PRODUCTS.has(currentProductId) ||
+    PHONE_REQUIRED_TEXT.test(productText);
   const geminiNeedsCredentials =
     currentProductId === GEMINI_PRODUCT_ID &&
     (prefillActive
@@ -358,6 +392,9 @@ export function OrderFormCard({
     const nextPlanId = restoredPrefill ? initialSelection?.plan?.id ?? "" : "";
     const nextNeedsMail =
       MAIL_REQUIRED_PRODUCTS.has(nextProductId) || nextPlanId.includes("cus_mail");
+    const nextNeedsPhone =
+      PHONE_REQUIRED_PRODUCTS.has(nextProductId) ||
+      PHONE_REQUIRED_TEXT.test(value);
     const nextNeedsGeminiCredentials =
       nextProductId === GEMINI_PRODUCT_ID &&
       (restoredPrefill
@@ -365,6 +402,7 @@ export function OrderFormCard({
         : !value.toLowerCase().includes("18 month") &&
           !value.toLowerCase().includes("link"));
 
+    if (!nextNeedsPhone) setPhone("");
     if (!nextNeedsMail && !nextNeedsGeminiCredentials) setCustomerMail("");
     if (!nextNeedsGeminiCredentials) {
       setCustomerPw("");
@@ -408,6 +446,7 @@ export function OrderFormCard({
     setCustomerPw("");
     setShowPassword(false);
     setPayment("");
+    setPhone("");
     setContact("");
     setNote("");
     setHoneypot("");
@@ -527,6 +566,33 @@ export function OrderFormCard({
               ပြန်ရှိချိန် Admin က အကြောင်းပြန်ပါမယ်။
             </p>
           ) : null}
+        </div>
+
+        {/* Kept mounted and only `hidden`, like the mail field: the value stays
+            in the FormData contract, and `required`/`pattern` are bound to the
+            requirement rather than the visibility. A `required` or `pattern` on
+            a hidden input Chrome cannot focus dead-ends the whole submit with
+            "an invalid form control is not focusable". */}
+        <div className="order-field" hidden={!phoneRequired}>
+          <label htmlFor="order-phone">Data ထည့်မည့် ဖုန်းနံပါတ် *</label>
+          <input
+            id="order-phone"
+            name="phone"
+            type={phoneRequired ? "tel" : "text"}
+            required={phoneRequired}
+            maxLength={20}
+            inputMode="numeric"
+            placeholder="09xxxxxxxxx"
+            autoComplete={phoneRequired ? "tel" : "off"}
+            pattern={phoneRequired ? MM_PHONE_PATTERN : undefined}
+            title="Data ထည့်ပေးရမည့် နံပါတ်ကို 09xxxxxxxxx ပုံစံဖြင့် ရေးပါ"
+            value={phone}
+            onChange={(event) => setPhone(event.target.value)}
+          />
+          <p className="order-field__hint">
+            Data ထည့်ပေးမည့် နံပါတ်ကို အတိအကျ ရေးပါ။ အောက်က Contact နဲ့
+            မတူညီလည်း ရပါတယ် — Contact က ပြန်ဆက်သွယ်ရန်၊ ဒါက data ဝင်မည့် SIM ပါ။
+          </p>
         </div>
 
         <div className="order-field" hidden={!showMailField}>

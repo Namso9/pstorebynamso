@@ -7,12 +7,13 @@ const chromeBinary =
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const origin = process.argv[2] || "http://127.0.0.1:8791";
 const verbose = process.argv.includes("--verbose");
+// The six live category slugs, after the 2026-08-23 compaction merged
+// communication-apps / computer-keys-and-office-apps / learning-apps into
+// creative-apps and added mobile-data.
 const routes = [
   "ai-apps",
-  "communication-apps",
-  "computer-keys-and-office-apps",
   "creative-apps",
-  "learning-apps",
+  "mobile-data",
   "music-apps",
   "premium-vpn-apps",
   "streaming-apps",

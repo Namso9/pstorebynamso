@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Terms of Service | Premium Store",
     description:
       "Premium Store ၏ ဝယ်ယူမှုစည်းမျဉ်းများ — refund, warranty နှင့် account အသုံးပြုမှုဆိုင်ရာ သတ်မှတ်ချက်များ။",
-    images: ["/images/p1.webp"],
+    images: ["/images/og-cover.webp"],
   },
 };
 

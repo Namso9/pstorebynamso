@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Order Without Telegram | PREMIUM STORE",
     description:
       "Telegram မသုံးဘဲ website ကနေတိုက်ရိုက် order တင်နိုင်ပါသည်။ ငွေလွှဲ screenshot ကို ဒီမှာတင်ပါ။",
-    images: ["/images/p1.webp"],
+    images: ["/images/og-cover.webp"],
   },
 };
 

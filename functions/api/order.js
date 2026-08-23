@@ -28,6 +28,21 @@ const ALLOWED_ORIGINS = ['https://pstorebynamso.com', 'https://www.pstorebynamso
 // FB fallback link — honeypot false positive နဲ့ success path ၂ ခုလုံးက သုံးတယ်
 const FB_DEFAULT = 'https://www.facebook.com/share/1C7LUKTbdt/?mibextid=wwXIfr';
 
+// Data packs cannot be fulfilled without the SIM the data is loaded onto, so
+// the phone number is required for these and only these. This is the server
+// side of the rule; the client copy is PHONE_REQUIRED_PRODUCTS in
+// src/components/order/OrderForm.tsx. Both are checked because product_id is
+// only posted when the customer arrived from a plan link — someone who types
+// the product name by hand posts an empty product_id, so the free-text field is
+// matched too. The two brands are the only telecom names in the catalog, and a
+// false match can only ever ADD the requirement, never skip it.
+const PHONE_REQUIRED_PRODUCT_IDS = ['atom-data', 'mytel-data'];
+const PHONE_REQUIRED_TEXT = /\b(atom|mytel)\b/i;
+// Same shape as MM_PHONE_PATTERN in OrderForm.tsx. The client `pattern` is a
+// convenience, not a validation, and this column is read by a human as the
+// number to top up — a typo is worth rejecting at the door.
+const PHONE_SHAPE = /^09\d{7,9}$/;
+
 // same source the /products.json proxy serves from — the live catalog
 const PRODUCTS_RAW_URL =
   'https://raw.githubusercontent.com/Namso9/pstorebynamso/main/products.json';
@@ -138,6 +153,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const customerMail = clean(form.get('customer_mail'), 120);
     const customerPw = clean(form.get('customer_pw'), 100);
     const note = clean(form.get('note'), 300);
+    const phone = clean(form.get('phone'), 20);
     const productId = clean(form.get('product_id'), 60);
     const planId = clean(form.get('plan_id'), 60);
     const shot = form.get('screenshot');
@@ -147,6 +163,15 @@ export async function onRequestPost({ request, env, waitUntil }) {
     }
     if (!shot || typeof shot === 'string') {
       return json({ ok: false, error: 'Screenshot required' }, 400);
+    }
+    const needsPhone =
+      PHONE_REQUIRED_PRODUCT_IDS.includes(productId) ||
+      PHONE_REQUIRED_TEXT.test(product);
+    if (needsPhone && !phone) {
+      return json({ ok: false, error: 'Missing fields' }, 400);
+    }
+    if (needsPhone && !PHONE_SHAPE.test(phone)) {
+      return json({ ok: false, error: 'Invalid phone' }, 400);
     }
     if (shot.size > MAX_FILE) {
       return json({ ok: false, error: 'File too large' }, 400);
@@ -177,6 +202,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       `👤 Name: ${name}\n` +
       `📦 Product: ${product}\n` +
       `💳 Payment: ${payment}\n` +
+      (phone ? `📱 Data SIM: ${phone}\n` : '') +
       `📞 Contact: ${contact}\n` +
       (customerMail ? `📧 Customer Mail: ${customerMail}\n` : '') +
       (customerPw ? `🔑 Mail Password: ${customerPw}\n` : '') +
@@ -210,6 +236,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     mirrorToPanel(env, waitUntil, {
       order_ref: orderId,
       name, product, payment, contact,
+      phone,
       customer_mail: customerMail,
       note,
       has_pw: Boolean(customerPw),

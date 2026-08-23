@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: "Customer Reviews | Premium Store",
     description:
       "Premium Store customer reviews — ဝယ်ယူပြီးသော customer များ၏ သုံးသပ်ချက် screenshot များ။",
-    images: ["/images/p1.webp"],
+    images: ["/images/og-cover.webp"],
   },
 };
 

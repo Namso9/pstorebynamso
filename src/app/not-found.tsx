@@ -10,6 +10,7 @@ const destinations = [
   { href: "/premium-vpn-apps/", label: "VPN Apps" },
   { href: "/streaming-apps/", label: "Streaming" },
   { href: "/ai-apps/", label: "AI Apps" },
+  { href: "/mobile-data/", label: "Mobile Data" },
   { href: "/music-apps/", label: "Music" },
   { href: "/payment/", label: "Payment" },
   { href: "/order/", label: "Order Form" },

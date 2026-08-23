@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Express VPN Location Guide | Premium Store",
     description:
       "ExpressVPN location ရွေးချယ်နည်း လမ်းညွှန် — Premium Store customer များအတွက် server location အသုံးပြုနည်း။",
-    images: ["/images/p8.webp"],
+    images: ["/images/og-cover.webp"],
   },
 };
 

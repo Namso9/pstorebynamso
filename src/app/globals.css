@@ -5775,3 +5775,170 @@ button:disabled > .haptic-tap {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+
+/* ==========================================================================
+   Photo-free category tiles · duration picker · Bioscope plans CTA
+   (2026-08-23). The green images/p*.webp category photos were retired rather
+   than redrawn, so a category tile leads with an inline-SVG mark instead. The
+   `.category-card__media` rules above are deliberately left alone — nothing
+   emits that block for a category any more, and the guide tile's own mark is
+   styled through the shared `__icon` class below.
+   ========================================================================== */
+.category-card__icon {
+  display: inline-grid;
+  width: 46px;
+  height: 46px;
+  align-self: center;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
+  border-radius: 14px;
+  color: var(--accent-hover);
+  background: var(--accent-soft);
+}
+
+.category-card__icon svg {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+/* The guide tile keeps a brand logo rather than a glyph, so it drops the accent
+   plate and reads as a neutral sibling in the same grid rhythm. */
+.category-card__icon--mark {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--surface-strong) 60%, transparent);
+}
+
+.category-card__icon--mark img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* ── Plan duration picker — opt-in per product via `planPicker: "duration"` ── */
+.plan-picker {
+  display: grid;
+  gap: 12px;
+}
+
+.plan-picker__label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+/* A fixed five-across grid rather than a wrapping flex row: the ten Bioscope
+   durations then read as two balanced rows at every width instead of leaving a
+   single orphan chip on a second line. */
+.plan-picker__chips {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.plan-picker__chip {
+  position: relative;
+  /* The five-column track governs the width; a min-width would overflow it at
+     the 320px floor the storefront supports (track = 44.4px there). The 44px
+     min-height is what keeps the tap target legal. */
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  /* Horizontal padding stays small because the track, not the text, sets the
+     width: at 320px each of the five tracks is 44.4px, and 12px sides would
+     leave a two-digit label 18px to sit in. */
+  padding: 8px 4px;
+  color: var(--ink);
+  background: var(--surface);
+  font-size: 0.95rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    scale 140ms ease-out;
+}
+
+.plan-picker__chip:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.plan-picker__chip:active {
+  scale: 0.97;
+}
+
+.plan-picker__chip[aria-checked="true"] {
+  border-color: color-mix(in srgb, var(--accent) 52%, var(--border));
+  color: var(--accent-hover);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 18%, transparent),
+      transparent 70%
+    ),
+    var(--surface);
+}
+
+/* A radiogroup is reached by one Tab and then driven by arrow keys, so the
+   focus ring is the only cue for where the caret is. Keep it loud. */
+.plan-picker__chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Scoped through the parent on purpose: the generic `.plan-row__details > span`
+   rule above is (0,1,1) and would otherwise win on colour and font-size, which
+   is the whole point of the badge. */
+.plan-row__details > .plan-picker__bonus {
+  width: fit-content;
+  justify-self: start;
+  border-radius: 999px;
+  padding: 3px 8px;
+  color: var(--accent-hover);
+  background: var(--accent-soft);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.plan-modal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-start: 12px;
+}
+
+/* ── Bioscope download page → catalog plans ── */
+.bioscope-plans {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 var(--glass-hi);
+}
+
+.bioscope-plans h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
+.bioscope-plans p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.bioscope-plans .button svg {
+  width: 16px;
+  height: 16px;
+}

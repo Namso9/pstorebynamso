@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title: "VPN Terms of Service | Premium Store",
     description:
       "Premium Store VPN ဝယ်ယူမှုဆိုင်ရာ စည်းမျဉ်းများ — VPN plan များအတွက် သီးသန့်သတ်မှတ်ချက်များ။",
-    images: ["/images/p8.webp"],
+    images: ["/images/og-cover.webp"],
   },
 };
 

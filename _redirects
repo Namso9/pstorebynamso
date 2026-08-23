@@ -2,10 +2,7 @@
 /index.html                           /                                  301
 /creative-apps.html                   /creative-apps/                    301
 /music-apps.html                      /music-apps/                       301
-/communication-apps.html              /communication-apps/               301
 /streaming-apps.html                  /streaming-apps/                   301
-/computer-keys-and-office-apps.html   /computer-keys-and-office-apps/    301
-/learning-apps.html                   /learning-apps/                    301
 /ai-apps.html                         /ai-apps/                          301
 /premium-vpn-apps.html                /premium-vpn-apps/                 301
 /payment.html                         /payment/                          301
@@ -14,6 +11,19 @@
 /expressvpn-location-guide.html       /expressvpn-location-guide/        301
 /terms-of-service.html                /terms-of-service/                 301
 /terms-of-service-vpn.html            /terms-of-service-vpn/             301
+
+# Retired category slugs, merged into /creative-apps/ on 2026-08-23.
+# Both forms are needed: trailing-slash is what the Next export emitted, and the
+# extensionless form is what the old 404 page and off-site copies still use.
+/communication-apps                   /creative-apps/                    301
+/communication-apps/                  /creative-apps/                    301
+/communication-apps.html              /creative-apps/                    301
+/computer-keys-and-office-apps        /creative-apps/                    301
+/computer-keys-and-office-apps/       /creative-apps/                    301
+/computer-keys-and-office-apps.html   /creative-apps/                    301
+/learning-apps                        /creative-apps/                    301
+/learning-apps/                       /creative-apps/                    301
+/learning-apps.html                   /creative-apps/                    301
 
 # Retired payment-vpn routes are consolidated into the payment page.
 /payment-vpn                          /payment/                          301

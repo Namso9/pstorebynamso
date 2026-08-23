@@ -58,6 +58,13 @@ export function resolveProductIdFromText(catalog: CatalogData, text: string) {
     }
   }
   if (best) return best;
+  // Fallbacks for products a customer types loosely. Atom/Mytel matter most:
+  // they are the two products whose SIM number is mandatory, and the phone
+  // field only appears once the id resolves. Keep in step with
+  // PHONE_REQUIRED_PRODUCTS in OrderForm.tsx and with the server-side gate in
+  // functions/api/order.js.
+  if (normalized.includes("atom")) return "atom-data";
+  if (normalized.includes("mytel")) return "mytel-data";
   if (normalized.includes("canva")) return "canva";
   if (normalized.includes("zoom")) return "zoom";
   if (normalized.includes("gemini")) return "gemini";

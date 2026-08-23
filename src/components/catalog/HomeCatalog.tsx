@@ -7,7 +7,6 @@ import { CategoryCard } from "./CategoryCard";
 import { HomeGuideCard } from "./HomeGuideCard";
 import { HomeSpotlight } from "./HomeSpotlight";
 
-import { categoryPresentations } from "@/data/category-presentations";
 import { homeGuideCards, homeSpotlights } from "@/data/home-highlights";
 import { useCatalog } from "@/hooks/useCatalog";
 import type { CatalogData } from "@/types/catalog";
@@ -53,12 +52,7 @@ export function HomeCatalog({ initialCatalog }: HomeCatalogProps) {
         {catalog.categories.map((category, index) => (
           <CategoryCard
             category={category}
-            image={
-              categoryPresentations[category.slug]?.image ||
-              `/images/p${index + 1}.webp`
-            }
             productCount={counts[category.slug] || 0}
-            priority={index < 2}
             index={index}
             key={category.slug}
           />

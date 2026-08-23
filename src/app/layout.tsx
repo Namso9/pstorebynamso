@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     title: "PREMIUM STORE by Namso",
     description:
       "Netflix, Spotify, VPN, AI apps နှင့် premium subscription များ - Telegram Bot ဖြင့် အလွယ်တကူမှာယူပါ",
-    images: ["/images/p1.webp"],
+    images: ["/images/og-cover.webp"],
   },
 };
 

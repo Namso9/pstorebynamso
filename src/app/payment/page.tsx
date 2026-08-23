@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Payment Methods | Premium Store",
     description:
       "Premium Store ငွေပေးချေနည်းများ — KBZPay, WavePay, AyaPay QR ဖြင့် ငွေလွှဲပြီး screenshot ပို့ရုံဖြင့် ဝယ်ယူနိုင်သည်။",
-    images: ["/images/p1.webp"],
+    images: ["/images/og-cover.webp"],
   },
 };
 
