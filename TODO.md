@@ -19,6 +19,117 @@ The App Router scaffold and static export are verified and the approved Next.js
 build is now Production. The legacy source remains in the repository and the
 recorded pre-cutover Pages deployment remains the rollback point.
 
+## Animated Theme Switch (2026-08-23)
+
+Owner request: replace the plain Sun/Moon icon button with a visually distinct,
+animated Light ↔ Dark switch inspired by the interaction concept of the
+reference site (an SMM panel storefront) and a motion-design pin the owner
+shared. Concept only — no visual copying; the result must match Premium
+Store's brand tokens and mobile-first design.
+
+Current state (verified 2026-08-23):
+
+- Theme system already exists and works: `ps-theme` localStorage key
+  (`light`/`dark`, absent = system), pre-hydration bootstrap script in
+  `src/app/layout.tsx` (no flash), `data-theme` / `data-theme-mode` on
+  `<html>`, and a full token set in `src/app/globals.css` (`:root` dark,
+  `html[data-theme="light"]` overrides, glass tokens included).
+- `src/components/layout/ThemeToggle.tsx` is a plain `.icon-button` cycling
+  system → light → dark with static `Icon` glyphs (sun/moon/theme) and the
+  existing `HapticSwitch` overlay.
+- All surfaces (header, cards, buttons, borders, modals, footer) already
+  consume the CSS variables, so a palette transition only needs to be wired
+  once at the token layer.
+
+Decisions:
+
+- Keep the existing architecture: extend `ps-theme`, the bootstrap script
+  (only if needed), and the token system. No new theme library.
+- The new control toggles Light ↔ Dark directly. With no stored choice it
+  still resolves from `prefers-color-scheme`; the first tap stores an
+  explicit choice. (Decide during implementation whether "system" remains
+  reachable — e.g. long-press — or is dropped from the UI.)
+- Keep the 44px touch target, `data-haptic="selection"`, aria-labels, and
+  `prefers-reduced-motion` behavior.
+- CSP: the bootstrap script is SHA-256 hashed at build time by
+  `scripts/generate-static-csp.mjs`; if the inline script changes, the hash
+  regenerates with `npm run build` — no manual CSP edit.
+
+Tasks:
+
+- [x] Audit the existing theme system (bootstrap, tokens, toggle, header
+      placement) and capture the reference interaction concept.
+- [ ] Redesign `ThemeToggle` as an animated switch control: a pill track with
+      a sliding knob, sun/moon icon morph (rotate/scale/rays transition), and
+      detail accents (e.g. stars/cloud dots) built from the existing
+      `--accent` / surface tokens. No emoji, no copied assets.
+- [ ] Add a theme-change transition layer: on toggle only (not on first
+      paint), transition `background-color`, `color`, `border-color`, and
+      `box-shadow` on themed surfaces; keep it under ~300ms, skip it entirely
+      for reduced-motion users, and do not break the sticky header or the
+      `backdrop-filter` minifier ordering rules documented in `globals.css`.
+- [ ] Verify persistence and no-flash: stored dark → reload stays dark;
+      stored light → reload stays light; no stored choice → system; no
+      light-then-dark flash on any route (bootstrap script must stay first in
+      `<head>`).
+- [ ] Place the switch without cluttering the header at 360/390/430px; keep
+      the full `PREMIUM STORE` wordmark visible; verify 768/1024px and the
+      mobile menu.
+- [ ] Add `qa/theme-switch-check.mjs`: toggle animates and flips
+      `data-theme`, reload persistence for both themes, system default,
+      reduced-motion instant switch, zero console errors, zero horizontal
+      overflow, 44px target retained.
+- [ ] Run `npm run lint` (if the machine allows), `npm run typecheck`,
+      `npm run build`, `npm run csp:check`; browser-check both themes on key
+      routes (home, a category, payment, order).
+- [ ] Update `AI_CONTEXT.md` Current Status and `CHANGELOG.md` on completion.
+- [ ] Owner: review the switch on a real phone; authorize commit/push/deploy
+      separately.
+
+## Bioscope Download Page (2026-08-23)
+
+Bioscope arrives as a storefront page first: the download links are live now,
+the sellable plans are not. **`products.json` stays panel-only** — the sale
+product must be created in the Admin Panel when price and stock exist, never
+hand-edited into the catalog from here.
+
+- [x] `data/bioscope-download.json` as the canonical, hand-editable source
+  (storefront-owned, unlike panel-owned `faq.json` / `reviews.json`), mirrored
+  to `public/data/` by `prebuild` and served live by `functions/data/[file].js`.
+- [x] Typed parse in `src/services/content.ts` with an https + official-host
+  allowlist on every download href, so a bad live edit falls back to build data
+  instead of publishing an unknown binary.
+- [x] `/bioscope-download/` route: device rail (Phone & Tablet / TV & TV Box /
+  Computer) that drives both the download cards and the install steps, with the
+  visitor's device pre-selected from its user agent after hydration.
+- [x] Official direct links only — Android APK, Play Store, iOS TestFlight
+  1/2/4, Android TV APK, Windows `.exe`/`.zip`, Mac `.dmg`. The vendor's own
+  link page is never sent to a customer, and no install step carries a link.
+- [x] Illustrated install guides: 5 macOS screenshots (Gatekeeper → Privacy &
+  Security → Open Anyway, both macOS layouts) and 6 iOS TestFlight screenshots,
+  plus the owner's red caution that the iOS build can be pulled at any time.
+  Steps are `{text, kind, images}` records — `note` and `warning` entries carry
+  no step number, so the numbering stays truthful.
+- [x] **Live link resolver** (`functions/api/bioscope-links.js`): reads the
+  current installer filename off the vendor's own page, HEAD-verifies the file,
+  and the page overlays it on the pinned link. A vendor release no longer dead-
+  ends a download button. Falls back silently to the pinned data.
+- [x] Guide screenshots ship as WebP in `public/images/bioscope/` (424 KB for
+  11 images). That directory is the only home — the root `images/` tree is for
+  the legacy site and the panel's canonical review uploads.
+- [x] `sitemap.xml`, `_redirects` (`/bioscope` → the canonical route), and
+  `npm run bioscope:check` (data + link policy, then the resolver's hostile
+  cases: foreign host, missing file, dead vendor page, lying payload).
+- [ ] Owner: replace `public/images/bioscope.svg` with the real logo. The path
+  lives in the JSON, so nothing else changes.
+- [ ] Owner: create the Bioscope product and its plans in the Admin Panel once
+  price and stock are decided, then link the plans from this page.
+- [ ] Owner: the supplied iOS screenshots show a TestFlight build named "TV9",
+  not "Bioscope". Re-shoot them from the Bioscope invite if that matters.
+- [ ] The iOS guide's rendered look was verified from the exported markup and
+  CSS, not a screenshot — headless Chrome stalls on this Mac. Eyeball
+  `/bioscope-download/` on an iPhone once it is live.
+
 ## Checkout Haptics and One-Step Flow (2026-08-18)
 
 - [x] Cross-browser haptics on the controls that decide something, with the

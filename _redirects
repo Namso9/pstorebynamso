@@ -18,3 +18,8 @@
 # Retired payment-vpn routes are consolidated into the payment page.
 /payment-vpn                          /payment/                          301
 /payment-vpn.html                     /payment/                          301
+
+# Bioscope short links -> the canonical download route.
+/bioscope                             /bioscope-download/                301
+/bioscope/                            /bioscope-download/                301
+/bioscope-download.html               /bioscope-download/                301

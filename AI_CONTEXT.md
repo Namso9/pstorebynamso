@@ -39,6 +39,26 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- **The Bioscope download page is LIVE-READY (2026-08-23).**
+  `/bioscope-download/` ships the official download links for Android, Android
+  TV, the three iOS TestFlight slots, Windows and Mac behind one device rail
+  that also swaps the install steps; a "New" spotlight card on the home page
+  points at it. The macOS and iOS walkthroughs are illustrated (11 WebP
+  screenshots in `public/images/bioscope/`) and carry the owner's red caution
+  about the iOS build being withdrawable. Content lives in
+  `data/bioscope-download.json` (storefront-owned and hand-editable — unlike
+  panel-owned `products.json`, `data/faq.json` and `data/reviews.json`),
+  mirrored by `prebuild` and served live by `functions/data/[file].js`. Download
+  hrefs are re-validated on arrival: https only, official hosts only.
+  `functions/api/bioscope-links.js` resolves the CURRENT installer filename off
+  the vendor's own page and HEAD-verifies it, so a Bioscope release does not
+  dead-end a button; the pinned link stays whenever that lookup fails.
+  **Bioscope is deliberately NOT in `products.json`** — there is no price or
+  stock yet, and only the Admin Panel may write that file. `npm run lint`,
+  `typecheck`, `build`, `csp:check`, `bioscope:check`, `live-data:check`,
+  `content-source:check` and `npm audit` all pass. Placeholder logo at
+  `public/images/bioscope.svg` awaits the real artwork.
+
 - **Checkout haptics and the one-step Order → Payment → Done flow are LIVE
   (2026-08-18, `1f81eda` → `8f3f337` → `a5556a0`).** Tap feedback runs off one
   delegated `pointerdown` listener and `data-haptic` on Android, and off an

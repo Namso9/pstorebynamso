@@ -7,16 +7,21 @@ export type IconName =
   | "check"
   | "close"
   | "credit-card"
+  | "desktop"
+  | "download"
+  | "external"
   | "facebook"
   | "file"
   | "home"
   | "menu"
   | "moon"
+  | "phone"
   | "reviews"
   | "search"
   | "sun"
   | "system"
   | "theme"
+  | "tv"
   | "telegram";
 
 type IconProps = SVGProps<SVGSVGElement> & {
@@ -34,10 +39,21 @@ const paths: Record<IconName, string[]> = {
     "M3 9h18",
     "M7 15h3",
   ],
+  desktop: ["M5 5.5h14v9H5Z", "M3 18.5h18", "M10 15.5h4"],
+  download: ["M12 3v12", "m7 11 5 5 5-5", "M4 20h16"],
+  external: [
+    "M14 4h6v6",
+    "M20 4 11 13",
+    "M19 14v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5",
+  ],
   file: ["M6 2h7l5 5v15H6Z", "M13 2v5h5", "M9 13h6", "M9 17h6"],
   home: ["m3 11 9-8 9 8", "M5 10v10h14V10", "M9 20v-6h6v6"],
   menu: ["M4 7h16", "M4 12h16", "M4 17h16"],
   moon: ["M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"],
+  phone: [
+    "M7 2.5h10a1.5 1.5 0 0 1 1.5 1.5v16a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 20V4A1.5 1.5 0 0 1 7 2.5Z",
+    "M10.5 18.5h3",
+  ],
   reviews: [
     "M12 3.5 14.6 8l5.1 1.1-3.5 3.8.5 5.1-4.7-2.1L7.3 18l.5-5.1-3.5-3.8L9.4 8Z",
   ],
@@ -62,6 +78,7 @@ const paths: Record<IconName, string[]> = {
   theme: [
     "M12 3a9 9 0 1 0 0 18Z",
   ],
+  tv: ["M4 5.5h16v11H4Z", "m9 2.5 3 3 3-3", "M8.5 20.5h7"],
   telegram: [
     "m21 3-7.5 18-4.3-6.2L3 12.5Z",
     "m9.2 14.8 3.1-3 3.3-3.2",

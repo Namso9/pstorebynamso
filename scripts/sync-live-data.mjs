@@ -8,6 +8,7 @@ const allLiveFiles = [
   "data/faq.json",
   "data/reviews.json",
   "data/express-guide.json",
+  "data/bioscope-download.json",
 ];
 const faqReviewOnly = process.argv.includes("--faq-review-only");
 const liveFiles = faqReviewOnly

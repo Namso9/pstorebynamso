@@ -70,6 +70,24 @@ html[data-theme="light"] {
   --glass-shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
 }
 
+/* Theme-change cross-fade: the theme switch adds `theme-transition` to
+   <html> for one beat on every toggle, so token-driven surfaces fade between
+   the two palettes instead of snapping. It is never present on first paint
+   (the head bootstrap applies the stored theme before styles load, so there
+   is no light→dark flash), and the global reduced-motion override still
+   collapses these to 0.01ms. The switch itself is excluded so its longer
+   knob/scene choreography keeps its own timing. */
+html.theme-transition,
+html.theme-transition body,
+html.theme-transition body :not(.theme-switch, .theme-switch *),
+html.theme-transition body :not(.theme-switch, .theme-switch *)::before,
+html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
+  transition-property:
+    background-color, border-color, color, box-shadow, fill, stroke, opacity;
+  transition-duration: 340ms;
+  transition-timing-function: ease;
+}
+
 @layer base {
   *,
   *::before,
@@ -314,6 +332,179 @@ html[data-theme="light"] {
 
 .icon-button:active {
   transform: scale(0.96);
+}
+
+/* Animated light/dark theme switch: a pill "sky" track that cross-fades
+   between a day gradient with drifting clouds and a night gradient with
+   rising stars, while the thumb morphs from a glowing sun to a cratered
+   moon and slides across. Pure CSS keyed off the host's `aria-checked`;
+   the global reduced-motion rule collapses every transition here to an
+   instant swap. */
+.theme-switch {
+  position: relative;
+  display: inline-flex;
+  width: 66px;
+  height: 44px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.theme-switch__track {
+  position: relative;
+  display: block;
+  width: 58px;
+  height: 30px;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #79b8ec 0%, #b5dcf7 58%, #d8eefa 100%);
+  box-shadow:
+    inset 0 2px 5px rgba(15, 23, 42, 0.22),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.35);
+  transition:
+    background 520ms ease,
+    border-color 520ms ease,
+    transform 160ms ease;
+}
+
+.theme-switch:active .theme-switch__track {
+  transform: scale(0.94);
+}
+
+.theme-switch[aria-checked="true"] .theme-switch__track {
+  border-color: rgba(148, 178, 255, 0.35);
+  background: linear-gradient(180deg, #070d1c 0%, #12203e 62%, #1d3157 100%);
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 2px rgba(148, 178, 255, 0.16);
+}
+
+/* Night stars: a single dot whose box-shadows draw the constellation. They
+   sit on the LEFT of the track — the moon parks on the right at night, so
+   stars on the right would hide behind it. They rise and fade in only after
+   dark, staggered behind the thumb's arrival. */
+.theme-switch__stars {
+  position: absolute;
+  top: 8px;
+  left: 9px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    8px -4px 0 0 #ffffff,
+    14px 4px 0 -0.5px rgba(255, 255, 255, 0.85),
+    3px 9px 0 -0.5px rgba(255, 255, 255, 0.7),
+    19px -6px 0 -0.5px rgba(255, 255, 255, 0.6),
+    22px 8px 0 -0.5px rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  transform: translateY(6px) scale(0.6);
+  transition:
+    opacity 420ms ease 70ms,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-switch[aria-checked="true"] .theme-switch__stars {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Day clouds: soft puffs drawn with box-shadows; they sink away at night. */
+.theme-switch__clouds {
+  position: absolute;
+  left: 7px;
+  bottom: 6px;
+  width: 13px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    7px 2px 0 1px rgba(255, 255, 255, 0.9),
+    24px -8px 0 -1px rgba(255, 255, 255, 0.65),
+    30px -5px 0 -2px rgba(255, 255, 255, 0.55);
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 360ms ease,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-switch[aria-checked="true"] .theme-switch__clouds {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* The thumb: warm sun with a glow by day; at night it slides across the
+   track with a slight overshoot, tips over, and cools into a pale moon. */
+.theme-switch__thumb {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #fff6cf 0%, #ffd968 46%, #ffb13d 100%);
+  box-shadow:
+    0 0 9px 2px rgba(255, 199, 84, 0.65),
+    0 1px 3px rgba(15, 23, 42, 0.35);
+  transform: translate(0, -50%) rotate(0deg) scale(1);
+  transition:
+    transform 560ms cubic-bezier(0.3, 1.4, 0.44, 1),
+    background 480ms ease,
+    box-shadow 480ms ease;
+}
+
+.theme-switch[aria-checked="true"] .theme-switch__thumb {
+  background: radial-gradient(circle at 34% 30%, #ffffff 0%, #e4ebf6 52%, #bfccdf 100%);
+  box-shadow:
+    0 0 8px 1px rgba(158, 190, 255, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.45);
+  transform: translate(28px, -50%) rotate(-38deg) scale(0.96);
+}
+
+/* Moon craters, hidden inside the sun until the morph completes. */
+.theme-switch__thumb::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 9px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.55);
+  box-shadow:
+    -4px 6px 0 -1px rgba(148, 163, 184, 0.45),
+    6px 8px 0 -1.5px rgba(148, 163, 184, 0.4);
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity 320ms ease 120ms,
+    transform 420ms ease 120ms;
+}
+
+.theme-switch[aria-checked="true"] .theme-switch__thumb::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (hover: hover) {
+  .theme-switch:hover .theme-switch__track {
+    border-color: var(--focus);
+  }
+}
+
+.theme-switch:focus-visible {
+  outline: none;
+}
+
+.theme-switch:focus-visible .theme-switch__track {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
 }
 
 .icon-button svg,
@@ -4974,4 +5165,613 @@ button:disabled > .haptic-tap {
   .order-result__actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+/* ── New arrival spotlight (home) ───────────────────────────────────────
+   A wide card above the category grid for something that just landed on the
+   store. It sits outside the panel-written catalog, so its entries come from
+   src/data/home-highlights.ts rather than products.json. */
+.home-spotlights {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.home-spotlight {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 36%, var(--border));
+  border-radius: 20px;
+  padding: 14px;
+  color: var(--ink);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 14%, transparent),
+      transparent 62%
+    ),
+    var(--surface);
+  box-shadow: 0 12px 36px color-mix(in srgb, var(--canvas) 30%, transparent);
+  text-decoration: none;
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms ease,
+    box-shadow 220ms ease;
+}
+
+.home-spotlight:hover {
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+}
+
+.home-spotlight:active {
+  transform: scale(0.99);
+}
+
+.home-spotlight__mark {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--glass-line);
+  border-radius: 16px;
+  background: var(--canvas-soft);
+}
+
+.home-spotlight__mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.home-spotlight__body {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.home-spotlight__badge {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 4px 9px;
+  color: var(--accent-ink);
+  background: var(--accent);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home-spotlight__body strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 4.5vw, 1.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.home-spotlight__text {
+  color: var(--muted);
+  font-size: 0.79rem;
+  line-height: 1.7;
+}
+
+.home-spotlight__action {
+  display: inline-flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  border-radius: 999px;
+  padding: 9px 14px;
+  color: var(--accent-hover);
+  background: var(--accent-soft);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.home-spotlight__action svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (min-width: 640px) {
+  .home-spotlight {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 18px;
+    padding: 18px 20px;
+  }
+
+  .home-spotlight__mark {
+    width: 70px;
+    height: 70px;
+  }
+
+  .home-spotlight__action {
+    grid-column: auto;
+  }
+}
+
+/* ── Bioscope download page ─────────────────────────────────────────────
+   One binary per screen is the page's whole truth, so the device rail drives
+   both the download list and the install steps below it. Content, links and
+   copy come from data/bioscope-download.json. */
+.bioscope-hero {
+  max-width: 760px;
+  margin: 0 auto clamp(34px, 6vw, 58px);
+  text-align: center;
+}
+
+/* `grid`, not `inline-grid`: an inline tile shares its line with the inline
+   eyebrow pill that follows, and the two overlapped. */
+.bioscope-hero__mark {
+  display: grid;
+  width: fit-content;
+  place-items: center;
+  margin: 0 auto 22px;
+  border: 1px solid var(--glass-line);
+  border-radius: 26px;
+  padding: 9px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+}
+
+.bioscope-hero__logo {
+  display: block;
+  width: clamp(64px, 17vw, 84px);
+  height: auto;
+  border-radius: 18px;
+}
+
+.bioscope-hero .eyebrow {
+  margin-inline: auto;
+}
+
+.bioscope-hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 12vw, 4.6rem);
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+/* The wide-tracked caps line is the page's only type flourish — it names the
+   app's world without adding a third typeface to the font request. */
+.bioscope-hero__subtitle {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.bioscope-hero__tagline {
+  width: min(100%, 540px);
+  margin: 18px auto 0;
+  color: var(--muted);
+  font-size: clamp(0.92rem, 2.6vw, 1rem);
+  line-height: 1.85;
+  text-wrap: pretty;
+}
+
+
+.bioscope-updated {
+  width: fit-content;
+  margin: 20px auto 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 14px;
+  color: var(--muted);
+  background: var(--surface);
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.bioscope-picker {
+  margin-top: clamp(10px, 3vw, 20px);
+}
+
+.bioscope-rail {
+  display: grid;
+  gap: 10px;
+  margin-bottom: clamp(20px, 4vw, 28px);
+}
+
+.bioscope-rail__tab {
+  display: grid;
+  grid-template-areas:
+    "icon label flag"
+    "icon hint  flag";
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2px 13px;
+  min-height: 62px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px 14px;
+  color: var(--ink);
+  background: var(--surface);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.bioscope-rail__tab:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.bioscope-rail__tab > svg {
+  grid-area: icon;
+  align-self: center;
+  width: 22px;
+  height: 22px;
+  color: var(--muted);
+  transition: color 180ms ease;
+}
+
+.bioscope-rail__label {
+  grid-area: label;
+  align-self: end;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.bioscope-rail__hint {
+  grid-area: hint;
+  align-self: start;
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.55;
+}
+
+.bioscope-rail__flag {
+  grid-area: flag;
+  align-self: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+  font-size: 0.66rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bioscope-rail__tab[data-active] {
+  border-color: color-mix(in srgb, var(--accent) 52%, var(--border));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 15%, transparent),
+      transparent 70%
+    ),
+    var(--surface);
+}
+
+.bioscope-rail__tab[data-active] > svg {
+  color: var(--accent);
+}
+
+.bioscope-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.bioscope-card {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  background: var(--surface);
+}
+
+.bioscope-card[data-featured] {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 58%
+    ),
+    var(--surface);
+}
+
+.bioscope-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.bioscope-card__head h3 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 4vw, 1.28rem);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.bioscope-card__kind {
+  flex: none;
+  border-radius: 999px;
+  padding: 5px 10px;
+  color: var(--accent-hover);
+  background: var(--accent-soft);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.bioscope-card__note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.83rem;
+  line-height: 1.75;
+}
+
+.bioscope-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+
+.bioscope-card__meta > div {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 7px 11px;
+}
+
+.bioscope-card__meta dt {
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Versions and sizes are read as data, so they line up like data. */
+.bioscope-card__meta dd {
+  margin: 3px 0 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.bioscope-card__actions {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.bioscope-card__action {
+  width: 100%;
+}
+
+.bioscope-card__action svg {
+  flex: none;
+  width: 17px;
+  height: 17px;
+}
+
+.bioscope-empty {
+  margin: 0;
+  border: 1px dashed var(--border-strong);
+  border-radius: 18px;
+  padding: 18px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.bioscope-guide {
+  display: grid;
+  gap: 12px;
+  margin-top: clamp(26px, 5vw, 38px);
+}
+
+.bioscope-guide__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 4.5vw, 1.7rem);
+  letter-spacing: -0.02em;
+}
+
+.bioscope-guide__block {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  background: var(--surface);
+}
+
+.bioscope-guide__block h4 {
+  margin: 0 0 13px;
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+/* These steps really are a sequence, so they are numbered; nothing else on
+   the page is. */
+.bioscope-steps {
+  display: grid;
+  gap: 11px;
+  margin: 0;
+  padding: 0;
+  counter-reset: bioscope-step;
+  list-style: none;
+}
+
+.bioscope-step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 11px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.85;
+}
+
+.bioscope-step__body > p {
+  margin: 0;
+}
+
+/* An aside carries no step number, so it drops the marker column and reads as
+   a panel instead of a list item. */
+.bioscope-step[data-kind="note"],
+.bioscope-step[data-kind="warning"] {
+  grid-template-columns: minmax(0, 1fr);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.bioscope-step[data-kind="note"] {
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--border));
+  background: var(--accent-soft);
+}
+
+/* The owner's caution about the iOS build being pulled — red on purpose. */
+.bioscope-step[data-kind="warning"] {
+  border: 1px solid color-mix(in srgb, var(--danger) 42%, var(--border));
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 9%, transparent);
+  font-weight: 600;
+}
+
+.bioscope-shots {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.bioscope-shot {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--canvas-soft);
+}
+
+.bioscope-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bioscope-shot figcaption {
+  padding: 7px 10px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Portrait phone captures would run the page long at full width; a narrow
+   measure keeps them readable and the steps scannable. The flag comes from the
+   image's own dimensions rather than `:has()`, which older Android WebViews —
+   a real slice of this audience — do not support. */
+.bioscope-shot[data-portrait] {
+  width: min(100%, 260px);
+}
+
+.bioscope-steps__marker {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  flex: none;
+  place-items: center;
+  margin-top: 3px;
+  border-radius: 9px;
+  color: var(--accent-hover);
+  background: var(--accent-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  counter-increment: bioscope-step;
+}
+
+.bioscope-steps__marker::before {
+  content: counter(bioscope-step);
+}
+
+
+@media (min-width: 560px) {
+  .bioscope-shots[data-count="2"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+@media (min-width: 720px) {
+  .bioscope-rail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bioscope-rail__tab {
+    grid-template-areas:
+      "icon label flag"
+      "hint hint  hint";
+    align-content: center;
+    gap: 7px 11px;
+    min-height: 92px;
+  }
+
+  .bioscope-rail__tab > svg,
+  .bioscope-rail__label,
+  .bioscope-rail__hint,
+  .bioscope-rail__flag {
+    align-self: center;
+  }
+
+  .bioscope-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Three routes to the same app (the TestFlight slots): the primary keeps the
+     full width and the fallbacks pair up under it. Driven by a count rather
+     than `:has()`, which older Android WebViews ignore. */
+  .bioscope-card__actions[data-count="3"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bioscope-card__actions[data-count="3"] > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .bioscope-guide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bioscope-guide__title {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Names the one file the hero button also points at, so the two do not read as
+   two different downloads. */
+.bioscope-card__flag {
+  width: fit-content;
+  color: var(--accent);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }

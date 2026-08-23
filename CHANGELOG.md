@@ -4,6 +4,25 @@
 
 ### Added
 
+- A Bioscope download page at `/bioscope-download/`. One device rail — Phone &
+  Tablet, TV & TV Box, Computer — drives both the download list and the install
+  steps beneath it, and the visitor's own device is selected for them from the
+  user agent. Every action is an official direct link (Android and Android TV
+  APKs, Play Store, the three iOS TestFlight slots, Windows installer and zip,
+  Mac disk image); the walkthroughs are written here and link nowhere. The
+  macOS and iOS guides are illustrated with eleven screenshots and carry the
+  caution that the iOS build can be withdrawn at any time. Links, copy, steps
+  and screenshots come from `data/bioscope-download.json`, which is served live
+  like the FAQ and review data and re-validated on arrival against an
+  https-only official-host allowlist.
+- Download links that follow Bioscope's releases. Bioscope publishes every
+  update under a new filename, so a Pages Function reads the current filename
+  off their own page, verifies the file answers, and the page overlays it on the
+  pinned link — with the pinned link kept whenever that lookup fails.
+- A "New" spotlight card above the home category grid, driven by
+  `src/data/home-highlights.ts` — which now also supplies the ExpressVPN guide
+  tile that used to be written by hand inside `HomeCatalog`.
+
 - A mobile-first Next.js App Router shell with persistent light, dark, and
   system themes, accessible navigation, reusable status states, and
   Motion-based modals.

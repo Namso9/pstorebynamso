@@ -17,6 +17,7 @@
     "ask-price:check": "node qa/ask-price-browser-check.mjs",
     "haptics:check": "node qa/haptics-steps-check.mjs",
     "stock-flip:check": "node qa/checkout-stock-flip-check.mjs",
+    "bioscope:check": "node qa/bioscope-download-check.mjs && node qa/bioscope-links-check.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "preview": "wrangler pages dev out --compatibility-date=2026-08-02"

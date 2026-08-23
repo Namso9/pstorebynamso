@@ -4,10 +4,15 @@
  * site မှာ live ဖြစ်တယ် — manual deploy မလိုတော့ဘူး။
  *
  * Fallback: GitHub မရရင် / JSON မမှန်ရင် build ထဲပါတဲ့ static copy ကို serve။
- * Whitelist: သတ်မှတ်ထားတဲ့ ၃ ဖိုင်ပဲ — path traversal / arbitrary proxy မဖြစ်ရ။
+ * Whitelist: ALLOWED ထဲက ဖိုင်တွေပဲ — path traversal / arbitrary proxy မဖြစ်ရ။
  */
 
-const ALLOWED = new Set(['faq.json', 'reviews.json', 'express-guide.json']);
+const ALLOWED = new Set([
+  'faq.json',
+  'reviews.json',
+  'express-guide.json',
+  'bioscope-download.json',
+]);
 const GITHUB_REPO = 'Namso9/pstorebynamso';
 const GITHUB_BRANCH = 'main';
 

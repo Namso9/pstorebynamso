@@ -1,4 +1,14 @@
 import type {
+  BioscopeApp,
+  BioscopeDeviceToken,
+  BioscopeDownload,
+  BioscopeDownloadData,
+  BioscopeDownloadKind,
+  BioscopeGroup,
+  BioscopeGuide,
+  BioscopeGuideStep,
+  BioscopeStepImage,
+  BioscopeStepKind,
   ExpressGuideData,
   ExpressLocation,
   FaqData,
@@ -98,6 +108,216 @@ export function fetchExpressGuideData(signal?: AbortSignal) {
   return fetchContent(
     "/data/express-guide.json",
     parseExpressGuideData,
+    signal,
+  );
+}
+
+// Download hrefs arrive over the same live JSON proxy as the rest of the
+// content, so the page treats them as untrusted input: https only, and only
+// the official app-distribution hosts. A typo or a tampered payload becomes a
+// parse error that keeps the last good build data on screen instead of
+// pointing a customer at an unrelated binary.
+const BIOSCOPE_DOWNLOAD_HOSTS = new Set([
+  "apps.apple.com",
+  "bioscopeapp.com",
+  "link.bioscopeapp.com",
+  "play.google.com",
+  "testflight.apple.com",
+]);
+
+const BIOSCOPE_DEVICE_TOKENS = new Set<BioscopeDeviceToken>([
+  "android",
+  "androidtv",
+  "ios",
+  "mac",
+  "windows",
+]);
+
+const BIOSCOPE_DOWNLOAD_KINDS = new Set<BioscopeDownloadKind>([
+  "apk",
+  "dmg",
+  "exe",
+  "store",
+  "testflight",
+  "zip",
+]);
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function isOfficialDownloadHref(value: unknown) {
+  if (!isNonEmptyString(value)) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && BIOSCOPE_DOWNLOAD_HOSTS.has(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
+const BIOSCOPE_STEP_KINDS = new Set<BioscopeStepKind>([
+  "note",
+  "step",
+  "warning",
+]);
+
+function isBioscopeApp(value: unknown): value is BioscopeApp {
+  return (
+    isRecord(value) &&
+    isNonEmptyString(value.name) &&
+    isNonEmptyString(value.subtitle) &&
+    isNonEmptyString(value.tagline) &&
+    isNonEmptyString(value.logo) &&
+    (value.logoClass === undefined || typeof value.logoClass === "string")
+  );
+}
+
+function isBioscopeGroup(value: unknown): value is BioscopeGroup {
+  return (
+    isRecord(value) &&
+    isNonEmptyString(value.id) &&
+    isNonEmptyString(value.label) &&
+    isNonEmptyString(value.hint) &&
+    Array.isArray(value.detect) &&
+    value.detect.every(
+      (token): token is BioscopeDeviceToken =>
+        typeof token === "string" &&
+        BIOSCOPE_DEVICE_TOKENS.has(token as BioscopeDeviceToken),
+    )
+  );
+}
+
+function isBioscopeDownload(value: unknown): value is BioscopeDownload {
+  return (
+    isRecord(value) &&
+    isNonEmptyString(value.id) &&
+    isNonEmptyString(value.group) &&
+    isNonEmptyString(value.title) &&
+    typeof value.kind === "string" &&
+    BIOSCOPE_DOWNLOAD_KINDS.has(value.kind as BioscopeDownloadKind) &&
+    (value.detect === undefined ||
+      (typeof value.detect === "string" &&
+        BIOSCOPE_DEVICE_TOKENS.has(value.detect as BioscopeDeviceToken))) &&
+    isNonEmptyString(value.action) &&
+    isOfficialDownloadHref(value.href) &&
+    (value.note === undefined || isNonEmptyString(value.note)) &&
+    (value.alternates === undefined ||
+      (Array.isArray(value.alternates) &&
+        value.alternates.every(
+          (alternate) =>
+            isRecord(alternate) &&
+            isNonEmptyString(alternate.label) &&
+            isOfficialDownloadHref(alternate.href),
+        ))) &&
+    (value.version === undefined || typeof value.version === "string") &&
+    (value.size === undefined || typeof value.size === "string") &&
+    (value.featured === undefined || typeof value.featured === "boolean")
+  );
+}
+
+// Guide screenshots stay same-origin: the CSP allows `img-src 'self' data:`
+// only, so a remote src would render as a broken image.
+function isBioscopeStepImage(value: unknown): value is BioscopeStepImage {
+  return (
+    isRecord(value) &&
+    isNonEmptyString(value.src) &&
+    !/^[a-z]+:/i.test(value.src) &&
+    !value.src.startsWith("//") &&
+    isNonEmptyString(value.alt) &&
+    typeof value.width === "number" &&
+    Number.isFinite(value.width) &&
+    value.width > 0 &&
+    typeof value.height === "number" &&
+    Number.isFinite(value.height) &&
+    value.height > 0 &&
+    (value.caption === undefined || isNonEmptyString(value.caption))
+  );
+}
+
+function isBioscopeGuideStep(value: unknown): value is BioscopeGuideStep {
+  return (
+    isRecord(value) &&
+    isNonEmptyString(value.text) &&
+    (value.kind === undefined ||
+      (typeof value.kind === "string" &&
+        BIOSCOPE_STEP_KINDS.has(value.kind as BioscopeStepKind))) &&
+    (value.images === undefined ||
+      (Array.isArray(value.images) && value.images.every(isBioscopeStepImage)))
+  );
+}
+
+function isBioscopeGuide(value: unknown): value is BioscopeGuide {
+  return (
+    isRecord(value) &&
+    isNonEmptyString(value.group) &&
+    Array.isArray(value.sections) &&
+    value.sections.every(
+      (section) =>
+        isRecord(section) &&
+        isNonEmptyString(section.title) &&
+        Array.isArray(section.steps) &&
+        section.steps.length > 0 &&
+        section.steps.every(isBioscopeGuideStep),
+    )
+  );
+}
+
+export function parseBioscopeDownloadData(
+  value: unknown,
+): BioscopeDownloadData {
+  if (
+    !isRecord(value) ||
+    typeof value.updated !== "string" ||
+    !isBioscopeApp(value.app) ||
+    !Array.isArray(value.groups) ||
+    !value.groups.every(isBioscopeGroup) ||
+    !Array.isArray(value.downloads) ||
+    !value.downloads.every(isBioscopeDownload) ||
+    !Array.isArray(value.guides) ||
+    !value.guides.every(isBioscopeGuide)
+  ) {
+    throw new Error("Bioscope download data is invalid.");
+  }
+
+  const groupIds = new Set(value.groups.map((group) => group.id));
+  if (groupIds.size !== value.groups.length) {
+    throw new Error("Bioscope groups contain a duplicate id.");
+  }
+
+  const downloadIds = new Set<string>();
+  for (const download of value.downloads) {
+    if (!groupIds.has(download.group)) {
+      throw new Error(`Unknown group for Bioscope download ${download.id}.`);
+    }
+    if (downloadIds.has(download.id)) {
+      throw new Error(`Duplicate Bioscope download id ${download.id}.`);
+    }
+    downloadIds.add(download.id);
+
+    if (download.detect) {
+      const group = value.groups.find((entry) => entry.id === download.group);
+      if (!group?.detect.includes(download.detect)) {
+        throw new Error(
+          `Bioscope download ${download.id} claims a device its group does not cover.`,
+        );
+      }
+    }
+  }
+
+  for (const guide of value.guides) {
+    if (!groupIds.has(guide.group)) {
+      throw new Error(`Unknown group for a Bioscope guide (${guide.group}).`);
+    }
+  }
+
+  return value as BioscopeDownloadData;
+}
+
+export function fetchBioscopeDownloadData(signal?: AbortSignal) {
+  return fetchContent(
+    "/data/bioscope-download.json",
+    parseBioscopeDownloadData,
     signal,
   );
 }

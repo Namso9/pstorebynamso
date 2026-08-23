@@ -1,0 +1,338 @@
+{
+  "updated": "23 Aug 2026",
+  "app": {
+    "name": "Bioscope",
+    "subtitle": "Myanmar Streaming App",
+    "tagline": "Bioscope app ကို ဖုန်း, TV, Computer အလိုက် official download link တွေနဲ့ ချက်ချင်း install လုပ်နိုင်ပါတယ်။",
+    "logo": "images/bioscope.svg",
+    "logoClass": "bioscope-logo"
+  },
+  "groups": [
+    {
+      "id": "phone",
+      "label": "Phone & Tablet",
+      "hint": "Android ဖုန်း, iPhone, iPad",
+      "detect": [
+        "android",
+        "ios"
+      ]
+    },
+    {
+      "id": "tv",
+      "label": "TV & TV Box",
+      "hint": "Android TV, TV Box, Fire Stick",
+      "detect": [
+        "androidtv"
+      ]
+    },
+    {
+      "id": "computer",
+      "label": "Computer",
+      "hint": "Windows PC နှင့် Mac",
+      "detect": [
+        "windows",
+        "mac"
+      ]
+    }
+  ],
+  "downloads": [
+    {
+      "id": "android-phone-apk",
+      "group": "phone",
+      "title": "Android Phone",
+      "note": "Android ဖုန်းအားလုံးအတွက် official APK file",
+      "kind": "apk",
+      "detect": "android",
+      "version": "2.2.1",
+      "size": "61.8 MB",
+      "action": "APK ကို Download လုပ်ရန်",
+      "href": "https://link.bioscopeapp.com/download/Bioscope-Android-V2.2.1.apk",
+      "featured": true
+    },
+    {
+      "id": "android-phone-play",
+      "group": "phone",
+      "title": "Google Play",
+      "note": "Play Store မှ install လုပ်လိုသူများအတွက်",
+      "kind": "store",
+      "action": "Play Store မှာ ဖွင့်ရန်",
+      "href": "https://play.google.com/store/apps/details?id=com.channelmyanmar.cmofficial"
+    },
+    {
+      "id": "ios-testflight",
+      "group": "phone",
+      "title": "iPhone / iPad",
+      "note": "TestFlight 1, 2, 4 အားလုံး အတူတူပါ။ Beta full မဖြစ်နေတာ တစ်ခုခုကနေ သွင်းလိုက်ပါ — တစ်ခုသွင်းရုံနဲ့ လုံလောက်ပါတယ်။",
+      "kind": "testflight",
+      "detect": "ios",
+      "action": "TestFlight 1",
+      "href": "https://testflight.apple.com/join/JKFM3C7G",
+      "alternates": [
+        {
+          "label": "TestFlight 2",
+          "href": "https://testflight.apple.com/join/cpVQNBWM"
+        },
+        {
+          "label": "TestFlight 4",
+          "href": "https://testflight.apple.com/join/sE1ZHAB2"
+        }
+      ]
+    },
+    {
+      "id": "android-tv-apk",
+      "group": "tv",
+      "title": "Android TV / TV Box",
+      "note": "Android TV, TV Box နှင့် Fire Stick အတွက် TV build",
+      "kind": "apk",
+      "detect": "androidtv",
+      "version": "1.1.2",
+      "size": "49.2 MB",
+      "action": "TV APK ကို Download လုပ်ရန်",
+      "href": "https://link.bioscopeapp.com/download/Bioscope-Android-TV-V1.1.2.apk",
+      "featured": true
+    },
+    {
+      "id": "windows-exe",
+      "group": "computer",
+      "title": "Windows PC",
+      "kind": "exe",
+      "detect": "windows",
+      "version": "1.2.1-F002",
+      "size": "27.4 MB",
+      "action": "Installer ကို Download လုပ်ရန်",
+      "href": "https://link.bioscopeapp.com/download/Bioscope-V1.2.1-F002.exe",
+      "featured": true
+    },
+    {
+      "id": "windows-zip",
+      "group": "computer",
+      "title": "Windows PC (Zip)",
+      "kind": "zip",
+      "version": "1.2.1-F002",
+      "size": "26.8 MB",
+      "action": "Zip ကို Download လုပ်ရန်",
+      "href": "https://link.bioscopeapp.com/download/Bioscope-V1.2.1-F002.zip"
+    },
+    {
+      "id": "mac-dmg",
+      "group": "computer",
+      "title": "Mac",
+      "note": "macOS အတွက် disk image",
+      "kind": "dmg",
+      "detect": "mac",
+      "version": "1.1.3-F002",
+      "size": "43.4 MB",
+      "action": "Mac Version ကို Download လုပ်ရန်",
+      "href": "https://bioscopeapp.com/downloads/Bioscope-V1.1.3-F002.dmg"
+    }
+  ],
+  "guides": [
+    {
+      "group": "phone",
+      "sections": [
+        {
+          "title": "Android ဖုန်းမှာ install လုပ်နည်း",
+          "steps": [
+            {
+              "text": "အပေါ်က APK download button ကို နှိပ်ပါ။"
+            },
+            {
+              "text": "Settings → Security ထဲက “Install unknown apps” ကို ဖွင့်ပေးပါ။"
+            },
+            {
+              "text": "Downloads folder ထဲက APK file ကို နှိပ်ပြီး Install လုပ်ပါ။"
+            },
+            {
+              "text": "App ကို ဖွင့်ပြီး account ဖြင့် sign in ဝင်ပါ။"
+            }
+          ]
+        },
+        {
+          "title": "iPhone / iPad မှာ install လုပ်နည်း",
+          "steps": [
+            {
+              "kind": "note",
+              "text": "iOS အတွက် Bioscope App install ပြုလုပ်နည်း အဆင့်ဆင့်ကို အောက်မှာ ပြသပေးထားပါတယ်။ အပေါ်က TestFlight button ကို အရင်နှိပ်ပါ။"
+            },
+            {
+              "kind": "note",
+              "text": "TestFlight 1, 2, 4 မှာရှိသော App များအားလုံး အတူတူပဲ ဖြစ်ပါသည်။ Beta full မဖြစ်နေသော TestFlight 1 / 2 / 4 တစ်ခုခုကနေ သွင်းလိုက်ပါ။ တစ်နေရာကနေ တစ်ခါပဲ သွင်းထားရုံဖြင့် လုံလောက်ပါသည် — နှစ်ခု သွင်းစရာ မလိုအပ်ပါ။"
+            },
+            {
+              "text": "View in App Store ကို နှိပ်ပါ။",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-01.webp",
+                  "alt": "TestFlight page ပေါ်ရှိ View in App Store button",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "text": "TestFlight App ကို Download ဆွဲပါ။",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-02.webp",
+                  "alt": "App Store ပေါ်ရှိ TestFlight app ကို download လုပ်နေသည်",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "text": "Open ကို နှိပ်ပါ။",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-03.webp",
+                  "alt": "TestFlight app ကို Open နှိပ်နေသည်",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "kind": "note",
+              "text": "Bioscope App ကို ပထမဆုံး စထည့်တဲ့ user တွေမှာ Redeem Code ဖြည့်ရမယ့် နေရာ ပေါ်တတ်ပါတယ်။ အဲလိုပေါ်လာခဲ့ရင် Redeem page မှာ Cancel ကို နှိပ်ပါ။ Recent ကို ရှင်းပါ။ အပေါ်က TestFlight link ကို ပြန်နှိပ်ပြီး Bioscope App ကို သွင်းလို့ရပါလိမ့်မယ်။",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-04.webp",
+                  "alt": "TestFlight ရဲ့ Redeem Code dialog",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "text": "Bioscope App ကို Install လုပ်ပါ။",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-05.webp",
+                  "alt": "TestFlight ထဲက Install button",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "text": "Install ပြီးတာနှင့် Open ကို နှိပ်ပြီး Bioscope App ကို အသုံးပြုနိုင်ပါပြီ။",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-06.webp",
+                  "alt": "TestFlight ထဲက Open button",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "kind": "warning",
+              "text": "Bioscope App သည် copyright content များကြောင့် Apple Store ပေါ်ထိ တင်၍မရသေးသလို TestFlight တွင်လည်း အချိန်မရွေး ဖြုတ်ချခံရနိုင်ပါသည်။ သို့ဖြစ်ပါ၍ Android / Windows OS များမှ အလေးထား အသုံးပြုပေးပါရန်နှင့် Apple Store ဖက်က ဖြုတ်ချခံရသော ကိစ္စရပ်များကို အစားထိုး ဆောင်ရွက်ပေးနိုင်မည် မဟုတ်ကြောင်းကိုလည်း ကြိုတင် အသိပေးအပ်ပါသည်။"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "tv",
+      "sections": [
+        {
+          "title": "Android TV / TV Box မှာ install လုပ်နည်း",
+          "steps": [
+            {
+              "text": "အပေါ်က TV APK ကို download လုပ်ပါ။"
+            },
+            {
+              "text": "APK ကို Install လုပ်ပါ။"
+            },
+            {
+              "text": "App ကို Open လုပ်ပြီး အသုံးပြုပါ။"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "computer",
+      "sections": [
+        {
+          "title": "Windows PC မှာ install လုပ်နည်း",
+          "steps": [
+            {
+              "text": "Installer (.exe) ကို download လုပ်ပါ။"
+            },
+            {
+              "text": "File ကို double-click နှိပ်ပါ။"
+            },
+            {
+              "text": "SmartScreen ပေါ်လာပါက More info → Run anyway ကို နှိပ်ပါ။"
+            },
+            {
+              "text": "Install ပြီးရင် Desktop shortcut မှ ဖွင့်ပါ။"
+            }
+          ]
+        },
+        {
+          "title": "Mac မှာ install လုပ်နည်း",
+          "steps": [
+            {
+              "text": "Download ပြုလုပ်ထားသော Bioscope App ကို ဖွင့်ပြီး Applications folder ထဲ ဆွဲထည့်ပါ။"
+            },
+            {
+              "text": "Applications folder ထဲမှ Bioscope App ကို ဖွင့်လိုက်ပါက ပုံထဲကလို Alert တွေ့ရပါမယ်။",
+              "images": [
+                {
+                  "src": "images/bioscope/mac-01.webp",
+                  "alt": "macOS ရဲ့ Bioscope can not be opened alert",
+                  "width": 1200,
+                  "height": 1200
+                }
+              ]
+            },
+            {
+              "text": "macOS Settings ကို ဖွင့်ပြီး Privacy & Security အောက်မှာ Bioscope App ကို Open Anyway ပြုလုပ်ပေးပါ။ macOS version အလိုက် အောက်က ပုံစံ ၂ မျိုးမှာ တစ်မျိုး တွေ့ရပါမယ်။",
+              "images": [
+                {
+                  "src": "images/bioscope/mac-02.webp",
+                  "alt": "Privacy & Security ထဲက Open Anyway — ပုံစံ ၁",
+                  "width": 1200,
+                  "height": 407,
+                  "caption": "ပုံစံ ၁"
+                },
+                {
+                  "src": "images/bioscope/mac-03.webp",
+                  "alt": "Privacy & Security ထဲက Open Anyway — ပုံစံ ၂",
+                  "width": 1200,
+                  "height": 450,
+                  "caption": "ပုံစံ ၂"
+                }
+              ]
+            },
+            {
+              "text": "Password လာတောင်းပါက စက်ရဲ့ Login Password ကို ရိုက်ထည့်ပေးပါ။",
+              "images": [
+                {
+                  "src": "images/bioscope/mac-04.webp",
+                  "alt": "Privacy & Security ရဲ့ password prompt",
+                  "width": 1200,
+                  "height": 1500
+                }
+              ]
+            },
+            {
+              "text": "Applications folder ထဲမှ Bioscope App ကို ပြန်ဖွင့်ပြီး ပုံထဲကအတိုင်း Open ကို နှိပ်ပြီး အသုံးပြုနိုင်ပါပြီ။",
+              "images": [
+                {
+                  "src": "images/bioscope/mac-05.webp",
+                  "alt": "Open ကို နှိပ်ရမည့် macOS dialog",
+                  "width": 1200,
+                  "height": 1200
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

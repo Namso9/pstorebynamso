@@ -1,22 +1,20 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { useMemo } from "react";
-import { motion } from "motion/react";
 
 import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { CategoryCard } from "./CategoryCard";
+import { HomeGuideCard } from "./HomeGuideCard";
+import { HomeSpotlight } from "./HomeSpotlight";
 
 import { categoryPresentations } from "@/data/category-presentations";
+import { homeGuideCards, homeSpotlights } from "@/data/home-highlights";
 import { useCatalog } from "@/hooks/useCatalog";
 import type { CatalogData } from "@/types/catalog";
 
 type HomeCatalogProps = {
   initialCatalog: CatalogData;
 };
-
-const MotionLink = motion.create(Link);
 
 export function HomeCatalog({ initialCatalog }: HomeCatalogProps) {
   const { catalog = initialCatalog, status, error, refresh } = useCatalog(initialCatalog);
@@ -43,6 +41,14 @@ export function HomeCatalog({ initialCatalog }: HomeCatalogProps) {
         </div>
       ) : null}
 
+      {homeSpotlights.length ? (
+        <div className="home-spotlights" aria-label="New on Premium Store">
+          {homeSpotlights.map((item, index) => (
+            <HomeSpotlight item={item} index={index} key={item.id} />
+          ))}
+        </div>
+      ) : null}
+
       <div className="category-grid">
         {catalog.categories.map((category, index) => (
           <CategoryCard
@@ -57,30 +63,9 @@ export function HomeCatalog({ initialCatalog }: HomeCatalogProps) {
             key={category.slug}
           />
         ))}
-        <MotionLink
-          className="category-card category-card--guide"
-          href="/expressvpn-location-guide/"
-          prefetch={false}
-          initial={false}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="category-card__media">
-            <Image
-              src="/images/express.svg"
-              alt="ExpressVPN Location Guide"
-              width={800}
-              height={800}
-            />
-          </div>
-          <div className="category-card__body">
-            <div>
-              <h3>Expressvpn Location Guide</h3>
-              <p>အသေးစိတ် ကြည့်ရန် ပုံကိုနှိပ်ပါ</p>
-            </div>
-          </div>
-        </MotionLink>
+        {homeGuideCards.map((item) => (
+          <HomeGuideCard item={item} key={item.id} />
+        ))}
       </div>
     </section>
   );
