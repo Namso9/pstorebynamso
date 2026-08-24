@@ -195,6 +195,16 @@ try {
   await cdp.call("Page.enable");
   await cdp.call("Runtime.enable");
   await cdp.call("Emulation.setUserAgentOverride", { userAgent: IOS_UA });
+  // The iOS UA alone is not enough. `usesSwitchHaptics()` starts with
+  // `if (supportsVibration()) return false`, and headless Chrome DOES expose
+  // navigator.vibrate — so without this the overlay mounts nowhere, every
+  // ".haptic-tap" query returns zero, and an "it is not on the FAQ rows" check
+  // passes for the wrong reason. Removing vibrate is what puts the run on the
+  // iOS branch (the remaining gates are the UA version and
+  // CSS.supports("selector(:has(> *))"), both of which Chrome satisfies).
+  await cdp.call("Page.addScriptToEvaluateOnNewDocument", {
+    source: `Object.defineProperty(navigator, "vibrate", { value: undefined });`,
+  });
   await cdp.call("Emulation.setDeviceMetricsOverride",
     { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
   await cdp.call("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
@@ -204,26 +214,45 @@ try {
   // ── the overlay is gone from every surface a finger scrolls over ────────
   await navigate(cdp, `${origin}/mobile-data/`);
   const overlays = await evaluate(cdp, `(() => {
+    // A host is an element with the overlay as a DIRECT child. That distinction
+    // is the whole point: "View Plans" is INSIDE .product-card and is supposed
+    // to have one; the tile itself is not.
     const hosts = [...document.querySelectorAll(".haptic-tap")]
-      .map((i) => i.parentElement?.className || "?");
+      .map((i) => i.parentElement)
+      .filter(Boolean);
+    const hostOf = (selector) =>
+      hosts.filter((h) => h.matches(selector)).length;
+    const faq = document.querySelector(".faq-question");
     return {
-      ios: !!document.querySelector(".haptic-pulse") ||
-           [...document.querySelectorAll(".haptic-tap")].length >= 0,
-      hosts,
-      onFaq: document.querySelectorAll(".faq-question .haptic-tap").length,
-      onCards: document.querySelectorAll(".product-card .haptic-tap").length,
-      onReviews: document.querySelectorAll(".review-card .haptic-tap").length,
-      faqSelectable: getComputedStyle(document.querySelector(".faq-question")).userSelect,
-      faqTouchAction: getComputedStyle(document.querySelector(".faq-question")).touchAction,
+      total: hosts.length,
+      classes: [...new Set(hosts.map((h) => h.className.trim()))],
+      pulse: !!document.querySelector(".haptic-pulse"),
+      onScrollSurfaces:
+        hostOf(".faq-question") + hostOf(".product-card") +
+        hostOf(".category-card") + hostOf(".review-card") +
+        hostOf(".popular-card") + hostOf(".search-result") +
+        hostOf(".mobile-navigation a") + hostOf(".icon-button"),
+      onThemeToggle: hostOf(".theme-switch"),
+      onViewPlans: hostOf(".product-card__action"),
+      faqSelectable: getComputedStyle(faq).userSelect,
+      faqTouchAction: getComputedStyle(faq).touchAction,
     };
   })()`);
-  assert.equal(overlays.onFaq, 0, `FAQ rows still carry the overlay: ${overlays.hosts}`);
-  assert.equal(overlays.onCards, 0, `product cards still carry the overlay: ${overlays.hosts}`);
-  assert.equal(overlays.onReviews, 0, "review cards still carry the overlay");
+  // Prove the harness is on the iOS branch before trusting any count above.
+  assert.ok(overlays.total > 0,
+    "no overlay mounted anywhere — the run is not on the iOS branch, so every " +
+    "count below would pass for the wrong reason");
+  assert.equal(overlays.pulse, true, "the iOS programmatic-pulse label is missing");
+  assert.equal(overlays.onScrollSurfaces, 0,
+    `a scroll surface still carries the overlay: ${overlays.classes.join(" | ")}`);
+  assert.equal(overlays.onThemeToggle, 1,
+    `the light/dark toggle lost its haptic: ${overlays.classes.join(" | ")}`);
+  assert.equal(overlays.onViewPlans, 2,
+    `View Plans lost its haptic (${overlays.onViewPlans} of 2 buttons)`);
   assert.equal(overlays.faqSelectable, "none");
   assert.equal(overlays.faqTouchAction, "manipulation");
-  ok("no haptic overlay on any scroll surface, FAQ rows unselectable",
-     `remaining hosts: ${overlays.hosts.join(", ") || "none on this page"}`);
+  ok("the overlay is on the theme toggle and View Plans, on no scroll surface",
+     `${overlays.total} hosts: ${overlays.classes.join(" | ")}`);
 
   // ── the product card still LOOKS like a card ──────────────────────────
   // The hover-guard pass shipped a card whose name column had collapsed to
