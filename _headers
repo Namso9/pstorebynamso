@@ -46,10 +46,32 @@
 /images/*
   Cache-Control: public, max-age=2592000, immutable
 
-# ...but the two BRAND marks do change under the same name — Kimi replaced both
-# on 2026-08-24 and every visitor kept the old bytes, because `immutable` tells
-# a browser not even to revalidate. These two override the rule above (later
-# rules win for the same header). Product and review art keeps the 30 days.
+# ...but the two BRAND marks DO change under the same name — Kimi replaced both
+# on 2026-08-24 and every visitor kept the old bytes, because `immutable` tells a
+# browser not even to revalidate.
+#
+# ⚠️ MEASURED 2026-08-24: these two rules do NOT override the wildcard above.
+# Cloudflare MERGES the Cache-Control directives of every matching rule, so a
+# fresh MISS on /images/favicon.svg returns
+#     public, max-age=14400, immutable, must-revalidate
+# — `must-revalidate` from here, `immutable` still from the wildcard, and a
+# max-age that is neither value. `immutable` surviving is the part that matters:
+# it means a same-name replacement still will not reach a browser that has the
+# old copy.
+#
+# So the working convention is a VERSION BUMP, not this rule: when a brand mark
+# changes, bump `?v=N` at its reference sites (src/app/layout.tsx,
+# src/app/page.tsx, src/components/layout/SiteHeader.tsx,
+# src/components/catalog/PlanModal.tsx). A new URL is a new cache key for the CDN
+# and for browsers holding an immutable copy. `?v=2` is what actually delivered
+# Kimi's marks; these rules only shorten the window a little.
+#
+# The real fix, if it ever matters enough: move brand marks off /images/ (e.g.
+# /brand/) so only ONE rule matches them. That also has to account for
+# functions/images/[name].js, which owns /images/*.
+#
+# Product and review art keeps the 30 immutable days, which is correct — those
+# never change under the same name.
 /images/favicon.svg
   Cache-Control: public, max-age=3600, must-revalidate
 
