@@ -1,5 +1,12 @@
 {
-  "updated": "",
+  "updated": "24 Aug 2026",
   "window_days": 7,
-  "items": []
+  "items": [
+    "netflix_phone",
+    "bioscope",
+    "netflix_tv",
+    "chatgpt",
+    "gemini",
+    "prime"
+  ]
 }
