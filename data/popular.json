@@ -3,10 +3,12 @@
   "window_days": 7,
   "items": [
     "netflix_phone",
-    "bioscope",
     "netflix_tv",
-    "chatgpt",
-    "gemini",
-    "prime"
+    "bioscope",
+    "express_phone",
+    "nord",
+    "adobe",
+    "canva",
+    "capcut"
   ]
 }
