@@ -39,6 +39,33 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- **The homepage redesign is shipped (2026-08-24).** Search-first hero: a
+  full-bleed solid plum-indigo band (`--hero-band`, `#392c6b` dark /
+  `#2e245e` light), left-aligned Burmese headline, wide white search field
+  that opens the header's single hardened `ProductSearch` dialog via the
+  `ps-open-search` window event (⌘K/Ctrl+K lands there too — one dialog, so
+  the 84dvh IME and `onCloseRef` fixes exist exactly once). Search matching
+  stays substring-based but now expands through a storefront-owned
+  Burmese/typo alias map (`src/data/search-aliases.ts`). Category grid leads
+  the page, popular row follows it; every category card is one layout tinted
+  by `--cat-<key>-*` tokens via `data-category` (VPN is the deliberately deep
+  card in both themes; palette table in `README.md`). Card blurbs are
+  storefront-owned Burmese one-liners (`categoryCardDescriptions` in
+  `src/data/category-presentations.ts`) — panel subtitles stay on category
+  pages. Raster app icons (Atom/Mytel/Bioscope) render full-bleed through
+  `productLogoClass()` (`src/data/product-media.ts`). Burmese heading leading
+  fixed site-wide (section h2 1.45, bioscope h1 1.28) with the 14px
+  paragraph-gap fix kept. Popular row: rank chip, category·price meta,
+  edge-to-edge scroll-snap under 720px — the 88px height contract and
+  render-nothing-without-data rule are untouched. Two layout gotchas now
+  documented in CSS comments: implicit grid auto tracks blow out on nowrap
+  Burmese max-content, and hover lifts on motion-wrapped cards must use the
+  independent `translate`/`scale` properties (inline `transform: none` after
+  the reveal beats a stylesheet `transform`). Verified: lint, typecheck,
+  build, csp:check, theme:check, touch:check all pass; screenshots at
+  390/768/1280 in both themes plus `/premium-vpn-apps/` and
+  `/bioscope-download/` regression shots confirmed detail pages render as
+  before.
 - **The animated theme switch is DEPLOYED (2026-08-23, commit `1e15e4e`).**
   The header's plain Sun/Moon icon button is now a `role="switch"` control
   with a painted day/night scene: the pill track cross-fades between a

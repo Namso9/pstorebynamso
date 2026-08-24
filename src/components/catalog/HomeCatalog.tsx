@@ -44,19 +44,15 @@ export function HomeCatalog({
         </div>
       ) : null}
 
-      {/* `catalog` is passed down rather than fetched again: this component
-          already owns the one live catalog poll on the home page, and a second
-          `useCatalog` would double every products.json request. */}
-      <PopularProducts catalog={catalog} initialPopular={initialPopular} />
-
-      {homeSpotlights.length ? (
-        <div className="home-spotlights" aria-label="New on Premium Store">
-          {homeSpotlights.map((item, index) => (
-            <HomeSpotlight item={item} index={index} key={item.id} />
-          ))}
+      {/* Categories first, the measured row second (2026-08-24 redesign):
+          the grid is the home page's primary navigation; the popular row
+          follows it and still renders nothing at all when there is no data. */}
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Explore</p>
+          <h2>Category အလိုက် ရွေးချယ်ဝယ်ယူပါ</h2>
         </div>
-      ) : null}
-
+      </div>
       <div className="category-grid">
         {catalog.categories.map((category, index) => (
           <CategoryCard
@@ -70,6 +66,19 @@ export function HomeCatalog({
           <HomeGuideCard item={item} key={item.id} />
         ))}
       </div>
+
+      {homeSpotlights.length ? (
+        <div className="home-spotlights" aria-label="New on Premium Store">
+          {homeSpotlights.map((item, index) => (
+            <HomeSpotlight item={item} index={index} key={item.id} />
+          ))}
+        </div>
+      ) : null}
+
+      {/* `catalog` is passed down rather than fetched again: this component
+          already owns the one live catalog poll on the home page, and a second
+          `useCatalog` would double every products.json request. */}
+      <PopularProducts catalog={catalog} initialPopular={initialPopular} />
     </section>
   );
 }

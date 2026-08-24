@@ -705,6 +705,12 @@ untouched. Full write-up: `qa/overnight/2026-08-03/KIMI_UI_UX_REPORT.md`.
 
 ## Front-end design queue — for Kimi (opened 2026-08-24)
 
+**2026-08-24 update: the redesign shipped.** The homepage is now a
+search-first solid-band hero plus a per-category colored grid (palette and
+rules documented in `README.md`), categories lead the measured popular row,
+and all five design items below are done. The guardrails in this section
+stay in force.
+
 Everything in this section is a DESIGN decision that was deliberately left
 unmade. The 2026-08-24 session shipped the structure and the behaviour for each
 one; what is listed here is the look, and the owner assigned that to Kimi. Each
@@ -741,35 +747,30 @@ Two things NOT to undo while working here:
   scrolled frame, so the radius is the scroll budget. Change the desktop value
   freely; raising the coarse one is a performance decision.
 
-- [ ] **Burmese heading metrics, site-wide.** `.section-heading h2` is
-  `line-height: 1.32`; `.bioscope-hero h1` is `1.02`. Both are tuned for Latin
-  and are the reason the fix above was needed. A real pass would set the
-  Burmese line-height once (and decide whether `--font-display` should have a
-  separate Myanmar stack at all — `Lora` has no Myanmar coverage, so every
-  Burmese heading is already falling through to `Noto Sans Myanmar` at a
-  different optical size than its Latin neighbours).
-- [ ] **The "ဒီအပတ် လူကြည့်များဆုံး Products" row** —
-  `src/components/catalog/PopularProducts.tsx` + `.popular-*` in `globals.css`.
-  Structurally finished and measured from real clicks; visually it is a first
-  cut. Open questions: the rank number is an absolutely-positioned `#1` at 0.75
-  opacity in the tile corner (a badge? a numbered list? nothing?); the tile
-  shows cheapest-price-or-subtitle as its second line; 2 columns under 720px
-  and 4 above. It renders NOTHING when there is no data — keep that.
-- [ ] **The `AI` wordmark tile.** `.category-card__wordmark` is Lora 1.28rem
-  with -0.02em tracking and a 1px optical nudge, inside the same 46px accent
-  plate the glyph tiles use. Owner's call was "no brain graphic, use the letters
-  AI"; how those letters should be set is open. `categoryWordmark()` in
-  `src/data/category-icons.ts` is slug-keyed, so any other category can join.
-- [ ] **Raster app icons vs the glass tile.** `atom.webp`, `mytel.webp` and
-  `bioscope.webp` are the owner's real 256px app icons, but `.product-logo`
-  keeps `padding: 7px`, so they sit inset inside the frosted tile exactly like
-  the flat SVG brand marks. Decide whether a raster app icon should go
-  full-bleed to the tile's radius instead (it would need its own class; the
-  frame already clips with `overflow: hidden`).
-- [ ] **Bioscope install steps.** Body copy went to full `--ink` at 0.95rem for
-  legibility (owner reported the old `--muted` 0.85rem as too faint). The
-  numbered marker beside it is still `25px` / `0.72rem`, which now reads small
-  against 15.2px text.
+- [x] **Burmese heading metrics, site-wide.** DONE 2026-08-24:
+  `.section-heading h2` went 1.32 → 1.45, `.bioscope-hero h1` 1.02 → 1.28,
+  the new `.home-hero h1` ships at 1.4, and the 14px paragraph-gap bug fix
+  stays as the belt-and-braces guard. Font stacks are UNCHANGED on purpose —
+  the owner's rounded-font rule wins, and Lora's missing Myanmar coverage
+  already falls through to Noto Sans Myanmar per glyph; the mismatch is
+  absorbed by the leading instead of a separate stack.
+- [x] **The "ဒီအပတ် လူကြည့်များဆုံး Products" row** — DONE 2026-08-24: the
+  rank is now a small accent chip (not a bare digit), the meta line names the
+  category beside the cheapest price (`Streaming Apps · 20,000 Ks မှစ`), the
+  row scrolls edge-to-edge with scroll-snap under 720px and stays a 4-up grid
+  above it, and the 88px height contract plus the renders-nothing-without-
+  data rule are untouched.
+- [x] **The `AI` wordmark tile.** DONE 2026-08-24: Lora 700 at 1.42rem with
+  -0.03em tracking and the optical nudge, now tinted by the category's own
+  plate colors like every other icon tile.
+- [x] **Raster app icons vs the glass tile.** DONE 2026-08-24: full-bleed won.
+  `src/data/product-media.ts` lists `atom.webp`, `mytel.webp`, `bioscope.webp`
+  and adds `.product-logo--fullbleed` (no inset, frame clips to the shared
+  radius) everywhere `productLogoClass()` is used; flat SVG brand marks keep
+  the 7px inset and plate. `PlanModal`'s 40px icon is deliberately unchanged.
+- [x] **Bioscope install steps.** DONE 2026-08-24: the marker is 29px /
+  0.8rem with no top offset, centred on the first line of the 0.95rem / 1.9
+  body copy it accompanies.
 
 Dead weight this session created or confirmed — safe to delete in a design pass,
 listed here rather than removed unilaterally:

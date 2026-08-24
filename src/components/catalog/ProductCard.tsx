@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 import { HapticSwitch } from "@/components/common/HapticSwitch";
+import { productLogoClass } from "@/data/product-media";
 import { useRevealMotion } from "@/hooks/useRevealMotion";
 import { publicAssetPath } from "@/services/catalog";
 import { trackProductClick } from "@/services/track";
@@ -31,9 +32,7 @@ export function ProductCard({ product, onViewPlans, index = 0 }: ProductCardProp
       <div className="product-card__identity">
         <span className="product-logo-frame">
           <Image
-            className={["product-logo", product.imageClass]
-              .filter(Boolean)
-              .join(" ")}
+            className={productLogoClass(product)}
             src={publicAssetPath(product.image)}
             alt={product.name}
             width={64}

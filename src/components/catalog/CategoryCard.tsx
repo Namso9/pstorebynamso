@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 
 import { Icon } from "@/components/common/Icon";
 import { categoryIconName, categoryWordmark } from "@/data/category-icons";
+import { categoryCardDescription } from "@/data/category-presentations";
 import { useRevealMotion } from "@/hooks/useRevealMotion";
 import { categoryHref } from "@/services/catalog";
 import type { CatalogCategory } from "@/types/catalog";
@@ -43,6 +44,10 @@ export function CategoryCard({
       className="category-card"
       href={categoryHref(category.slug)}
       prefetch={false}
+      /* Per-category color lives entirely in CSS, keyed on this attribute:
+         one layout, color is the only variable. A slug with no palette entry
+         renders the neutral default card. */
+      data-category={category.slug}
       {...revealMotion}
     >
       {/* `aria-hidden` either way: the tile's own <h3> already names the
@@ -65,7 +70,7 @@ export function CategoryCard({
       <div className="category-card__body">
         <div>
           <h3>{category.title}</h3>
-          <p>{category.subtitle}</p>
+          <p>{categoryCardDescription(category.slug, category.subtitle)}</p>
         </div>
         <span className="category-count">
           {productCount} {productCount === 1 ? "product" : "products"}

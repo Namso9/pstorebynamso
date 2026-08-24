@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { HomeCatalog } from "@/components/catalog/HomeCatalog";
+import { HomeSearch } from "@/components/catalog/HomeSearch";
 import { AnimatedSection } from "@/components/common/AnimatedSection";
 import { Icon } from "@/components/common/Icon";
 import { OfficialChannels } from "@/components/content/OfficialChannels";
@@ -75,50 +76,42 @@ const storeStructuredData = {
 
 export default function HomePage() {
   return (
-    <div className="home-page">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(storeStructuredData).replace(/</g, "\\u003c"),
         }}
       />
-      <AnimatedSection className="store-hero" aria-labelledby="home-title">
-        <span className="hero-badge">
-          <Icon name="bolt" /> Premium Digital Marketplace
-        </span>
-        <h1 id="home-title">
-          Premium Store မှ ဝယ်ယူရရှိနိုင်မည့် Digital Products များ
-        </h1>
-        <p>
-          Netflix, Spotify, VPN, AI apps နှင့် premium subscription များကို
-          စျေးနှုန်းချိုသာစွာ Telegram Bot ဖြင့် အလွယ်တကူ မှာယူနိုင်ပါသည်။
-        </p>
-        <div className="hero-actions">
+      {/* Search-first hero (2026-08-24 redesign): one solid brand band, a
+          left-aligned headline, and the widest element on the page — the
+          search field. No reveal animation here: the band IS the LCP. */}
+      <section className="home-hero" aria-labelledby="home-title">
+        <div className="home-hero__inner">
+          <h1 id="home-title">လိုချင်တဲ့ Premium App ကို ရှာဖွေဝယ်ယူပါ</h1>
+          <p>
+            Netflix, ChatGPT, VPN စတဲ့ premium apps &amp; subscriptions တွေကို
+            စျေးနှုန်းချိုသာစွာ တစ်နေရာတည်းမှာ မှာယူနိုင်ပါတယ်။
+          </p>
+          <HomeSearch />
           <a
-            className="button button--primary button--lg"
+            className="home-hero__bot"
             href="https://t.me/PSNamso_bot"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Icon name="telegram" /> Telegram Bot ဖြင့်ဝယ်ယူရန်
-          </a>
-          <a className="button button--secondary button--lg" href="#products">
-            Products ကြည့်ရန်
+            <Icon name="telegram" /> Telegram Bot ကနေ ချက်ချင်းဝယ်ယူရန်
           </a>
         </div>
-        <div className="trust-chips" aria-label="Store benefits">
-          <span><Icon name="bolt" /> Instant Bot Delivery</span>
-          <span><Icon name="credit-card" /> KBZPay · WavePay · AYA Pay</span>
-          <span><Icon name="reviews" /> Real Customer Reviews</span>
-        </div>
-      </AnimatedSection>
+      </section>
 
-      <AnimatedSection>
-        <HomeCatalog
-          initialCatalog={staticCatalog}
-          initialPopular={staticPopularData}
-        />
-      </AnimatedSection>
+      <div className="home-page">
+        <AnimatedSection>
+          <HomeCatalog
+            initialCatalog={staticCatalog}
+            initialPopular={staticPopularData}
+          />
+        </AnimatedSection>
 
       <AnimatedSection className="home-section">
         <div className="trust-grid">
@@ -212,6 +205,7 @@ export default function HomePage() {
       <AnimatedSection className="home-section">
         <OfficialChannels />
       </AnimatedSection>
-    </div>
+      </div>
+    </>
   );
 }

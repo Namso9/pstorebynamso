@@ -4,6 +4,23 @@
 
 ### Added
 
+- A search-first homepage redesign. The hero is now a full-bleed solid
+  plum-indigo band with a left-aligned Burmese headline and a wide white
+  search field (with a ⌘K hint on keyboard devices) instead of the centered
+  poster-style hero; the field opens the same hardened search dialog the
+  header has always used, which now also answers Burmese-script and
+  misspelled queries ("နက်ဖလစ်", "chat gpt", "netflex") through a
+  storefront-owned alias map. The category grid leads the page ahead of the
+  measured "most viewed this week" row, every category card is one shared
+  layout differentiated only by its color family (rose Streaming, periwinkle
+  AI, deep-navy VPN in both themes, mint Mobile Data, cream Music, sky
+  Creative & Work), and each card states plainly in Burmese what the category
+  holds. The popular row scrolls edge-to-edge on phones, settles into a 4-up
+  grid from 720px, carries a proper rank chip, and names the category beside
+  the cheapest price. The trust row goes monochrome so the grid keeps the
+  color stage, and the owner's real Atom, Mytel and Bioscope app icons now
+  fill their tiles edge to edge instead of sitting inset like the flat brand
+  marks. Palette tokens and the design rules are documented in `README.md`.
 - An animated light/dark theme switch in the header, replacing the plain
   Sun/Moon icon button. The pill track is a small painted scene — a day sky
   with drifting clouds that cross-fades into a night sky with rising stars —

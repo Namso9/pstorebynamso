@@ -40,6 +40,50 @@
   --glass-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
   --font-display: "Lora", "Noto Sans Myanmar", Georgia, serif;
   --font-body: "Lora", "Noto Sans Myanmar", "Myanmar Text", Georgia, serif;
+
+  /* ── Homepage redesign (2026-08-24) — additive tokens, nothing above is
+     redefined. The search-first hero band plus the per-category card
+     palette: one layout, color is the only variable. Dark theme is the
+     :root default, so these are the dark values (soft translucent tints
+     over the dark canvas, one deliberately DEEP card for rhythm); the
+     light theme overrides them below with true pastels. Text on tinted
+     cards stays --ink/--muted, which keeps every card at WCAG AA; the
+     deep VPN card carries its own ink pair (white on #1f2d4a ≈ 13:1). */
+  --hero-band: #392c6b;
+  --hero-band-ink: #f6f4ff;
+  --hero-band-muted: rgba(241, 238, 255, 0.78);
+
+  --cat-stream-surface: rgba(251, 113, 133, 0.12);
+  --cat-stream-line: rgba(251, 113, 133, 0.3);
+  --cat-stream-plate: rgba(251, 113, 133, 0.2);
+  --cat-stream-plate-ink: #fda4b8;
+
+  --cat-ai-surface: rgba(129, 140, 248, 0.15);
+  --cat-ai-line: rgba(129, 140, 248, 0.32);
+  --cat-ai-plate: rgba(129, 140, 248, 0.22);
+  --cat-ai-plate-ink: #a8b1ff;
+
+  --cat-vpn-surface: #1f2d4a;
+  --cat-vpn-line: rgba(148, 180, 255, 0.26);
+  --cat-vpn-plate: rgba(255, 255, 255, 0.12);
+  --cat-vpn-plate-ink: #9db9ff;
+  --cat-vpn-ink: #f4f8ff;
+  --cat-vpn-muted: rgba(226, 236, 252, 0.72);
+
+  --cat-data-surface: rgba(52, 211, 153, 0.12);
+  --cat-data-line: rgba(52, 211, 153, 0.3);
+  --cat-data-plate: rgba(52, 211, 153, 0.18);
+  --cat-data-plate-ink: #5de0ae;
+
+  --cat-music-surface: rgba(245, 176, 65, 0.13);
+  --cat-music-line: rgba(245, 176, 65, 0.32);
+  --cat-music-plate: rgba(245, 176, 65, 0.2);
+  --cat-music-plate-ink: #f7c56f;
+
+  --cat-create-surface: rgba(77, 159, 255, 0.13);
+  --cat-create-line: rgba(77, 159, 255, 0.32);
+  --cat-create-plate: rgba(77, 159, 255, 0.2);
+  --cat-create-plate-ink: #93c2ff;
 }
 
 html[data-theme="light"] {
@@ -68,6 +112,44 @@ html[data-theme="light"] {
   --glass-line: rgba(15, 23, 42, 0.1);
   --glass-hi: rgba(255, 255, 255, 0.8);
   --glass-shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
+
+  /* Homepage redesign tokens (light theme): true pastel cards — #0f172a
+     ink sits at 12:1+ on each, and --muted at ~7:1. The band goes a step
+     DEEPER so it keeps its weight against the pale canvas, and the VPN
+     card stays deep in both themes (white on #23345a ≈ 12:1). */
+  --hero-band: #2e245e;
+
+  --cat-stream-surface: #fdeef2;
+  --cat-stream-line: rgba(194, 64, 108, 0.22);
+  --cat-stream-plate: #fad9e2;
+  --cat-stream-plate-ink: #b83a64;
+
+  --cat-ai-surface: #eceefc;
+  --cat-ai-line: rgba(91, 95, 199, 0.22);
+  --cat-ai-plate: #dde0f9;
+  --cat-ai-plate-ink: #4c51b5;
+
+  --cat-vpn-surface: #23345a;
+  --cat-vpn-line: rgba(20, 32, 60, 0.45);
+  --cat-vpn-plate: rgba(255, 255, 255, 0.14);
+  --cat-vpn-plate-ink: #a9c3ff;
+  --cat-vpn-ink: #f6f9ff;
+  --cat-vpn-muted: rgba(226, 236, 252, 0.75);
+
+  --cat-data-surface: #e7f6ee;
+  --cat-data-line: rgba(16, 122, 84, 0.22);
+  --cat-data-plate: #cfeee0;
+  --cat-data-plate-ink: #0d7050;
+
+  --cat-music-surface: #fdf1de;
+  --cat-music-line: rgba(154, 98, 9, 0.24);
+  --cat-music-plate: #f9e4c0;
+  --cat-music-plate-ink: #92590a;
+
+  --cat-create-surface: #e9f1fd;
+  --cat-create-line: rgba(28, 98, 201, 0.22);
+  --cat-create-plate: #d4e4fb;
+  --cat-create-plate-ink: #1a5cc0;
 }
 
 /* Theme-change cross-fade: the theme switch adds `theme-transition` to
@@ -1096,16 +1178,153 @@ body:has(.category-page) .site-header {
   padding-bottom: clamp(56px, 9vw, 100px);
 }
 
-.store-hero {
-  display: grid;
-  min-height: clamp(500px, 76vh, 720px);
-  padding: clamp(74px, 12vw, 132px) 0 clamp(58px, 9vw, 92px);
-  place-items: center;
-  align-content: center;
-  text-align: center;
+/* ── Search-first hero band (2026-08-24 homepage redesign) ─────────────
+   One solid brand color, edge to edge — the section renders OUTSIDE the
+   max-width `.home-page` container in page.tsx, so no breakout math is
+   needed — and the page's normal surface resumes below it. Left-aligned
+   headline, wide white search field, quiet bot link. No reveal motion and
+   no poster art: the band IS the LCP, and every word is real text. */
+.home-hero {
+  color: var(--hero-band-ink);
+  background: var(--hero-band);
 }
 
-.store-hero h1,
+.home-hero__inner {
+  display: grid;
+  /* minmax(0, 1fr), not an implicit auto track: an auto track sizes to the
+     headline's max-content, and an unbroken Burmese run is wider than a
+     phone, so the whole band overflowed horizontally. */
+  grid-template-columns: minmax(0, 1fr);
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  padding: clamp(30px, 5.5vw, 52px) clamp(14px, 3vw, 20px);
+  justify-items: start;
+  gap: 14px;
+}
+
+.home-hero h1 {
+  margin: 0;
+  max-width: 720px;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4.6vw, 2.45rem);
+  letter-spacing: -0.02em;
+  /* Myanmar stacked vowels/medials overhang the em box — the same fix the
+     old `.store-hero h1` needed (1.28 → 1.4 against line collision). */
+  line-height: 1.4;
+}
+
+.home-hero__inner > p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--hero-band-muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+/* A button dressed as the search field — the real dialog is the header's
+   ProductSearch, which keeps the mobile IME/focus fixes in exactly one
+   place (see HomeSearch.tsx). White against the band in both themes, soft
+   corners (not a pill), full container width up to ~850px. */
+.home-search {
+  display: flex;
+  width: min(100%, 850px);
+  min-height: 54px;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  border: 0;
+  border-radius: 12px;
+  padding: 0 16px;
+  color: #5b6472;
+  background: #ffffff;
+  box-shadow: 0 10px 26px rgba(9, 6, 26, 0.28);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  text-align: left;
+  touch-action: manipulation;
+  user-select: none;
+  transition:
+    transform 180ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 180ms ease;
+}
+
+.home-search svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: #8a94a6;
+}
+
+.home-search__placeholder {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-search__kbd {
+  margin-left: auto;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  border-radius: 6px;
+  padding: 2px 7px;
+  color: #667085;
+  background: #f2f4f7;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* The shortcut needs a physical keyboard; on touch screens the chip is
+   dead weight. */
+@media (pointer: coarse) {
+  .home-search__kbd {
+    display: none;
+  }
+}
+
+@media (hover: hover) {
+.home-search:hover {
+  box-shadow: 0 14px 30px rgba(9, 6, 26, 0.34);
+  transform: translateY(-1px);
+}
+}
+
+.home-search:active {
+  transform: scale(0.995);
+}
+
+.home-search:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.65);
+  outline-offset: 2px;
+}
+
+.home-hero__bot {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 7px;
+  margin-top: 4px;
+  color: var(--hero-band-muted);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.home-hero__bot svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (hover: hover) {
+.home-hero__bot:hover {
+  color: var(--hero-band-ink);
+  text-decoration: underline;
+}
+}
+
+/* Category PAGE hero — unchanged, still tuned for its Latin display
+   headings; only the home hero was redesigned. */
 .category-hero h1 {
   margin: 22px 0 16px;
   max-width: 900px;
@@ -1113,18 +1332,6 @@ body:has(.category-page) .site-header {
   font-size: clamp(2.1rem, 8vw, 5.2rem);
   letter-spacing: -0.035em;
   line-height: 1.05;
-}
-
-.store-hero h1 {
-  line-height: 1.28;
-}
-
-.store-hero > p {
-  max-width: 740px;
-  margin: 0;
-  color: var(--muted);
-  font-size: clamp(1rem, 2.4vw, 1.17rem);
-  line-height: 1.9;
 }
 
 .hero-badge {
@@ -1145,7 +1352,6 @@ body:has(.category-page) .site-header {
 }
 
 .hero-badge svg,
-.trust-chips svg,
 .trust-card__icon svg,
 .review-preview a svg,
 .bot-steps svg,
@@ -1154,41 +1360,6 @@ body:has(.category-page) .site-header {
   width: 18px;
   height: 18px;
   flex: 0 0 auto;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 30px;
-}
-
-.trust-chips {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 9px;
-  margin-top: 28px;
-}
-
-.trust-chips span {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  gap: 7px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 8px 11px;
-  color: var(--muted);
-  background: var(--surface);
-  font-size: 0.76rem;
-}
-
-/* The live site tints these chip icons with the brand accent; inheriting
-   --muted flattened the row into one grey mass. */
-.trust-chips span svg {
-  color: var(--accent);
 }
 
 .home-section {
@@ -1207,7 +1378,12 @@ body:has(.category-page) .site-header {
   font-family: var(--font-display);
   font-size: clamp(1.7rem, 5vw, 2.75rem);
   letter-spacing: -0.025em;
-  line-height: 1.32;
+  /* Burmese line box, not a Latin one: stacked medials and tone marks
+     overhang the em box, and 1.32 was tuned for Latin — the ink overflowed
+     onto the paragraph below (see the 14px gap fix below, which stays as
+     the belt-and-braces guard). 1.45 clears the marks at every size in
+     the clamp. */
+  line-height: 1.45;
 }
 
 .section-heading > p {
@@ -1221,9 +1397,10 @@ body:has(.category-page) .site-header {
    device picker is the only one) gets no help from the flex `gap` above: the
    h2 and the paragraph are plain block flow, and Tailwind's preflight zeroes
    both margins. Burmese stacks medials above and tone marks below the
-   baseline, so the h2's ink overflows its 1.32 line box and landed on the
-   paragraph's first line. The gap is the fix; `:not(.eyebrow)` keeps the pill
-   above the heading untouched. */
+   baseline, so the h2's ink can overflow its line box and land on the
+   paragraph's first line. The gap is the fix — keep it even though the h2's
+   line-height is now Burmese-aware; `:not(.eyebrow)` keeps the pill above
+   the heading untouched. */
 .section-heading > div > p:not(.eyebrow) {
   margin-top: 14px;
 }
@@ -1250,26 +1427,41 @@ body:has(.category-page) .site-header {
   gap: 12px;
 }
 
+/* One layout on every card; color is the only variable (the per-category
+   palette lives further down, keyed on `data-category`). Left-aligned:
+   icon top-left, then title and a one-line Burmese blurb, count pill
+   pinned to the foot. */
 .category-card {
+  display: flex;
   min-width: 0;
   overflow: hidden;
+  flex-direction: column;
+  gap: 18px;
   border: 1px solid var(--border);
   border-radius: 20px;
+  padding: 20px;
   color: var(--ink);
   background: var(--surface);
   box-shadow: 0 12px 36px color-mix(in srgb, var(--canvas) 30%, transparent);
   text-decoration: none;
   transition:
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 180ms cubic-bezier(0.2, 0, 0, 1),
     border-color 180ms ease,
-    box-shadow 220ms ease;
+    box-shadow 180ms ease;
 }
 
 @media (hover: hover) {
 .category-card:hover {
   border-color: var(--border-strong);
   box-shadow: var(--shadow);
-  transform: translateY(-4px);
+  /* `translate`, not `transform`: motion leaves an inline `transform: none`
+     on the card after the reveal, which would silently beat a stylesheet
+     transform (the same reason `:active` below uses `scale`). */
+  translate: 0 -2px;
+}
+
+.category-card:hover .category-card__icon {
+  scale: 1.03;
 }
 }
 
@@ -1298,25 +1490,32 @@ body:has(.category-page) .site-header {
 }
 
 .category-card__body {
-  display: grid;
+  display: flex;
   min-width: 0;
+  flex: 1;
+  flex-direction: column;
   gap: 12px;
-  padding: 14px;
 }
 
 .category-card h3 {
   margin: 0;
   overflow-wrap: anywhere;
   font-family: var(--font-display);
-  font-size: clamp(0.98rem, 3.5vw, 1.2rem);
-  line-height: 1.25;
+  font-size: clamp(1rem, 3.5vw, 1.15rem);
+  /* Burmese-aware: 1.25 clipped stacked marks on the Myanmar-heavy titles. */
+  line-height: 1.4;
 }
 
+/* The blurb is one plain Burmese line; overflow truncates with an ellipsis
+   instead of wrapping, so every tile in a row keeps the same rhythm. */
 .category-card p {
   margin: 6px 0 0;
+  overflow: hidden;
   color: var(--muted);
-  font-size: 0.78rem;
-  line-height: 1.5;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .category-count {
@@ -1366,14 +1565,18 @@ body:has(.category-page) .site-header {
   background: var(--surface);
 }
 
+/* The trust row recedes on purpose (2026-08-24 redesign): the category grid
+   above it already carries the page's color, so these icons go monochrome —
+   a quiet line-icon plate instead of a second accent-blue one. */
 .trust-card__icon {
   display: inline-grid;
   width: 42px;
   height: 42px;
   place-items: center;
+  border: 1px solid var(--border);
   border-radius: 13px;
-  color: var(--accent-hover);
-  background: var(--accent-soft);
+  color: var(--muted);
+  background: transparent;
 }
 
 .trust-card h2 {
@@ -1919,13 +2122,11 @@ button.plan-row:active {
 }
 
 @media (max-width: 520px) {
-  .hero-actions,
   .bot-callout__actions,
   .guide-actions {
     display: grid;
   }
 
-  .hero-actions > *,
   .bot-callout__actions > *,
   .guide-actions > * {
     width: 100%;
@@ -1934,10 +2135,6 @@ button.plan-row:active {
   .section-heading--inline {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .category-card__body {
-    padding: 12px;
   }
 }
 
@@ -3110,42 +3307,11 @@ html[data-theme="light"] body {
 
 .home-page {
   width: min(100%, 1200px);
+  /* The hero band above is a solid block of color; this gap lets the page
+     surface resume before the first section heading. */
+  padding-top: clamp(26px, 5vw, 44px);
   padding-inline: clamp(12px, 3vw, 20px);
   padding-bottom: 0;
-}
-
-.store-hero {
-  min-height: clamp(500px, 76vh, 720px);
-  padding: 88px 0 42px;
-}
-
-.store-hero h1 {
-  max-width: 880px;
-  margin: 0 0 16px;
-  font-size: clamp(1.9rem, 5vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  /* Myanmar stacked vowels/medials overhang the em box; 1.28 let line 1's
-     descenders touch line 2 on the mixed Burmese/Latin hero headline. */
-  line-height: 1.4;
-}
-
-.store-hero .hero-badge {
-  margin-bottom: 22px;
-}
-
-.store-hero > p {
-  max-width: 620px;
-  font-size: 1.02rem;
-  line-height: 1.75;
-}
-
-.store-hero .hero-actions {
-  margin-top: 30px;
-}
-
-.store-hero .trust-chips {
-  margin-top: 30px;
 }
 
 .home-page .home-section {
@@ -3163,17 +3329,10 @@ html[data-theme="light"] body {
   gap: 14px;
 }
 
-.category-card {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  border-radius: 20px;
-  padding: 14px 12px 16px;
-  text-align: center;
-  background: var(--surface);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, white 65%, transparent),
-    0 10px 30px color-mix(in srgb, var(--canvas) 22%, transparent);
-}
+/* The centered-text `.category-card` overrides that used to live here were
+   retired with the 2026-08-24 redesign — the base rule near the top of the
+   file now owns the one shared card layout (left-aligned, 20px padding),
+   and the tier-1 shadow block further down owns the inset highlight. */
 
 .category-card__media {
   width: 100%;
@@ -3183,25 +3342,6 @@ html[data-theme="light"] body {
 
 .category-card__media img {
   object-fit: contain;
-}
-
-.category-card__body {
-  justify-items: center;
-  gap: 10px;
-  padding: 12px 0 0;
-}
-
-.category-card h3 {
-  font-size: 1rem;
-  font-weight: 650;
-  line-height: 1.4;
-}
-
-.category-card p {
-  font-size: 0.83rem;
-  /* Myanmar stacked marks in the card blurb collided with the line above
-     at 1.4; 1.7 is the smallest leading that clears them at this size. */
-  line-height: 1.7;
 }
 
 .category-card--guide .category-card__media img {
@@ -4232,15 +4372,6 @@ html.theme-light .payment-selector-next {
     height: 30px;
   }
 
-  .hero-actions {
-    width: min(100%, 320px);
-    margin-inline: auto;
-  }
-
-  .store-hero .hero-actions {
-    margin-top: 30px;
-  }
-
   .guide-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -4258,14 +4389,6 @@ html.theme-light .payment-selector-next {
 
   .product-card__action {
     width: 100%;
-  }
-}
-
-@media (min-width: 401px) and (max-width: 520px) {
-  .store-hero {
-    min-height: 675px;
-    align-content: start;
-    padding-top: 81px;
   }
 }
 
@@ -4293,7 +4416,21 @@ html.theme-light .payment-selector-next {
   }
 
   .category-card {
-    padding: 12px 10px 14px;
+    gap: 14px;
+    padding: 16px 14px;
+  }
+
+  /* The icon scales down with the card, not the layout: 56px → 48px keeps
+     the same optical ratio the desktop tile has. */
+  .category-card__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .category-card__icon svg {
+    width: 22px;
+    height: 22px;
   }
 
   /* base layout, not hover paint — see the note at the main rule */
@@ -4494,13 +4631,6 @@ html.theme-light .payment-selector-next {
    pin the pill to the bottom so every row reads on one rhythm. The body has
    exactly two children (title/blurb div, count span); `gap` and the card's
    `text-align: center` carry over unchanged. */
-.category-card__body {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
-  align-items: center;
-}
-
 .category-count {
   margin-block-start: auto;
 }
@@ -4700,6 +4830,22 @@ html[data-theme="light"] .tidal-logo {
   .product-logo {
     padding: 6px;
   }
+}
+
+/* Real raster app icons (Atom, Mytel, Bioscope — see
+   src/data/product-media.ts) fill the tile edge to edge instead of sitting
+   inset on the glass plate: the artwork is a finished app icon with its own
+   background, and the frame's `overflow: hidden` already clips it to the
+   shared radius, so the tile's size and border are untouched. Placed after
+   the per-logo padding rules and the mobile block above so it wins at every
+   width. */
+.product-logo--fullbleed {
+  border: 0;
+  padding: 0;
+  border-radius: inherit;
+  background: transparent;
+  box-shadow: none;
+  object-fit: cover;
 }
 
 /* 2. Plan/checkout dialog: centre on mobile like desktop instead of a
@@ -4960,11 +5106,13 @@ button {
 /* Active feedback for motion-wrapped cards: framer-motion leaves an inline
    `transform: none` after the reveal, which silently beats any `:active`
    transform in the stylesheet. The independent `scale` property is outside
-   the transform stack, so it always applies. */
+   the transform stack, so it always applies. The category card's hover lift
+   rides `translate` for the same reason, so it is transitioned here too. */
 .product-card,
 .category-card {
   transition:
     transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 180ms cubic-bezier(0.2, 0, 0, 1),
     border-color 180ms ease,
     background 180ms ease,
     box-shadow 220ms ease,
@@ -5474,7 +5622,10 @@ button:disabled > .haptic-tap {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 12vw, 4.6rem);
   letter-spacing: -0.045em;
-  line-height: 1.02;
+  /* 1.02 was tuned for Latin; the Burmese strapline under the name stacks
+     medials and tone marks past the em box, so the headline gets the same
+     Burmese-aware leading the other headings moved to. */
+  line-height: 1.28;
 }
 
 /* The wide-tracked caps line is the page's only type flourish — it names the
@@ -5834,17 +5985,20 @@ button:disabled > .haptic-tap {
   width: min(100%, 260px);
 }
 
+/* Sized against the 0.95rem / 1.9 step text (line box ≈ 28.9px): the 25px /
+   0.72rem marker was tuned for the old 0.85rem muted copy and read small
+   once the body went to full ink. 29px centres on the first line with no
+   offset. */
 .bioscope-steps__marker {
   display: grid;
-  width: 25px;
-  height: 25px;
+  width: 29px;
+  height: 29px;
   flex: none;
   place-items: center;
-  margin-top: 3px;
-  border-radius: 9px;
+  border-radius: 10px;
   color: var(--accent-hover);
   background: var(--accent-soft);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   counter-increment: bioscope-step;
@@ -5928,34 +6082,34 @@ button:disabled > .haptic-tap {
    ========================================================================== */
 .category-card__icon {
   display: inline-grid;
-  width: 46px;
-  height: 46px;
-  align-self: center;
+  width: 56px;
+  height: 56px;
   place-items: center;
   border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
-  border-radius: 14px;
+  border-radius: 16px;
   color: var(--accent-hover);
   background: var(--accent-soft);
+  transition: scale 180ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .category-card__icon svg {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   flex: 0 0 auto;
 }
 
 /* A two-letter wordmark stands in for a glyph where a drawing would be read
-   wrong (AI apps — see `categoryWordmark`). It keeps the same 46px accent
-   plate so the grid rhythm is untouched; only the contents change. The display
-   face and the negative tracking are what stop "AI" from reading as body copy
+   wrong (AI apps — see `categoryWordmark`). It keeps the shared icon plate so
+   the grid rhythm is untouched; only the contents change. The display face
+   and the negative tracking are what stop "AI" from reading as body copy
    that happens to sit in a box. */
 .category-card__wordmark {
   font-family: var(--font-display);
-  font-size: 1.28rem;
+  font-size: 1.42rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 1;
-  /* Lora's cap height leaves the pair sitting low in a 46px grid cell. */
+  /* Lora's cap height leaves the pair sitting low in the icon grid cell. */
   transform: translateY(-1px);
 }
 
@@ -5972,13 +6126,138 @@ button:disabled > .haptic-tap {
   object-fit: contain;
 }
 
+/* ── Per-category palette (2026-08-24 redesign) ─────────────────────────
+   Color is the ONLY variable: padding, icon size, radius, shadow and text
+   hierarchy are identical on every tile; the `data-category` attribute
+   selects the surface. Token values (and the AA notes) live in `:root` and
+   the light-theme block. A slug with no entry here — and the guide tile,
+   which carries no `data-category` — renders the neutral default card.
+   Hover keeps the card's hue border: flashing to the neutral border color
+   on a tinted card read as a glitch, not feedback; the lift and the shadow
+   carry the hover state. */
+.category-card[data-category="streaming-apps"] {
+  border-color: var(--cat-stream-line);
+  background: var(--cat-stream-surface);
+}
+
+.category-card[data-category="streaming-apps"] .category-card__icon,
+.category-card[data-category="streaming-apps"] .category-count {
+  border-color: transparent;
+  color: var(--cat-stream-plate-ink);
+  background: var(--cat-stream-plate);
+}
+
+@media (hover: hover) {
+.category-card[data-category="streaming-apps"]:hover {
+  border-color: var(--cat-stream-line);
+}
+}
+
+.category-card[data-category="ai-apps"] {
+  border-color: var(--cat-ai-line);
+  background: var(--cat-ai-surface);
+}
+
+.category-card[data-category="ai-apps"] .category-card__icon,
+.category-card[data-category="ai-apps"] .category-count {
+  border-color: transparent;
+  color: var(--cat-ai-plate-ink);
+  background: var(--cat-ai-plate);
+}
+
+@media (hover: hover) {
+.category-card[data-category="ai-apps"]:hover {
+  border-color: var(--cat-ai-line);
+}
+}
+
+/* The one deliberately DEEP card — white ink in both themes, like the dark
+   tile in the reference grid. It is the visual anchor of the second row. */
+.category-card[data-category="premium-vpn-apps"] {
+  border-color: var(--cat-vpn-line);
+  color: var(--cat-vpn-ink);
+  background: var(--cat-vpn-surface);
+}
+
+.category-card[data-category="premium-vpn-apps"] p {
+  color: var(--cat-vpn-muted);
+}
+
+.category-card[data-category="premium-vpn-apps"] .category-card__icon,
+.category-card[data-category="premium-vpn-apps"] .category-count {
+  border-color: transparent;
+  color: var(--cat-vpn-plate-ink);
+  background: var(--cat-vpn-plate);
+}
+
+@media (hover: hover) {
+.category-card[data-category="premium-vpn-apps"]:hover {
+  border-color: var(--cat-vpn-line);
+}
+}
+
+.category-card[data-category="mobile-data"] {
+  border-color: var(--cat-data-line);
+  background: var(--cat-data-surface);
+}
+
+.category-card[data-category="mobile-data"] .category-card__icon,
+.category-card[data-category="mobile-data"] .category-count {
+  border-color: transparent;
+  color: var(--cat-data-plate-ink);
+  background: var(--cat-data-plate);
+}
+
+@media (hover: hover) {
+.category-card[data-category="mobile-data"]:hover {
+  border-color: var(--cat-data-line);
+}
+}
+
+.category-card[data-category="music-apps"] {
+  border-color: var(--cat-music-line);
+  background: var(--cat-music-surface);
+}
+
+.category-card[data-category="music-apps"] .category-card__icon,
+.category-card[data-category="music-apps"] .category-count {
+  border-color: transparent;
+  color: var(--cat-music-plate-ink);
+  background: var(--cat-music-plate);
+}
+
+@media (hover: hover) {
+.category-card[data-category="music-apps"]:hover {
+  border-color: var(--cat-music-line);
+}
+}
+
+.category-card[data-category="creative-apps"] {
+  border-color: var(--cat-create-line);
+  background: var(--cat-create-surface);
+}
+
+.category-card[data-category="creative-apps"] .category-card__icon,
+.category-card[data-category="creative-apps"] .category-count {
+  border-color: transparent;
+  color: var(--cat-create-plate-ink);
+  background: var(--cat-create-plate);
+}
+
+@media (hover: hover) {
+.category-card[data-category="creative-apps"]:hover {
+  border-color: var(--cat-create-line);
+}
+}
+
 /* ── "Most viewed this week" row ────────────────────────────────────────
-   Sits above the category grid and is measured, not curated: the ids come
-   from panel-written data/popular.json (see PopularProducts.tsx). It renders
-   nothing at all until there is real data, so the home page must not depend
-   on it for spacing — its own margin is the only thing it contributes. */
+   Follows the category grid (the grid is the home page's primary
+   navigation) and is measured, not curated: the ids come from panel-written
+   data/popular.json (see PopularProducts.tsx). It renders nothing at all
+   until there is real data, so the home page must not depend on it for
+   spacing — its own margin is the only thing it contributes. */
 .popular-products {
-  margin-bottom: clamp(30px, 5vw, 44px);
+  margin-top: clamp(36px, 6vw, 56px);
 }
 
 .popular-products .section-heading {
@@ -6023,27 +6302,42 @@ button:disabled > .haptic-tap {
   padding: 13px;
   background: var(--surface);
   text-decoration: none;
-  transition: border-color 160ms ease, background 160ms ease;
+  /* `translate` for the same reason as the category card: the tile is
+     motion-wrapped, so a stylesheet `transform` hover would lose to the
+     inline `transform: none` the reveal leaves behind. */
+  transition:
+    translate 180ms cubic-bezier(0.2, 0, 0, 1),
+    border-color 160ms ease,
+    background 160ms ease;
 }
 
 @media (hover: hover) {
 .popular-card:hover {
   border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
   background: var(--surface-hover);
+  translate: 0 -2px;
 }
 }
 
+/* The rank reads as a small chip in the corner, not a bare digit: at 0.75
+   opacity the old `#n` looked like a watermark rather than a ranking. */
 .popular-card__rank {
   position: absolute;
   top: 8px;
-  right: 10px;
+  right: 8px;
+  display: grid;
+  min-width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 8px;
+  padding: 0 6px;
   color: var(--accent-hover);
+  background: var(--accent-soft);
   font-family: var(--font-display);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1;
-  opacity: 0.75;
 }
 
 .popular-card__body {
@@ -6061,6 +6355,8 @@ button:disabled > .haptic-tap {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow-wrap: anywhere;
+  /* Clears the rank chip pinned to the top-right corner. */
+  padding-right: 26px;
   font-family: var(--font-display);
   font-size: 0.92rem;
   font-weight: 650;
@@ -6075,6 +6371,30 @@ button:disabled > .haptic-tap {
   line-height: 1.5;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* On phones the row scrolls sideways, edge to edge, with a peek of the next
+   tile as the affordance; from 720px up it settles into the 4-up grid. The
+   88px height contract above is unchanged on either side of the break. */
+@media (max-width: 719px) {
+  .popular-grid {
+    display: flex;
+    gap: 10px;
+    margin-inline: calc(-1 * clamp(12px, 3vw, 20px));
+    padding: 2px clamp(12px, 3vw, 20px) 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .popular-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .popular-card {
+    flex: 0 0 min(72%, 300px);
+    scroll-snap-align: start;
+  }
 }
 
 @media (min-width: 720px) {

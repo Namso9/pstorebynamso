@@ -82,3 +82,22 @@ export const categoryPresentations: Record<string, CategoryPresentation> = {
     openGraphImage: OG_COVER,
   },
 };
+
+/**
+ * One-line Burmese blurbs for the HOMEPAGE category tiles only (2026-08-24
+ * redesign): a card is read, not decoded, so the tile says plainly what the
+ * category holds. The panel-owned `categories[].subtitle` stays the category
+ * PAGE's line and is the fallback for a slug this map has not caught up with.
+ */
+export const categoryCardDescriptions: Record<string, string> = {
+  "streaming-apps": "Netflix, YouTube စတဲ့ ရုပ်ရှင် & Series app များ",
+  "premium-vpn-apps": "လုံခြုံမြန်ဆန်စွာ သုံးနိုင်တဲ့ VPN app များ",
+  "ai-apps": "ChatGPT, Gemini စတဲ့ AI tool များ",
+  "mobile-data": "Atom & Mytel data pack များ",
+  "music-apps": "Spotify, Tidal စတဲ့ ဂီတနားထောင် app များ",
+  "creative-apps": "Canva, CapCut, Office စတဲ့ အလုပ်နှင့် ဒီဇိုင်း tool များ",
+};
+
+export function categoryCardDescription(slug: string, fallback: string): string {
+  return categoryCardDescriptions[slug] || fallback;
+}

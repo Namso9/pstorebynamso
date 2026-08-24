@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
 
 import { useRevealMotion } from "@/hooks/useRevealMotion";
+import { productLogoClass } from "@/data/product-media";
 import {
   isCatalogPlan,
   type CatalogData,
@@ -84,6 +85,12 @@ export function PopularProducts({
 }: PopularProductsProps) {
   const [popular, setPopular] = useState(initialPopular);
 
+  const categoryNames = useMemo(
+    () =>
+      new Map(catalog.categories.map((category) => [category.slug, category.title])),
+    [catalog.categories],
+  );
+
   useEffect(() => {
     const controller = new AbortController();
     void fetchPopularData(controller.signal)
@@ -126,7 +133,12 @@ export function PopularProducts({
       </div>
       <div className="popular-grid">
         {products.map((product, index) => (
-          <PopularCard product={product} rank={index + 1} key={product.id} />
+          <PopularCard
+            product={product}
+            rank={index + 1}
+            categoryName={categoryNames.get(product.category) || ""}
+            key={product.id}
+          />
         ))}
       </div>
     </section>
@@ -145,9 +157,11 @@ export function PopularProducts({
 function PopularCard({
   product,
   rank,
+  categoryName,
 }: {
   product: CatalogProduct;
   rank: number;
+  categoryName: string;
 }) {
   const revealMotion = useRevealMotion({
     delay: Math.min(rank - 1, 3) * 0.045,
@@ -171,17 +185,16 @@ function PopularCard({
       <span className="popular-card__rank" aria-hidden="true">
         {rank}
       </span>
-      {/* `product.imageClass` must be carried through exactly as ProductCard
-          and PlanModal do: thirteen of the catalog's values select the light
-          squircle plate that keeps a dark-ink brand mark (ChatGPT, Nord,
-          Perplexity …) readable on the dark glass tile. Dropping it made those
-          logos disappear into the tile. Manus has no class in the catalog and
-          is styled by its card anchor instead, so the card carries its id. */}
+      {/* `productLogoClass` carries `product.imageClass` through exactly as
+          before — thirteen of the catalog's values select the light squircle
+          plate that keeps a dark-ink brand mark (ChatGPT, Nord, Perplexity …)
+          readable on the dark glass tile — and adds the full-bleed class for
+          the owner's real raster app icons (Atom, Mytel, Bioscope). Manus has
+          no class in the catalog and is styled by its card anchor instead, so
+          the card carries its id. */}
       <span className="product-logo-frame">
         <Image
-          className={["product-logo", product.imageClass]
-            .filter(Boolean)
-            .join(" ")}
+          className={productLogoClass(product)}
           src={publicAssetPath(product.image)}
           alt=""
           width={64}
@@ -192,7 +205,9 @@ function PopularCard({
       <span className="popular-card__body">
         <strong>{product.name}</strong>
         <span className="popular-card__meta">
-          {price ? `${price} မှစ` : product.subtitle}
+          {price
+            ? [categoryName, `${price} မှစ`].filter(Boolean).join(" · ")
+            : product.subtitle}
         </span>
       </span>
     </MotionLink>
