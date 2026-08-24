@@ -85,12 +85,6 @@ export function PopularProducts({
 }: PopularProductsProps) {
   const [popular, setPopular] = useState(initialPopular);
 
-  const categoryNames = useMemo(
-    () =>
-      new Map(catalog.categories.map((category) => [category.slug, category.title])),
-    [catalog.categories],
-  );
-
   useEffect(() => {
     const controller = new AbortController();
     void fetchPopularData(controller.signal)
@@ -136,7 +130,6 @@ export function PopularProducts({
           <PopularCard
             product={product}
             rank={index + 1}
-            categoryName={categoryNames.get(product.category) || ""}
             key={product.id}
           />
         ))}
@@ -157,11 +150,9 @@ export function PopularProducts({
 function PopularCard({
   product,
   rank,
-  categoryName,
 }: {
   product: CatalogProduct;
   rank: number;
-  categoryName: string;
 }) {
   const revealMotion = useRevealMotion({
     delay: Math.min(rank - 1, 3) * 0.045,
@@ -204,10 +195,16 @@ function PopularCard({
       </span>
       <span className="popular-card__body">
         <strong>{product.name}</strong>
+        {/* Price only. The meta is one nowrap line by design (the card's
+            height has to be constant — see .popular-card in globals.css), and
+            "Streaming Apps · 20,000 Ks မှစ" did not fit a phone card: measured
+            182px into a 176px box. The category name was the part worth losing
+            rather than shrinking the text — it repeated across every tile from
+            the same category (three of the four live tiles said "Streaming
+            Apps"), and the tile links into that category anyway. "မှစ" stays:
+            without it the cheapest plan's price reads as the only price. */}
         <span className="popular-card__meta">
-          {price
-            ? [categoryName, `${price} မှစ`].filter(Boolean).join(" · ")
-            : product.subtitle}
+          {price ? `${price} မှစ` : product.subtitle}
         </span>
       </span>
     </MotionLink>

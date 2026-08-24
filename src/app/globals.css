@@ -6410,8 +6410,15 @@ button:disabled > .haptic-tap {
 }
 
 @media (min-width: 720px) {
+  /* auto-fit, not `repeat(4, …)`. Four columns were being forced from 720px up,
+     where each card is only 172px wide and the text column inside it just 76px
+     — measured, not guessed: `qa/popular-row-check.mjs` showed the name losing
+     two of four lines and the meta losing 106 of 182px at 768px. A card needs
+     ~260px before its two-line name and one-line meta fit, so let the width
+     decide the count: 2 columns on a tablet, 3 around 1100px, 4 past ~1200px.
+     This cannot produce a too-narrow card again at any future breakpoint. */
   .popular-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 14px;
   }
 }
