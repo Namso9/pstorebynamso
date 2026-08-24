@@ -54,7 +54,7 @@ const storeStructuredData = {
       "@id": "https://pstorebynamso.com/#organization",
       name: "Premium Store by Namso",
       url: "https://pstorebynamso.com/",
-      logo: "https://pstorebynamso.com/images/brand-logo.png?v=2",
+      logo: "https://pstorebynamso.com/images/brand-logo.png?v=3",
       foundingDate: "2020",
       areaServed: "MM",
       sameAs: [
