@@ -5,7 +5,10 @@
 //
 // Written for the 2026-08-24 owner report: "scrolling ရတာလေးသွားတယ် / products
 // တွေကို နှိပ်တာ ချက်ချင်းမရဘူး / back back to home နှစ်ခါနှိပ်နေရတယ် / faq ကို
-// ပွတ်ဆွဲရင် auto select ဖြစ်နေတယ်".
+// ပွတ်ဆွဲရင် auto select ဖြစ်နေတယ်". Amended the same day for the follow-up:
+// "view plan ကိုထောက်မိပြီး ပွတ်ဆွဲလိုက်တာကို scroll မဖြစ်ဘဲ view plan
+// ပွင့်လာပါတယ်" — the overlay left the View Plans button too, and a swipe that
+// starts on View Plans must now scroll the page and open nothing.
 //
 //     node qa/touch-response-check.mjs [origin]
 import assert from "node:assert/strict";
@@ -215,8 +218,8 @@ try {
   await navigate(cdp, `${origin}/mobile-data/`);
   const overlays = await evaluate(cdp, `(() => {
     // A host is an element with the overlay as a DIRECT child. That distinction
-    // is the whole point: "View Plans" is INSIDE .product-card and is supposed
-    // to have one; the tile itself is not.
+    // is the whole point: the theme switch is supposed to have one; View Plans
+    // and every scrollable tile are not.
     const hosts = [...document.querySelectorAll(".haptic-tap")]
       .map((i) => i.parentElement)
       .filter(Boolean);
@@ -247,11 +250,15 @@ try {
     `a scroll surface still carries the overlay: ${overlays.classes.join(" | ")}`);
   assert.equal(overlays.onThemeToggle, 1,
     `the light/dark toggle lost its haptic: ${overlays.classes.join(" | ")}`);
-  assert.equal(overlays.onViewPlans, 2,
-    `View Plans lost its haptic (${overlays.onViewPlans} of 2 buttons)`);
+  // 2026-08-24 follow-up: View Plans sits in a grid the finger scrolls
+  // through, and the draggable switch read a vertical swipe as a toggle and
+  // opened the plans dialog. The overlay is deliberately OFF this button now.
+  assert.equal(overlays.onViewPlans, 0,
+    `View Plans carries the overlay again (${overlays.onViewPlans} of 2 buttons) — ` +
+    "a swipe starting on it will open the plans dialog instead of scrolling");
   assert.equal(overlays.faqSelectable, "none");
   assert.equal(overlays.faqTouchAction, "manipulation");
-  ok("the overlay is on the theme toggle and View Plans, on no scroll surface",
+  ok("the overlay is on the theme toggle only — not View Plans, not any scroll surface",
      `${overlays.total} hosts: ${overlays.classes.join(" | ")}`);
 
   // ── the product card still LOOKS like a card ──────────────────────────
@@ -366,6 +373,24 @@ try {
     `the swipe did not scroll the page (${before} -> ${swiped.scrolled})`);
   ok("a swipe over an FAQ row scrolls, opens nothing, selects nothing",
      `scrollY ${before} -> ${swiped.scrolled}`);
+
+  // ── a swipe that starts on View Plans scrolls and opens nothing ────────
+  // The 2026-08-24 follow-up report: "view plan ကိုထောက်မိပြီး
+  // ပွတ်ဆွဲလိုက်တာကို scroll မဖြစ်ဘဲ view plan ပွင့်လာပါတယ်". The overlay is
+  // off this button, so the gesture must reach the compositor as a scroll.
+  const plansBox = await centreOf(cdp, ".product-card__action");
+  const plansBefore = await evaluate(cdp, `Math.round(window.scrollY)`);
+  await swipe(cdp, plansBox.x, plansBox.y);
+  const plansSwiped = await evaluate(cdp, `({
+    modal: !!document.querySelector(".plan-list, .plan-picker, .modal-panel"),
+    scrolled: Math.round(window.scrollY),
+  })`);
+  assert.equal(plansSwiped.modal, false,
+    "a swipe that started on View Plans opened the plans dialog");
+  assert.ok(plansSwiped.scrolled > plansBefore + 40,
+    `the swipe from View Plans did not scroll (${plansBefore} -> ${plansSwiped.scrolled})`);
+  ok("a swipe that starts on View Plans scrolls the page and opens nothing",
+     `scrollY ${plansBefore} -> ${plansSwiped.scrolled}`);
 
   // ── and a slow press-and-drag selects nothing either ──────────────────
   const dragTarget = await centreOf(cdp, ".faq-question", 1, 24);

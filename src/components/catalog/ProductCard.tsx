@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 
-import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { productLogoClass } from "@/data/product-media";
 import { useRevealMotion } from "@/hooks/useRevealMotion";
 import { publicAssetPath } from "@/services/catalog";
@@ -57,7 +56,13 @@ export function ProductCard({ product, onViewPlans, index = 0 }: ProductCardProp
         }}
       >
         View Plans
-        <HapticSwitch />
+        {/* No HapticSwitch overlay here (2026-08-24, owner report): this
+            button sits in the middle of a grid the finger scrolls through,
+            and a WebKit switch is DRAGGABLE — a vertical swipe that should
+            scroll the page was read as a switch drag and opened the plans
+            dialog. The buzz here now comes from HapticRoot's read-only
+            pointer path, which cannot touch click semantics, so a swipe is
+            always a scroll and only a deliberate tap opens the dialog. */}
       </button>
     </motion.article>
   );

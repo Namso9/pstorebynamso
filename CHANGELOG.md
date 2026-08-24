@@ -98,6 +98,27 @@
 
 ### Fixed
 
+- Owner follow-up pass on the 2026-08-24 redesign. The theme toggle no longer
+  stutters or dims: the cross-fade now animates only surfaces
+  (`background-color`, `border-color`, `fill`, `stroke`), because walking every
+  label's `color` through a mid-grey was the visible dimming and animating
+  `box-shadow` on every element was the jank. A drag on the theme switch that
+  buzzed without switching now activates it — the haptic overlay's committed
+  toggle fires `change` without a click, so the host is activated from there.
+  The header's search icon is gone from the home page only (the hero field is
+  the same dialog's other door), category card blurbs wrap in full at a
+  slightly smaller size instead of truncating mid-word, the plan dialog's
+  close button is a bare cross without the circle, and the hero search hint is
+  just "App သို့မဟုတ် service အမည်နဲ့ ရှာပါ". A swipe that starts on a View
+  Plans button scrolls the page again instead of opening the plans dialog —
+  the draggable WebKit switch overlay is off that button for good, and
+  `touch:check` now asserts the swipe scrolls. The five-second live poll no
+  longer re-renders unchanged FAQ/review/download sections (same-reference
+  compare, as the catalog hook already did), which was the refresh-like hitch
+  when a poll landed mid-scroll. Meitu's tile uses the owner's real pink app
+  icon (`meitu.webp`, full-bleed like Atom/Mytel/Bioscope); the panel should
+  keep `images/meitu.webp` as the image path when it next republishes
+  `products.json`.
 - Refresh catalog, FAQ, reviews, and guide data in already-open visible tabs
   every five seconds and immediately when the tab regains focus or visibility,
   so panel edits appear without a manual page reload.

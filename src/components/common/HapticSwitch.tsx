@@ -18,12 +18,16 @@ type HapticSwitchMode = "bubble" | "submit";
  *
  * The guard is gone. Instead this overlay is mounted ONLY on small, deliberate
  * controls, which after the owner's 2026-08-24 list is exactly: the light/dark
- * toggle, a product card's **View Plans** button, a plan row, the payment
+ * toggle, a plan row, the payment
  * platform buttons, and the order form's submit. Never on a row or tile a
  * finger scrolls over (FAQ questions, whole product/category/review/popular
  * tiles, search results, nav items) — those keep the Android `data-haptic`
  * path, which cannot touch click semantics because it only reads events, and
- * iOS simply gets no buzz there.
+ * iOS simply gets no buzz there. The product card's **View Plans** button was
+ * on this list until the same day's follow-up report: it sits in the middle
+ * of a grid the finger scrolls through, and a vertical swipe that should
+ * scroll was read as a switch drag and opened the plans dialog, so it lost
+ * its overlay.
  *
  * The two checkout paths in `CheckoutModal` are `<a>` elements, so they cannot
  * carry one at all: an overlay over a link swallows the navigation. The
@@ -71,6 +75,7 @@ export function HapticSwitch({ mode = "bubble" }: HapticSwitchProps) {
   // real answer — so the SSR markup carries no platform assumption.
   const enabled = useSwitchHaptics();
   const inputRef = useRef<HTMLInputElement>(null);
+  const lastClickAt = useRef(0);
 
   // `switch` is a WebKit content attribute with no React DOM prop, so it is
   // set imperatively rather than through JSX.
@@ -78,9 +83,28 @@ export function HapticSwitch({ mode = "bubble" }: HapticSwitchProps) {
     if (enabled) inputRef.current?.setAttribute("switch", "");
   }, [enabled]);
 
+  // Bubble mode only: a DRAG on the switch commits the toggle (and plays the
+  // haptic) without dispatching a click, so the host's React onClick never
+  // ran — the owner's "it buzzes but nothing happens" on the theme switch.
+  // Every committed toggle fires `change`, so activate the host from there;
+  // a tap already fired a click that bubbled to the host a moment earlier,
+  // and the timestamp keeps that tap from activating twice.
+  useEffect(() => {
+    if (!enabled || mode !== "bubble") return;
+    const input = inputRef.current;
+    if (!input) return;
+    const activateHost = () => {
+      if (Date.now() - lastClickAt.current < 400) return;
+      input.closest("button")?.click();
+    };
+    input.addEventListener("change", activateHost);
+    return () => input.removeEventListener("change", activateHost);
+  }, [enabled, mode]);
+
   if (!enabled) return null;
 
   const handleClick = (event: MouseEvent<HTMLInputElement>) => {
+    lastClickAt.current = Date.now();
     // Bubble mode needs nothing more: the click reaches the host's own
     // handler. Never call preventDefault on the tap path — cancelling the
     // toggle cancels the haptic that is the whole point of this element.

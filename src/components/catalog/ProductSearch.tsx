@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 import { Icon } from "@/components/common/Icon";
 import { Modal } from "@/components/common/Modal";
@@ -10,29 +10,35 @@ import { expandSearchTerms } from "@/data/search-aliases";
 import { useCatalog } from "@/hooks/useCatalog";
 import { trackProductClick } from "@/services/track";
 
-export function ProductSearch() {
+type ProductSearchProps = {
+  /**
+   * Custom opener. The header uses the default icon button; the home hero
+   * (`HomeSearch`) passes its field-styled button so the same dialog — with
+   * its hard-won mobile fixes — serves both doors. One page still renders
+   * exactly one `ProductSearch` instance: on `/` it lives in the hero (the
+   * header hides its own via `HeaderSearch`), elsewhere it lives in the
+   * header.
+   */
+  trigger?: (open: () => void) => ReactNode;
+};
+
+export function ProductSearch({ trigger }: ProductSearchProps) {
   const [open, setOpen] = useState(false);
   const [term, setTerm] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { catalog, status, error, refresh } = useCatalog(undefined, open);
 
-  // One search dialog per page: the hero's search field (`HomeSearch`) and
-  // the ⌘K / Ctrl+K shortcut both land here, so the mobile fixes below exist
-  // exactly once.
+  // The ⌘K / Ctrl+K shortcut lands here too, so the mobile fixes below exist
+  // exactly once per page regardless of which trigger opened the dialog.
   useEffect(() => {
-    const openSearch = () => setOpen(true);
     const onKeydown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setOpen(true);
       }
     };
-    window.addEventListener("ps-open-search", openSearch);
     window.addEventListener("keydown", onKeydown);
-    return () => {
-      window.removeEventListener("ps-open-search", openSearch);
-      window.removeEventListener("keydown", onKeydown);
-    };
+    return () => window.removeEventListener("keydown", onKeydown);
   }, []);
 
   const results = useMemo(() => {
@@ -65,16 +71,20 @@ export function ProductSearch() {
 
   return (
     <>
-      <button
-        type="button"
-        className="icon-button"
-        aria-label="Search products"
-        title="Search products"
-        data-haptic="selection"
-        onClick={() => setOpen(true)}
-      >
-        <Icon name="search" />
-      </button>
+      {trigger ? (
+        trigger(() => setOpen(true))
+      ) : (
+        <button
+          type="button"
+          className="icon-button"
+          aria-label="Search products"
+          title="Search products"
+          data-haptic="selection"
+          onClick={() => setOpen(true)}
+        >
+          <Icon name="search" />
+        </button>
+      )}
 
       <Modal
         open={open}

@@ -2,8 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Icon } from "@/components/common/Icon";
-import { ProductSearch } from "@/components/catalog/ProductSearch";
-
+import { HeaderSearch } from "./HeaderSearch";
 import { ThemeToggle } from "./ThemeToggle";
 
 export function SiteHeader() {
@@ -31,7 +30,7 @@ export function SiteHeader() {
 
         <div className="site-header__actions">
           <ThemeToggle />
-          <ProductSearch />
+          <HeaderSearch />
           <a
             className="button button--primary button--sm header-bot-button"
             href="https://t.me/PSNamso_bot"

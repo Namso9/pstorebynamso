@@ -158,14 +158,21 @@ html[data-theme="light"] {
    (the head bootstrap applies the stored theme before styles load, so there
    is no light→dark flash), and the global reduced-motion override still
    collapses these to 0.01ms. The switch itself is excluded so its longer
-   knob/scene choreography keeps its own timing. */
+   knob/scene choreography keeps its own timing.
+
+   Only surfaces fade — `color` and `opacity` are deliberately NOT in the
+   list (2026-08-24, owner report: on toggle the text went dim for a beat
+   and then came back, and the switch felt janky). Animating `color` walks
+   every label through a mid-grey that matches neither palette — that grey
+   midpoint IS the dimming — and repainting all text plus animating
+   `box-shadow` on every element is what dropped the frames. Text snaps to
+   the new theme instantly; surfaces follow over the 340ms. */
 html.theme-transition,
 html.theme-transition body,
 html.theme-transition body :not(.theme-switch, .theme-switch *),
 html.theme-transition body :not(.theme-switch, .theme-switch *)::before,
 html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
-  transition-property:
-    background-color, border-color, color, box-shadow, fill, stroke, opacity;
+  transition-property: background-color, border-color, fill, stroke;
   transition-duration: 340ms;
   transition-timing-function: ease;
 }
@@ -769,9 +776,15 @@ html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
   line-height: 1.35;
 }
 
+/* Bare close button (2026-08-24, owner request): no circle chrome around the
+   cross — the X alone reads clearer. The 44px hit target stays, and the
+   `.icon-button` hover/active feedback still applies. */
 .modal-close {
   width: 44px;
   height: 44px;
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
 }
 
 .mobile-nav-panel {
@@ -1506,16 +1519,15 @@ body:has(.category-page) .site-header {
   line-height: 1.4;
 }
 
-/* The blurb is one plain Burmese line; overflow truncates with an ellipsis
-   instead of wrapping, so every tile in a row keeps the same rhythm. */
+/* The blurb is one plain Burmese line and it wraps in full (2026-08-24,
+   owner report: the nowrap+ellipsis cut longer lines like "Atom Data /
+   Mytel Data…" mid-word on phones). A slightly smaller size keeps wrapped
+   tiles tidy; the grid row equalises card heights via the flex body. */
 .category-card p {
   margin: 6px 0 0;
-  overflow: hidden;
   color: var(--muted);
-  font-size: 0.84rem;
-  line-height: 1.6;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 0.8rem;
+  line-height: 1.65;
 }
 
 .category-count {

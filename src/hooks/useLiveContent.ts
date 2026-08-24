@@ -24,7 +24,15 @@ export function useLiveContent<T>(
     const controller = new AbortController();
     void loader(controller.signal)
       .then((nextValue) => {
-        setValue(nextValue);
+        // The polled file usually matches byte for byte. Handing React the
+        // same reference skips re-rendering the whole live section (FAQ,
+        // reviews, downloads) every five seconds — that re-render was the
+        // hitch the owner saw when a poll landed mid-scroll.
+        setValue((current) =>
+          JSON.stringify(current) === JSON.stringify(nextValue)
+            ? current
+            : nextValue,
+        );
         setStatus("ready");
         setError(null);
       })
