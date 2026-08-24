@@ -977,7 +977,7 @@
       "category": "mobile-data",
       "name": "Atom Data",
       "subtitle": "Data + Atom Mins + SMS",
-      "image": "images/atom.svg",
+      "image": "images/atom.webp",
       "imageClass": "",
       "modalTitle": "Atom Data Packs",
       "plans": [
@@ -1000,7 +1000,7 @@
       "category": "mobile-data",
       "name": "Mytel Data",
       "subtitle": "Data Only — No Mins, No SMS",
-      "image": "images/mytel.svg",
+      "image": "images/mytel.webp",
       "imageClass": "",
       "modalTitle": "Mytel Data Packs",
       "plans": [
@@ -1029,7 +1029,7 @@
       "category": "streaming-apps",
       "name": "Bioscope Premium",
       "subtitle": "Myanmar Streaming App",
-      "image": "images/bioscope.svg",
+      "image": "images/bioscope.webp",
       "imageClass": "",
       "modalTitle": "Bioscope Premium Plans",
       "planPicker": "duration",
