@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   formatDetection: { telephone: false },
   icons: {
-    icon: "/images/favicon.svg?v=2",
+    icon: "/images/favicon.svg?v=3",
   },
   openGraph: {
     type: "website",
