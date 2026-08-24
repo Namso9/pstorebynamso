@@ -46,6 +46,16 @@
 /images/*
   Cache-Control: public, max-age=2592000, immutable
 
+# ...but the two BRAND marks do change under the same name — Kimi replaced both
+# on 2026-08-24 and every visitor kept the old bytes, because `immutable` tells
+# a browser not even to revalidate. These two override the rule above (later
+# rules win for the same header). Product and review art keeps the 30 days.
+/images/favicon.svg
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/images/brand-logo.png
+  Cache-Control: public, max-age=3600, must-revalidate
+
 # Payment QR images CAN be replaced in place and must NEVER serve stale (money
 # path). These override the immutable rule above (listed after it + more
 # specific, so they win under either CF precedence rule). Browsers always

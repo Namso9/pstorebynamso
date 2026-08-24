@@ -17,7 +17,7 @@ export function SiteHeader() {
         >
           <Image
             className="site-brand__logo"
-            src="/images/brand-logo.png"
+            src="/images/brand-logo.png?v=2"
             alt=""
             width={36}
             height={36}

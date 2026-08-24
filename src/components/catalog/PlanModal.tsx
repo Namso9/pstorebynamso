@@ -74,7 +74,7 @@ export function PlanModal({
       banner={
         <span className="plan-modal-brand">
           <Image
-            src="/images/brand-logo.png"
+            src="/images/brand-logo.png?v=2"
             alt=""
             width={28}
             height={28}
