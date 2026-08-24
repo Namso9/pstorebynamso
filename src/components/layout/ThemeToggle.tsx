@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { HapticSwitch } from "@/components/common/HapticSwitch";
 
 type ResolvedTheme = "light" | "dark";
 
@@ -104,6 +105,7 @@ export function ThemeToggle() {
         <span className="theme-switch__clouds" />
         <span className="theme-switch__thumb" />
       </span>
+      <HapticSwitch />
     </button>
   );
 }

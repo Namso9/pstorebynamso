@@ -2904,13 +2904,20 @@ button.plan-row:active {
     color 160ms ease;
 }
 
-@media (hover: hover) {
-.order-file:hover,
+/* Split, not wrapped: `--selected` means a file HAS been chosen, which is the
+   one state a phone user must see. Only the hover half is desktop-only. */
 .order-file--selected {
   border-color: var(--accent);
   color: var(--accent-hover) !important;
   background: var(--accent-soft);
 }
+
+@media (hover: hover) {
+  .order-file:hover {
+    border-color: var(--accent);
+    color: var(--accent-hover) !important;
+    background: var(--accent-soft);
+  }
 }
 
 /* The real <input type="file"> is clipped to 1px, so keyboard focus was
@@ -3336,7 +3343,12 @@ html[data-theme="light"] body {
   gap: 15px;
 }
 
-@media (hover: hover) {
+/* ⛔ NOT a hover rule — do not put this inside `@media (hover: hover)`.
+   `.product-card` here is the card's base layout; the `:hover` copy exists only
+   to outrank `.product-card:hover` elsewhere. Guarding it once removed the
+   whole layout on every touch device (name column collapsed to three
+   characters, action button on top of the text). Same for the two overrides
+   further down this file. */
 .product-card,
 .product-card:hover {
   min-width: 0;
@@ -3348,7 +3360,6 @@ html[data-theme="light"] body {
   padding: 20px 12px;
   background: var(--surface);
   text-align: center;
-}
 }
 
 .product-card__identity {
@@ -4238,13 +4249,12 @@ html.theme-light .payment-selector-next {
     grid-column: 1 / -1;
   }
 
-  @media (hover: hover) {
-.product-card,
+  /* base layout, not hover paint — see the note at the main rule */
+  .product-card,
   .product-card:hover {
     align-items: center;
     flex-direction: column;
   }
-}
 
   .product-card__action {
     width: 100%;
@@ -4286,12 +4296,11 @@ html.theme-light .payment-selector-next {
     padding: 12px 10px 14px;
   }
 
-  @media (hover: hover) {
-.product-card,
+  /* base layout, not hover paint — see the note at the main rule */
+  .product-card,
   .product-card:hover {
     padding: 16px 10px;
   }
-}
 }
 
 

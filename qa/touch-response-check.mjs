@@ -225,7 +225,76 @@ try {
   ok("no haptic overlay on any scroll surface, FAQ rows unselectable",
      `remaining hosts: ${overlays.hosts.join(", ") || "none on this page"}`);
 
+  // ── the product card still LOOKS like a card ──────────────────────────
+  // The hover-guard pass shipped a card whose name column had collapsed to
+  // three characters and whose action button sat on top of the text. Nothing in
+  // this suite noticed, because every assertion was about behaviour.
+  await navigate(cdp, `${origin}/music-apps/`);
+  // The signal is MID-WORD breaking, measured, not guessed: the widest word is
+  // rendered into an off-screen nowrap probe in the heading's own font, and the
+  // heading's box has to be at least that wide. "SoundCloud" coming out as
+  // "Soun / dClo / ud" is that assertion failing. A card-width fraction will not
+  // do — the heading is a centred flex item, so its box is its text width, and
+  // 83px inside a 174px card is correct for a one-word name.
+  const cards = await evaluate(cdp, `(() => {
+    const probe = document.createElement("span");
+    probe.style.cssText =
+      "position:absolute;left:-9999px;white-space:nowrap;visibility:hidden";
+    const read = (card) => {
+      const name = card.querySelector("h2");
+      const action = card.querySelector(".product-card__action");
+      const style = getComputedStyle(name);
+      probe.style.font = style.font;
+      probe.style.letterSpacing = style.letterSpacing;
+      document.body.appendChild(probe);
+      let widest = 0;
+      let widestWord = "";
+      // Split on a plain space, not a regex. This whole expression is a JS
+      // template literal, so a backslash escape written here does not survive
+      // to the page: a whitespace class arrives as a bare "s" and splits on the
+      // letter s instead. (And never write a backtick in a comment in here —
+      // it closes the template literal.) Product names are space-separated; a
+      // stray double space yields an empty word, which measures 0 and loses.
+      for (const word of name.textContent.trim().split(" ")) {
+        probe.textContent = word;
+        const w = probe.getBoundingClientRect().width;
+        if (w > widest) { widest = w; widestWord = word; }
+      }
+      probe.remove();
+      const nameBox = name.getBoundingClientRect();
+      const actionBox = action.getBoundingClientRect();
+      return {
+        id: card.id,
+        name: name.textContent.trim(),
+        lines: Math.round(nameBox.height / parseFloat(style.lineHeight)),
+        nameWidth: Math.round(nameBox.width),
+        widestWord,
+        widestWidth: Math.round(widest),
+        fitsAWord: nameBox.width + 0.5 >= widest,
+        overlaps: !(actionBox.top >= nameBox.bottom - 1 ||
+                    actionBox.bottom <= nameBox.top + 1),
+        direction: getComputedStyle(card).flexDirection,
+      };
+    };
+    return [...document.querySelectorAll(".product-card")].map(read);
+  })()`);
+  assert.ok(cards.length >= 3, `only ${cards.length} cards to measure`);
+  for (const card of cards) {
+    assert.equal(card.direction, "column",
+      `${card.id} lost its column layout (flex-direction: ${card.direction})`);
+    assert.equal(card.overlaps, false,
+      `${card.id}'s View Plans button overlaps its name`);
+    assert.ok(card.fitsAWord,
+      `${card.id} breaks mid-word: "${card.widestWord}" needs ` +
+      `${card.widestWidth}px, the heading box is ${card.nameWidth}px`);
+    assert.ok(card.lines <= 2,
+      `"${card.name}" wraps onto ${card.lines} lines in ${card.id}`);
+  }
+  ok("product cards keep their column layout and unbroken names",
+     cards.map((c) => `${c.name}:${c.lines}L`).join(" · "));
+
   // ── a real tap opens the FAQ, first try ────────────────────────────────
+  await navigate(cdp, `${origin}/mobile-data/`);
   const faqBox = await centreOf(cdp, ".faq-question");
   await tap(cdp, faqBox.x, faqBox.y);
   let expanded = await evaluate(cdp,
@@ -305,9 +374,20 @@ try {
         const condition = rule.conditionText || rule.media?.mediaText || "";
         const inHover =
           guarded || condition.replace(/ /g, "").includes("hover:hover");
-        if ((rule.selectorText || "").includes(":hover")) {
-          seen += 1;
-          if (!inHover) bad.push(rule.selectorText);
+        const selector = rule.selectorText || "";
+        if (selector.includes(":hover")) {
+          // Only a rule whose EVERY comma part is a hover selector is hover
+          // paint. A mixed list like ".product-card, .product-card:hover" is
+          // base layout repeating itself to outrank the hover rule — guarding
+          // that one removed the whole card layout on every phone once, so this
+          // check must not ask for it to be guarded again.
+          const hoverOnly = selector
+            .split(",")
+            .every((part) => part.includes(":hover"));
+          if (hoverOnly) {
+            seen += 1;
+            if (!inHover) bad.push(selector);
+          }
         }
         if (rule.cssRules) walk(rule.cssRules, inHover);
       }

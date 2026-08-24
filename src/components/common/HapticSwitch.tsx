@@ -17,11 +17,17 @@ type HapticSwitchMode = "bubble" | "submit";
  * exceeded it and the button "needed two presses".
  *
  * The guard is gone. Instead this overlay is mounted ONLY on small, deliberate
- * controls that commit something: the order form's submit button, a plan row,
- * the copy-account button. Never on a row or tile a finger scrolls over (FAQ
- * questions, product/category/review/popular cards, search results, nav
- * items) — those keep the Android `data-haptic` path, which cannot touch click
- * semantics because it only reads events, and iOS simply gets no buzz there.
+ * controls, which after the owner's 2026-08-24 list is exactly: the light/dark
+ * toggle, a product card's **View Plans** button, a plan row, the payment
+ * platform buttons, and the order form's submit. Never on a row or tile a
+ * finger scrolls over (FAQ questions, whole product/category/review/popular
+ * tiles, search results, nav items) — those keep the Android `data-haptic`
+ * path, which cannot touch click semantics because it only reads events, and
+ * iOS simply gets no buzz there.
+ *
+ * The two checkout paths in `CheckoutModal` are `<a>` elements, so they cannot
+ * carry one at all: an overlay over a link swallows the navigation. The
+ * checkout buzz on iOS comes from the plan row that opens it.
  */
 
 type HapticSwitchProps = {
