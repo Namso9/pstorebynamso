@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 
 import { Icon } from "@/components/common/Icon";
-import { categoryIconName } from "@/data/category-icons";
+import { categoryIconName, categoryWordmark } from "@/data/category-icons";
 import { useRevealMotion } from "@/hooks/useRevealMotion";
 import { categoryHref } from "@/services/catalog";
 import type { CatalogCategory } from "@/types/catalog";
@@ -36,6 +36,7 @@ export function CategoryCard({
     offset: 16,
     amount: 0.15,
   });
+  const wordmark = categoryWordmark(category.slug);
 
   return (
     <MotionLink
@@ -45,8 +46,19 @@ export function CategoryCard({
       data-haptic="light"
       {...revealMotion}
     >
-      <span className="category-card__icon" aria-hidden="true">
-        <Icon name={categoryIconName(category.icon)} />
+      {/* `aria-hidden` either way: the tile's own <h3> already names the
+          category, so the mark is decoration and a screen reader that read
+          "AI" here would announce the name twice. */}
+      <span
+        className="category-card__icon"
+        data-wordmark={wordmark ? "" : undefined}
+        aria-hidden="true"
+      >
+        {wordmark ? (
+          <span className="category-card__wordmark">{wordmark}</span>
+        ) : (
+          <Icon name={categoryIconName(category.icon)} />
+        )}
       </span>
       {/* `.category-card__body` must keep exactly two children — the count pill
           is pinned with `margin-block-start: auto` and a third child breaks the

@@ -29,19 +29,16 @@ export type HomeGuideItem = {
   imageAlt: string;
 };
 
-export const homeSpotlights: HomeSpotlightItem[] = [
-  {
-    id: "bioscope",
-    href: "/bioscope-download/",
-    badge: "New",
-    title: "Bioscope",
-    text: "ဖုန်း, TV, PC အတွက် official download link များ နှင့် Premium plan များ ရောက်ပါပြီ။",
-    action: "Download page",
-    image: "/images/bioscope.svg",
-    imageAlt: "Bioscope",
-    imageClass: "home-spotlight__logo",
-  },
-];
+/**
+ * Deliberately EMPTY (owner's call, 2026-08-24): the wide card above the
+ * category grid is gone, and that slot now belongs to `PopularProducts`.
+ * Bioscope keeps its own tile inside the streaming category, its guide link
+ * inside the plan modal, and its `/bioscope-download/` page.
+ *
+ * The array and `HomeSpotlight` are kept so a future arrival is one entry
+ * again rather than a rebuilt card — do NOT re-add one without asking.
+ */
+export const homeSpotlights: HomeSpotlightItem[] = [];
 
 export const homeGuideCards: HomeGuideItem[] = [
   {

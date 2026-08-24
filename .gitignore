@@ -13,7 +13,15 @@ out/
 
 # Build-generated live-content fallbacks. Canonical sources are data/*.json and
 # root images/reviewN.*; prebuild recreates these mirrors for ASSETS fallback.
+#
+# The rule these three follow: a mirror of a PANEL-written file is ignored,
+# because the panel commits the canonical file whenever it likes and the next
+# build would otherwise leave a dirty tracked mirror every time. Mirrors of
+# storefront-owned files (express-guide, bioscope-download) stay tracked — they
+# only move when we move them. `public/products.json` is tracked despite being
+# panel-written; that asymmetry predates this note and is an owner call.
 public/data/faq.json
+public/data/popular.json
 public/data/reviews.json
 public/images/review[0-9]*.webp
 public/images/review[0-9]*.jpg

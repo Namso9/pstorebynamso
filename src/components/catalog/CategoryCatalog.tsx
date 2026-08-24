@@ -37,23 +37,78 @@ export function CategoryCatalog({
   const selectedProduct =
     products.find((product) => product.id === selectedProductId) || null;
 
-  const openPlans = useCallback((productId: string) => {
-    const url = new URL(window.location.href);
-    url.hash = `app-${productId}`;
-    window.history.replaceState(null, "", url);
-    document.getElementById(`app-${productId}`)?.scrollIntoView({
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "auto"
-        : "smooth",
-      block: "center",
-    });
-    setSelectedProductId(productId);
-  }, []);
+  /**
+   * Rewrite the URL to say exactly which target is on screen — and nothing
+   * else.
+   *
+   * This is the whole fix for "apps open by themselves while I scroll". The
+   * location effect re-derives its target from the URL every time the live
+   * catalog poll returns different bytes (a stock sync, every few minutes), so
+   * ANY dismissed target left in the URL is a modal that re-opens on its own
+   * minutes later. Three separate paths got that wrong, each found one review
+   * pass after the last:
+   *
+   *   · a `#app-<id>` left behind by a close        -> the plan modal reopened
+   *   · the same hash left behind by moving to      -> the plan modal reopened
+   *     checkout, whose claim is a DIFFERENT key       UNDERNEATH the checkout
+   *   · a `?product=&plan=` left behind when the    -> the CHECKOUT reopened
+   *     visitor moved on to another product
+   *
+   * The query pair is a real entry point (the effect handles it deliberately),
+   * so it has to be cleared rather than assumed absent.
+   */
+  const setLocationTarget = useCallback(
+    (options: { hash?: string; keepCheckoutQuery?: boolean }) => {
+      const url = new URL(window.location.href);
+      if (!options.keepCheckoutQuery) {
+        url.searchParams.delete("product");
+        url.searchParams.delete("plan");
+      }
+      url.hash = options.hash || "";
+      window.history.replaceState(
+        null,
+        "",
+        `${url.pathname}${url.search}${url.hash}`,
+      );
+    },
+    [],
+  );
 
-  const openCheckout = useCallback((productId: string, planId: string) => {
+  const openPlans = useCallback(
+    (productId: string) => {
+      setLocationTarget({ hash: `app-${productId}` });
+      document.getElementById(`app-${productId}`)?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+        block: "center",
+      });
+      // Claim the target BEFORE the state change, and make sure the URL now
+      // resolves to exactly this key — the claim and the URL agreeing is what
+      // the guard in the effect depends on.
+      lastLocationTarget.current = `plans:${productId}`;
+      setSelectedProductId(productId);
+    },
+    [setLocationTarget],
+  );
+
+  const closePlans = useCallback(() => {
+    setLocationTarget({});
+    lastLocationTarget.current = "";
     setSelectedProductId(null);
-    setCheckoutTarget({ productId, planId, nonce: Date.now() });
-  }, []);
+  }, [setLocationTarget]);
+
+  const openCheckout = useCallback(
+    (productId: string, planId: string) => {
+      // The query pair, if the visitor arrived by one, still describes exactly
+      // what is opening — so it is the one thing kept.
+      setLocationTarget({ keepCheckoutQuery: true });
+      lastLocationTarget.current = `checkout:${productId}:${planId}`;
+      setSelectedProductId(null);
+      setCheckoutTarget({ productId, planId, nonce: Date.now() });
+    },
+    [setLocationTarget],
+  );
 
   useEffect(() => {
     const openFromLocation = () => {
@@ -139,7 +194,7 @@ export function CategoryCatalog({
       <PlanModal
         product={selectedProduct}
         settings={catalog.settings}
-        onClose={() => setSelectedProductId(null)}
+        onClose={closePlans}
         onCheckout={openCheckout}
       />
 

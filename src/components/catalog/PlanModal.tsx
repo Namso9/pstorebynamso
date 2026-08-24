@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 import { productGuideLinks } from "@/data/product-links";
 import { isAskPricePlan, publicAssetPath } from "@/services/catalog";
+import { trackProductClick } from "@/services/track";
 import type {
   CatalogPlan,
   CatalogProduct,
@@ -28,6 +29,19 @@ export function PlanModal({
   onClose,
   onCheckout,
 }: PlanModalProps) {
+  /**
+   * Wrapped once here rather than at the two call sites below, and NOT in
+   * `CategoryCatalog.openCheckout`, which is also reached by a
+   * `?product=&plan=` deep link — a reload of a payment URL is not a click.
+   */
+  const handleCheckout = useCallback(
+    (productId: string, planId: string) => {
+      trackProductClick(productId, "checkout", "modal");
+      onCheckout(productId, planId);
+    },
+    [onCheckout],
+  );
+
   const contactRow = (
     <div className="plan-contact-row">
       <a
@@ -93,7 +107,7 @@ export function PlanModal({
               <DurationPicker
                 product={product}
                 contactRow={contactRow}
-                onCheckout={onCheckout}
+                onCheckout={handleCheckout}
               />
             ) : (
               product.plans.map((entry, index) => {
@@ -108,7 +122,7 @@ export function PlanModal({
                   <PlanRow
                     plan={entry}
                     contactRow={contactRow}
-                    onCheckout={() => onCheckout(product.id, entry.id)}
+                    onCheckout={() => handleCheckout(product.id, entry.id)}
                     key={entry.id}
                   />
                 );

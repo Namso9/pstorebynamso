@@ -12,6 +12,7 @@ const ALLOWED = new Set([
   'reviews.json',
   'express-guide.json',
   'bioscope-download.json',
+  'popular.json',
 ]);
 const GITHUB_REPO = 'Namso9/pstorebynamso';
 const GITHUB_BRANCH = 'main';

@@ -1201,6 +1201,17 @@ body:has(.category-page) .site-header {
   line-height: 1.75;
 }
 
+/* A heading block that carries body copy INSIDE its inner div (the Bioscope
+   device picker is the only one) gets no help from the flex `gap` above: the
+   h2 and the paragraph are plain block flow, and Tailwind's preflight zeroes
+   both margins. Burmese stacks medials above and tone marks below the
+   baseline, so the h2's ink overflows its 1.32 line box and landed on the
+   paragraph's first line. The gap is the fix; `:not(.eyebrow)` keeps the pill
+   above the heading untouched. */
+.section-heading > div > p:not(.eyebrow) {
+  margin-top: 14px;
+}
+
 .section-heading--inline {
   flex-direction: row;
   align-items: flex-end;
@@ -2967,14 +2978,18 @@ button.plan-row:active {
    Keep the Next.js components, Motion interactions, themes, and static-export
    behavior while restoring the legacy storefront's density and hierarchy. */
 
+/* Dark theme ground. The photographic `images/bg.webp` layer that used to sit
+   under the scrim was removed on the owner's call (2026-08-24): even at 82-94%
+   opacity it read as busy behind glass surfaces rather than premium, and a
+   `fixed` cover image is the most expensive thing a mid-range Android phone
+   repaints on every scroll. The three brand radials carry the depth now. The
+   file itself stays in the repo — the legacy root pages still reference it. */
 body {
   background:
     radial-gradient(1000px 520px at 85% -10%, rgba(77, 159, 255, 0.06), transparent 60%),
     radial-gradient(900px 650px at -5% 30%, rgba(46, 213, 115, 0.05), transparent 60%),
     radial-gradient(1000px 700px at 55% 115%, rgba(124, 92, 255, 0.05), transparent 60%),
-    linear-gradient(rgba(7, 11, 18, 0.82), rgba(7, 11, 18, 0.94)),
-    url("/images/bg.webp") center / cover fixed,
-    var(--canvas);
+    linear-gradient(180deg, var(--canvas) 0%, var(--canvas-soft) 100%);
 }
 
 html[data-theme="light"] body {
@@ -4233,14 +4248,6 @@ html.theme-light .payment-selector-next {
   }
 }
 
-/* At 320px the four 44px header controls plus the wordmark do not fit, and the
-   wordmark ran underneath them. The brand itself links home, so the duplicate
-   Home control is the one thing that can go without losing a destination. */
-@media (max-width: 340px) {
-  .site-header .header-home-button {
-    display: none;
-  }
-}
 
 @media (max-width: 390px) {
   .platform-buttons-next {
@@ -4572,7 +4579,8 @@ html[data-theme="light"] .product-logo-frame::after {
 .perplexity-logo,
 .disney-logo,
 .stealthwriter-logo,
-#app-manus .product-logo {
+#app-manus .product-logo,
+.popular-card[data-product="manus"] .product-logo {
   background: linear-gradient(145deg, #ffffff, #e9eef4);
   background-clip: content-box;
 }
@@ -4589,7 +4597,8 @@ html[data-theme="light"] .product-logo-frame::after {
 .jumpjump-logo,
 .hiddify-logo,
 .nord-logo,
-#app-manus .product-logo {
+#app-manus .product-logo,
+.popular-card[data-product="manus"] .product-logo {
   padding: 2px;
 }
 
@@ -4998,7 +5007,16 @@ button {
   padding: 0;
   opacity: 0;
   cursor: pointer;
-  touch-action: manipulation;
+  /* `pan-y pinch-zoom`, not `manipulation`: this overlay covers its whole host,
+     and WebKit's switch control can be toggled by a DRAG. Reserving vertical
+     panning for the scroller stops a flick that starts on a big control (an FAQ
+     row, a card button) from being claimed as a switch drag. Pinch-zoom is kept
+     deliberately — dropping it would break zoom on every haptic control. The
+     only horizontal scroller on the site (`.review-strip`) holds images, no
+     haptic hosts, so losing `pan-x` here costs nothing. `HapticSwitch` also
+     swallows any click that travelled more than the slop, so this is the
+     cheap half of a two-layer guard. */
+  touch-action: pan-y pinch-zoom;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -5603,7 +5621,7 @@ button:disabled > .haptic-tap {
 
 .bioscope-guide__block h4 {
   margin: 0 0 13px;
-  font-size: 0.94rem;
+  font-size: 1.02rem;
   font-weight: 700;
   line-height: 1.6;
 }
@@ -5619,14 +5637,19 @@ button:disabled > .haptic-tap {
   list-style: none;
 }
 
+/* These are instructions someone follows with a phone in the other hand, so
+   they are the one body copy on the site that does NOT get the muted tone:
+   at 0.85rem in `--muted` (66% alpha) they were reported as too faint to read
+   comfortably. Full `--ink` at 0.95rem, and the numbered marker keeps the
+   scan. The note/warning variants below still set their own colour. */
 .bioscope-step {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
   gap: 11px;
-  color: var(--muted);
-  font-size: 0.85rem;
-  line-height: 1.85;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.9;
 }
 
 .bioscope-step__body > p {
@@ -5676,10 +5699,10 @@ button:disabled > .haptic-tap {
 }
 
 .bioscope-shot figcaption {
-  padding: 7px 10px;
+  padding: 8px 10px;
   border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 0.72rem;
+  color: var(--ink);
+  font-size: 0.8rem;
   font-weight: 700;
   text-align: center;
 }
@@ -5802,6 +5825,21 @@ button:disabled > .haptic-tap {
   flex: 0 0 auto;
 }
 
+/* A two-letter wordmark stands in for a glyph where a drawing would be read
+   wrong (AI apps — see `categoryWordmark`). It keeps the same 46px accent
+   plate so the grid rhythm is untouched; only the contents change. The display
+   face and the negative tracking are what stop "AI" from reading as body copy
+   that happens to sit in a box. */
+.category-card__wordmark {
+  font-family: var(--font-display);
+  font-size: 1.28rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  /* Lora's cap height leaves the pair sitting low in a 46px grid cell. */
+  transform: translateY(-1px);
+}
+
 /* The guide tile keeps a brand logo rather than a glyph, so it drops the accent
    plate and reads as a neutral sibling in the same grid rhythm. */
 .category-card__icon--mark {
@@ -5813,6 +5851,116 @@ button:disabled > .haptic-tap {
   width: 28px;
   height: 28px;
   object-fit: contain;
+}
+
+/* ── "Most viewed this week" row ────────────────────────────────────────
+   Sits above the category grid and is measured, not curated: the ids come
+   from panel-written data/popular.json (see PopularProducts.tsx). It renders
+   nothing at all until there is real data, so the home page must not depend
+   on it for spacing — its own margin is the only thing it contributes. */
+.popular-products {
+  margin-bottom: clamp(30px, 5vw, 44px);
+}
+
+.popular-products .section-heading {
+  margin-bottom: 18px;
+}
+
+.popular-products .section-heading h2 {
+  font-size: clamp(1.35rem, 4.4vw, 1.9rem);
+}
+
+.popular-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+/* The rank number is positioned, so the card is the containing block; it is
+   also the reason the tile is `overflow: hidden`-free — a corner badge that
+   overlaps the border reads as a ribbon, not as a clipped digit.
+ *
+ * `min-height` plus the two clamps below make the card's height CONSTANT
+ * regardless of which product lands in it, and that is a correctness property
+ * rather than tidiness. The static first paint carries the build-time ranking
+ * and the live file corrects it a moment later — the same model the whole site
+ * uses for price and stock — so a re-order after hydration is expected. What
+ * must never happen is the row changing HEIGHT while it does: under 640px the
+ * logo tile drops to 48px, at which point a two-line product name is taller
+ * than the tile and a re-order alone could move the entire category grid.
+ * 88px is the MEASURED worst case, not an estimate: two clamped name lines
+ * (2 x 19.1px) + 3px gap + one meta line (18.7px) + 2 x 13px padding + 2 x 1px
+ * border. It has to be >= that, or a one-line name would render a SHORTER card
+ * than a two-line one and the row would move when they swapped places. */
+.popular-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 88px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 13px;
+  background: var(--surface);
+  text-decoration: none;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.popular-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+  background: var(--surface-hover);
+}
+
+.popular-card__rank {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  color: var(--accent-hover);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.popular-card__body {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+/* Two lines maximum for the name, one for the meta. `-webkit-line-clamp` is
+   the only clamp older Android WebViews support, and this audience has them;
+   every engine that renders this site honours the prefixed form. */
+.popular-card__body strong {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.popular-card__meta {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 720px) {
+  .popular-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
 }
 
 /* ── Plan duration picker — opt-in per product via `planPicker: "duration"` ── */

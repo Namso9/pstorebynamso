@@ -8,6 +8,7 @@ import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 import { ErrorState, LoadingState } from "@/components/common/StatusState";
 import { useCatalog } from "@/hooks/useCatalog";
+import { trackProductClick } from "@/services/track";
 
 export function ProductSearch() {
   const [open, setOpen] = useState(false);
@@ -88,7 +89,10 @@ export function ProductSearch() {
                 className="search-result"
                 prefetch={false}
                 data-haptic="selection"
-                onClick={close}
+                onClick={() => {
+                  trackProductClick(product.id, "plans", "search");
+                  close();
+                }}
                 key={product.id}
               >
                 <span>

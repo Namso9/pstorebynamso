@@ -6,16 +6,22 @@ import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { CategoryCard } from "./CategoryCard";
 import { HomeGuideCard } from "./HomeGuideCard";
 import { HomeSpotlight } from "./HomeSpotlight";
+import { PopularProducts } from "./PopularProducts";
 
 import { homeGuideCards, homeSpotlights } from "@/data/home-highlights";
 import { useCatalog } from "@/hooks/useCatalog";
 import type { CatalogData } from "@/types/catalog";
+import type { PopularData } from "@/types/content";
 
 type HomeCatalogProps = {
   initialCatalog: CatalogData;
+  initialPopular: PopularData;
 };
 
-export function HomeCatalog({ initialCatalog }: HomeCatalogProps) {
+export function HomeCatalog({
+  initialCatalog,
+  initialPopular,
+}: HomeCatalogProps) {
   const { catalog = initialCatalog, status, error, refresh } = useCatalog(initialCatalog);
 
   const counts = useMemo(
@@ -39,6 +45,11 @@ export function HomeCatalog({ initialCatalog }: HomeCatalogProps) {
           <span className="sr-only">{error}</span>
         </div>
       ) : null}
+
+      {/* `catalog` is passed down rather than fetched again: this component
+          already owns the one live catalog poll on the home page, and a second
+          `useCatalog` would double every products.json request. */}
+      <PopularProducts catalog={catalog} initialPopular={initialPopular} />
 
       {homeSpotlights.length ? (
         <div className="home-spotlights" aria-label="New on Premium Store">

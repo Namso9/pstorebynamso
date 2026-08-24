@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { useRevealMotion } from "@/hooks/useRevealMotion";
 import { publicAssetPath } from "@/services/catalog";
+import { trackProductClick } from "@/services/track";
 import type { CatalogProduct } from "@/types/catalog";
 
 type ProductCardProps = {
@@ -49,7 +50,12 @@ export function ProductCard({ product, onViewPlans, index = 0 }: ProductCardProp
         className="button button--primary button--sm product-card__action"
         type="button"
         data-haptic="light"
-        onClick={() => onViewPlans(product.id)}
+        onClick={() => {
+          // Anonymous interest count — id, control and place, nothing else.
+          // See src/services/track.ts.
+          trackProductClick(product.id, "plans", "grid");
+          onViewPlans(product.id);
+        }}
       >
         View Plans
         <HapticSwitch />

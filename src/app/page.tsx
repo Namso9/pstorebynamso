@@ -6,6 +6,7 @@ import { AnimatedSection } from "@/components/common/AnimatedSection";
 import { Icon } from "@/components/common/Icon";
 import { OfficialChannels } from "@/components/content/OfficialChannels";
 import { staticCatalog } from "@/lib/static-catalog";
+import { staticPopularData } from "@/lib/static-content";
 
 const trustItems = [
   {
@@ -113,7 +114,10 @@ export default function HomePage() {
       </AnimatedSection>
 
       <AnimatedSection>
-        <HomeCatalog initialCatalog={staticCatalog} />
+        <HomeCatalog
+          initialCatalog={staticCatalog}
+          initialPopular={staticPopularData}
+        />
       </AnimatedSection>
 
       <AnimatedSection className="home-section">

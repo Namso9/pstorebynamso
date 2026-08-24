@@ -1,10 +1,22 @@
 "use client";
 
-import { type MouseEvent, useEffect, useRef } from "react";
+import { type MouseEvent, type PointerEvent, useEffect, useRef } from "react";
 
 import { useSwitchHaptics } from "@/hooks/useHapticMode";
 
 type HapticSwitchMode = "bubble" | "submit";
+
+/**
+ * How far the finger may travel DURING a press before the activation is read as
+ * a scroll and dropped. Same 10px as `HapticRoot`'s press slop, and measured
+ * the same way: the furthest point reached, not where the finger ended up.
+ *
+ * WebKit's `switch` control can be toggled by DRAGGING it, and this one is
+ * stretched over its whole host, so a flick that starts on a large control (an
+ * FAQ row, a View Plans button) could toggle the switch and let that click
+ * bubble into the host's handler — a panel opening with no deliberate tap.
+ */
+const DRAG_SLOP_PX = 10;
 
 type HapticSwitchProps = {
   /**
@@ -47,6 +59,13 @@ export function HapticSwitch({ mode = "bubble" }: HapticSwitchProps) {
   // real answer — so the SSR markup carries no platform assumption.
   const enabled = useSwitchHaptics();
   const inputRef = useRef<HTMLInputElement>(null);
+  // `travelled` is the MAXIMUM distance reached during the press, not the
+  // displacement at the end of it. A drag that goes out and comes back finishes
+  // near where it started, so end-to-end displacement alone let exactly the
+  // gesture this guard exists for through.
+  const pressAt = useRef<{ x: number; y: number; travelled: number } | null>(
+    null,
+  );
 
   // `switch` is a WebKit content attribute with no React DOM prop, so it is
   // set imperatively rather than through JSX.
@@ -56,10 +75,57 @@ export function HapticSwitch({ mode = "bubble" }: HapticSwitchProps) {
 
   if (!enabled) return null;
 
+  const handlePointerDown = (event: PointerEvent<HTMLInputElement>) => {
+    pressAt.current = { x: event.clientX, y: event.clientY, travelled: 0 };
+  };
+
+  // Touch gives this element implicit pointer capture, so moves keep arriving
+  // here even once the finger has left it.
+  const handlePointerMove = (event: PointerEvent<HTMLInputElement>) => {
+    const press = pressAt.current;
+    if (!press) return;
+    press.travelled = Math.max(
+      press.travelled,
+      Math.hypot(event.clientX - press.x, event.clientY - press.y),
+    );
+  };
+
+  // The browser took the gesture over (a scroll started): there is no press
+  // left to judge, and a stale record must not be compared against a later
+  // click.
+  const handlePointerCancel = () => {
+    pressAt.current = null;
+  };
+
   const handleClick = (event: MouseEvent<HTMLInputElement>) => {
-    // Bubble mode needs nothing: the click reaches the host's own handler.
-    // Never call preventDefault here — cancelling the toggle cancels the
-    // haptic that is the whole point of this element.
+    const press = pressAt.current;
+    pressAt.current = null;
+    // A dragged activation is a scroll the switch stole, not a tap: swallow it
+    // so the host never sees the click. Keyboard and programmatic activation
+    // target the host button directly and never reach this handler, so they
+    // cannot be caught by this guard (`press` is null for them anyway).
+    //
+    // `submit` mode is EXEMPT on purpose. The only submit host is the order
+    // form's send button, and a swallowed activation there looks to a customer
+    // who has already transferred money like the order did not go through. The
+    // bug this guard exists for is a large control opening a panel during a
+    // scroll; a submit button is neither large nor a scroll target, so the
+    // trade is one-sided and money-path caution wins.
+    const travelled = press
+      ? Math.max(
+          press.travelled,
+          Math.hypot(event.clientX - press.x, event.clientY - press.y),
+        )
+      : 0;
+    if (mode !== "submit" && press && travelled > DRAG_SLOP_PX) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
+    // Bubble mode needs nothing more: the click reaches the host's own
+    // handler. Never call preventDefault on the tap path — cancelling the
+    // toggle cancels the haptic that is the whole point of this element.
     if (mode !== "submit") return;
 
     const host = event.currentTarget.closest("button");
@@ -85,6 +151,9 @@ export function HapticSwitch({ mode = "bubble" }: HapticSwitchProps) {
       type="checkbox"
       tabIndex={-1}
       aria-hidden="true"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerCancel={handlePointerCancel}
       onClick={handleClick}
     />
   );

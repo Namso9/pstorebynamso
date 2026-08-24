@@ -14,6 +14,7 @@ import type {
   FaqData,
   FaqItemData,
   FaqSectionData,
+  PopularData,
   ReviewsData,
 } from "@/types/content";
 
@@ -70,6 +71,33 @@ function isExpressLocation(value: unknown): value is ExpressLocation {
   );
 }
 
+/**
+ * Panel-written, so it is parsed as untrusted input like every other live JSON.
+ * A product id becomes a URL fragment and a DOM id, so the shape is pinned
+ * tight; the cap stops a runaway list from being rendered at all.
+ */
+const POPULAR_ID_RE = /^[A-Za-z0-9_-]{1,60}$/;
+const POPULAR_MAX_ITEMS = 20;
+
+export function parsePopularData(value: unknown): PopularData {
+  if (
+    !isRecord(value) ||
+    typeof value.updated !== "string" ||
+    typeof value.window_days !== "number" ||
+    !Number.isFinite(value.window_days) ||
+    value.window_days <= 0 ||
+    !Array.isArray(value.items) ||
+    value.items.length > POPULAR_MAX_ITEMS ||
+    !value.items.every(
+      (item) => typeof item === "string" && POPULAR_ID_RE.test(item),
+    ) ||
+    new Set(value.items).size !== value.items.length
+  ) {
+    throw new Error("Popular products data is invalid.");
+  }
+  return value as PopularData;
+}
+
 export function parseExpressGuideData(value: unknown): ExpressGuideData {
   if (
     !isRecord(value) ||
@@ -102,6 +130,10 @@ export function fetchFaqData(signal?: AbortSignal) {
 
 export function fetchReviewsData(signal?: AbortSignal) {
   return fetchContent("/data/reviews.json", parseReviewsData, signal);
+}
+
+export function fetchPopularData(signal?: AbortSignal) {
+  return fetchContent("/data/popular.json", parsePopularData, signal);
 }
 
 export function fetchExpressGuideData(signal?: AbortSignal) {

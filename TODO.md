@@ -124,6 +124,30 @@ Tasks:
       `pstorebynamso.com`.
 - [ ] Owner: review the switch on a real phone.
 
+Pending follow-up — owner device feedback (2026-08-23, recorded by the theme
+session before it was closed):
+
+- Owner report: the toggle works on iOS and PC, but on **Android Chrome the
+  `PREMIUM STORE` wordmark is covered** — the wider 66px switch reintroduced
+  the old wordmark-under-controls crowding above the 341px breakpoint.
+- Owner's chosen fix: **remove the Home button from the top bar** (the brand
+  itself already links home, so it is a duplicate control) to free header
+  space.
+- ⚠️ WORKTREE STATE: `src/components/layout/SiteHeader.tsx` carries an
+  **uncommitted edit** — the Home button link (`.header-home-button`) is
+  already removed. This was done by the theme session per the owner's
+  instruction; it is NOT finished work. Any other session must not be
+  surprised by this diff or accidentally commit/revert it as their own.
+- Still to do for that fix: delete the now-dead
+  `@media (max-width: 340px) .header-home-button` rule in
+  `src/app/globals.css` (~line 4236-4243, comment included), re-run
+  typecheck/build/csp:check plus `npm run theme:check` (its 360-1024px
+  wordmark-fit matrix is the regression guard), and confirm on the owner's
+  Android Chrome. Then commit/push only with owner authorization.
+- `public/products.json` is a **panel-owned pre-existing dirty change**
+  (stock sync) — it predates this work; leave it untouched and never sweep
+  it into a storefront commit.
+
 ## Bioscope Download Page (2026-08-23)
 
 Bioscope arrives as a storefront page first: the download links are live now,
@@ -678,3 +702,85 @@ untouched. Full write-up: `qa/overnight/2026-08-03/KIMI_UI_UX_REPORT.md`.
   storefront migration.
 - [x] Schedule visual-redesign discovery after functional parity, baseline QA,
   and owner approval of the migrated storefront.
+
+## Front-end design queue — for Kimi (opened 2026-08-24)
+
+Everything in this section is a DESIGN decision that was deliberately left
+unmade. The 2026-08-24 session shipped the structure and the behaviour for each
+one; what is listed here is the look, and the owner assigned that to Kimi. Each
+item names the exact selector or file so nothing has to be hunted for.
+
+Two things NOT to undo while working here:
+
+- `.section-heading > div > p:not(.eyebrow) { margin-top: 14px }` in
+  `src/app/globals.css` is a BUG FIX, not spacing taste. Burmese stacks medials
+  above and tone marks below the baseline, so at `line-height: 1.32` the h2's
+  ink overflowed its line box and landed on the paragraph (verified 0px gap
+  before, 14px after, on `/bioscope-download/`). If the heading rhythm is
+  reworked, keep a real gap there.
+- `.haptic-tap { touch-action: pan-y pinch-zoom }` and the drag guard in
+  `HapticSwitch.tsx` are the two halves of one fix. Do not restore
+  `touch-action: manipulation`, and never drop `pinch-zoom`.
+
+- [ ] **Burmese heading metrics, site-wide.** `.section-heading h2` is
+  `line-height: 1.32`; `.bioscope-hero h1` is `1.02`. Both are tuned for Latin
+  and are the reason the fix above was needed. A real pass would set the
+  Burmese line-height once (and decide whether `--font-display` should have a
+  separate Myanmar stack at all — `Lora` has no Myanmar coverage, so every
+  Burmese heading is already falling through to `Noto Sans Myanmar` at a
+  different optical size than its Latin neighbours).
+- [ ] **The "ဒီအပတ် လူကြည့်များဆုံး Products" row** —
+  `src/components/catalog/PopularProducts.tsx` + `.popular-*` in `globals.css`.
+  Structurally finished and measured from real clicks; visually it is a first
+  cut. Open questions: the rank number is an absolutely-positioned `#1` at 0.75
+  opacity in the tile corner (a badge? a numbered list? nothing?); the tile
+  shows cheapest-price-or-subtitle as its second line; 2 columns under 720px
+  and 4 above. It renders NOTHING when there is no data — keep that.
+- [ ] **The `AI` wordmark tile.** `.category-card__wordmark` is Lora 1.28rem
+  with -0.02em tracking and a 1px optical nudge, inside the same 46px accent
+  plate the glyph tiles use. Owner's call was "no brain graphic, use the letters
+  AI"; how those letters should be set is open. `categoryWordmark()` in
+  `src/data/category-icons.ts` is slug-keyed, so any other category can join.
+- [ ] **Raster app icons vs the glass tile.** `atom.webp`, `mytel.webp` and
+  `bioscope.webp` are the owner's real 256px app icons, but `.product-logo`
+  keeps `padding: 7px`, so they sit inset inside the frosted tile exactly like
+  the flat SVG brand marks. Decide whether a raster app icon should go
+  full-bleed to the tile's radius instead (it would need its own class; the
+  frame already clips with `overflow: hidden`).
+- [ ] **Bioscope install steps.** Body copy went to full `--ink` at 0.95rem for
+  legibility (owner reported the old `--muted` 0.85rem as too faint). The
+  numbered marker beside it is still `25px` / `0.72rem`, which now reads small
+  against 15.2px text.
+
+Dead weight this session created or confirmed — safe to delete in a design pass,
+listed here rather than removed unilaterally:
+
+- [ ] `src/components/catalog/HomeSpotlight.tsx` and every `.home-spotlight*`
+  rule in `globals.css`. Nothing renders them.
+  ⚠️ The `homeSpotlights` export itself is **kept on purpose** — its own comment
+  in `src/data/home-highlights.ts` says so, and `HomeCatalog` still maps over it
+  so a future arrival is one config entry rather than a rebuilt card. If you
+  decide to remove the machinery, remove all three together and delete that
+  comment; do not leave the array with no component.
+- [ ] `public/images/bg.webp` is no longer referenced by the Next app — the dark
+  body background dropped its photo layer. Only the legacy root `index.html` /
+  `style.css` / `reviews.html` still name it, so it cannot be deleted without
+  deciding those files' fate too.
+- [ ] `public/images/p1..p8.webp` — 20 references, all in the 12 legacy root
+  `.html` files. No Next component has used them since the category cards went
+  photo-free.
+- [ ] `public/images/atom.svg` and `mytel.svg` — the placeholder marks this
+  session's icons replaced. Unreferenced once the panel's `products.json` icon
+  commit lands.
+  ⛔ **`bioscope.svg` is NOT in that list yet.** `data/bioscope-download.json`
+  still points at it deliberately (the pointer flip is a follow-up push after
+  the Pages build — see `../NEXT_SESSION.md` step 4), so deleting it before that
+  lands 404s the Bioscope hero.
+- [ ] `imageClass` in `products.json` — 16 distinct values across 34 of the 40
+  products, and **three of them match no CSS at all**: `app-info` (18
+  products), `canva-logo`, `expressvpn-logo` (2). The other 13 are real (they
+  select the light squircle plate for dark-ink brand marks). The three dead ones
+  are legacy attributes the components still faithfully pass through to
+  `className`; clearing them is a panel-side data change, so it needs the owner
+  rather than a stylesheet edit. Measured 2026-08-24 — re-measure before acting,
+  the panel can add a value at any time.

@@ -32,3 +32,23 @@ const FALLBACK_ICON: IconName = "bolt";
 export function categoryIconName(icon?: string): IconName {
   return (icon && CATEGORY_ICON_NAMES[icon]) || FALLBACK_ICON;
 }
+
+/**
+ * Categories whose tile shows a short WORDMARK instead of a glyph.
+ *
+ * Owner's call, 2026-08-24: "AI apps" carried a brain drawing, which reads as a
+ * medical or a psychology icon long before it reads as artificial intelligence.
+ * Two letters say it with no ambiguity and no drawing to interpret.
+ *
+ * Keyed on the category SLUG, not on the `fa-*` value: the panel may retitle or
+ * re-icon a category, and the slug is the one part of `products.json` that is
+ * contractually stable (it is the route). The `fa-brain` entry above stays —
+ * removing it would make any other category that adopts that icon throw.
+ */
+const CATEGORY_WORDMARKS: Record<string, string> = {
+  "ai-apps": "AI",
+};
+
+export function categoryWordmark(slug: string): string | null {
+  return CATEGORY_WORDMARKS[slug] || null;
+}

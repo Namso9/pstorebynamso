@@ -31,15 +31,6 @@ export function SiteHeader() {
 
         <div className="site-header__actions">
           <ThemeToggle />
-          <Link
-            className="icon-button header-home-button"
-            href="/"
-            aria-label="Home"
-            title="Home"
-            prefetch={false}
-          >
-            <Icon name="home" />
-          </Link>
           <ProductSearch />
           <a
             className="button button--primary button--sm header-bot-button"
