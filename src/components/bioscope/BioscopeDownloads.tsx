@@ -4,7 +4,6 @@ import Image from "next/image";
 import { type ReactNode, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
-import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Icon, type IconName } from "@/components/common/Icon";
 import { ErrorState } from "@/components/common/StatusState";
 import { useDetectedDevice } from "@/hooks/useDetectedDevice";
@@ -208,7 +207,6 @@ export function BioscopeDownloads({
                 {group.id === detectedGroupId ? (
                   <span className="bioscope-rail__flag">သင့် device</span>
                 ) : null}
-                <HapticSwitch />
               </button>
             );
           })}

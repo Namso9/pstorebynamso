@@ -11,7 +11,6 @@ import {
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { HapticSwitch } from "./HapticSwitch";
 import { Icon } from "./Icon";
 
 type ModalProps = {
@@ -214,7 +213,6 @@ export function Modal({
                 onClick={onClose}
               >
                 <Icon name="close" />
-                <HapticSwitch />
               </button>
             </div>
             {children}

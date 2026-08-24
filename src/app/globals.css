@@ -295,9 +295,11 @@ html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
   transition: color 180ms ease, background 180ms ease;
 }
 
+@media (hover: hover) {
 .desktop-navigation a:hover {
   color: var(--ink);
   background: var(--surface);
+}
 }
 
 .site-header__actions {
@@ -325,9 +327,11 @@ html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
     transform 180ms ease;
 }
 
+@media (hover: hover) {
 .icon-button:hover {
   border-color: var(--border-strong);
   background: var(--surface-hover);
+}
 }
 
 .icon-button:active {
@@ -537,8 +541,10 @@ html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
     box-shadow 180ms ease;
 }
 
+@media (hover: hover) {
 .button:hover {
   transform: translateY(-1px);
+}
 }
 
 .button:active {
@@ -563,10 +569,12 @@ html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
   background: var(--surface);
 }
 
+@media (hover: hover) {
 .button--secondary:hover,
 .button--quiet:hover {
   border-color: var(--border-strong);
   background: var(--surface-hover);
+}
 }
 
 .button--quiet {
@@ -624,9 +632,11 @@ html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
   cursor: pointer;
 }
 
+@media (hover: hover) {
 .back-control:hover {
   color: var(--ink);
   background: var(--surface);
+}
 }
 
 .modal-backdrop {
@@ -705,9 +715,11 @@ html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
   text-decoration: none;
 }
 
+@media (hover: hover) {
 .mobile-navigation a:hover {
   border-color: var(--border-strong);
   background: var(--surface-hover);
+}
 }
 
 .mobile-navigation .mobile-navigation__bot {
@@ -930,8 +942,10 @@ html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
   overflow-wrap: anywhere;
 }
 
+@media (hover: hover) {
 .footer-column a:hover {
   color: var(--accent);
+}
 }
 
 .site-footer__bottom {
@@ -959,9 +973,11 @@ html.theme-transition body :not(.theme-switch, .theme-switch *)::after {
   text-decoration: none;
 }
 
+@media (hover: hover) {
 .site-footer__bottom a:hover {
   color: var(--ink);
   border-color: var(--border-strong);
+}
 }
 
 @media (max-width: 520px) {
@@ -1249,10 +1265,12 @@ body:has(.category-page) .site-header {
     box-shadow 220ms ease;
 }
 
+@media (hover: hover) {
 .category-card:hover {
   border-color: var(--border-strong);
   box-shadow: var(--shadow);
   transform: translateY(-4px);
+}
 }
 
 .category-card:active {
@@ -1273,8 +1291,10 @@ body:has(.category-page) .site-header {
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@media (hover: hover) {
 .category-card:hover .category-card__media img {
   transform: scale(1.035);
+}
 }
 
 .category-card__body {
@@ -1538,10 +1558,12 @@ body:has(.category-page) .site-header {
   transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
+@media (hover: hover) {
 .product-card:hover {
   border-color: var(--border-strong);
   background: var(--surface-hover);
   transform: translateY(-2px);
+}
 }
 
 .product-card:target {
@@ -1634,9 +1656,11 @@ button.plan-row {
   transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
+@media (hover: hover) {
 button.plan-row:hover {
   border-color: var(--accent);
   background: var(--accent-soft);
+}
 }
 
 button.plan-row:active {
@@ -1743,10 +1767,12 @@ button.plan-row:active {
   transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
+@media (hover: hover) {
 .checkout-option:hover {
   border-color: var(--accent);
   background: var(--surface-hover);
   transform: translateY(-1px);
+}
 }
 
 .checkout-option--recommended {
@@ -1833,9 +1859,11 @@ button.plan-row:active {
   text-decoration: none;
 }
 
+@media (hover: hover) {
 .search-result:hover {
   border-color: var(--accent);
   background: var(--accent-soft);
+}
 }
 
 .search-result > span {
@@ -2000,8 +2028,10 @@ button.plan-row:active {
   cursor: pointer;
 }
 
+@media (hover: hover) {
 .faq-question:hover {
   background: var(--surface-hover);
+}
 }
 
 .faq-chevron {
@@ -2116,10 +2146,12 @@ button.plan-row:active {
   transition: transform 190ms ease, border-color 190ms ease, box-shadow 190ms ease;
 }
 
+@media (hover: hover) {
 .review-card:hover {
   border-color: var(--accent);
   box-shadow: var(--shadow);
   transform: translateY(-3px);
+}
 }
 
 .review-card img {
@@ -2127,8 +2159,10 @@ button.plan-row:active {
   transition: transform 240ms ease;
 }
 
+@media (hover: hover) {
 .review-card:hover img {
   transform: scale(1.035);
+}
 }
 
 .review-lightbox {
@@ -2185,9 +2219,11 @@ button.plan-row:active {
   text-decoration: none;
 }
 
+@media (hover: hover) {
 .official-channel-grid a:hover {
   border-color: var(--border-strong);
   background: var(--surface-hover);
+}
 }
 
 .official-channel-grid .official-channel--primary {
@@ -2619,10 +2655,12 @@ button.plan-row:active {
   text-underline-offset: 3px;
 }
 
+@media (hover: hover) {
 .order-summary-next a:not(.button):hover,
 .order-form-card-next a:not(.button):hover,
 .order-result a:not(.button):hover {
   text-decoration-thickness: 2px;
+}
 }
 
 .order-stock-warning {
@@ -2866,11 +2904,13 @@ button.plan-row:active {
     color 160ms ease;
 }
 
+@media (hover: hover) {
 .order-file:hover,
 .order-file--selected {
   border-color: var(--accent);
   color: var(--accent-hover) !important;
   background: var(--accent-soft);
+}
 }
 
 /* The real <input type="file"> is clipped to 1px, so keyboard focus was
@@ -3296,6 +3336,7 @@ html[data-theme="light"] body {
   gap: 15px;
 }
 
+@media (hover: hover) {
 .product-card,
 .product-card:hover {
   min-width: 0;
@@ -3307,6 +3348,7 @@ html[data-theme="light"] body {
   padding: 20px 12px;
   background: var(--surface);
   text-align: center;
+}
 }
 
 .product-card__identity {
@@ -4196,11 +4238,13 @@ html.theme-light .payment-selector-next {
     grid-column: 1 / -1;
   }
 
-  .product-card,
+  @media (hover: hover) {
+.product-card,
   .product-card:hover {
     align-items: center;
     flex-direction: column;
   }
+}
 
   .product-card__action {
     width: 100%;
@@ -4242,10 +4286,12 @@ html.theme-light .payment-selector-next {
     padding: 12px 10px 14px;
   }
 
-  .product-card,
+  @media (hover: hover) {
+.product-card,
   .product-card:hover {
     padding: 16px 10px;
   }
+}
 }
 
 
@@ -4342,11 +4388,13 @@ html.theme-light .payment-selector-next {
     0 12px 30px color-mix(in srgb, var(--ink) 8%, transparent);
 }
 
+@media (hover: hover) {
 /* Keep the highlight when the deeper hover shadow takes over. */
 .category-card:hover {
   box-shadow:
     inset 0 1px 0 var(--glass-hi),
     var(--shadow);
+}
 }
 
 /* Tier-2 rows (dense lists): highlight only, no extra drop shadow. */
@@ -4839,6 +4887,67 @@ button {
   touch-action: manipulation;
 }
 
+/* No text selection on a control (2026-08-24, owner report "faq ကို လက်နဲ့
+   ပွတ်ဆွဲရင် auto select ဖြစ်နေတယ်"). A press-and-drag over a label is a scroll,
+   never a selection, and `-webkit-touch-callout` stops the long-press
+   copy/share sheet from covering the row. The FAQ *answers* are deliberately
+   NOT in this list — a customer copying an account detail out of one is a
+   feature. */
+.button,
+.icon-button,
+.back-control,
+.product-card,
+.category-card,
+.popular-card,
+.plan-row,
+.plan-picker__chip,
+.checkout-option,
+.search-result,
+.faq-question,
+.review-card,
+.platform-button-next,
+.bioscope-rail__tab,
+.theme-switch,
+.desktop-navigation a,
+.mobile-navigation a,
+.official-channel-grid a,
+.footer-column a,
+.site-footer__bottom a {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Touch feedback, now that hover paint is desktop-only: every control a finger
+   can land on needs an `:active` state, or a real tap looks like nothing
+   happened. The cards, `.button`, `.icon-button`, `.plan-row`,
+   `.search-result`, `.official-channel-grid a`, `.plan-picker__chip` and
+   `.theme-switch` already have one above; these are the rest. */
+.faq-question:active,
+.checkout-option:active,
+.mobile-navigation a:active,
+.back-control:active,
+.bioscope-rail__tab:active {
+  background: var(--surface-hover);
+}
+
+.popular-card:active,
+.review-card:active,
+.platform-button-next:active {
+  scale: 0.985;
+}
+
+/* The sticky header is the one element that must re-blur its backdrop on every
+   scrolled frame, so its radius is the site's scroll budget. 22px is a desktop
+   GPU's problem; on a phone it is the difference between a smooth flick and a
+   stuttering one. `saturate` rides along in the same filter chain for free. */
+@media (pointer: coarse) {
+  .site-header {
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    backdrop-filter: blur(12px) saturate(1.4);
+  }
+}
+
 /* Active feedback for motion-wrapped cards: framer-motion leaves an inline
    `transform: none` after the reveal, which silently beats any `:active`
    transform in the stylesheet. The independent `scale` property is outside
@@ -4875,22 +4984,18 @@ button {
   scale: 0.97;
 }
 
-/* Sticky-hover fix: on touch devices a tapped control keeps its :hover
-   styles until something else is tapped, leaving cards frozen mid-lift and
-   images mid-zoom. Transform hovers are pointer feedback, so they only
-   apply where a real hover exists. Colour/border hovers are left alone —
-   they are subtle and clear on the next tap. */
-@media (hover: none) {
-  .button:hover,
-  .category-card:hover,
-  .product-card:hover {
-    transform: none;
-  }
+/* Sticky-hover on touch, the complete fix (2026-08-24, owner report "faq ကို
+   ပွတ်ဆွဲရင် auto select ဖြစ်နေတယ်").
 
-  .category-card:hover .category-card__media img {
-    transform: none;
-  }
-}
+   A finger that starts a scroll on a control leaves `:hover` latched on it —
+   the row stays lit and reads as selected long after the swipe. The earlier
+   version of this block only neutralised the transform hovers and said the
+   colour ones were "subtle"; on a phone they are the whole problem.
+
+   So every `:hover` rule in this file now sits inside `@media (hover: hover)`.
+   Nothing has to be un-set, because on a touch screen the hover paint never
+   applies in the first place. Touch feedback is `:active` only. When you add a
+   hover rule, wrap it the same way. */
 
 /* Search-dialog centering hardening + scroll-smoothness fixes
    (2026-08-03, fifth pass, owner feedback) */
@@ -5007,16 +5112,17 @@ button {
   padding: 0;
   opacity: 0;
   cursor: pointer;
-  /* `pan-y pinch-zoom`, not `manipulation`: this overlay covers its whole host,
-     and WebKit's switch control can be toggled by a DRAG. Reserving vertical
-     panning for the scroller stops a flick that starts on a big control (an FAQ
-     row, a card button) from being claimed as a switch drag. Pinch-zoom is kept
-     deliberately — dropping it would break zoom on every haptic control. The
-     only horizontal scroller on the site (`.review-strip`) holds images, no
-     haptic hosts, so losing `pan-x` here costs nothing. `HapticSwitch` also
-     swallows any click that travelled more than the slop, so this is the
-     cheap half of a two-layer guard. */
-  touch-action: pan-y pinch-zoom;
+  /* `manipulation` (= pan-x pan-y pinch-zoom), restored 2026-08-24.
+     `pan-y pinch-zoom` and the 10px click-slop guard in `HapticSwitch` were
+     two halves of one defence against a drag on a big control being read as a
+     switch toggle. The slop half was swallowing ORDINARY taps — 10px is about
+     a millimetre and a half of thumb roll, and the owner reported buttons
+     needing two presses. Both halves are gone; the drag is prevented by
+     placement instead (see `HapticSwitch`: overlays only go on small controls
+     that commit something, never on a row or tile a finger scrolls over).
+     `manipulation` still excludes double-tap zoom and still keeps pinch-zoom,
+     so nothing about zooming changes. */
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -5221,10 +5327,12 @@ button:disabled > .haptic-tap {
     box-shadow 220ms ease;
 }
 
+@media (hover: hover) {
 .home-spotlight:hover {
   border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
   box-shadow: var(--shadow);
   transform: translateY(-3px);
+}
 }
 
 .home-spotlight:active {
@@ -5426,9 +5534,11 @@ button:disabled > .haptic-tap {
     color 180ms ease;
 }
 
+@media (hover: hover) {
 .bioscope-rail__tab:hover {
   border-color: var(--border-strong);
   background: var(--surface-hover);
+}
 }
 
 .bioscope-rail__tab > svg {
@@ -5907,9 +6017,11 @@ button:disabled > .haptic-tap {
   transition: border-color 160ms ease, background 160ms ease;
 }
 
+@media (hover: hover) {
 .popular-card:hover {
   border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
   background: var(--surface-hover);
+}
 }
 
 .popular-card__rank {
@@ -6011,9 +6123,11 @@ button:disabled > .haptic-tap {
     scale 140ms ease-out;
 }
 
+@media (hover: hover) {
 .plan-picker__chip:hover {
   border-color: var(--accent);
   background: var(--accent-soft);
+}
 }
 
 .plan-picker__chip:active {

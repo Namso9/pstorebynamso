@@ -44,9 +44,11 @@ export function Button({
       {...props}
     >
       {children}
-      {haptic ? (
-        <HapticSwitch mode={type === "submit" ? "submit" : "bubble"} />
-      ) : null}
+      {/* Submit only. The iOS overlay is reserved for controls that commit
+          something (see `HapticSwitch`) — a secondary or quiet button keeps the
+          Android `data-haptic` buzz and no overlay, so its click stays a plain
+          browser click. */}
+      {haptic && type === "submit" ? <HapticSwitch mode="submit" /> : null}
     </button>
   );
 }

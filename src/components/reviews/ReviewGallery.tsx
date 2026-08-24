@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion } from "motion/react";
 
-import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 import { ErrorState } from "@/components/common/StatusState";
 import { useLiveContent } from "@/hooks/useLiveContent";
@@ -92,7 +91,6 @@ function ReviewCard({
       type="button"
       className="review-card"
       aria-label={`Customer Review ${index + 1} — ပုံအကြီး ကြည့်ရန်`}
-      data-haptic="light"
       onClick={onOpen}
       {...revealMotion}
     >
@@ -102,7 +100,6 @@ function ReviewCard({
         fill
         sizes="(max-width: 719px) 50vw, (max-width: 1023px) 33vw, 25vw"
       />
-      <HapticSwitch />
     </motion.button>
   );
 }

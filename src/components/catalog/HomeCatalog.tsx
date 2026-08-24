@@ -2,7 +2,6 @@
 
 import { useMemo } from "react";
 
-import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { CategoryCard } from "./CategoryCard";
 import { HomeGuideCard } from "./HomeGuideCard";
 import { HomeSpotlight } from "./HomeSpotlight";
@@ -40,7 +39,6 @@ export function HomeCatalog({
           <span>Live update မရသေးပါ။ နောက်ဆုံး build data ကို ပြထားပါတယ်။</span>
           <button type="button" data-haptic="light" onClick={refresh}>
             Retry
-            <HapticSwitch />
           </button>
           <span className="sr-only">{error}</span>
         </div>

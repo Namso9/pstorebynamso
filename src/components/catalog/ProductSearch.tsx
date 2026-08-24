@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 
 import { Icon } from "@/components/common/Icon";
-import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 import { ErrorState, LoadingState } from "@/components/common/StatusState";
 import { useCatalog } from "@/hooks/useCatalog";
@@ -48,7 +47,6 @@ export function ProductSearch() {
         onClick={() => setOpen(true)}
       >
         <Icon name="search" />
-        <HapticSwitch />
       </button>
 
       <Modal
@@ -88,7 +86,6 @@ export function ProductSearch() {
                 href={`/${product.category}/#app-${product.id}`}
                 className="search-result"
                 prefetch={false}
-                data-haptic="selection"
                 onClick={() => {
                   trackProductClick(product.id, "plans", "search");
                   close();

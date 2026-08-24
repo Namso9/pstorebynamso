@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useCallback, useState } from "react";
 
 import { Icon } from "@/components/common/Icon";
-import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 
 import { primaryNavigation } from "./navigation";
@@ -24,7 +23,6 @@ export function MobileNavigation() {
         onClick={() => setOpen(true)}
       >
         <Icon name="menu" />
-        <HapticSwitch />
       </button>
 
       <Modal

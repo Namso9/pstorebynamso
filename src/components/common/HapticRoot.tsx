@@ -11,8 +11,14 @@ import {
   vibrate,
 } from "@/lib/haptics";
 
-/** How far a finger may drift before the press is read as a scroll instead. */
-const PRESS_SLOP_PX = 10;
+/**
+ * How far a finger may drift before the press is read as a scroll instead.
+ *
+ * 16px, not 10: at 10 an ordinary thumb tap on a large target rolled past the
+ * slop and the buzz was dropped, so a tap that DID register felt like it had
+ * not. A scroll passes 16px within a frame or two, so nothing leaks through.
+ */
+const PRESS_SLOP_PX = 16;
 /** How long a still finger must rest before the press counts as deliberate. */
 const PRESS_CONFIRM_MS = 60;
 
@@ -127,9 +133,13 @@ export function HapticRoot() {
       pendingIntensity = intensity;
       startX = event.clientX;
       startY = event.clientY;
-      document.addEventListener("pointermove", handlePointerMove, true);
-      document.addEventListener("pointerup", handlePointerUp, true);
-      document.addEventListener("pointercancel", handleCancel, true);
+      // `passive: true` on all three: these only READ the gesture, and a
+      // non-passive move listener armed mid-touch is exactly what makes a
+      // scroll wait for JS on WebKit.
+      const armed = { capture: true, passive: true } as const;
+      document.addEventListener("pointermove", handlePointerMove, armed);
+      document.addEventListener("pointerup", handlePointerUp, armed);
+      document.addEventListener("pointercancel", handleCancel, armed);
       pendingTimer = window.setTimeout(play, PRESS_CONFIRM_MS);
     };
 

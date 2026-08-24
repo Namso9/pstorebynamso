@@ -20,7 +20,6 @@ export function HomeGuideCard({ item }: { item: HomeGuideItem }) {
       className="category-card category-card--guide"
       href={item.href}
       prefetch={false}
-      data-haptic="light"
       initial={false}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}

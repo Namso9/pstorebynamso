@@ -162,7 +162,6 @@ function PopularCard({
       className="popular-card"
       href={`/${product.category}/#app-${product.id}`}
       prefetch={false}
-      data-haptic="light"
       data-product={product.id}
       /* `source: "popular"` is what keeps this row out of its own ranking —
          the panel records the click and excludes it. */

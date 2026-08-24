@@ -43,7 +43,6 @@ export function CategoryCard({
       className="category-card"
       href={categoryHref(category.slug)}
       prefetch={false}
-      data-haptic="light"
       {...revealMotion}
     >
       {/* `aria-hidden` either way: the tile's own <h3> already names the

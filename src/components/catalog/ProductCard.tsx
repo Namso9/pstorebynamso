@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 
-import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { useRevealMotion } from "@/hooks/useRevealMotion";
 import { publicAssetPath } from "@/services/catalog";
 import { trackProductClick } from "@/services/track";
@@ -58,7 +57,6 @@ export function ProductCard({ product, onViewPlans, index = 0 }: ProductCardProp
         }}
       >
         View Plans
-        <HapticSwitch />
       </button>
     </motion.article>
   );

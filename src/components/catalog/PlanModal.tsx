@@ -246,7 +246,6 @@ function DurationPicker({
               onClick={() => select(plan.id)}
             >
               {chipLabel(plan)}
-              <HapticSwitch />
             </button>
           );
         })}

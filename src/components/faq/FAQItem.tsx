@@ -3,7 +3,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useId, useState } from "react";
 
-import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { SafeRichText } from "@/components/common/SafeRichText";
 import { useRevealMotion } from "@/hooks/useRevealMotion";
 import type { FaqItemData } from "@/types/content";
@@ -29,12 +28,10 @@ export function FAQItem({ item, index = 0 }: { item: FaqItemData; index?: number
         className="faq-question"
         aria-expanded={open}
         aria-controls={answerId}
-        data-haptic="selection"
         onClick={() => setOpen((value) => !value)}
       >
         <span>{item.q}</span>
         <span className="faq-chevron" aria-hidden="true">⌄</span>
-        <HapticSwitch />
       </button>
       <AnimatePresence initial={false}>
         {open ? (

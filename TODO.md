@@ -718,9 +718,28 @@ Two things NOT to undo while working here:
   ink overflowed its line box and landed on the paragraph (verified 0px gap
   before, 14px after, on `/bioscope-download/`). If the heading rhythm is
   reworked, keep a real gap there.
-- `.haptic-tap { touch-action: pan-y pinch-zoom }` and the drag guard in
-  `HapticSwitch.tsx` are the two halves of one fix. Do not restore
-  `touch-action: manipulation`, and never drop `pinch-zoom`.
+- ~~`.haptic-tap { touch-action: pan-y pinch-zoom }` and the drag guard in
+  `HapticSwitch.tsx`~~ — **reversed the same day, on the owner's report.** That
+  pair was swallowing ordinary taps ("back back to home ဒါတွေက အလုပ်မလုပ်ဘူး
+  နှစ်ခါနှိပ်နေရတယ်"): 10px of slop is about a thumb's roll. `.haptic-tap` is
+  `touch-action: manipulation` again and the slop guard is gone. What replaced
+  them is a placement rule — the iOS overlay only goes on a small control that
+  commits something, never on a row or tile a finger scrolls over. Keep that
+  rule; it is what makes the axis restriction unnecessary.
+- **Every `:hover` rule in `globals.css` now lives inside
+  `@media (hover: hover)`, and tap targets carry `user-select: none`.** On a
+  phone `:hover` latches after a swipe that started on a control, so the row
+  stays lit and reads as selected. Touch feedback is `:active` only, which is
+  why a short `:active` block was added for `.faq-question`,
+  `.checkout-option`, `.mobile-navigation a`, `.back-control`,
+  `.bioscope-rail__tab`, `.popular-card`, `.review-card` and
+  `.platform-button-next`. **Design consequence: any new hover state needs an
+  `:active` twin, or it is invisible to every phone visitor.**
+  `npm run touch:check` walks the CSSOM and fails on an unguarded hover rule.
+- `.site-header`'s backdrop blur is `22px` on desktop but `12px` under
+  `@media (pointer: coarse)`. It is the one element that re-blurs on every
+  scrolled frame, so the radius is the scroll budget. Change the desktop value
+  freely; raising the coarse one is a performance decision.
 
 - [ ] **Burmese heading metrics, site-wide.** `.section-heading h2` is
   `line-height: 1.32`; `.bioscope-hero h1` is `1.02`. Both are tuned for Latin
@@ -772,10 +791,10 @@ listed here rather than removed unilaterally:
 - [ ] `public/images/atom.svg` and `mytel.svg` — the placeholder marks this
   session's icons replaced. Unreferenced once the panel's `products.json` icon
   commit lands.
-  ⛔ **`bioscope.svg` is NOT in that list yet.** `data/bioscope-download.json`
-  still points at it deliberately (the pointer flip is a follow-up push after
-  the Pages build — see `../NEXT_SESSION.md` step 4), so deleting it before that
-  lands 404s the Bioscope hero.
+  ✅ **`bioscope.svg` joined that list on 2026-08-24.** The pointer flip landed
+  (`data/bioscope-download.json` → `images/bioscope.webp`, commit `2f68045`) and
+  no file under `data/` or `src/` names the SVG any more. The legacy root
+  `.html` files still might — check before deleting.
 - [ ] `imageClass` in `products.json` — 16 distinct values across 34 of the 40
   products, and **three of them match no CSS at all**: `app-info` (18
   products), `canva-logo`, `expressvpn-logo` (2). The other 13 are real (they

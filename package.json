@@ -19,6 +19,7 @@
     "stock-flip:check": "node qa/checkout-stock-flip-check.mjs",
     "bioscope:check": "node qa/bioscope-download-check.mjs && node qa/bioscope-links-check.mjs",
     "theme:check": "node qa/theme-switch-check.mjs",
+    "touch:check": "node qa/touch-response-check.mjs",
     "track:check": "node qa/track-contract-check.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",

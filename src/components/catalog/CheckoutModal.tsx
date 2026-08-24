@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 
 import { ErrorState, LoadingState } from "@/components/common/StatusState";
-import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 import {
   fetchCatalog,
@@ -110,7 +109,6 @@ function CheckoutOptions({
           onClick={onClose}
         >
           ပိတ်မည်
-          <HapticSwitch />
         </button>
       </div>
     );
