@@ -398,7 +398,7 @@
           "desc": "No Ads (Monthly Change)",
           "price": "10,000 Ks",
           "id": "1_month_our_mail",
-          "stock": false
+          "bot": true
         },
         {
           "name": "3 Month cus mail",
