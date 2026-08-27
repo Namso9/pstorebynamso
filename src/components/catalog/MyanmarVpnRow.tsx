@@ -21,7 +21,13 @@ const MotionLink = motion.create(Link);
  * lands via the panel, not this repo — or is later retired simply drops out
  * instead of rendering a dead tile.
  */
-const FEATURED_IDS = ["nord", "express_phone", "hiddify", "myanmar-vless"];
+const FEATURED_IDS = [
+  "nord",
+  "express_phone",
+  "hiddify",
+  "proton",
+  "myanmar-vless",
+];
 
 type MyanmarVpnRowProps = {
   catalog: CatalogData;
