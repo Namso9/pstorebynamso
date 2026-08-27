@@ -1,14 +1,14 @@
 {
-  "updated": "26 Aug 2026",
+  "updated": "27 Aug 2026",
   "window_days": 7,
   "items": [
     "netflix_phone",
     "bioscope",
+    "express_phone",
     "gemini",
+    "jumpjump",
     "netflix_tv",
     "spotify_canada",
-    "youtube_premium",
-    "capcut",
-    "express_phone"
+    "youtube_premium"
   ]
 }
