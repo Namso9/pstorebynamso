@@ -54,7 +54,6 @@ export function MyanmarVpnRow({ catalog }: MyanmarVpnRowProps) {
     >
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Myanmar Ready</p>
           <h2 id="myanmar-vpn-title">Myanmar Region ရတဲ့ VPN များ</h2>
         </div>
       </div>

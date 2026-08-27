@@ -78,7 +78,65 @@ export function VlessServersPanel() {
         onClick={toggle}
       >
         <span className="vless-servers__icon" aria-hidden="true">
-          🔑
+          {/* Globe-with-live-node mark. Inline so the CSP stays untouched;
+              the gradient reads the theme's accent tokens, so it recolors
+              with light/dark for free. */}
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+            <defs>
+              <linearGradient
+                id="vless-icon-grad"
+                x1="4"
+                y1="4"
+                x2="20"
+                y2="20"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0" style={{ stopColor: "var(--accent)" }} />
+                <stop
+                  offset="1"
+                  style={{ stopColor: "var(--accent-hover)" }}
+                />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="12"
+              cy="12"
+              r="8.25"
+              stroke="url(#vless-icon-grad)"
+              strokeWidth="1.5"
+            />
+            <ellipse
+              cx="12"
+              cy="12"
+              rx="3.6"
+              ry="8.25"
+              stroke="url(#vless-icon-grad)"
+              strokeWidth="1.2"
+            />
+            <path
+              d="M4.55 9.25h14.9M4.55 14.75h14.9"
+              stroke="url(#vless-icon-grad)"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+            />
+            <circle
+              className="vless-servers__icon-pulse"
+              cx="17.6"
+              cy="6.4"
+              r="4"
+              fill="none"
+              stroke="var(--accent)"
+              strokeWidth="1"
+            />
+            <circle
+              cx="17.6"
+              cy="6.4"
+              r="2.3"
+              fill="var(--accent)"
+              stroke="var(--surface-strong)"
+              strokeWidth="1.2"
+            />
+          </svg>
         </span>
         <span className="vless-servers__label">
           <strong>VLESS Key Server Locations</strong>
@@ -117,17 +175,11 @@ export function VlessServersPanel() {
           ) : null}
 
           {status === "ready" && servers ? (
-            <>
-              <ul className="vless-servers__list">
-                {servers.map((server) => (
-                  <ServerChip name={server.name} key={server.name} />
-                ))}
-              </ul>
-              <p className="vless-servers__meta">
-                Locations အားလုံး key တစ်ခုတည်းထဲမှာ ပါဝင်ပြီး app ထဲ
-                subscription update နှိပ်ရုံနဲ့ အသစ်တွေ ရောက်ပါတယ်။
-              </p>
-            </>
+            <ul className="vless-servers__list">
+              {servers.map((server) => (
+                <ServerChip name={server.name} key={server.name} />
+              ))}
+            </ul>
           ) : null}
         </div>
       ) : null}
