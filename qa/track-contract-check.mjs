@@ -24,8 +24,8 @@ const prebuild = await readFile("scripts/sync-live-data.mjs", "utf8");
 // What the panel accepts. Kept as literals on purpose: this file is the place a
 // reviewer looks to see whether the three sides agree, so the third side's
 // values have to be readable here rather than implied.
-const PANEL_KINDS = ["plans", "checkout"];
-const PANEL_SOURCES = ["grid", "popular", "modal", "search"];
+const PANEL_KINDS = ["plans", "checkout", "visit"];
+const PANEL_SOURCES = ["grid", "popular", "modal", "search", "page"];
 
 function tsUnion(source, typeName) {
   const match = new RegExp(
@@ -123,6 +123,33 @@ for (const banned of [
 assert.ok(
   !fnCode.includes("cf-connecting-ip") && !fnCode.includes("User-Agent"),
   "functions/api/track.js must never forward an identifier",
+);
+
+// ── 3b. the visit ping cannot mix with product clicks, on either side ────
+// The wire shape is shared, so the separation is enforced by VALUE: a visit
+// is exactly {site, visit, page}, and a product click may use neither half of
+// that pair. Losing either direction lets one counter contaminate the other.
+assert.ok(
+  /if \(kind === 'visit'\) \{[\s\S]*?if \(id !== SITE_ID \|\| source !== 'page'\) return noContent\(\);/
+    .test(fn),
+  "a visit must be rejected unless it is exactly {site, visit, page}",
+);
+assert.ok(
+  /\} else \{[\s\S]*?if \(id === SITE_ID \|\| source === 'page'\) return noContent\(\);/
+    .test(fn),
+  "a product click must never carry the visit's subject or source",
+);
+// The client fires it once per full page load, from module state — the layout
+// mounts it, and no storage API is involved (section 3 already bans those).
+assert.ok(
+  /let visitSent = false;/.test(client) &&
+    /send\(SITE_ID, "visit", "page"\)/.test(client),
+  "trackSiteVisit must be the fixed triple behind a module once-guard",
+);
+const layout = await readFile("src/app/layout.tsx", "utf8");
+assert.ok(
+  layout.includes("<VisitPing />"),
+  "the root layout must mount VisitPing, or visits silently stop counting",
 );
 
 // ── 4. an unconfigured panel is a silent no-op, never a 5xx ──────────────

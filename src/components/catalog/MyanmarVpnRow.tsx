@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { motion } from "motion/react";
 
-import { cheapestPrice } from "./PopularProducts";
+import { cheapestPrice, isModifiedClick } from "./PopularProducts";
 
 import { productLogoClass } from "@/data/product-media";
 import { useRevealMotion } from "@/hooks/useRevealMotion";
@@ -15,16 +15,18 @@ import type { CatalogData, CatalogProduct } from "@/types/catalog";
 const MotionLink = motion.create(Link);
 
 /**
- * Hand-picked by the owner (2026-08-27), in the owner's order: the VPNs that
- * work from inside Myanmar. Resolved against the LIVE catalog exactly like the
- * popular row, so an id that has not been published yet — `myanmar-vless`
- * lands via the panel, not this repo — or is later retired simply drops out
- * instead of rendering a dead tile.
+ * Hand-picked by the owner, cheapest plan first (owner order, 2026-08-28):
+ * the VPNs that work from inside Myanmar. Resolved against the LIVE catalog
+ * exactly like the popular row, so an id that has not been published yet —
+ * `myanmar-vless` lands via the panel, not this repo — or is later retired
+ * simply drops out instead of rendering a dead tile.
  */
-const FEATURED_IDS = ["nord", "express_phone", "proton", "myanmar-vless"];
+const FEATURED_IDS = ["myanmar-vless", "proton", "nord", "express_phone"];
 
 type MyanmarVpnRowProps = {
   catalog: CatalogData;
+  /** Open the product's plan modal IN PLACE (see the card's onClick). */
+  onViewPlans: (productId: string) => void;
 };
 
 /**
@@ -37,7 +39,7 @@ type MyanmarVpnRowProps = {
  * measured popular ranking — the same feedback loop `source: "popular"` exists
  * to prevent.
  */
-export function MyanmarVpnRow({ catalog }: MyanmarVpnRowProps) {
+export function MyanmarVpnRow({ catalog, onViewPlans }: MyanmarVpnRowProps) {
   const products = useMemo(() => {
     const byId = new Map(catalog.products.map((entry) => [entry.id, entry]));
     return FEATURED_IDS.map((id) => byId.get(id)).filter(
@@ -59,7 +61,12 @@ export function MyanmarVpnRow({ catalog }: MyanmarVpnRowProps) {
       </div>
       <div className="popular-grid">
         {products.map((product, index) => (
-          <MyanmarVpnCard product={product} index={index} key={product.id} />
+          <MyanmarVpnCard
+            product={product}
+            index={index}
+            onViewPlans={onViewPlans}
+            key={product.id}
+          />
         ))}
       </div>
     </section>
@@ -70,9 +77,11 @@ export function MyanmarVpnRow({ catalog }: MyanmarVpnRowProps) {
 function MyanmarVpnCard({
   product,
   index,
+  onViewPlans,
 }: {
   product: CatalogProduct;
   index: number;
+  onViewPlans: (productId: string) => void;
 }) {
   const revealMotion = useRevealMotion({
     delay: Math.min(index, 3) * 0.045,
@@ -88,6 +97,16 @@ function MyanmarVpnCard({
       href={`/${product.category}/#app-${product.id}`}
       prefetch={false}
       data-product={product.id}
+      /* A plain tap opens the plan modal RIGHT HERE instead of following the
+         href (owner report, 2026-08-28: "နှိပ်လိုက်ရင် category ထဲ
+         အလိုလိုရောက်သွားတယ်") — the visitor stays on the home page and the
+         modal closes back onto it. The href is kept for what a modal cannot
+         serve: middle/cmd-click, long-press "open in new tab", crawlers. */
+      onClick={(event) => {
+        if (isModifiedClick(event)) return;
+        event.preventDefault();
+        onViewPlans(product.id);
+      }}
       {...revealMotion}
     >
       {/* The corner chip reuses the rank chip's styling; here it marks the

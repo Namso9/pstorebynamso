@@ -40,8 +40,14 @@ const ALLOWED_ORIGINS = [
 const MAX_BODY = 512;
 
 const ID_RE = /^[A-Za-z0-9_-]{1,60}$/;
-const KINDS = ['plans', 'checkout'];
-const SOURCES = ['grid', 'popular', 'modal', 'search'];
+const KINDS = ['plans', 'checkout', 'visit'];
+const SOURCES = ['grid', 'popular', 'modal', 'search', 'page'];
+
+// The one non-product subject: the whole-site visit ping. A visit may ONLY
+// arrive as exactly {site, visit, page}, and a product click may use NEITHER
+// half of that pair — so the two kinds of row can never contaminate each
+// other, whatever a caller sends.
+const SITE_ID = 'site';
 
 // Same source /products.json serves. The shape check above is not enough on its
 // own: a caller sending a DIFFERENT well-formed id on every request would create
@@ -133,7 +139,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
     if (!ID_RE.test(id)) return noContent();
     if (KINDS.indexOf(kind) === -1) return noContent();
     if (SOURCES.indexOf(source) === -1) return noContent();
-    if (!(await isKnownProduct(id))) return noContent();
+    if (kind === 'visit') {
+      // The visit ping is the fixed triple and nothing else — no product id
+      // may ride on it, and it never needs the catalog check below (its
+      // subject is the site itself).
+      if (id !== SITE_ID || source !== 'page') return noContent();
+    } else {
+      // And the reverse: a product click may not borrow the visit's subject
+      // or source, and its id has to be a product that really exists.
+      if (id === SITE_ID || source === 'page') return noContent();
+      if (!(await isKnownProduct(id))) return noContent();
+    }
 
     waitUntil(
       fetch(env.PANEL_CLICK_URL, {

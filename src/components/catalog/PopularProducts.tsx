@@ -25,7 +25,33 @@ const SHOWN = 4;
 type PopularProductsProps = {
   catalog: CatalogData;
   initialPopular: PopularData;
+  /** Open the product's plan modal IN PLACE (see the card's onClick). */
+  onViewPlans: (productId: string) => void;
 };
+
+/**
+ * True for any click a link must keep for itself: a modifier chord (new tab /
+ * new window / download), a non-primary button, or one something upstream
+ * already claimed. Both home-page rows share this predicate — the next nuance
+ * added here (an auxclick case, say) has to reach both cards at once.
+ */
+export function isModifiedClick(event: {
+  defaultPrevented: boolean;
+  metaKey: boolean;
+  ctrlKey: boolean;
+  shiftKey: boolean;
+  altKey: boolean;
+  button: number;
+}) {
+  return (
+    event.defaultPrevented ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey ||
+    event.button !== 0
+  );
+}
 
 /**
  * Cheapest real price across a product's plans, as the panel wrote it.
@@ -82,6 +108,7 @@ export function cheapestPrice(product: CatalogProduct) {
 export function PopularProducts({
   catalog,
   initialPopular,
+  onViewPlans,
 }: PopularProductsProps) {
   const [popular, setPopular] = useState(initialPopular);
 
@@ -118,7 +145,10 @@ export function PopularProducts({
   if (!products.length) return null;
 
   return (
-    <section className="popular-products" aria-labelledby="popular-products-title">
+    <section
+      className="popular-products"
+      aria-labelledby="popular-products-title"
+    >
       <div className="section-heading">
         <div>
           <p className="eyebrow">This week</p>
@@ -130,6 +160,7 @@ export function PopularProducts({
           <PopularCard
             product={product}
             rank={index + 1}
+            onViewPlans={onViewPlans}
             key={product.id}
           />
         ))}
@@ -150,9 +181,11 @@ export function PopularProducts({
 function PopularCard({
   product,
   rank,
+  onViewPlans,
 }: {
   product: CatalogProduct;
   rank: number;
+  onViewPlans: (productId: string) => void;
 }) {
   const revealMotion = useRevealMotion({
     delay: Math.min(rank - 1, 3) * 0.045,
@@ -169,8 +202,16 @@ function PopularCard({
       prefetch={false}
       data-product={product.id}
       /* `source: "popular"` is what keeps this row out of its own ranking —
-         the panel records the click and excludes it. */
-      onClick={() => trackProductClick(product.id, "plans", "popular")}
+         the panel records the click and excludes it. The click itself opens
+         the plan modal IN PLACE (owner report, 2026-08-28) instead of
+         following the href; the href stays for middle/cmd-click, long-press
+         "open in new tab" and crawlers, and the count fires either way. */
+      onClick={(event) => {
+        trackProductClick(product.id, "plans", "popular");
+        if (isModifiedClick(event)) return;
+        event.preventDefault();
+        onViewPlans(product.id);
+      }}
       {...revealMotion}
     >
       <span className="popular-card__rank" aria-hidden="true">

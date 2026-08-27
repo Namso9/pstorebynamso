@@ -13,8 +13,8 @@
  *
  * The API is mocked by wrapping window.fetch before any page script runs, so
  * this needs only the static server:
- *   node qa/vless-servers-check.mjs                       # live site
- *   node qa/vless-servers-check.mjs http://127.0.0.1:8791 # a served out/
+ *   node qa/vless-servers-check.mjs                          # a served out/ (default)
+ *   node qa/vless-servers-check.mjs https://pstorebynamso.com # the live site
  */
 import { spawn } from "node:child_process";
 import { mkdtemp, rm } from "node:fs/promises";

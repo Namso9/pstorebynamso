@@ -26,16 +26,21 @@
 
 const ENDPOINT = "/api/track";
 
-/** Which control the visitor used. `checkout` is the stronger intent signal. */
-export type TrackKind = "plans" | "checkout";
+/**
+ * Which control the visitor used. `checkout` is the stronger intent signal.
+ * `visit` is not a control at all: it is the one whole-site page-load ping
+ * (see `trackSiteVisit`), and it is EXCLUDED from the popular ranking by the
+ * panel — it carries no product.
+ */
+export type TrackKind = "plans" | "checkout" | "visit";
 
 /**
  * Where on the site the click happened. `popular` is reported but deliberately
  * EXCLUDED from the ranking by the panel: counting clicks on the popular row
  * towards the popular row is a feedback loop that would freeze the top four in
- * place for as long as the site is up.
+ * place for as long as the site is up. `page` belongs to the visit ping only.
  */
-export type TrackSource = "grid" | "popular" | "modal" | "search";
+export type TrackSource = "grid" | "popular" | "modal" | "search" | "page";
 
 /**
  * Collapse an accidental double-fire (a fat-fingered double tap, a synthetic
@@ -57,12 +62,44 @@ function shouldSend(key: string) {
 
 export function trackProductClick(
   productId: string,
-  kind: TrackKind,
-  source: TrackSource = "grid",
+  // `visit`/`page` are the site ping's values and BOTH servers reject them on
+  // a product click by VALUE — excluding them here makes the compiler enforce
+  // what the wire enforces, instead of a call site finding out via silent 204s.
+  kind: Exclude<TrackKind, "visit">,
+  source: Exclude<TrackSource, "page"> = "grid",
 ) {
   if (typeof window === "undefined" || !productId) return;
   if (!shouldSend(`${productId}:${kind}:${source}`)) return;
+  send(productId, kind, source);
+}
 
+/**
+ * The fixed subject of the visit ping. Not a product id: the Pages function
+ * accepts it ONLY with kind "visit", so a product click can never smuggle it
+ * and a visit can never masquerade as product interest.
+ */
+const SITE_ID = "site";
+
+/** One ping per FULL page load, guarded by module state alone. */
+let visitSent = false;
+
+/**
+ * Count one site visit — the same three-string payload, the same promise.
+ *
+ * "Visit" here means a full page load of the site: the guard is a module
+ * variable, so client-side navigations inside one load never re-fire, and no
+ * cookie/storage of any kind marks the visitor (the same construction-level
+ * privacy claim `trackProductClick` makes). A visitor who returns in a new
+ * tab or later in the day counts again — the number is a page-load count that
+ * approximates visits, and the panel labels it as such.
+ */
+export function trackSiteVisit() {
+  if (typeof window === "undefined" || visitSent) return;
+  visitSent = true;
+  send(SITE_ID, "visit", "page");
+}
+
+function send(productId: string, kind: TrackKind, source: TrackSource) {
   const body = JSON.stringify({ id: productId, kind, source });
 
   try {

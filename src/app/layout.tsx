@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
+import { VisitPing } from "@/components/common/VisitPing";
 import { PageLayout } from "@/components/layout/PageLayout";
 
 import "./globals.css";
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
       </head>
       <body>
+        <VisitPing />
         <PageLayout>{children}</PageLayout>
       </body>
     </html>
