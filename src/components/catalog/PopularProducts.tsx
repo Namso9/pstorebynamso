@@ -35,7 +35,7 @@ type PopularProductsProps = {
  * would quietly invent a currency format the rest of the site does not use.
  * "Ask price" plans are skipped: they have no number to be cheapest.
  */
-function cheapestPrice(product: CatalogProduct) {
+export function cheapestPrice(product: CatalogProduct) {
   let best: { value: number; label: string } | null = null;
   for (const entry of product.plans) {
     if (!isCatalogPlan(entry)) continue;

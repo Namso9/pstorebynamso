@@ -19,6 +19,7 @@ const FULL_BLEED_LOGO_IMAGES = new Set([
   "images/mytel.webp",
   "images/bioscope.webp",
   "images/meitu.webp",
+  "images/happ.webp",
 ]);
 
 export function isFullBleedLogo(image: string): boolean {

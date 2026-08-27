@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { CategoryCard } from "./CategoryCard";
 import { HomeGuideCard } from "./HomeGuideCard";
 import { HomeSpotlight } from "./HomeSpotlight";
+import { MyanmarVpnRow } from "./MyanmarVpnRow";
 import { PopularProducts } from "./PopularProducts";
 
 import { homeGuideCards, homeSpotlights } from "@/data/home-highlights";
@@ -44,9 +45,12 @@ export function HomeCatalog({
         </div>
       ) : null}
 
-      {/* Categories first, the measured row second (2026-08-24 redesign):
-          the grid is the home page's primary navigation; the popular row
-          follows it and still renders nothing at all when there is no data. */}
+      {/* Owner-picked Myanmar VPN row first (owner request, 2026-08-27),
+          then categories, then the measured popular row (2026-08-24 design):
+          the grid stays the primary navigation, and the popular row still
+          renders nothing at all when there is no data. */}
+      <MyanmarVpnRow catalog={catalog} />
+
       <div className="section-heading">
         <div>
           <p className="eyebrow">Explore</p>

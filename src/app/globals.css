@@ -6272,6 +6272,13 @@ button:disabled > .haptic-tap {
   margin-top: clamp(36px, 6vw, 56px);
 }
 
+/* The owner-picked Myanmar VPN row opens the catalog section, so the big
+   between-rows gap above would double the hero's own spacing there. */
+.myanmar-vpn-row {
+  margin-top: 0;
+  margin-bottom: clamp(28px, 5vw, 44px);
+}
+
 .popular-products .section-heading {
   margin-bottom: 18px;
 }
