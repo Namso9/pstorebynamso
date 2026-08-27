@@ -962,12 +962,29 @@
       "modalTitle": "Nord VPN",
       "plans": [
         {
-          "name": "3 Months",
+          "name": "1 Month",
           "desc": "One Device",
-          "price": "20,000 Ks",
-          "id": "3_months",
-          "bot": true,
-          "stock": false
+          "price": "9,000 Ks",
+          "id": "1_month",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "myanmar-vless",
+      "category": "premium-vpn-apps",
+      "name": "Myanmar Vless Key",
+      "subtitle": "Myanmar Region · VLESS Key",
+      "image": "images/happ.webp",
+      "imageClass": "",
+      "modalTitle": "Myanmar Vless Key",
+      "plans": [
+        {
+          "name": "Myanmar Vpn Key",
+          "desc": "1 Month · 1 Device",
+          "price": "3,000 Ks",
+          "id": "1_month",
+          "bot": true
         }
       ]
     },
