@@ -21,6 +21,7 @@
     "theme:check": "node qa/theme-switch-check.mjs",
     "touch:check": "node qa/touch-response-check.mjs",
     "track:check": "node qa/track-contract-check.mjs",
+    "vless:check": "node qa/vless-servers-check.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "preview": "wrangler pages dev out --compatibility-date=2026-08-02"

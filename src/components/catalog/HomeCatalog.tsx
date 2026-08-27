@@ -7,6 +7,7 @@ import { HomeGuideCard } from "./HomeGuideCard";
 import { HomeSpotlight } from "./HomeSpotlight";
 import { MyanmarVpnRow } from "./MyanmarVpnRow";
 import { PopularProducts } from "./PopularProducts";
+import { VlessServersPanel } from "./VlessServersPanel";
 
 import { homeGuideCards, homeSpotlights } from "@/data/home-highlights";
 import { useCatalog } from "@/hooks/useCatalog";
@@ -22,7 +23,12 @@ export function HomeCatalog({
   initialCatalog,
   initialPopular,
 }: HomeCatalogProps) {
-  const { catalog = initialCatalog, status, error, refresh } = useCatalog(initialCatalog);
+  const {
+    catalog = initialCatalog,
+    status,
+    error,
+    refresh,
+  } = useCatalog(initialCatalog);
 
   const counts = useMemo(
     () =>
@@ -34,7 +40,11 @@ export function HomeCatalog({
   );
 
   return (
-    <section className="home-section home-catalog" id="products" aria-label="Premium digital products">
+    <section
+      className="home-section home-catalog"
+      id="products"
+      aria-label="Premium digital products"
+    >
       {status === "error" ? (
         <div className="catalog-notice" role="status">
           <span>Live update မရသေးပါ။ နောက်ဆုံး build data ကို ပြထားပါတယ်။</span>
@@ -50,6 +60,11 @@ export function HomeCatalog({
           the grid stays the primary navigation, and the popular row still
           renders nothing at all when there is no data. */}
       <MyanmarVpnRow catalog={catalog} />
+
+      {/* Compact disclosure under the VPN row (owner request, 2026-08-28):
+          the live location list of the Myanmar VLESS key. Fetches only when
+          opened — see VlessServersPanel. */}
+      <VlessServersPanel />
 
       <div className="section-heading">
         <div>
