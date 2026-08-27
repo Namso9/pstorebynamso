@@ -989,6 +989,24 @@
       ]
     },
     {
+      "id": "proton",
+      "category": "premium-vpn-apps",
+      "name": "Proton VPN",
+      "subtitle": "Secure VPN · Swiss Privacy",
+      "image": "images/proton.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Proton VPN",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "One Device",
+          "price": "7,000 Ks",
+          "id": "1_month",
+          "bot": true
+        }
+      ]
+    },
+    {
       "id": "atom-data",
       "category": "mobile-data",
       "name": "Atom Data",
@@ -1169,6 +1187,38 @@
           "desc": "SVIP · 4 Devices",
           "price": "250,000 Ks",
           "id": "svip_1_year",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "grammarly",
+      "category": "creative-apps",
+      "name": "Grammarly Premium",
+      "subtitle": "Writing Assistant",
+      "image": "images/grammarly.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Grammarly Premium Plans",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "With your own mail",
+          "price": "25,000 Ks",
+          "id": "1_month",
+          "bot": true
+        },
+        {
+          "name": "3 Months",
+          "desc": "With your own mail",
+          "price": "46,000 Ks",
+          "id": "3_months",
+          "bot": true
+        },
+        {
+          "name": "1 Year",
+          "desc": "With your own mail",
+          "price": "80,000 Ks",
+          "id": "1_year",
           "bot": true
         }
       ]
