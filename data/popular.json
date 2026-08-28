@@ -1,14 +1,14 @@
 {
-  "updated": "28 Aug 2026",
+  "updated": "29 Aug 2026",
   "window_days": 7,
   "items": [
     "myanmar-vless",
-    "gemini",
     "hiddify",
+    "gemini",
     "jumpjump",
     "netflix_phone",
     "letsvpn",
-    "netflix_tv",
-    "proton"
+    "proton",
+    "netflix_tv"
   ]
 }
