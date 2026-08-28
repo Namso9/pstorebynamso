@@ -2,13 +2,13 @@
   "updated": "28 Aug 2026",
   "window_days": 7,
   "items": [
-    "gemini",
     "myanmar-vless",
-    "bioscope",
-    "hiddify",
+    "gemini",
+    "letsvpn",
     "netflix_phone",
-    "nord",
-    "proton",
-    "jumpjump"
+    "bioscope",
+    "express_phone",
+    "hiddify",
+    "nord"
   ]
 }
