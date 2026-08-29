@@ -578,8 +578,7 @@
           "desc": "One Device",
           "price": "17,000 Ks",
           "id": "3_months",
-          "bot": true,
-          "stock": false
+          "bot": true
         },
         {
           "name": "6 Months",
