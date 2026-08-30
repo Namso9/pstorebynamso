@@ -1,5 +1,5 @@
 {
-  "updated": "29 Aug 2026",
+  "updated": "30 Aug 2026",
   "window_days": 7,
   "items": [
     "myanmar-vless",
@@ -7,8 +7,8 @@
     "hiddify",
     "proton",
     "nord",
+    "netflix_phone",
     "jumpjump",
-    "letsvpn",
-    "netflix_phone"
+    "letsvpn"
   ]
 }
