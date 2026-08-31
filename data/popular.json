@@ -3,12 +3,12 @@
   "window_days": 7,
   "items": [
     "myanmar-vless",
-    "hiddify",
     "gemini",
+    "hiddify",
     "proton",
     "netflix_tv",
     "nord",
-    "netflix_phone",
-    "jumpjump"
+    "jumpjump",
+    "netflix_phone"
   ]
 }
