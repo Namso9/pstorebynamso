@@ -89,6 +89,12 @@ async function checkPlanStock(productId, planId) {
  * plus a Cloudflare Access bypass/service-token policy for that exact path.
  * Fire-and-forget: a panel hiccup never blocks the customer's order.
  * Password/screenshot are NOT mirrored — Telegram keeps the only copy.
+ *
+ * product_id / plan_id ride along so the panel can answer "ဘယ် plan/product
+ * အဝယ်များလဲ" without parsing the free-text `product` line. Both are CATALOG
+ * ids the form already collected as hidden fields, already clean()ed to 60
+ * chars — they say what was bought, never who bought it, so they change
+ * nothing about what customer data reaches the panel.
  */
 function mirrorToPanel(env, waitUntil, data) {
   if (!env.PANEL_INGEST_URL || !env.PANEL_INGEST_TOKEN) return;
@@ -239,6 +245,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
       phone,
       customer_mail: customerMail,
       note,
+      product_id: productId,
+      plan_id: planId,
       has_pw: Boolean(customerPw),
       oos: Boolean(oos),
     });

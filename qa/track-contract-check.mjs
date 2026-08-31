@@ -6,6 +6,14 @@
 // error anywhere. This pins the two halves that live in this repo, and asserts
 // the exact strings the panel's own test pins on its side.
 //
+// It is also the enforcement behind track.ts's header doc-block, which is the
+// site's only privacy statement about analytics. Two reads that were once flatly
+// BANNED here — sessionStorage and document.referrer — are now allowed under
+// owner-approved, narrow terms (§3a). The ban was NARROWED, not lifted: exactly
+// one storage access holding one boolean under the key "ps-seen", exactly one
+// referrer read living inside referrerBucket(), and neither may reach the
+// payload. Do not relax §3a without changing that doc-block in the same edit.
+//
 //     node qa/track-contract-check.mjs
 
 import assert from "node:assert/strict";
@@ -17,6 +25,7 @@ const popular = await readFile("src/components/catalog/PopularProducts.tsx", "ut
 const card = await readFile("src/components/catalog/ProductCard.tsx", "utf8");
 const modal = await readFile("src/components/catalog/PlanModal.tsx", "utf8");
 const search = await readFile("src/components/catalog/ProductSearch.tsx", "utf8");
+const visitPing = await readFile("src/components/common/VisitPing.tsx", "utf8");
 const data = JSON.parse(await readFile("data/popular.json", "utf8"));
 const proxy = await readFile("functions/data/[file].js", "utf8");
 const prebuild = await readFile("scripts/sync-live-data.mjs", "utf8");
@@ -24,21 +33,57 @@ const prebuild = await readFile("scripts/sync-live-data.mjs", "utf8");
 // What the panel accepts. Kept as literals on purpose: this file is the place a
 // reviewer looks to see whether the three sides agree, so the third side's
 // values have to be readable here rather than implied.
-const PANEL_KINDS = ["plans", "checkout", "visit"];
-const PANEL_SOURCES = ["grid", "popular", "modal", "search", "page"];
+const PANEL_KINDS = ["plans", "checkout", "visit", "session", "search"];
+const PANEL_SOURCES = [
+  "grid", "popular", "modal", "search", "page",
+  "ref-direct", "ref-internal", "ref-facebook", "ref-messenger",
+  "ref-telegram", "ref-google", "ref-tiktok", "ref-other",
+  "search-hit", "search-miss",
+];
+// The page slugs are a THIRD closed allowlist with three copies (client type,
+// Pages function, panel `_PAGE_IDS`). A slug one side does not know is dropped
+// there in silence, which is the same failure this whole file exists to catch.
+const PANEL_PAGE_IDS = [
+  "pg-home", "pg-streaming-apps", "pg-ai-apps", "pg-premium-vpn-apps",
+  "pg-mobile-data", "pg-music-apps", "pg-creative-apps", "pg-payment",
+  "pg-order", "pg-reviews", "pg-bioscope-download", "pg-expressvpn-guide",
+  "pg-terms", "pg-terms-vpn", "pg-404", "pg-other",
+];
 
+// Digits and hyphens are part of these enums now ("pg-404", "search-hit"), so
+// the extractors below match [a-z0-9-] — a narrower class silently returned a
+// SHORTER list and the deepEqual would then fail for the wrong reason.
 function tsUnion(source, typeName) {
   const match = new RegExp(
     `export type ${typeName} =([\\s\\S]*?);`,
   ).exec(source);
   assert.ok(match, `${typeName} not found`);
-  return [...match[1].matchAll(/"([a-z]+)"/g)].map((m) => m[1]).sort();
+  return [...match[1].matchAll(/"([a-z0-9-]+)"/g)].map((m) => m[1]).sort();
 }
 
 function jsArray(source, name) {
   const match = new RegExp(`const ${name} = \\[([\\s\\S]*?)\\];`).exec(source);
   assert.ok(match, `${name} not found`);
-  return [...match[1].matchAll(/'([a-z]+)'/g)].map((m) => m[1]).sort();
+  return [...match[1].matchAll(/'([a-z0-9-]+)'/g)].map((m) => m[1]).sort();
+}
+
+/** Counting, not testing: several rules below are "exactly once", not "present". */
+function occurrences(haystack, needle) {
+  return haystack.split(needle).length - 1;
+}
+
+/**
+ * The text of one top-level function, comments already stripped. Used to prove
+ * WHERE something is read, not just that it is read — `document.referrer` is
+ * allowed in `referrerBucket` and banned in `send`, and only an extraction can
+ * tell those two apart.
+ */
+function functionBody(source, signature) {
+  const start = source.indexOf(signature);
+  assert.ok(start !== -1, `${signature} not found`);
+  const end = source.indexOf("\n}", start);
+  assert.ok(end !== -1, `${signature} is not a top-level function any more`);
+  return source.slice(start, end + 2);
 }
 
 // ── 1. the three sides agree on both enums ────────────────────────────────
@@ -61,6 +106,34 @@ assert.deepEqual(
   jsArray(fn, "SOURCES"),
   [...PANEL_SOURCES].sort(),
   "the Pages function's SOURCES and the panel's _CLICK_SOURCES disagree",
+);
+assert.deepEqual(
+  tsUnion(client, "PageSlug"),
+  [...PANEL_PAGE_IDS].sort(),
+  "client PageSlug and the panel's _PAGE_IDS disagree",
+);
+assert.deepEqual(
+  jsArray(fn, "PAGE_IDS"),
+  [...PANEL_PAGE_IDS].sort(),
+  "the Pages function's PAGE_IDS and the panel's _PAGE_IDS disagree",
+);
+// The three per-kind source sets are subsets of SOURCES, and the function
+// validates against them individually — a value in SOURCES but in none of the
+// four sets would pass the outer gate and be rejected by every branch.
+assert.deepEqual(
+  jsArray(fn, "REF_SOURCES"),
+  PANEL_SOURCES.filter((s) => s.startsWith("ref-")).sort(),
+  "the Pages function's REF_SOURCES is not the eight ref-* values",
+);
+assert.deepEqual(
+  jsArray(fn, "SEARCH_SOURCES"),
+  ["search-hit", "search-miss"],
+  "the Pages function's SEARCH_SOURCES is not the two search-* values",
+);
+assert.deepEqual(
+  jsArray(fn, "PRODUCT_SOURCES"),
+  ["grid", "modal", "popular", "search"],
+  "the Pages function's PRODUCT_SOURCES is not the four in-site click sources",
 );
 
 // ── 2. the id shape is identical on both sides of the wire ────────────────
@@ -98,8 +171,11 @@ for (const bad of ["", "a b", "a/b", "a".repeat(61), "café"]) {
 
 // ── 3. nothing identifying is ever sent ──────────────────────────────────
 // The payload is built in exactly one place; assert it by shape, not by hope.
-const bodyMatch = /JSON\.stringify\(\{ id: productId, kind, source \}\)/.exec(client);
-assert.ok(bodyMatch, "the beacon payload is no longer exactly {id, kind, source}");
+// Four kinds send three fields; `search` alone adds the normalised query.
+const bodyMatch =
+  /JSON\.stringify\(\s*q === undefined \? \{ id, kind, source \} : \{ id, kind, source, q \},?\s*\)/
+    .exec(client);
+assert.ok(bodyMatch, "the beacon payload is no longer exactly {id, kind, source(, q)}");
 
 /** Comments are stripped first: the privacy note NAMES what it does not read. */
 const stripComments = (source) =>
@@ -110,9 +186,7 @@ const fnCode = stripComments(fn);
 for (const banned of [
   "document.cookie",
   "localStorage",
-  "sessionStorage",
   "navigator.userAgent",
-  "document.referrer",
   "screen.",
 ]) {
   assert.ok(
@@ -125,31 +199,215 @@ assert.ok(
   "functions/api/track.js must never forward an identifier",
 );
 
-// ── 3b. the visit ping cannot mix with product clicks, on either side ────
-// The wire shape is shared, so the separation is enforced by VALUE: a visit
-// is exactly {site, visit, page}, and a product click may use neither half of
-// that pair. Losing either direction lets one counter contaminate the other.
-assert.ok(
-  /if \(kind === 'visit'\) \{[\s\S]*?if \(id !== SITE_ID \|\| source !== 'page'\) return noContent\(\);/
-    .test(fn),
-  "a visit must be rejected unless it is exactly {site, visit, page}",
+// ── 3a. the two reads that ARE allowed, and their exact limits ───────────
+// `sessionStorage` and `document.referrer` were both on the banned list until
+// the session ping existed. The owner approved exactly two narrow uses, so the
+// ban is NARROWED, not lifted: each is allowed once, in one named place, and
+// neither may reach the payload. The header doc-block of track.ts is the site's
+// only privacy statement about analytics — these asserts are what keep it true.
+const sendBody = functionBody(clientCode, "function send(");
+const bucketBody = functionBody(clientCode, "export function referrerBucket(");
+
+assert.equal(
+  occurrences(clientCode, "sessionStorage"),
+  1,
+  "track.ts may touch sessionStorage exactly once — one boolean, one place",
 );
 assert.ok(
-  /\} else \{[\s\S]*?if \(id === SITE_ID \|\| source === 'page'\) return noContent\(\);/
-    .test(fn),
-  "a product click must never carry the visit's subject or source",
+  /const SESSION_KEY = "ps-seen";/.test(client),
+  'the session flag must be the literal key "ps-seen", named once as a const',
 );
-// The client fires it once per full page load, from module state — the layout
-// mounts it, and no storage API is involved (section 3 already bans those).
+assert.equal(
+  occurrences(clientCode, '"ps-seen"'),
+  1,
+  "the key literal must appear only in the SESSION_KEY const",
+);
+assert.ok(
+  /try \{\s*const store = window\.sessionStorage;\s*if \(store\.getItem\(SESSION_KEY\)\) return;\s*store\.setItem\(SESSION_KEY, "1"\);\s*\} catch \{/
+    .test(clientCode),
+  "the storage access must be get-then-set on SESSION_KEY inside a try/catch — " +
+    "access THROWS in private mode, and a throw must mean 'do not count a " +
+    "session', never a broken page",
+);
+for (const leak of ["ps-seen", "SESSION_KEY", "sessionStorage"]) {
+  assert.ok(
+    !sendBody.includes(leak),
+    `send() must never see ${leak} — the session flag is stored, never sent`,
+  );
+}
+
+assert.equal(
+  occurrences(clientCode, "document.referrer"),
+  1,
+  "track.ts may read document.referrer exactly once",
+);
+assert.ok(
+  bucketBody.includes("document.referrer"),
+  "the one referrer read must live in referrerBucket(), nowhere else",
+);
+assert.ok(
+  !sendBody.includes("referrer") && !sendBody.includes("hostname"),
+  "send() must never see the referrer or a host — only the ref-* constant",
+);
+assert.ok(
+  /return "ref-other";/.test(client) && !/return host/.test(clientCode),
+  "an unrecognised referrer must collapse to the ref-other CONSTANT; " +
+    "returning the host itself would transmit the site they came from",
+);
+// Same rule for the page ping: a pathname is read, a constant is sent.
+assert.ok(
+  !sendBody.includes("pathname") && !sendBody.includes("location"),
+  "send() must never see a path — pageSlug() hands it one of 16 constants",
+);
+assert.ok(
+  /PAGE_SLUG_BY_PATH\[path\] \?\? "pg-other"/.test(client),
+  "an unknown path must fall back to pg-other, never be transmitted",
+);
+// Both derivations must be callable without a DOM, or nothing can test them.
+assert.ok(
+  /export function pageSlug\(pathname\?: string\)/.test(client) &&
+    /export function referrerBucket\(referrer\?: string\)/.test(client),
+  "pageSlug() and referrerBucket() must stay pure, exported and injectable",
+);
+
+// ── 3c. the search term is the only free text on the wire ────────────────
+// It reaches the panel's only TEXT column, so both sides normalise it with the
+// SAME rules and the server never trusts the client's copy. Drift here means
+// markup or control characters in a column a human reads.
+for (const [name, source] of [["track.ts", client], ["track.js", fn]]) {
+  assert.ok(
+    source.includes("[^a-z0-9 ._+-]") && source.includes(".slice(0, 40)"),
+    `${name} must keep the shared q normaliser: [a-z0-9 ._+-], 40 chars`,
+  );
+}
+// The CONTACT-DETAIL guard, in both copies. The character class makes the
+// term safe to store; this is what keeps it from being an identifier. A
+// customer who pastes "09771234567" into the search box survives the class
+// untouched, so without this the panel's text column collects phone numbers.
+for (const [name, source] of [["track.ts", client], ["track.js", fn]]) {
+  // Two rules against two different inputs, and BOTH matter:
+  //   · "@" against the RAW input — the character class strips "@" itself, so
+  //     testing the cleaned term would never see an address.
+  //   · 7+ digits against the cleaned term with SEPARATORS REMOVED — otherwise
+  //     "0977 123 4567" walks straight through /[0-9]{7,}/.
+  assert.ok(
+    /const AT_SIGN = \/@\//.test(source) &&
+      /const SEPARATORS = \/\[ \._\+-\]\/g;/.test(source) &&
+      /const LONG_DIGITS = \/\[0-9\]\{7,\}\//.test(source),
+    `${name} must carry both contact-detail guards`,
+  );
+  assert.ok(
+    /AT_SIGN\.test\(rawText\)/.test(source),
+    `${name} must test "@" against the RAW input, before the character filter`,
+  );
+  assert.ok(
+    /LONG_DIGITS\.test\(q\.replace\(SEPARATORS, ['"]{2}\)\)/.test(source),
+    `${name} must strip separators before the long-digit test`,
+  );
+  // NOT banned, on purpose: this shop sells accounts for these providers, so
+  // they are product searches, not contact details.
+  assert.ok(
+    !/\\bgmail\\b/.test(source),
+    `${name} must not ban "gmail" — it is a product this shop sells`,
+  );
+}
+// An unusable term must not be SENT as `q` — but it must not cancel the event
+// either. Burmese filters to "" by design, and returning early made the whole
+// search-volume number a count of Latin searches only, on a Myanmar
+// storefront. The event goes out without `q`; the panel counts it and skips
+// the term.
+assert.ok(
+  /const usable = q\.length >= 2;/.test(client) &&
+    /usable \? q : undefined,/.test(client),
+  "an unusable search term must be omitted from the payload, not suppress the event",
+);
+assert.ok(
+  !/if \(q\.length < 2\) return;/.test(client),
+  "trackSearch must no longer drop the whole event for an unusable term",
+);
+assert.ok(
+  /q = normalizeQuery\(payload\.q\);/.test(fn),
+  "the Pages function must re-normalise q server-side, never trust the client",
+);
+assert.ok(
+  /const forwarded = \{ id, kind, source \};/.test(fn) &&
+    /if \(kind === 'search' && q\) forwarded\.q = q;/.test(fn) &&
+    /body: JSON\.stringify\(forwarded\),/.test(fn),
+  "the forwarded body must be {id, kind, source} plus q for search only",
+);
+
+// ── 3b. the four kinds cannot mix, on either side ────────────────────────
+// The wire shape is shared, so the separation is enforced by VALUE, per kind
+// and in the panel's own order: each non-product kind owns a closed id/source
+// pair, and a product click may borrow neither a reserved id nor any of their
+// sources. Losing one direction lets one counter contaminate another.
+assert.ok(
+  /if \(kind === 'visit'\) \{[\s\S]*?if \(id !== SITE_ID && PAGE_IDS\.indexOf\(id\) === -1\) return noContent\(\);\s*if \(source !== 'page'\) return noContent\(\);/
+    .test(fn),
+  "a visit must be {site|pg-*, visit, page} and nothing else",
+);
+assert.ok(
+  /\} else if \(kind === 'session'\) \{\s*if \(id !== SITE_ID\) return noContent\(\);\s*if \(REF_SOURCES\.indexOf\(source\) === -1\) return noContent\(\);/
+    .test(fn),
+  "a session must be {site, session, ref-*} and nothing else",
+);
+assert.ok(
+  /\} else if \(kind === 'search'\) \{\s*if \(id !== SITE_ID\) return noContent\(\);\s*if \(SEARCH_SOURCES\.indexOf\(source\) === -1\) return noContent\(\);/
+    .test(fn),
+  "a search must be {site, search, search-hit|search-miss} and nothing else",
+);
+assert.ok(
+  /\} else \{[\s\S]*?if \(id === SITE_ID \|\| id\.indexOf\('pg-'\) === 0\) return noContent\(\);\s*if \(PRODUCT_SOURCES\.indexOf\(source\) === -1\) return noContent\(\);/
+    .test(fn),
+  "a product click must never carry a reserved id or a non-product source",
+);
+// The catalog fetch is the one expensive check, so it must run for product
+// clicks ONLY — the other three kinds are bounded by closed allowlists and a
+// subrequest per page load would buy nothing.
+assert.equal(
+  occurrences(fn, "await isKnownProduct"),
+  1,
+  "isKnownProduct must be called exactly once",
+);
+assert.ok(
+  fn.indexOf("id.indexOf('pg-') === 0") < fn.indexOf("await isKnownProduct"),
+  "isKnownProduct must run inside the product branch only",
+);
+assert.ok(
+  /const MAX_BODY = 768;/.test(fn),
+  "MAX_BODY must be 768 — 512 no longer fits the optional q field",
+);
+
+// The client fires the visit once per full page load, from module state; the
+// session once per browser session, behind the one storage flag (3a).
 assert.ok(
   /let visitSent = false;/.test(client) &&
-    /send\(SITE_ID, "visit", "page"\)/.test(client),
-  "trackSiteVisit must be the fixed triple behind a module once-guard",
+    /send\(explicit \?\? pageSlug\(\), "visit", "page"\)/.test(client),
+  "trackSiteVisit must send a pg-* slug with the fixed source behind a module once-guard",
+);
+assert.ok(
+  /let sessionSent = false;/.test(client) &&
+    /send\(SITE_ID, "session", referrerBucket\(\)\)/.test(client),
+  "trackSession must send {site, session, ref-*} behind a module once-guard",
+);
+assert.ok(
+  /send\(\s*SITE_ID,\s*"search",\s*found \? "search-hit" : "search-miss",\s*usable \? q : undefined,\s*\)/.test(
+    client,
+  ),
+  "trackSearch must send {site, search, search-hit|search-miss} plus q ONLY when the term is usable",
 );
 const layout = await readFile("src/app/layout.tsx", "utf8");
 assert.ok(
   layout.includes("<VisitPing />"),
   "the root layout must mount VisitPing, or visits silently stop counting",
+);
+// Session FIRST: it is counted at most once per browser session, so if only
+// one of the two beacons survives a page already navigating away, the arrival
+// is the one worth keeping. The visit ping gets another chance next page load.
+assert.ok(
+  visitPing.indexOf("trackSession();") !== -1 &&
+    visitPing.indexOf("trackSession();") < visitPing.indexOf("trackSiteVisit();"),
+  "VisitPing must call trackSession() before trackSiteVisit()",
 );
 
 // ── 4. an unconfigured panel is a silent no-op, never a 5xx ──────────────
@@ -203,6 +461,36 @@ assert.equal(
   "PlanModal must keep exactly one tracking call (the handleCheckout wrapper)",
 );
 
+// ── 5b. the search event fires on a SETTLED query, never per keystroke ───
+// "netflix" typed at speed is seven prefixes, six of them misses. Reporting
+// those would drown the zero-result report — the one report that names a
+// product worth stocking — and multiply the panel's rows by word length.
+const settleMatch = /const SEARCH_SETTLE_MS = (\d+);/.exec(search);
+assert.ok(settleMatch, "ProductSearch must name its debounce as a constant");
+assert.ok(
+  Number(settleMatch[1]) >= 600,
+  `the search debounce must be >= 600ms, found ${settleMatch[1]}ms`,
+);
+assert.equal(
+  (search.match(/trackSearch\(/g) || []).length,
+  1,
+  "ProductSearch must report the query from exactly one place",
+);
+assert.ok(
+  /setTimeout\(\s*\(\) => \{\s*trackSearch\(term, resultCount > 0\);\s*\}, SEARCH_SETTLE_MS\)/
+    .test(search),
+  "trackSearch must run from the debounce timer, not from onChange",
+);
+assert.ok(
+  /return \(\) => window\.clearTimeout\(timer\);/.test(search),
+  "the timer must be cleared on every re-run, or the debounce is a per-keystroke fire",
+);
+assert.ok(
+  /if \(!open \|\| !catalog \|\| !term\.trim\(\)\) return;/.test(search),
+  "an empty box, a closed dialog or an unloaded catalog must report nothing — " +
+    "without the catalog guard every query looks like a miss",
+);
+
 // ── 6. popular.json is wired into every path it needs ────────────────────
 assert.deepEqual(Object.keys(data).sort(), ["items", "updated", "window_days"]);
 assert.ok(Array.isArray(data.items), "items must be an array");
@@ -218,7 +506,10 @@ assert.ok(
 
 console.log(
   "Track contract checks passed: " +
-    `${PANEL_KINDS.length} kinds, ${PANEL_SOURCES.length} sources agree across ` +
-    "client, Pages function and the panel's pinned values; " +
-    `${data.items.length} ids published, no counts, no identifiers.`,
+    `${PANEL_KINDS.length} kinds, ${PANEL_SOURCES.length} sources, ` +
+    `${PANEL_PAGE_IDS.length} page slugs agree across client, Pages function ` +
+    "and the panel's pinned values; " +
+    `${data.items.length} ids published, no counts, no identifiers; ` +
+    "one sessionStorage boolean that is never sent, one referrer read that " +
+    "never leaves referrerBucket().",
 );

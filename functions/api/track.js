@@ -1,12 +1,24 @@
 /**
  * Cloudflare Pages Function: POST /api/track
  *
- * Anonymous product-interest counter. Takes {id, kind, source} from the
- * storefront (see src/services/track.ts) and forwards it to the panel, which
- * aggregates a weekly ranking and publishes data/popular.json back to this
- * repo. The PAYLOAD carries nothing else — no ip, no cookie, no session, no
- * user agent — and the panel's table has no column for any of them and no row
- * per click. Nothing here is logged.
+ * Anonymous product-interest and traffic counter. Takes {id, kind, source} —
+ * plus `q`, the normalised search text, for kind 'search' and nothing else —
+ * from the storefront (see src/services/track.ts) and forwards it to the panel,
+ * which aggregates a weekly ranking and publishes data/popular.json back to
+ * this repo. The PAYLOAD carries nothing else — no ip, no cookie, no session
+ * id, no user agent, no URL, no path, no referrer — and the panel's table has
+ * no column for any of them and no row per click. Nothing here is logged.
+ *
+ * The five kinds and their subjects, validated PER KIND below because the wire
+ * shape is shared and only a per-kind rule keeps the counters from
+ * contaminating each other:
+ *   plans/checkout  a real catalog product id   source grid|popular|modal|search
+ *   visit           'site' (legacy) or a pg-*   source page
+ *   session         'site'                      source ref-*
+ *   search          'site'                      source search-hit|search-miss
+ * `pg-*` and `site` are reserved ids a product click may never borrow, and the
+ * page, ref and search source sets are all CLOSED — that, not traffic, is what
+ * bounds the number of rows the panel can ever hold.
  *
  * One honest limit, because the alternative is a false claim: a Cloudflare
  * subrequest to a Cloudflare-proxied hostname carries Cloudflare's own
@@ -36,18 +48,81 @@ const ALLOWED_ORIGINS = [
 ];
 
 // A body this small can be read without a size guard doing any real work, but
-// the cap is what makes that statement true rather than hopeful.
-const MAX_BODY = 512;
+// the cap is what makes that statement true rather than hopeful. Raised 512 ->
+// 768 for the one optional field, `q` (<= 40 chars after normalisation) — the
+// declared Content-Length check and the .slice() below are what the cap
+// actually acts through, and both still apply unchanged.
+const MAX_BODY = 768;
 
 const ID_RE = /^[A-Za-z0-9_-]{1,60}$/;
-const KINDS = ['plans', 'checkout', 'visit'];
-const SOURCES = ['grid', 'popular', 'modal', 'search', 'page'];
+const KINDS = ['plans', 'checkout', 'visit', 'session', 'search'];
+const SOURCES = [
+  'grid', 'popular', 'modal', 'search', 'page',
+  'ref-direct', 'ref-internal', 'ref-facebook', 'ref-messenger',
+  'ref-telegram', 'ref-google', 'ref-tiktok', 'ref-other',
+  'search-hit', 'search-miss',
+];
 
-// The one non-product subject: the whole-site visit ping. A visit may ONLY
-// arrive as exactly {site, visit, page}, and a product click may use NEITHER
-// half of that pair — so the two kinds of row can never contaminate each
-// other, whatever a caller sends.
+// The non-product subjects. A visit may ONLY arrive as {site|pg-*, visit,
+// page}, a session as {site, session, ref-*}, a search as {site, search,
+// search-*}, and a product click may use NEITHER the reserved ids NOR any of
+// those sources — so the four kinds of row can never contaminate each other,
+// whatever a caller sends.
 const SITE_ID = 'site';
+// The page slugs, duplicated from PageSlug in src/services/track.ts and from
+// the panel's _PAGE_IDS. All three copies must change in the same milestone —
+// a slug one side does not know is dropped there with no error anywhere.
+const PAGE_IDS = [
+  'pg-home', 'pg-streaming-apps', 'pg-ai-apps', 'pg-premium-vpn-apps',
+  'pg-mobile-data', 'pg-music-apps', 'pg-creative-apps', 'pg-payment',
+  'pg-order', 'pg-reviews', 'pg-bioscope-download', 'pg-expressvpn-guide',
+  'pg-terms', 'pg-terms-vpn', 'pg-404', 'pg-other',
+];
+const REF_SOURCES = [
+  'ref-direct', 'ref-internal', 'ref-facebook', 'ref-messenger',
+  'ref-telegram', 'ref-google', 'ref-tiktok', 'ref-other',
+];
+const SEARCH_SOURCES = ['search-hit', 'search-miss'];
+const PRODUCT_SOURCES = ['grid', 'popular', 'modal', 'search'];
+
+/**
+ * Re-normalise a search term server-side. Byte for byte the same rules as
+ * normalizeSearchQuery() in src/services/track.ts and the panel's own copy:
+ * NEVER TRUST THE CLIENT — this function, not the browser, is what makes the
+ * panel's text column safe (no markup, no control characters, no unicode
+ * homographs) and what bounds it to 40 characters.
+ *
+ * Returns '' for anything that normalises to less than two usable characters;
+ * the caller then forwards the event WITHOUT `q`, so the search-volume count
+ * survives even when the term itself is unusable.
+ */
+// ⛔ CONTACT-DETAIL GUARD, two rules against two different inputs — the twin
+// of AT_SIGN/LONG_DIGITS in src/services/track.ts and of the _SEARCH_Q_* pair
+// in the panel. The character class keeps the value safe to store and render;
+// this keeps it from being an IDENTIFIER.
+//   - "@" is tested against the RAW input, before filtering: the class strips
+//     "@" itself, so a clean term has already lost what marks it an address.
+//   - 7+ digits is tested against the filtered term with separators removed,
+//     because "0977 123 4567" is a phone number and /[0-9]{7,}/ does not match
+//     it while the spaces are still there.
+// NOT banned: gmail / yahoo / hotmail — this shop sells accounts for those, so
+// they are product searches. A match drops the term WHOLE and the caller then
+// forwards the event without `q`, so the search is still counted.
+const AT_SIGN = /@/;
+const SEPARATORS = /[ ._+-]/g;
+const LONG_DIGITS = /[0-9]{7,}/;
+
+function normalizeQuery(raw) {
+  const rawText = String(raw || '').trim().toLowerCase();
+  if (AT_SIGN.test(rawText)) return '';
+  const q = rawText
+    .replace(/\s+/g, ' ')
+    .replace(/[^a-z0-9 ._+-]/g, '')
+    .slice(0, 40)
+    .trim();
+  if (LONG_DIGITS.test(q.replace(SEPARATORS, ''))) return '';
+  return q.length < 2 ? '' : q;
+}
 
 // Same source /products.json serves. The shape check above is not enough on its
 // own: a caller sending a DIFFERENT well-formed id on every request would create
@@ -139,17 +214,39 @@ export async function onRequestPost({ request, env, waitUntil }) {
     if (!ID_RE.test(id)) return noContent();
     if (KINDS.indexOf(kind) === -1) return noContent();
     if (SOURCES.indexOf(source) === -1) return noContent();
+    // Per-kind validation, in the same order the panel applies it. Each of the
+    // three non-product kinds carries its own closed id/source pair, and none
+    // of them needs the catalog check below — their subject is the site or a
+    // page, not a product.
+    let q = '';
     if (kind === 'visit') {
-      // The visit ping is the fixed triple and nothing else — no product id
-      // may ride on it, and it never needs the catalog check below (its
-      // subject is the site itself).
-      if (id !== SITE_ID || source !== 'page') return noContent();
+      // 'site' stays accepted for pings emitted before page slugs existed.
+      if (id !== SITE_ID && PAGE_IDS.indexOf(id) === -1) return noContent();
+      if (source !== 'page') return noContent();
+    } else if (kind === 'session') {
+      if (id !== SITE_ID) return noContent();
+      if (REF_SOURCES.indexOf(source) === -1) return noContent();
+    } else if (kind === 'search') {
+      if (id !== SITE_ID) return noContent();
+      if (SEARCH_SOURCES.indexOf(source) === -1) return noContent();
+      // An unusable term drops the FIELD, not the event: the panel still gets
+      // its search-volume row, it just has no text to file under.
+      q = normalizeQuery(payload.q);
     } else {
-      // And the reverse: a product click may not borrow the visit's subject
-      // or source, and its id has to be a product that really exists.
-      if (id === SITE_ID || source === 'page') return noContent();
+      // And the reverse: a product click may not borrow a reserved subject or
+      // any non-product source, and its id has to be a product that really
+      // exists. `isKnownProduct` runs here and NOWHERE else — the closed
+      // allowlists above already bound the other kinds, and a catalog fetch
+      // per page load would be a subrequest for nothing.
+      if (id === SITE_ID || id.indexOf('pg-') === 0) return noContent();
+      if (PRODUCT_SOURCES.indexOf(source) === -1) return noContent();
       if (!(await isKnownProduct(id))) return noContent();
     }
+
+    // Rebuilt field by field, never spread from the parsed payload: an extra
+    // key a caller invented must not be forwarded to the panel.
+    const forwarded = { id, kind, source };
+    if (kind === 'search' && q) forwarded.q = q;
 
     waitUntil(
       fetch(env.PANEL_CLICK_URL, {
@@ -158,7 +255,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
           'Content-Type': 'application/json',
           'X-Ingest-Token': env.PANEL_INGEST_TOKEN,
         },
-        body: JSON.stringify({ id, kind, source }),
+        body: JSON.stringify(forwarded),
       }).catch(() => {})
     );
     return noContent();

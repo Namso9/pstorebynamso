@@ -8,7 +8,19 @@ import { Modal } from "@/components/common/Modal";
 import { ErrorState, LoadingState } from "@/components/common/StatusState";
 import { expandSearchTerms } from "@/data/search-aliases";
 import { useCatalog } from "@/hooks/useCatalog";
-import { trackProductClick } from "@/services/track";
+import { trackProductClick, trackSearch } from "@/services/track";
+
+/**
+ * How long the box must sit still before a query counts as SETTLED.
+ *
+ * ⚠️ Never report per keystroke. "netflix" typed at a normal speed is seven
+ * prefixes, six of which are misses — reporting those would drown the
+ * zero-result report (the one report that names a product worth stocking) in
+ * noise and multiply the panel's row count by the length of the average word.
+ * 700 ms is comfortably past the contract's 600 ms floor and past a Burmese
+ * keyboard's syllable pause.
+ */
+const SEARCH_SETTLE_MS = 700;
 
 type ProductSearchProps = {
   /**
@@ -63,6 +75,25 @@ export function ProductSearch({ trigger }: ProductSearchProps) {
       })
       .slice(0, 12);
   }, [catalog, term]);
+
+  // Count the query only once it SETTLES. Every dependency here is load-bearing:
+  //   `open`   — a closed dialog reports nothing;
+  //   `term`   — a new keystroke restarts the timer via the cleanup below, which
+  //              is what makes this a debounce rather than a per-keystroke fire;
+  //   `catalog`— without it `results` is [] and every query would look like a
+  //              miss, poisoning the zero-result report with loading states;
+  //   `results.length` — a term whose result count changes when the live
+  //              catalog lands must be re-judged, not reported from the stale
+  //              count. `trackSearch`'s own 1.5 s dedupe is keyed on the
+  //              normalised query alone, so that re-judgement still counts once.
+  const resultCount = results.length;
+  useEffect(() => {
+    if (!open || !catalog || !term.trim()) return;
+    const timer = window.setTimeout(() => {
+      trackSearch(term, resultCount > 0);
+    }, SEARCH_SETTLE_MS);
+    return () => window.clearTimeout(timer);
+  }, [open, catalog, term, resultCount]);
 
   const close = () => {
     setOpen(false);
