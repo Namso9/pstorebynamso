@@ -70,6 +70,16 @@ export const categoryPresentations: Record<string, CategoryPresentation> = {
     openGraphTitle: "Music Apps Packages",
     openGraphImage: OG_COVER,
   },
+  // Added 2026-09-01 with Snapchat+. The slug is bare `social`, not
+  // `social-apps`: the owner's call, and `mobile-data` already shows the
+  // suffix is not part of the contract.
+  social: {
+    heading: "Social Apps",
+    pageSubtitle: "Premium Social Media Accounts",
+    metadataTitle: "Social Apps — Snapchat+ | Premium Store by Namso",
+    openGraphTitle: "Social Apps",
+    openGraphImage: OG_COVER,
+  },
   // The 2026-08-23 compaction merged communication-apps,
   // computer-keys-and-office-apps and learning-apps in here. The slug stays —
   // /creative-apps/ already ranks for Canva and CapCut — only the labels widen.
@@ -96,6 +106,7 @@ export const categoryCardDescriptions: Record<string, string> = {
   "mobile-data": "Atom & Mytel data pack များ",
   "music-apps": "Spotify, Tidal စတဲ့ ဂီတနားထောင် app များ",
   "creative-apps": "Canva, CapCut, Office စတဲ့ အလုပ်နှင့် ဒီဇိုင်း tool များ",
+  social: "Snapchat+ စတဲ့ social media premium များ",
 };
 
 export function categoryCardDescription(slug: string, fallback: string): string {

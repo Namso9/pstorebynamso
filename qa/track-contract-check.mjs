@@ -45,9 +45,9 @@ const PANEL_SOURCES = [
 // there in silence, which is the same failure this whole file exists to catch.
 const PANEL_PAGE_IDS = [
   "pg-home", "pg-streaming-apps", "pg-ai-apps", "pg-premium-vpn-apps",
-  "pg-mobile-data", "pg-music-apps", "pg-creative-apps", "pg-payment",
-  "pg-order", "pg-reviews", "pg-bioscope-download", "pg-expressvpn-guide",
-  "pg-terms", "pg-terms-vpn", "pg-404", "pg-other",
+  "pg-mobile-data", "pg-music-apps", "pg-creative-apps", "pg-social",
+  "pg-payment", "pg-order", "pg-reviews", "pg-bioscope-download",
+  "pg-expressvpn-guide", "pg-terms", "pg-terms-vpn", "pg-404", "pg-other",
 ];
 
 // Digits and hyphens are part of these enums now ("pg-404", "search-hit"), so
@@ -257,7 +257,7 @@ assert.ok(
 // Same rule for the page ping: a pathname is read, a constant is sent.
 assert.ok(
   !sendBody.includes("pathname") && !sendBody.includes("location"),
-  "send() must never see a path — pageSlug() hands it one of 16 constants",
+  "send() must never see a path — pageSlug() hands it one of 17 constants",
 );
 assert.ok(
   /PAGE_SLUG_BY_PATH\[path\] \?\? "pg-other"/.test(client),

@@ -7,9 +7,16 @@ const chromeBinary =
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const origin = process.argv[2] || "http://127.0.0.1:8791";
 const verbose = process.argv.includes("--verbose");
-// The six live category slugs, after the 2026-08-23 compaction merged
-// communication-apps / computer-keys-and-office-apps / learning-apps into
-// creative-apps and added mobile-data.
+// The category slugs this check can run against, after the 2026-08-23
+// compaction merged communication-apps / computer-keys-and-office-apps /
+// learning-apps into creative-apps and added mobile-data.
+//
+// ⚠️ `social` (added 2026-09-01 with Snapchat+) is deliberately NOT here. The
+// assertions below need at least three questions on a page — `itemCount < 3`
+// is a failure and `reopenedThree` re-opens exactly three — and the Social FAQ
+// has one. Add the slug when that section reaches three items; do NOT lower
+// the floor to fit it, that floor is what proves an accordion opens and closes
+// independently rather than as a pair.
 const routes = [
   "ai-apps",
   "creative-apps",

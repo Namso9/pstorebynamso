@@ -64,6 +64,16 @@ const SEARCH_ALIASES: Record<string, string> = {
   "မေတူ": "meitu",
   // Duolingo
   "ဒူအိုလင်ဂို": "duolingo",
+  // Snapchat
+  "စနက်ချက်": "snapchat",
+  "စနက်": "snapchat",
+  "snap chat": "snapchat",
+  snapchart: "snapchat",
+  // Coursera
+  "ကိုဆဲရာ": "coursera",
+  "ကော့ဆဲရာ": "coursera",
+  coursea: "coursera",
+  cousera: "coursera",
 };
 
 /**

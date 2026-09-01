@@ -2,7 +2,7 @@
  * Anonymous product-interest and traffic counter.
  *
  * WHAT LEAVES THE BROWSER, exactly: a subject id (a product id, the constant
- * "site", or one of sixteen "pg-*" page constants), which kind of event it was,
+ * "site", or one of seventeen "pg-*" page constants), which kind of event it was,
  * one enum-ish source constant, and — for a settled search only — the
  * normalised search text. Nothing else. NOTHING THAT IDENTIFIES A PERSON IS
  * EVER TRANSMITTED OR STORED: no customer identifier, no cookie, no
@@ -47,9 +47,9 @@
  *      be reconstructed from what we send.
  *
  * The page ping obeys the same rule: `pageSlug()` maps `location.pathname`
- * through a LITERAL map to one of sixteen "pg-*" constants and returns
+ * through a LITERAL map to one of seventeen "pg-*" constants and returns
  * "pg-other" for anything it does not know, so a path is never transmitted —
- * only membership in a closed sixteen-value set is.
+ * only membership in a closed seventeen-value set is.
  *
  * So: two clicks by the same visitor are still indistinguishable from two
  * clicks by two visitors, by construction rather than by policy.
@@ -117,7 +117,7 @@ export type TrackSource =
 export type RefBucket = Extract<TrackSource, `ref-${string}`>;
 
 /**
- * The sixteen page constants. A CLOSED set on purpose: this is the only thing
+ * The seventeen page constants. A CLOSED set on purpose: this is the only thing
  * about the current URL that is ever transmitted, and a closed set is what
  * makes "no path leaves the browser" a property of the shape rather than a
  * promise. The panel keeps a duplicate of this list as its validation
@@ -132,6 +132,7 @@ export type PageSlug =
   | "pg-mobile-data"
   | "pg-music-apps"
   | "pg-creative-apps"
+  | "pg-social"
   | "pg-payment"
   | "pg-order"
   | "pg-reviews"
@@ -206,6 +207,7 @@ const PAGE_SLUG_BY_PATH: Readonly<Record<string, PageSlug>> = {
   "/mobile-data/": "pg-mobile-data",
   "/music-apps/": "pg-music-apps",
   "/creative-apps/": "pg-creative-apps",
+  "/social/": "pg-social",
   "/payment/": "pg-payment",
   "/order/": "pg-order",
   "/reviews/": "pg-reviews",
@@ -217,7 +219,7 @@ const PAGE_SLUG_BY_PATH: Readonly<Record<string, PageSlug>> = {
 };
 
 /**
- * Which page this is, as one of sixteen constants. Pure and exported so the
+ * Which page this is, as one of seventeen constants. Pure and exported so the
  * contract check and a future test can call it without a DOM.
  *
  * The query string and the hash are cut off BEFORE the lookup and never

@@ -74,9 +74,9 @@ const SITE_ID = 'site';
 // a slug one side does not know is dropped there with no error anywhere.
 const PAGE_IDS = [
   'pg-home', 'pg-streaming-apps', 'pg-ai-apps', 'pg-premium-vpn-apps',
-  'pg-mobile-data', 'pg-music-apps', 'pg-creative-apps', 'pg-payment',
-  'pg-order', 'pg-reviews', 'pg-bioscope-download', 'pg-expressvpn-guide',
-  'pg-terms', 'pg-terms-vpn', 'pg-404', 'pg-other',
+  'pg-mobile-data', 'pg-music-apps', 'pg-creative-apps', 'pg-social',
+  'pg-payment', 'pg-order', 'pg-reviews', 'pg-bioscope-download',
+  'pg-expressvpn-guide', 'pg-terms', 'pg-terms-vpn', 'pg-404', 'pg-other',
 ];
 const REF_SOURCES = [
   'ref-direct', 'ref-internal', 'ref-facebook', 'ref-messenger',
