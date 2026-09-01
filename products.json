@@ -296,7 +296,7 @@
           "desc": "Gift Link",
           "price": "140,000 Ks",
           "id": "1_year",
-          "bot": true
+          "stock": false
         }
       ]
     },
