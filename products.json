@@ -48,6 +48,12 @@
       "subtitle": "Design, Office & Study Tools",
       "icon": "fa-palette",
       "page": "creative-apps.html"
+    },
+    {
+      "slug": "social",
+      "title": "Social",
+      "subtitle": "Social Media Premium",
+      "icon": "fa-comments"
     }
   ],
   "products": [
@@ -1218,6 +1224,42 @@
           "desc": "With your own mail",
           "price": "80,000 Ks",
           "id": "1_year",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "coursera",
+      "category": "creative-apps",
+      "name": "Coursera Plus",
+      "subtitle": "Online Courses & Certificates",
+      "image": "images/coursera.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Coursera Plus Plans",
+      "plans": [
+        {
+          "name": "3 Months",
+          "desc": "Mail & Password",
+          "price": "30,000 Ks",
+          "id": "3_months",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "snapchat",
+      "category": "social",
+      "name": "Snapchat+",
+      "subtitle": "Snapchat Premium",
+      "image": "images/snapchat.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Snapchat+ Plans",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Family Plan",
+          "price": "15,000 Ks",
+          "id": "1_month",
           "bot": true
         }
       ]
