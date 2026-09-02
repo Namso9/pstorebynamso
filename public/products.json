@@ -282,21 +282,21 @@
           "desc": "Gift Link",
           "price": "55,000 Ks",
           "id": "3_months",
-          "bot": true
+          "stock": false
         },
         {
           "name": "6 Months",
           "desc": "Gift Link",
           "price": "90,000 Ks",
           "id": "6_months",
-          "bot": true
+          "stock": false
         },
         {
           "name": "1 Year",
           "desc": "Gift Link",
           "price": "140,000 Ks",
           "id": "1_year",
-          "bot": true
+          "stock": false
         }
       ]
     },
@@ -404,7 +404,7 @@
           "desc": "No Ads (Monthly Change)",
           "price": "10,000 Ks",
           "id": "1_month_our_mail",
-          "bot": true
+          "stock": false
         },
         {
           "name": "3 Month cus mail",
