@@ -45,10 +45,11 @@
      redefined. The search-first hero band plus the per-category card
      palette: one layout, color is the only variable. Dark theme is the
      :root default, so these are the dark values (soft translucent tints
-     over the dark canvas, one deliberately DEEP card for rhythm); the
-     light theme overrides them below with true pastels. Text on tinted
-     cards stays --ink/--muted, which keeps every card at WCAG AA; the
-     deep VPN card carries its own ink pair (white on #1f2d4a ≈ 13:1). */
+     over the dark canvas); the light theme overrides them below with true
+     pastels. Every card — VPN included — is a tinted surface with
+     --ink/--muted text, which keeps the whole grid at WCAG AA and gives
+     each category equal visual weight; the VPN tint is simply the richest
+     of the set, so it keeps a quiet anchor quality without shouting. */
   --hero-band: #392c6b;
   --hero-band-ink: #f6f4ff;
   --hero-band-muted: rgba(241, 238, 255, 0.78);
@@ -63,12 +64,10 @@
   --cat-ai-plate: rgba(129, 140, 248, 0.22);
   --cat-ai-plate-ink: #a8b1ff;
 
-  --cat-vpn-surface: #1f2d4a;
-  --cat-vpn-line: rgba(148, 180, 255, 0.26);
-  --cat-vpn-plate: rgba(255, 255, 255, 0.12);
+  --cat-vpn-surface: rgba(88, 138, 245, 0.17);
+  --cat-vpn-line: rgba(122, 166, 255, 0.34);
+  --cat-vpn-plate: rgba(88, 138, 245, 0.24);
   --cat-vpn-plate-ink: #9db9ff;
-  --cat-vpn-ink: #f4f8ff;
-  --cat-vpn-muted: rgba(226, 236, 252, 0.72);
 
   --cat-data-surface: rgba(52, 211, 153, 0.12);
   --cat-data-line: rgba(52, 211, 153, 0.3);
@@ -97,7 +96,7 @@ html[data-theme="light"] {
   --border: rgba(15, 23, 42, 0.09);
   --border-strong: rgba(15, 23, 42, 0.17);
   --ink: #0f172a;
-  --muted: rgba(30, 41, 59, 0.68);
+  --muted: rgba(30, 41, 59, 0.74);
   --accent: #1f6feb;
   --accent-hover: #175cd3;
   --accent-soft: rgba(31, 111, 235, 0.1);
@@ -114,9 +113,11 @@ html[data-theme="light"] {
   --glass-shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
 
   /* Homepage redesign tokens (light theme): true pastel cards — #0f172a
-     ink sits at 12:1+ on each, and --muted at ~7:1. The band goes a step
-     DEEPER so it keeps its weight against the pale canvas, and the VPN
-     card stays deep in both themes (white on #23345a ≈ 12:1). */
+     ink sits at 12:1+ on each, and --muted at ~5.5:1+. The band goes a
+     step DEEPER so it keeps its weight against the pale canvas; the VPN
+     card joins the same pastel family here, with the deepest blue tint
+     of the set instead of the old solid-navy tile that dominated the
+     light-mode grid. */
   --hero-band: #2e245e;
 
   --cat-stream-surface: #fdeef2;
@@ -129,12 +130,10 @@ html[data-theme="light"] {
   --cat-ai-plate: #dde0f9;
   --cat-ai-plate-ink: #4c51b5;
 
-  --cat-vpn-surface: #23345a;
-  --cat-vpn-line: rgba(20, 32, 60, 0.45);
-  --cat-vpn-plate: rgba(255, 255, 255, 0.14);
-  --cat-vpn-plate-ink: #a9c3ff;
-  --cat-vpn-ink: #f6f9ff;
-  --cat-vpn-muted: rgba(226, 236, 252, 0.75);
+  --cat-vpn-surface: #e3ebfa;
+  --cat-vpn-line: rgba(37, 99, 235, 0.24);
+  --cat-vpn-plate: #cfdef8;
+  --cat-vpn-plate-ink: #1d4fd7;
 
   --cat-data-surface: #e7f6ee;
   --cat-data-line: rgba(16, 122, 84, 0.22);
@@ -6183,16 +6182,14 @@ button:disabled > .haptic-tap {
 }
 }
 
-/* The one deliberately DEEP card — white ink in both themes, like the dark
-   tile in the reference grid. It is the visual anchor of the second row. */
+/* The VPN card shares the tinted-surface pattern of every sibling — it was
+   the grid's one solid deep tile with its own white ink pair, which gave a
+   single category far more visual weight than the rest (most jarring in
+   light mode, where a navy card sat among pastels). Its royal-blue tint is
+   the richest of the set, so it still reads as a quiet anchor. */
 .category-card[data-category="premium-vpn-apps"] {
   border-color: var(--cat-vpn-line);
-  color: var(--cat-vpn-ink);
   background: var(--cat-vpn-surface);
-}
-
-.category-card[data-category="premium-vpn-apps"] p {
-  color: var(--cat-vpn-muted);
 }
 
 .category-card[data-category="premium-vpn-apps"] .category-card__icon,

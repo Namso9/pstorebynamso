@@ -48,6 +48,12 @@
       "subtitle": "Design, Office & Study Tools",
       "icon": "fa-palette",
       "page": "creative-apps.html"
+    },
+    {
+      "slug": "social",
+      "title": "Social",
+      "subtitle": "Social Media Premium",
+      "icon": "fa-comments"
     }
   ],
   "products": [
@@ -398,7 +404,7 @@
           "desc": "No Ads (Monthly Change)",
           "price": "10,000 Ks",
           "id": "1_month_our_mail",
-          "stock": false
+          "bot": true
         },
         {
           "name": "3 Month cus mail",
@@ -578,8 +584,7 @@
           "desc": "One Device",
           "price": "17,000 Ks",
           "id": "3_months",
-          "bot": true,
-          "stock": false
+          "bot": true
         },
         {
           "name": "6 Months",
@@ -693,11 +698,10 @@
       "modalTitle": "Manus AI Plans",
       "plans": [
         {
-          "name": "1 Year 5000 credits",
+          "name": "1 Year",
           "desc": "AI Agent",
-          "price": "0 Ks",
           "id": "1_year_5000_credits",
-          "bot": true
+          "contact": true
         }
       ]
     },
@@ -963,12 +967,47 @@
       "modalTitle": "Nord VPN",
       "plans": [
         {
-          "name": "3 Months",
+          "name": "1 Month",
           "desc": "One Device",
-          "price": "20,000 Ks",
-          "id": "3_months",
-          "bot": true,
-          "stock": false
+          "price": "9,000 Ks",
+          "id": "1_month",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "myanmar-vless",
+      "category": "premium-vpn-apps",
+      "name": "Myanmar Vless Key",
+      "subtitle": "Myanmar Region · VLESS Key",
+      "image": "images/happ.webp",
+      "imageClass": "",
+      "modalTitle": "Myanmar Vless Key",
+      "plans": [
+        {
+          "name": "Myanmar Vpn Key",
+          "desc": "1 Month · 1 Device",
+          "price": "3,000 Ks",
+          "id": "1_month",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "proton",
+      "category": "premium-vpn-apps",
+      "name": "Proton VPN",
+      "subtitle": "Secure VPN · Swiss Privacy",
+      "image": "images/proton.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Proton VPN",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "One Device",
+          "price": "7,000 Ks",
+          "id": "1_month",
+          "bot": true
         }
       ]
     },
@@ -1056,7 +1095,7 @@
         },
         {
           "name": "4 Months",
-          "price": "25,000 Ks",
+          "price": "20,000 Ks",
           "id": "4_months",
           "bot": true,
           "bonus": "+7 days"
@@ -1153,6 +1192,74 @@
           "desc": "SVIP · 4 Devices",
           "price": "250,000 Ks",
           "id": "svip_1_year",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "grammarly",
+      "category": "creative-apps",
+      "name": "Grammarly Premium",
+      "subtitle": "Writing Assistant",
+      "image": "images/grammarly.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Grammarly Premium Plans",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "With your own mail",
+          "price": "25,000 Ks",
+          "id": "1_month",
+          "bot": true
+        },
+        {
+          "name": "3 Months",
+          "desc": "With your own mail",
+          "price": "46,000 Ks",
+          "id": "3_months",
+          "bot": true
+        },
+        {
+          "name": "1 Year",
+          "desc": "With your own mail",
+          "price": "80,000 Ks",
+          "id": "1_year",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "coursera",
+      "category": "creative-apps",
+      "name": "Coursera Plus",
+      "subtitle": "Online Courses & Certificates",
+      "image": "images/coursera.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Coursera Plus Plans",
+      "plans": [
+        {
+          "name": "3 Months",
+          "desc": "Mail & Password",
+          "price": "30,000 Ks",
+          "id": "3_months",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "snapchat",
+      "category": "social",
+      "name": "Snapchat+",
+      "subtitle": "Snapchat Premium",
+      "image": "images/snapchat.webp",
+      "imageClass": "app-info",
+      "modalTitle": "Snapchat+ Plans",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "Family Plan",
+          "price": "15,000 Ks",
+          "id": "1_month",
           "bot": true
         }
       ]

@@ -44,20 +44,23 @@ The homepage is a search-first, color-coded category grid. The rules:
 
 Per category: `--cat-<key>-{surface,line,plate,plate-ink}`. `surface` is the
 card, `line` the border, `plate` the icon tile and count pill, `plate-ink`
-the glyph color. Text is `--ink`/`--muted` everywhere except the deep card.
+the glyph color. Text is `--ink`/`--muted` on every card, so the whole grid
+keeps the same hierarchy and stays at WCAG AA.
 
 | Key | Category | Light surface | Dark surface | Card text |
 | --- | --- | --- | --- | --- |
 | `stream` | Streaming Apps | `#fdeef2` rose | 12% rose tint | `--ink` (AA ✓) |
 | `ai` | AI Apps | `#eceefc` periwinkle | 15% indigo tint | `--ink` (AA ✓) |
-| `vpn` | Premium VPN Apps | `#23345a` deep navy | `#1f2d4a` deep navy | white ≈ 13:1 |
+| `vpn` | Premium VPN Apps | `#e3ebfa` royal blue | 17% royal-blue tint | `--ink` (AA ✓) |
 | `data` | Mobile Data | `#e7f6ee` mint | 12% emerald tint | `--ink` (AA ✓) |
 | `music` | Music Apps | `#fdf1de` cream | 13% amber tint | `--ink` (AA ✓) |
 | `create` | Creative & Work | `#e9f1fd` sky | 13% brand-blue tint | `--ink` (AA ✓) |
 
-The VPN card is deliberately deep in BOTH themes — the visual anchor of the
-grid, white ink in either mode. A slug with no palette entry (or the guide
-tile) renders the neutral default card.
+Every card is a tinted surface — including VPN, whose royal-blue tint is the
+richest of the set, so it keeps a quiet anchor quality without dominating the
+grid (it used to be a solid deep-navy tile with its own white ink pair, which
+over-highlighted one category, most jarring in light mode). A slug with no
+palette entry (or the guide tile) renders the neutral default card.
 
 ### Raster app icons
 
