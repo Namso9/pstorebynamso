@@ -149,24 +149,35 @@ function photoFileId(data) {
 }
 
 /**
- * ကျန် target များဆီ file_id နဲ့ fan-out — fire-and-forget။
- * primary တစ်ခု အောင်ပြီးသားမို့ ဒီမှာ ကျတာက customer ရဲ့ order ကို
- * ဘယ်တော့မှ မပျက်စေရ (ငွေလွှဲပြီးသား)။ ကျရင် Pages log ထဲ ကျန်ခဲ့တယ်။
+ * ကျန် target များဆီ file_id နဲ့ fan-out. **AWAITED**, `waitUntil` မဟုတ်။
+ *
+ * အရင်က `waitUntil` ဖြစ်ခဲ့တယ် — customer စောင့်ချိန် မတိုးစေရဖို့။ ဒါပေမဲ့
+ * fan-out မရောက်တဲ့အခါ (2026-09-04) `waitUntil` က တိတ်တဆိတ်လား၊ env
+ * အဟောင်းလားကို အပြင်ကနေ ခွဲလို့ မရဘူး — fire-and-forget က မဖြေရှင်းနိုင်တဲ့
+ * အမှားမျိုး ဖြစ်စေတယ်။ file_id နဲ့ ပို့တာက ပုံ upload မလိုတော့လို့ ~300ms
+ * ပဲ ကုန်တာမို့ await လုပ်တာ ပိုသင့်တယ်၊ ပြီးတော့ ရလဒ်ကို ရေတွက်လို့ရတယ်။
+ *
+ * ကျရင်လည်း order ကို ဘယ်တော့မှ မပျက်စေရ (ငွေလွှဲပြီးသား) — error ကို
+ * log ထဲ ထည့်ရုံပဲ။ Telegram တစ်ခု ဆွဲနေရင် customer ကို မထိစေဖို့ တစ်ခုချင်း
+ * 5s AbortController နဲ့ ချုပ်ထားတယ်။
  * primary ရှာရင်း ကျသွားခဲ့တဲ့ id ကိုလည်း ဒီမှာ ထပ်ကြိုးစားတယ် — ခဏတာ
  * အမှား (rate limit / timeout) ဆိုရင် ဒုတိယအကြိမ်မှာ ရောက်သွားနိုင်လို့။
  */
-function fanOutToRest(env, waitUntil, targets, caption, fileId, shot) {
-  if (!targets.length) return;
+async function fanOutToRest(env, targets, caption, fileId, shot) {
+  if (!targets.length) return { sent: 0, failed: 0 };
   const url = `https://api.telegram.org/bot${env.BOT_TOKEN}/sendPhoto`;
-  waitUntil(
-    Promise.allSettled(
-      targets.map(async (chatId) => {
+  const results = await Promise.allSettled(
+    targets.map(async (chatId) => {
+      const ctl = new AbortController();
+      const timer = setTimeout(() => ctl.abort(), 5000);
+      try {
         let resp;
         if (fileId) {
           resp = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: chatId, caption, photo: fileId }),
+            signal: ctl.signal,
           });
         } else {
           // file_id မရခဲ့ရင်သာ ပုံကို ပြန်တင်တယ် (မဖြစ်သင့်တဲ့ လမ်းကြောင်း)။
@@ -174,15 +185,20 @@ function fanOutToRest(env, waitUntil, targets, caption, fileId, shot) {
           tg.append('chat_id', chatId);
           tg.append('caption', caption);
           tg.append('photo', shot, 'payment-screenshot.jpg');
-          resp = await fetch(url, { method: 'POST', body: tg });
+          resp = await fetch(url, { method: 'POST', body: tg, signal: ctl.signal });
         }
         const data = await resp.json();
         if (!data.ok) {
           console.error('Telegram fan-out error:', chatId, JSON.stringify(data));
+          throw new Error('not ok');
         }
-      })
-    ).catch(() => {})
+      } finally {
+        clearTimeout(timer);
+      }
+    })
   );
+  const failed = results.filter((r) => r.status === 'rejected').length;
+  return { sent: results.length - failed, failed };
 }
 
 export async function onRequestPost({ request, env, waitUntil }) {
@@ -290,7 +306,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
       (customerPw ? `🔑 Mail Password: ${customerPw}\n` : '') +
       (n ? `📝 Note: ${n}\n` : '') +
       `━━━━━━━━━━━━━━━\n` +
-      `⚠️ Website order form ကနေ ဝင်လာတဲ့ order ပါ — အပေါ်က Contact (Viber နံပါတ် / Telegram username) အတိုင်း ပြန်ဆက်သွယ်ပေးပါ`;
+      `⚠️ Website order form ကနေ ဝင်လာတဲ့ order ပါ — အပေါ်က Contact (Viber နံပါတ် / Telegram username) အတိုင်း ပြန်ဆက်သွယ်ပေးပါ\n` +
+      // Notify target အရေအတွက်။ ဒါက admin တစ်ယောက်ကို "ဒီ order ကို group
+      // ရော ကျန် admin ရော ရပြီလား" ဆိုတာ ချက်ချင်း ပြောပြတယ် — id တစ်ခုမှ
+      // မပါလို့ public/log ဘက်ကို ဘာမှ မဖွင့်ပြဘူး။ ADMIN_CHAT_ID ကို
+      // ပြင်ပြီး redeploy မလုပ်ရင် ဒီနံပါတ်က မတက်ဘူးဆိုတာလည်း ဒီကနေ သိရတယ်။
+      `📣 Notify: ${targets.length} chat`;
 
     let caption = buildCaption(note);
     if (caption.length > 1024) {
@@ -329,14 +350,15 @@ export async function onRequestPost({ request, env, waitUntil }) {
       return json({ ok: false, error: 'Delivery failed' }, 502);
     }
 
-    fanOutToRest(
+    const fan = await fanOutToRest(
       env,
-      waitUntil,
       targets.filter((id) => id !== deliveredTo),
       caption,
       fileId,
       shot
     );
+    console.log('order', orderId, 'notify targets', targets.length,
+                'primary ok, fan-out sent', fan.sent, 'failed', fan.failed);
 
     mirrorToPanel(env, waitUntil, {
       order_ref: orderId,
