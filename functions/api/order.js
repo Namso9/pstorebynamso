@@ -306,12 +306,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       (customerPw ? `🔑 Mail Password: ${customerPw}\n` : '') +
       (n ? `📝 Note: ${n}\n` : '') +
       `━━━━━━━━━━━━━━━\n` +
-      `⚠️ Website order form ကနေ ဝင်လာတဲ့ order ပါ — အပေါ်က Contact (Viber နံပါတ် / Telegram username) အတိုင်း ပြန်ဆက်သွယ်ပေးပါ\n` +
-      // Notify target အရေအတွက်။ ဒါက admin တစ်ယောက်ကို "ဒီ order ကို group
-      // ရော ကျန် admin ရော ရပြီလား" ဆိုတာ ချက်ချင်း ပြောပြတယ် — id တစ်ခုမှ
-      // မပါလို့ public/log ဘက်ကို ဘာမှ မဖွင့်ပြဘူး။ ADMIN_CHAT_ID ကို
-      // ပြင်ပြီး redeploy မလုပ်ရင် ဒီနံပါတ်က မတက်ဘူးဆိုတာလည်း ဒီကနေ သိရတယ်။
-      `📣 Notify: ${targets.length} chat`;
+      `⚠️ Website order form ကနေ ဝင်လာတဲ့ order ပါ — အပေါ်က Contact (Viber နံပါတ် / Telegram username) အတိုင်း ပြန်ဆက်သွယ်ပေးပါ`;
 
     let caption = buildCaption(note);
     if (caption.length > 1024) {
