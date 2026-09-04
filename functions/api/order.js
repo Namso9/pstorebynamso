@@ -1,11 +1,17 @@
 /**
  * Cloudflare Pages Function: POST /api/order
- * Web order (Telegram မသုံးသူများအတွက်) ကို admin ရဲ့ Telegram ဆီ forward လုပ်ပေးသည်။
+ * Web order (Telegram မသုံးသူများအတွက်) ကို admin အားလုံး + sale group ဆီ
+ * forward လုပ်ပေးသည်။
  *
  * Setup (Cloudflare Dashboard → Pages project → Settings → Environment variables):
  *   BOT_TOKEN      = Telegram bot token (BotFather ကရတဲ့ token — sale bot token ကိုပဲသုံးလို့ရသည်)
- *   ADMIN_CHAT_ID  = admin ရဲ့ chat id (သို့) private channel id (ဥပမာ -1001234567890)
+ *   ADMIN_CHAT_ID  = admin chat id — comma/space ခြားပြီး တစ်ခုထက်ပို ထည့်လို့ရသည်
+ *   ADMIN_IDS      = (optional) ထပ်ဖြည့် admin id များ — sale bot ရဲ့ နာမည်နဲ့ တူအောင်
+ *   SALE_GROUP_ID  = (optional) sale group / channel id (ဥပမာ -1001234567890)
  *   FB_PAGE_LINK   = https://m.me/YourPageUsername   (optional)
+ *
+ * ⚠️ ဒီ ၃ ခုလုံးက စာရင်းအဖြစ် ပေါင်းပြီး dedup လုပ်တယ်။ တစ်ခုမှ မထည့်ရင်
+ * (ADMIN_CHAT_ID တစ်ခုတည်း ရှိရင်) အရင်အတိုင်းပဲ အလုပ်လုပ်သည်။
  */
 
 const MAX_FILE = 8 * 1024 * 1024; // 8MB
@@ -110,9 +116,79 @@ function mirrorToPanel(env, waitUntil, data) {
   );
 }
 
+/**
+ * Notify targets: ADMIN_CHAT_ID + ADMIN_IDS + SALE_GROUP_ID ကို တစ်စာရင်းတည်း
+ * ပေါင်းပေးသည်။ comma / semicolon / whitespace နဲ့ ခွဲထားလို့ရတယ်။
+ * တန်ဖိုးကို format မစစ်ဘူး — အခု live မှာရှိပြီးသား ADMIN_CHAT_ID တစ်ခုတည်းက
+ * separator မပါလို့ ဒီအတိုင်း အပြောင်းအလဲမရှိ ဖြတ်သွားရမယ် (backward compatible)။
+ * ပထမ target က primary — အဲ့ဒါက screenshot ကို တကယ် upload လုပ်တဲ့ ခေါင်းစဉ်။
+ */
+function notifyTargets(env) {
+  const out = [];
+  const seen = Object.create(null);
+  for (const raw of [env.ADMIN_CHAT_ID, env.ADMIN_IDS, env.SALE_GROUP_ID]) {
+    for (const part of String(raw || '').split(/[\s,;]+/)) {
+      const id = part.trim();
+      if (!id || seen[id]) continue;
+      seen[id] = true;
+      out.push(id);
+    }
+  }
+  return out;
+}
+
+/**
+ * Telegram sendPhoto response ထဲက အကြီးဆုံး PhotoSize ရဲ့ file_id။
+ * ဒါရှိရင် ကျန် chat တွေဆီ ပုံကို ပြန် upload မလုပ်တော့ဘဲ id နဲ့ပဲ ပို့လို့ရတယ် —
+ * 8MB ကို admin အရေအတွက်အလိုက် ထပ်တင်စရာ မလိုတော့ဘူး။
+ */
+function photoFileId(data) {
+  const sizes = (data && data.result && data.result.photo) || [];
+  const last = sizes[sizes.length - 1];
+  return last && last.file_id ? last.file_id : '';
+}
+
+/**
+ * ကျန် target များဆီ file_id နဲ့ fan-out — fire-and-forget။
+ * primary တစ်ခု အောင်ပြီးသားမို့ ဒီမှာ ကျတာက customer ရဲ့ order ကို
+ * ဘယ်တော့မှ မပျက်စေရ (ငွေလွှဲပြီးသား)။ ကျရင် Pages log ထဲ ကျန်ခဲ့တယ်။
+ * primary ရှာရင်း ကျသွားခဲ့တဲ့ id ကိုလည်း ဒီမှာ ထပ်ကြိုးစားတယ် — ခဏတာ
+ * အမှား (rate limit / timeout) ဆိုရင် ဒုတိယအကြိမ်မှာ ရောက်သွားနိုင်လို့။
+ */
+function fanOutToRest(env, waitUntil, targets, caption, fileId, shot) {
+  if (!targets.length) return;
+  const url = `https://api.telegram.org/bot${env.BOT_TOKEN}/sendPhoto`;
+  waitUntil(
+    Promise.allSettled(
+      targets.map(async (chatId) => {
+        let resp;
+        if (fileId) {
+          resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, caption, photo: fileId }),
+          });
+        } else {
+          // file_id မရခဲ့ရင်သာ ပုံကို ပြန်တင်တယ် (မဖြစ်သင့်တဲ့ လမ်းကြောင်း)။
+          const tg = new FormData();
+          tg.append('chat_id', chatId);
+          tg.append('caption', caption);
+          tg.append('photo', shot, 'payment-screenshot.jpg');
+          resp = await fetch(url, { method: 'POST', body: tg });
+        }
+        const data = await resp.json();
+        if (!data.ok) {
+          console.error('Telegram fan-out error:', chatId, JSON.stringify(data));
+        }
+      })
+    ).catch(() => {})
+  );
+}
+
 export async function onRequestPost({ request, env, waitUntil }) {
   try {
-    if (!env.BOT_TOKEN || !env.ADMIN_CHAT_ID) {
+    const targets = notifyTargets(env);
+    if (!env.BOT_TOKEN || targets.length === 0) {
       return json({ ok: false, error: 'Server not configured' }, 500);
     }
 
@@ -223,21 +299,44 @@ export async function onRequestPost({ request, env, waitUntil }) {
       if (caption.length > 1024) caption = caption.slice(0, 1024);
     }
 
-    const tg = new FormData();
-    tg.append('chat_id', env.ADMIN_CHAT_ID);
-    tg.append('caption', caption);
-    tg.append('photo', shot, 'payment-screenshot.jpg');
+    // Target အားလုံးထဲက တစ်ခုကိုပဲ await လုပ်တယ် (ပုံ upload တစ်ခါတည်း) —
+    // customer ရဲ့ စောင့်ချိန်က admin အရေအတွက်နဲ့ မတက်ဘူး။ ပထမတစ်ခု ကျရင်
+    // နောက်တစ်ခုကို ဆက်ကြိုးစားတယ်၊ id တစ်ခု မှားနေလို့ ငွေလွှဲပြီးသား order
+    // တစ်ခုလုံး မပျက်စေရ။ တစ်ခုအောင်တာနဲ့ ကျန်တာက file_id fan-out။
+    let deliveredTo = '';
+    let fileId = '';
+    for (const chatId of targets) {
+      const tg = new FormData();
+      tg.append('chat_id', chatId);
+      tg.append('caption', caption);
+      tg.append('photo', shot, 'payment-screenshot.jpg');
 
-    const resp = await fetch(
-      `https://api.telegram.org/bot${env.BOT_TOKEN}/sendPhoto`,
-      { method: 'POST', body: tg }
-    );
-    const data = await resp.json();
+      const resp = await fetch(
+        `https://api.telegram.org/bot${env.BOT_TOKEN}/sendPhoto`,
+        { method: 'POST', body: tg }
+      );
+      const data = await resp.json();
 
-    if (!data.ok) {
-      console.error('Telegram error:', JSON.stringify(data));
+      if (data.ok) {
+        deliveredTo = chatId;
+        fileId = photoFileId(data);
+        break;
+      }
+      console.error('Telegram error:', chatId, JSON.stringify(data));
+    }
+
+    if (!deliveredTo) {
       return json({ ok: false, error: 'Delivery failed' }, 502);
     }
+
+    fanOutToRest(
+      env,
+      waitUntil,
+      targets.filter((id) => id !== deliveredTo),
+      caption,
+      fileId,
+      shot
+    );
 
     mirrorToPanel(env, waitUntil, {
       order_ref: orderId,
