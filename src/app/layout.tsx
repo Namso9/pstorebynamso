@@ -31,6 +31,20 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false },
   icons: {
     icon: "/images/favicon.svg?v=3",
+    // Home-screen / shortcut icon. Before this the phone had nothing to use and
+    // fell back to a screenshot of the favicon, which is why the shortcut came
+    // out as the bag-and-P mark. iOS "Add to Home Screen" reads
+    // `apple-touch-icon`, and Chrome on Android falls back to the same link
+    // when a site has no web app manifest — so these two cover both platforms
+    // without declaring a manifest and turning the site into a standalone PWA.
+    // Both platforms apply their OWN corner mask, so the two PNGs are
+    // full-bleed: the source artwork's rounded corners were painted out to the
+    // edge, because a baked-in corner shows as a white notch inside the
+    // platform's own rounding. Keep any replacement full-bleed and square.
+    apple: [
+      { url: "/images/app-icon-180.png?v=1", sizes: "180x180", type: "image/png" },
+      { url: "/images/app-icon-512.png?v=1", sizes: "512x512", type: "image/png" },
+    ],
   },
   openGraph: {
     type: "website",
