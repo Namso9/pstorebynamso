@@ -2,13 +2,13 @@
   "updated": "05 Sep 2026",
   "window_days": 7,
   "items": [
-    "bioscope",
     "hiddify",
+    "bioscope",
     "nord",
     "proton",
     "express_pc",
+    "gemini",
     "netflix_phone",
-    "netflix_tv",
-    "gemini"
+    "netflix_tv"
   ]
 }
