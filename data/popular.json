@@ -1,5 +1,5 @@
 {
-  "updated": "06 Sep 2026",
+  "updated": "07 Sep 2026",
   "window_days": 7,
   "items": [
     "bioscope",
@@ -8,7 +8,7 @@
     "nord",
     "proton",
     "express_pc",
-    "chatgpt",
-    "jumpjump"
+    "express_phone",
+    "chatgpt"
   ]
 }
