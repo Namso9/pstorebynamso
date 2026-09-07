@@ -3,12 +3,12 @@
   "window_days": 7,
   "items": [
     "bioscope",
-    "hiddify",
-    "express_pc",
     "gemini",
-    "nord",
-    "express_phone",
+    "express_pc",
+    "chatgpt",
     "proton",
-    "chatgpt"
+    "youtube_premium",
+    "express_phone",
+    "hiddify"
   ]
 }
