@@ -2,13 +2,13 @@
   "updated": "08 Sep 2026",
   "window_days": 7,
   "items": [
-    "gemini",
     "bioscope",
     "stealthwriter",
+    "gemini",
     "express_pc",
     "chatgpt",
     "hiddify",
     "proton",
-    "youtube_premium"
+    "capcut"
   ]
 }
