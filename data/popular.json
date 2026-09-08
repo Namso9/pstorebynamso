@@ -1,14 +1,14 @@
 {
-  "updated": "07 Sep 2026",
+  "updated": "08 Sep 2026",
   "window_days": 7,
   "items": [
     "bioscope",
     "gemini",
     "express_pc",
-    "chatgpt",
     "proton",
-    "youtube_premium",
+    "chatgpt",
     "hiddify",
+    "youtube_premium",
     "express_phone"
   ]
 }
