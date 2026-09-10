@@ -1,5 +1,5 @@
 {
-  "updated": "09 Sep 2026",
+  "updated": "10 Sep 2026",
   "window_days": 7,
   "items": [
     "stealthwriter",
@@ -8,7 +8,7 @@
     "chatgpt",
     "nord",
     "proton",
-    "capcut",
-    "express_pc"
+    "express_pc",
+    "express_phone"
   ]
 }
