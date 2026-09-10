@@ -1,5 +1,5 @@
 {
-  "updated": "10 Sep 2026",
+  "updated": "11 Sep 2026",
   "window_days": 7,
   "items": [
     "stealthwriter",
@@ -7,8 +7,8 @@
     "gemini",
     "bioscope",
     "nord",
+    "spotify_us",
     "express_phone",
-    "hiddify",
-    "proton"
+    "hiddify"
   ]
 }
