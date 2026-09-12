@@ -1,9 +1,9 @@
 {
-  "updated": "12 Sep 2026",
+  "updated": "13 Sep 2026",
   "window_days": 7,
   "items": [
-    "stealthwriter",
     "gemini",
+    "stealthwriter",
     "chatgpt",
     "spotify_us",
     "bioscope",
