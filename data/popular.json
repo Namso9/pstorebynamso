@@ -1,13 +1,13 @@
 {
-  "updated": "13 Sep 2026",
+  "updated": "14 Sep 2026",
   "window_days": 7,
   "items": [
     "stealthwriter",
     "gemini",
     "chatgpt",
     "spotify_us",
-    "express_phone",
     "hiddify",
+    "express_phone",
     "nord",
     "bioscope"
   ]
