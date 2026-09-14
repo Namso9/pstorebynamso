@@ -6,9 +6,9 @@
     "gemini",
     "chatgpt",
     "spotify_us",
-    "spotify_canada",
     "express_phone",
     "hiddify",
-    "nord"
+    "nord",
+    "spotify_canada"
   ]
 }
