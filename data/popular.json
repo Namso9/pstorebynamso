@@ -4,11 +4,11 @@
   "items": [
     "express_phone",
     "chatgpt",
-    "gemini",
     "spotify_us",
-    "nord",
+    "gemini",
     "spotify_canada",
     "hiddify",
-    "jumpjump"
+    "jumpjump",
+    "nord"
   ]
 }
