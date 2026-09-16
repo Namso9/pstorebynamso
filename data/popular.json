@@ -1,14 +1,14 @@
 {
-  "updated": "15 Sep 2026",
+  "updated": "16 Sep 2026",
   "window_days": 7,
   "items": [
+    "express_phone",
     "spotify_us",
     "chatgpt",
     "gemini",
-    "express_phone",
     "nord",
     "spotify_canada",
     "hiddify",
-    "letsvpn"
+    "jumpjump"
   ]
 }
