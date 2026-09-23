@@ -2,13 +2,13 @@
   "updated": "23 Sep 2026",
   "window_days": 7,
   "items": [
-    "chatgpt",
     "express_phone",
-    "gemini",
     "hiddify",
     "snapchat",
+    "chatgpt",
+    "gemini",
     "letsvpn",
     "netflix_phone",
-    "proton"
+    "capcut"
   ]
 }
