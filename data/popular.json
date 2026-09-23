@@ -1,14 +1,14 @@
 {
-  "updated": "22 Sep 2026",
+  "updated": "23 Sep 2026",
   "window_days": 7,
   "items": [
-    "express_phone",
     "chatgpt",
+    "express_phone",
     "gemini",
     "snapchat",
     "netflix_phone",
     "proton",
-    "jumpjump",
-    "letsvpn"
+    "letsvpn",
+    "zoom"
   ]
 }
