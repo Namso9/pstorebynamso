@@ -2,13 +2,13 @@
   "updated": "25 Sep 2026",
   "window_days": 7,
   "items": [
-    "gemini",
     "hiddify",
+    "gemini",
     "proton",
     "zoom",
+    "capcut",
     "chatgpt",
     "netflix_phone",
-    "snapchat",
-    "capcut"
+    "snapchat"
   ]
 }
