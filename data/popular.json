@@ -1,10 +1,10 @@
 {
-  "updated": "24 Sep 2026",
+  "updated": "25 Sep 2026",
   "window_days": 7,
   "items": [
+    "hiddify",
     "proton",
     "gemini",
-    "hiddify",
     "chatgpt",
     "netflix_phone",
     "snapchat",
