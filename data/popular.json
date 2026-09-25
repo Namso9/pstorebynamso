@@ -2,12 +2,12 @@
   "updated": "25 Sep 2026",
   "window_days": 7,
   "items": [
-    "gemini",
     "hiddify",
-    "chatgpt",
-    "capcut",
+    "gemini",
     "proton",
+    "chatgpt",
     "zoom",
+    "capcut",
     "snapchat",
     "telegram"
   ]
