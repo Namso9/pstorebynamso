@@ -1,14 +1,14 @@
 {
-  "updated": "26 Sep 2026",
+  "updated": "27 Sep 2026",
   "window_days": 7,
   "items": [
     "hiddify",
     "gemini",
     "proton",
+    "netflix_tv",
     "chatgpt",
     "capcut",
     "snapchat",
-    "spotify_canada",
-    "telegram"
+    "spotify_canada"
   ]
 }
