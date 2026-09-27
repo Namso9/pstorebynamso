@@ -282,7 +282,7 @@
           "desc": "Gift Link",
           "price": "63,000 Ks",
           "id": "3_months",
-          "stock": false
+          "bot": true
         },
         {
           "name": "6 Months",
