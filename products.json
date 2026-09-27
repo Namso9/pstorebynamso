@@ -724,8 +724,9 @@
         {
           "name": "1 Month",
           "desc": "Super plan",
-          "contact": true,
-          "id": "1_month"
+          "id": "1_month",
+          "price": "55,000 Ks",
+          "bot": true
         }
       ]
     },
