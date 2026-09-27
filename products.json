@@ -749,7 +749,8 @@
           "name": "1 Month",
           "desc": "Plus Plan (Official Price 50$)",
           "id": "1_month_2",
-          "contact": true
+          "contact": true,
+          "stock": false
         }
       ]
     },
