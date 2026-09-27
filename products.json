@@ -313,9 +313,9 @@
           "header": "🔴 Premium Plan"
         },
         {
-          "name": "1 Month",
+          "name": "1M Premium (TV)",
           "desc": "1 Profile · TV",
-          "price": "28,000 Ks",
+          "price": "25,000 Ks",
           "id": "1_month",
           "bot": true
         },
