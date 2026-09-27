@@ -740,10 +740,11 @@
       "modalTitle": "Stealthwriter AI Plans",
       "plans": [
         {
-          "name": "1 Month",
+          "name": "1 month starter plan",
           "desc": "Starter Plan (Official Price 20$)",
           "id": "1_month",
-          "contact": true
+          "price": "40,000 Ks",
+          "bot": true
         },
         {
           "name": "1 Month",
