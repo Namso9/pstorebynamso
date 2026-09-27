@@ -310,37 +310,27 @@
       "modalTitle": "Netflix TV Plans (4K Ultra HD)",
       "plans": [
         {
-          "header": "🔴 Premium Plan (No Household Code)"
+          "header": "🔴 Premium Plan"
         },
         {
           "name": "1 Month",
-          "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
+          "desc": "1 Profile · TV",
           "price": "28,000 Ks",
           "id": "1_month",
           "bot": true
         },
         {
           "name": "2 Months",
-          "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
+          "desc": "1 Profile · TV",
           "price": "56,000 Ks",
           "id": "2_months",
           "bot": true
         },
         {
           "name": "3 Months",
-          "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
+          "desc": "1 Profile · TV",
           "price": "83,000 Ks",
           "id": "3_months",
-          "bot": true
-        },
-        {
-          "header": "🔴 Basic Plan (Household code တက်နိုင်ပါတယ်)"
-        },
-        {
-          "name": "1 Month",
-          "desc": "1 Profile (1 Device)",
-          "price": "23,000 Ks",
-          "id": "1_month_2",
           "bot": true
         }
       ]
