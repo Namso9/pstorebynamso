@@ -3,12 +3,12 @@
   "window_days": 7,
   "items": [
     "hiddify",
-    "gemini",
-    "proton",
     "netflix_tv",
+    "gemini",
     "chatgpt",
+    "proton",
+    "netflix_phone",
     "capcut",
-    "snapchat",
     "zoom"
   ]
 }
