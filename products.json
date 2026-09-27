@@ -348,9 +348,9 @@
           "header": "🔴 Premium Plan (Can Renew Without PF Change)"
         },
         {
-          "name": "1 Month",
+          "name": "1M Premium (Phone)",
           "desc": "1 Profile (No TV)",
-          "price": "26,000 Ks",
+          "price": "24,000 Ks",
           "id": "1_month",
           "bot": true
         },
