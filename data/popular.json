@@ -2,12 +2,12 @@
   "updated": "02 Oct 2026",
   "window_days": 7,
   "items": [
-    "zoom",
     "netflix_tv",
+    "zoom",
     "hiddify",
     "chatgpt",
-    "spotify_canada",
     "netflix_phone",
+    "spotify_canada",
     "spotify_us",
     "telegram"
   ]
