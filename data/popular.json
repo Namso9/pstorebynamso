@@ -2,13 +2,13 @@
   "updated": "03 Oct 2026",
   "window_days": 7,
   "items": [
+    "chatgpt",
     "netflix_tv",
     "zoom",
-    "chatgpt",
     "hiddify",
     "netflix_phone",
     "myanmar-vless",
-    "spotify_canada",
-    "spotify_us"
+    "spotify_us",
+    "spotify_canada"
   ]
 }
