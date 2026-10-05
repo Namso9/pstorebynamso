@@ -4,11 +4,11 @@
   "items": [
     "zoom",
     "chatgpt",
-    "hiddify",
     "telegram",
+    "hiddify",
     "mytel-data",
-    "myanmar-vless",
     "atom-data",
-    "gemini"
+    "gemini",
+    "myanmar-vless"
   ]
 }
