@@ -1,14 +1,14 @@
 {
-  "updated": "04 Oct 2026",
+  "updated": "05 Oct 2026",
   "window_days": 7,
   "items": [
     "zoom",
     "chatgpt",
     "hiddify",
     "mytel-data",
-    "spotify_us",
     "telegram",
-    "gemini",
-    "myanmar-vless"
+    "spotify_us",
+    "spotify_canada",
+    "gemini"
   ]
 }
