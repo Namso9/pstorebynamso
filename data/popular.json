@@ -2,11 +2,11 @@
   "updated": "05 Oct 2026",
   "window_days": 7,
   "items": [
-    "zoom",
     "chatgpt",
+    "zoom",
     "hiddify",
-    "mytel-data",
     "telegram",
+    "mytel-data",
     "gemini",
     "myanmar-vless",
     "atom-data"
