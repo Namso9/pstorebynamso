@@ -1,14 +1,14 @@
 {
-  "updated": "06 Oct 2026",
+  "updated": "07 Oct 2026",
   "window_days": 7,
   "items": [
     "zoom",
     "chatgpt",
     "mytel-data",
-    "telegram",
     "atom-data",
     "hiddify",
     "myanmar-vless",
-    "netflix_tv"
+    "netflix_tv",
+    "spotify_us"
   ]
 }
