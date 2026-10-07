@@ -7,8 +7,8 @@
     "mytel-data",
     "atom-data",
     "gemini",
-    "bioscope",
     "myanmar-vless",
-    "telegram"
+    "telegram",
+    "bioscope"
   ]
 }
