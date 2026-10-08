@@ -3,10 +3,10 @@
   "window_days": 7,
   "items": [
     "chatgpt",
+    "mytel-data",
     "zoom",
     "gemini",
     "atom-data",
-    "mytel-data",
     "telegram",
     "bioscope",
     "hiddify"
