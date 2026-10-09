@@ -4,11 +4,11 @@
   "items": [
     "chatgpt",
     "zoom",
-    "mytel-data",
     "nord",
+    "mytel-data",
     "gemini",
     "atom-data",
-    "telegram",
-    "bioscope"
+    "bioscope",
+    "netflix_phone"
   ]
 }
