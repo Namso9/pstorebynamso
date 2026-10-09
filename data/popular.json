@@ -4,11 +4,11 @@
   "items": [
     "chatgpt",
     "zoom",
+    "gemini",
     "nord",
     "mytel-data",
-    "gemini",
     "atom-data",
-    "spotify_us",
-    "bioscope"
+    "capcut",
+    "spotify_us"
   ]
 }
