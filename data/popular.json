@@ -1,13 +1,13 @@
 {
-  "updated": "08 Oct 2026",
+  "updated": "09 Oct 2026",
   "window_days": 7,
   "items": [
     "chatgpt",
-    "mytel-data",
     "zoom",
+    "mytel-data",
+    "nord",
     "gemini",
     "atom-data",
-    "nord",
     "telegram",
     "bioscope"
   ]
