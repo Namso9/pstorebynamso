@@ -2,9 +2,9 @@
   "updated": "10 Oct 2026",
   "window_days": 7,
   "items": [
+    "zoom",
     "chatgpt",
     "gemini",
-    "zoom",
     "nord",
     "mytel-data",
     "atom-data",
