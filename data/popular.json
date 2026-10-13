@@ -7,8 +7,8 @@
     "hiddify",
     "chatgpt",
     "mytel-data",
-    "netflix_phone",
     "express_phone",
-    "gemini"
+    "gemini",
+    "netflix_phone"
   ]
 }
