@@ -2,13 +2,13 @@
   "updated": "13 Oct 2026",
   "window_days": 7,
   "items": [
-    "hiddify",
     "nord",
     "zoom",
-    "netflix_phone",
+    "hiddify",
     "chatgpt",
+    "mytel-data",
+    "netflix_phone",
     "express_phone",
-    "gemini",
-    "mytel-data"
+    "gemini"
   ]
 }
