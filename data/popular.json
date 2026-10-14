@@ -2,11 +2,11 @@
   "updated": "14 Oct 2026",
   "window_days": 7,
   "items": [
-    "nord",
     "zoom",
+    "nord",
     "hiddify",
-    "netflix_phone",
     "mytel-data",
+    "netflix_phone",
     "chatgpt",
     "gemini",
     "myanmar-vless"
