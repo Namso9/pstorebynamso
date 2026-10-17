@@ -1,12 +1,12 @@
 {
-  "updated": "17 Oct 2026",
+  "updated": "18 Oct 2026",
   "window_days": 7,
   "items": [
     "hiddify",
     "zoom",
     "nord",
-    "express_phone",
     "gemini",
+    "express_phone",
     "jumpjump",
     "atom-data",
     "myanmar-vless"
