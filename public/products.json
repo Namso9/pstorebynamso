@@ -1044,10 +1044,10 @@
       "modalTitle": "Mytel Data Packs",
       "plans": [
         {
-          "name": "22 GB",
+          "name": "15 GB",
           "desc": "30 Days · Data only",
           "price": "16,000 Ks",
-          "id": "22gb_30d"
+          "id": "15gb_30d"
         },
         {
           "name": "40 GB",
