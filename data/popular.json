@@ -1,11 +1,11 @@
 {
-  "updated": "18 Oct 2026",
+  "updated": "19 Oct 2026",
   "window_days": 7,
   "items": [
     "zoom",
-    "nord",
     "gemini",
     "hiddify",
+    "nord",
     "chatgpt",
     "express_phone",
     "atom-data",
