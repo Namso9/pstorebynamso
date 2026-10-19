@@ -3,12 +3,12 @@
   "window_days": 7,
   "items": [
     "zoom",
+    "atom-data",
     "gemini",
+    "chatgpt",
     "hiddify",
     "nord",
-    "chatgpt",
-    "atom-data",
-    "express_phone",
-    "mytel-data"
+    "mytel-data",
+    "express_phone"
   ]
 }
