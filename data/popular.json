@@ -4,11 +4,11 @@
   "items": [
     "zoom",
     "gemini",
-    "hiddify",
     "nord",
     "chatgpt",
-    "express_phone",
+    "hiddify",
     "atom-data",
-    "jumpjump"
+    "express_phone",
+    "mytel-data"
   ]
 }
