@@ -43,7 +43,7 @@ export const categoryPresentations: Record<string, CategoryPresentation> = {
     heading: "Premium VPN Apps",
     pageSubtitle: "Secure & Fast Connection",
     metadataTitle:
-      "Premium VPN Apps — ExpressVPN, NordVPN, Hiddify | Premium Store by Namso",
+      "Premium VPN Apps — ExpressVPN, NordVPN, Happ | Premium Store by Namso",
     openGraphTitle: "Premium VPN Apps",
     openGraphImage: OG_COVER,
   },

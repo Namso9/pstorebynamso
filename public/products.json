@@ -901,13 +901,13 @@
       ]
     },
     {
-      "id": "hiddify",
+      "id": "happ",
       "category": "premium-vpn-apps",
-      "name": "Hiddify,V2 box,V2 Ray VPN",
+      "name": "Happ,V2 box,V2 Ray VPN",
       "subtitle": "link Based / Data Limit",
-      "image": "images/hiddify.svg",
-      "imageClass": "hiddify-logo",
-      "modalTitle": "Hiddify,V2 box,V2 Ray VPN",
+      "image": "images/happ.webp",
+      "imageClass": "",
+      "modalTitle": "Happ,V2 box,V2 Ray VPN",
       "plans": [
         {
           "name": "1 Month",

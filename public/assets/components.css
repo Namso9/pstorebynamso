@@ -636,7 +636,7 @@
     border-radius: 13px;
 }
 
-/* wide dark-blue wordmarks (Hiddify/JumpJump/Nord) — need the light plate
+/* wide dark-blue wordmarks (Happ/JumpJump/Nord) — need the light plate
    for contrast; soft white→ice gradient keeps it glassy, not stark */
 .hiddify-logo, .jumpjump-logo, .nord-logo {
     background: linear-gradient(145deg, #ffffff, #e9eef4) !important;
