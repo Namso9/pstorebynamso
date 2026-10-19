@@ -6,9 +6,9 @@
     "atom-data",
     "gemini",
     "chatgpt",
+    "express_phone",
     "hiddify",
     "nord",
-    "mytel-data",
-    "express_phone"
+    "mytel-data"
   ]
 }
