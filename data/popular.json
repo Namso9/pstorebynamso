@@ -3,12 +3,12 @@
   "window_days": 7,
   "items": [
     "atom-data",
-    "gemini",
     "chatgpt",
-    "express_phone",
+    "gemini",
     "happ",
-    "zoom",
+    "express_phone",
     "express_pc",
-    "spotify_us"
+    "spotify_us",
+    "zoom"
   ]
 }
