@@ -2,13 +2,13 @@
   "updated": "20 Oct 2026",
   "window_days": 7,
   "items": [
-    "zoom",
     "atom-data",
     "gemini",
     "chatgpt",
     "express_phone",
-    "nord",
+    "happ",
+    "zoom",
     "express_pc",
-    "happ"
+    "spotify_us"
   ]
 }
