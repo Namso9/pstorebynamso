@@ -1,14 +1,14 @@
 {
-  "updated": "20 Oct 2026",
+  "updated": "21 Oct 2026",
   "window_days": 7,
   "items": [
     "gemini",
-    "atom-data",
     "chatgpt",
+    "atom-data",
     "happ",
     "express_phone",
     "spotify_us",
     "express_pc",
-    "spotify_canada"
+    "grok"
   ]
 }
