@@ -4,11 +4,11 @@
   "items": [
     "gemini",
     "chatgpt",
-    "atom-data",
     "happ",
     "express_phone",
+    "atom-data",
     "spotify_us",
     "express_pc",
-    "grok"
+    "spotify_canada"
   ]
 }
