@@ -5,10 +5,10 @@
     "chatgpt",
     "gemini",
     "happ",
-    "express_phone",
     "spotify_us",
     "atom-data",
-    "express_pc",
-    "spotify_canada"
+    "netflix_phone",
+    "spotify_canada",
+    "express_pc"
   ]
 }
