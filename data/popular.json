@@ -1,5 +1,5 @@
 {
-  "updated": "22 Oct 2026",
+  "updated": "23 Oct 2026",
   "window_days": 7,
   "items": [
     "chatgpt",
@@ -9,6 +9,6 @@
     "spotify_canada",
     "spotify_us",
     "atom-data",
-    "grok"
+    "telegram"
   ]
 }
