@@ -7,8 +7,8 @@
     "happ",
     "express_phone",
     "spotify_us",
+    "atom-data",
     "express_pc",
-    "spotify_canada",
-    "atom-data"
+    "spotify_canada"
   ]
 }
