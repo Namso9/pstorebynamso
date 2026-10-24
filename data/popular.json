@@ -1,5 +1,5 @@
 {
-  "updated": "23 Oct 2026",
+  "updated": "24 Oct 2026",
   "window_days": 7,
   "items": [
     "chatgpt",
@@ -7,8 +7,8 @@
     "netflix_phone",
     "spotify_canada",
     "spotify_us",
+    "telegram",
     "atom-data",
-    "happ",
-    "telegram"
+    "happ"
   ]
 }
