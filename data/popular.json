@@ -5,10 +5,10 @@
     "chatgpt",
     "gemini",
     "netflix_phone",
+    "netflix_tv",
     "spotify_canada",
-    "spotify_us",
     "telegram",
     "atom-data",
-    "netflix_tv"
+    "spotify_us"
   ]
 }
