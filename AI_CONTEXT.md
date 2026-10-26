@@ -39,6 +39,15 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-10-26: Added the owner's Downloads photo `IMG_0623.heic` as
+  `images/review33.webp` (1147 x 1805, about 78 KB) and appended it to the
+  canonical review list. Build, typecheck, CSP, review-flow, and exported
+  HTML/JSON/image checks pass. Lint passes with one existing QA warning.
+  Audit reports 9 existing dependency vulnerabilities (8 high, 1 critical);
+  dependencies were not changed. The owner authorized commit, push, and
+  deployment through the existing Pages Git integration; direct Wrangler
+  access is unavailable because no API token is configured.
+
 - **The homepage redesign is shipped (2026-08-24).** Search-first hero: a
   full-bleed solid plum-indigo band (`--hero-band`, `#392c6b` dark /
   `#2e245e` light), left-aligned Burmese headline, wide white search field
