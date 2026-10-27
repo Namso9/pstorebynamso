@@ -1,11 +1,11 @@
 {
-  "updated": "27 Oct 2026",
+  "updated": "28 Oct 2026",
   "window_days": 7,
   "items": [
     "chatgpt",
-    "gemini",
     "myanmar-vless",
     "netflix_phone",
+    "gemini",
     "spotify_canada",
     "spotify_us",
     "netflix_tv",
