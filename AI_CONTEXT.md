@@ -44,6 +44,10 @@ Functions, URLs, SEO metadata, and production integrations.
   wide product image on the Streaming card and plan dialog. The four credit
   plans, prices, checkout, and product IDs are unchanged. The earlier price
   flyer remains in the repository but is no longer the product image.
+  Release `1febb09` passed lint, typecheck, build, CSP, and export checks;
+  Cloudflare Pages reported a successful deployment. The normal production
+  page and catalog use the new image, and the served photo matches the source
+  SHA-256. No order was submitted.
 
 - 2026-10-29: Short Drama Bot Credits was added to Streaming Apps from the
   owner's `IMG_0763.JPG`. The website has four plans: 100/200/300/500 credits
