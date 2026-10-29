@@ -46,6 +46,11 @@ Functions, URLs, SEO metadata, and production integrations.
   bot checkout awaits confirmed bot plan IDs. The catalog source is root
   `products.json`; `prebuild` regenerates its public mirror. This release was
   prepared from the latest `origin/main` to preserve panel catalog updates.
+  Commit `f5f343f` is live through the existing Pages Git integration. The
+  production Streaming page and catalog show the product and all four prices;
+  the served photo matches the source SHA-256. The payment route returns 200.
+  No live order was submitted. Lint, typecheck, build, CSP, and export checks
+  pass; `npm audit --omit=dev` reports 3 existing dependency advisories.
 
 - 2026-10-26: Added the owner's Downloads photo `IMG_0623.heic` as
   `images/review33.webp` (1147 x 1805, about 78 KB) and appended it to the
