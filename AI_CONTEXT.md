@@ -39,6 +39,15 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-10-29: AI Movie Bot Credits is live in Streaming Apps. Release `889c131`
+  renamed the product, changed plan descriptions to credits, and enabled bot
+  checkout for all four existing IDs. Prices remain 15,000/28,000/40,000/65,000
+  Ks, and `images/reelscap.jpg` remains the product image. The sale bot and
+  panel are deployed with matching mappings. Cloudflare Pages check succeeded;
+  the public catalog and rendered Streaming page show the new name and image.
+  No live order was submitted. The original checkout is behind upstream; the
+  product release checkout is `.release/ai-movie-release`.
+
 - 2026-10-29: The owner supplied a new ReelsCap logo for Short Drama Bot
   Credits. The catalog now points to `images/reelscap.jpg`, displayed as the
   wide product image on the Streaming card and plan dialog. The four credit
