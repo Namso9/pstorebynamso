@@ -2,13 +2,13 @@
   "updated": "29 Oct 2026",
   "window_days": 7,
   "items": [
+    "short_drama",
     "chatgpt",
     "myanmar-vless",
-    "short_drama",
     "zoom",
-    "gemini",
-    "proton",
     "spotify_canada",
-    "spotify_us"
+    "netflix_phone",
+    "spotify_us",
+    "atom-data"
   ]
 }
