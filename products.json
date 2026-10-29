@@ -1171,7 +1171,8 @@
           "desc": "200 credits | Save 2,000 Ks",
           "price": "28,000 Ks",
           "id": "200_credits",
-          "bot": true
+          "bot": true,
+          "stock": false
         },
         {
           "name": "300 Credits",
