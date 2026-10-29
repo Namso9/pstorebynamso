@@ -1139,35 +1139,39 @@
     {
       "id": "short_drama",
       "category": "streaming-apps",
-      "name": "Short Drama Bot Credits",
-      "subtitle": "Episodes on supported short drama sites",
+      "name": "AI Movie Bot Credits",
+      "subtitle": "Credits for AI Movie Bot",
       "image": "images/reelscap.jpg",
       "imageLayout": "banner",
-      "modalTitle": "Short Drama Bot Credits",
+      "modalTitle": "AI Movie Bot Credits",
       "plans": [
         {
           "name": "100 Credits",
-          "desc": "100 episodes",
+          "desc": "100 credits",
           "price": "15,000 Ks",
-          "id": "100_credits"
+          "id": "100_credits",
+          "bot": true
         },
         {
           "name": "200 Credits",
-          "desc": "200 episodes | Save 2,000 Ks",
+          "desc": "200 credits | Save 2,000 Ks",
           "price": "28,000 Ks",
-          "id": "200_credits"
+          "id": "200_credits",
+          "bot": true
         },
         {
           "name": "300 Credits",
-          "desc": "300 episodes | Save 5,000 Ks",
+          "desc": "300 credits | Save 5,000 Ks",
           "price": "40,000 Ks",
-          "id": "300_credits"
+          "id": "300_credits",
+          "bot": true
         },
         {
           "name": "500 Credits",
-          "desc": "500 episodes | Save 10,000 Ks",
+          "desc": "500 credits | Save 10,000 Ks",
           "price": "65,000 Ks",
-          "id": "500_credits"
+          "id": "500_credits",
+          "bot": true
         }
       ]
     },
