@@ -1164,14 +1164,16 @@
           "desc": "300 credits | Save 5,000 Ks",
           "price": "40,000 Ks",
           "id": "300_credits",
-          "bot": true
+          "bot": true,
+          "stock": false
         },
         {
           "name": "500 Credits",
           "desc": "500 credits | Save 10,000 Ks",
           "price": "65,000 Ks",
           "id": "500_credits",
-          "bot": true
+          "bot": true,
+          "stock": false
         }
       ]
     },
