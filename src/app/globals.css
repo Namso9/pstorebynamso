@@ -2279,6 +2279,10 @@ button.plan-row:active {
   padding-left: 22px;
 }
 
+.rich-text ol {
+  list-style: decimal;
+}
+
 .rich-text a,
 .faq-link,
 .telegram-post-link {

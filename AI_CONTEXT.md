@@ -39,6 +39,13 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-10-29: Inspected the 10 existing Streaming FAQs; no Bioscope or AI Movie
+  overlap. Added the owner's four questions as one group at the end (14 total),
+  including three numbered redeem/download steps and the tutorial post
+  `https://t.me/premiumstorebzzz/562`. Ordered rich-text lists now display
+  decimal markers. Canonical source remains `data/faq.json`; build mirrors it.
+  Release checkout: `.release/streaming-movie-faq`.
+
 - 2026-10-29: ReelsCap layout stability fix: `usesProductBanner` in
   `src/data/product-media.ts` keeps this product/logo compact even if an older
   catalog response contains `imageLayout: banner`. ProductCard and PlanModal
