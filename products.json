@@ -92,9 +92,9 @@
           "bot": true
         },
         {
-          "name": "Whole Acc 6 Months",
+          "name": "Whole Acc 7 Months",
           "desc": "(2-3 Devices)",
-          "price": "90,000 Ks",
+          "price": "110,000 Ks",
           "id": "whole_acc_6_months",
           "bot": true
         }
@@ -180,6 +180,31 @@
         {
           "name": "6 Months",
           "desc": "Premium Plan",
+          "price": "35,000 Ks",
+          "id": "6_months",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "spotify_individual",
+      "category": "music-apps",
+      "name": "Spotify Individual",
+      "subtitle": "us,ca,asia mix region",
+      "image": "images/spotify.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Spotify Individual",
+      "plans": [
+        {
+          "name": "3 Months",
+          "desc": "Individual Plan",
+          "price": "20,000 Ks",
+          "id": "3_months",
+          "bot": true
+        },
+        {
+          "name": "6 Months",
+          "desc": "Individual Plan",
           "price": "35,000 Ks",
           "id": "6_months",
           "bot": true
@@ -366,16 +391,6 @@
           "desc": "1 Profile (No TV)",
           "price": "75,000 Ks",
           "id": "3_months",
-          "bot": true
-        },
-        {
-          "header": "🔴 Basic Plan (Can't Renew, Monthly Change)"
-        },
-        {
-          "name": "1 Month",
-          "desc": "1 Profile (No TV)",
-          "price": "20,000 Ks",
-          "id": "1_month_2",
           "bot": true
         }
       ]
@@ -1142,7 +1157,6 @@
       "name": "AI Movie Bot Credits",
       "subtitle": "Credits for AI Movie Bot",
       "image": "images/reelscap.jpg",
-      "imageLayout": "banner",
       "modalTitle": "AI Movie Bot Credits",
       "plans": [
         {
