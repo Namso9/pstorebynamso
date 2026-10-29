@@ -106,9 +106,9 @@ export function PlanModal({
             <Image
               className="plan-list__photo"
               src={publicAssetPath(product.image)}
-              alt={`${product.name} price list and supported websites`}
-              width={1168}
-              height={784}
+              alt={`${product.name} logo`}
+              width={640}
+              height={640}
             />
           ) : null}
           {product.plans.length ? (

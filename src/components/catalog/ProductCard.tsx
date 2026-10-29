@@ -32,9 +32,9 @@ export function ProductCard({ product, onViewPlans, index = 0 }: ProductCardProp
         <Image
           className="product-card__photo"
           src={publicAssetPath(product.image)}
-          alt={`${product.name} price list`}
-          width={1168}
-          height={784}
+          alt={`${product.name} logo`}
+          width={640}
+          height={640}
           loading="lazy"
         />
       ) : null}

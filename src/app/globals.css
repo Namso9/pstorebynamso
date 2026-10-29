@@ -3524,11 +3524,8 @@ html[data-theme="light"] body {
 .plan-list__photo {
   width: 100%;
   height: auto;
+  aspect-ratio: 3 / 2;
   border-radius: 12px;
-}
-
-.product-card__photo {
-  aspect-ratio: 1168 / 784;
   object-fit: cover;
 }
 

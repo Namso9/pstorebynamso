@@ -39,6 +39,12 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-10-29: The owner supplied a new ReelsCap logo for Short Drama Bot
+  Credits. The catalog now points to `images/reelscap.jpg`, displayed as the
+  wide product image on the Streaming card and plan dialog. The four credit
+  plans, prices, checkout, and product IDs are unchanged. The earlier price
+  flyer remains in the repository but is no longer the product image.
+
 - 2026-10-29: Short Drama Bot Credits was added to Streaming Apps from the
   owner's `IMG_0763.JPG`. The website has four plans: 100/200/300/500 credits
   for 15,000/28,000/40,000/65,000 Ks. The supplied photo appears on the
