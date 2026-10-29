@@ -1,14 +1,14 @@
 {
-  "updated": "29 Oct 2026",
+  "updated": "30 Oct 2026",
   "window_days": 7,
   "items": [
     "short_drama",
     "chatgpt",
     "myanmar-vless",
-    "zoom",
     "spotify_canada",
+    "zoom",
+    "spotify_us",
     "capcut",
-    "netflix_phone",
-    "netflix_tv"
+    "netflix_phone"
   ]
 }
