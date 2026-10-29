@@ -1,5 +1,17 @@
 import type { CatalogProduct } from "@/types/catalog";
 
+// ReelsCap is a logo even when an older live catalog still calls it a banner.
+// Apply the same policy to the initial page, live refreshes and plan dialog.
+export function usesProductBanner(
+  product: Pick<CatalogProduct, "id" | "image" | "imageLayout">,
+): boolean {
+  return (
+    product.id !== "short_drama" &&
+    product.image.replace(/^\//, "").split("?")[0] !== "images/reelscap.jpg" &&
+    product.imageLayout === "banner"
+  );
+}
+
 /**
  * Raster app icons that fill their tile edge to edge (2026-08-24 design pass).
  *

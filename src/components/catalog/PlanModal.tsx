@@ -7,6 +7,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { HapticSwitch } from "@/components/common/HapticSwitch";
 import { Modal } from "@/components/common/Modal";
 import { productGuideLinks } from "@/data/product-links";
+import { usesProductBanner } from "@/data/product-media";
 import { isAskPricePlan, publicAssetPath } from "@/services/catalog";
 import { trackProductClick } from "@/services/track";
 import type {
@@ -85,7 +86,7 @@ export function PlanModal({
         </span>
       }
       icon={
-        product && product.imageLayout !== "banner" ? (
+        product && !usesProductBanner(product) ? (
           <span className="plan-modal-icon">
             <Image
               className={["plan-modal-icon__img", product.imageClass]
@@ -102,7 +103,7 @@ export function PlanModal({
     >
       {product ? (
         <div className="plan-list">
-          {product.imageLayout === "banner" ? (
+          {usesProductBanner(product) ? (
             <Image
               className="plan-list__photo"
               src={publicAssetPath(product.image)}

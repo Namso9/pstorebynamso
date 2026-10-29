@@ -39,6 +39,13 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-10-29: ReelsCap layout stability fix: `usesProductBanner` in
+  `src/data/product-media.ts` keeps this product/logo compact even if an older
+  catalog response contains `imageLayout: banner`. ProductCard and PlanModal
+  use the same policy for initial HTML and live refreshes. The focused
+  `node qa/reelscap-layout-check.mjs` regression renders both components with
+  current and legacy catalog data and verifies identical compact markup.
+
 - 2026-10-29: Release `c279161` uses the standard ReelsCap logo size, removes
   Netflix Phone Basic, updates CapCut to 7 months / 110,000 Ks with its existing
   ID, and adds Spotify Individual under Music Apps with the subtitle

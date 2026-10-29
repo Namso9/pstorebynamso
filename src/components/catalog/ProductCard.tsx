@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 
-import { productLogoClass } from "@/data/product-media";
+import { productLogoClass, usesProductBanner } from "@/data/product-media";
 import { useRevealMotion } from "@/hooks/useRevealMotion";
 import { publicAssetPath } from "@/services/catalog";
 import { trackProductClick } from "@/services/track";
@@ -28,7 +28,7 @@ export function ProductCard({ product, onViewPlans, index = 0 }: ProductCardProp
       id={`app-${product.id}`}
       {...revealMotion}
     >
-      {product.imageLayout === "banner" ? (
+      {usesProductBanner(product) ? (
         <Image
           className="product-card__photo"
           src={publicAssetPath(product.image)}
@@ -39,7 +39,7 @@ export function ProductCard({ product, onViewPlans, index = 0 }: ProductCardProp
         />
       ) : null}
       <div className="product-card__identity">
-        {product.imageLayout !== "banner" ? (
+        {!usesProductBanner(product) ? (
           <span className="product-logo-frame">
             <Image
               className={productLogoClass(product)}
