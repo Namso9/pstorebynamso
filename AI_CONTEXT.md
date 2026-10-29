@@ -39,6 +39,15 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-10-29: Release `c279161` uses the standard ReelsCap logo size, removes
+  Netflix Phone Basic, updates CapCut to 7 months / 110,000 Ks with its existing
+  ID, and adds Spotify Individual under Music Apps with the subtitle
+  `us,ca,asia mix region` and 3/6-month plans at 20,000/35,000 Ks. The shared
+  bot/panel catalog was updated by operation `b751158` with a private backup.
+  Lint, typecheck, build and CSP pass; dependency advisories are pre-existing.
+  Desktop browser preview awaits permission. Release checkout:
+  `.release/catalog-oct29-final`. The panel's concurrent FAQ deletion is kept.
+
 - 2026-10-29: AI Movie Bot Credits is live in Streaming Apps. Release `889c131`
   renamed the product, changed plan descriptions to credits, and enabled bot
   checkout for all four existing IDs. Prices remain 15,000/28,000/40,000/65,000
