@@ -39,6 +39,14 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-10-29: Short Drama Bot Credits was added to Streaming Apps from the
+  owner's `IMG_0763.JPG`. The website has four plans: 100/200/300/500 credits
+  for 15,000/28,000/40,000/65,000 Ks. The supplied photo appears on the
+  product card and in the plan dialog. Checkout uses the website order form;
+  bot checkout awaits confirmed bot plan IDs. The catalog source is root
+  `products.json`; `prebuild` regenerates its public mirror. This release was
+  prepared from the latest `origin/main` to preserve panel catalog updates.
+
 - 2026-10-26: Added the owner's Downloads photo `IMG_0623.heic` as
   `images/review33.webp` (1147 x 1805, about 78 KB) and appended it to the
   canonical review list. Build, typecheck, CSP, review-flow, and exported

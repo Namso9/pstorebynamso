@@ -45,6 +45,7 @@ export type CatalogProduct = {
   name: string;
   subtitle: string;
   image: string;
+  imageLayout?: "banner";
   imageClass?: string;
   modalTitle?: string;
   /**

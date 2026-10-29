@@ -1137,6 +1137,41 @@
       ]
     },
     {
+      "id": "short_drama",
+      "category": "streaming-apps",
+      "name": "Short Drama Bot Credits",
+      "subtitle": "Episodes on supported short drama sites",
+      "image": "images/short-drama.jpg",
+      "imageLayout": "banner",
+      "modalTitle": "Short Drama Bot Credits",
+      "plans": [
+        {
+          "name": "100 Credits",
+          "desc": "100 episodes",
+          "price": "15,000 Ks",
+          "id": "100_credits"
+        },
+        {
+          "name": "200 Credits",
+          "desc": "200 episodes | Save 2,000 Ks",
+          "price": "28,000 Ks",
+          "id": "200_credits"
+        },
+        {
+          "name": "300 Credits",
+          "desc": "300 episodes | Save 5,000 Ks",
+          "price": "40,000 Ks",
+          "id": "300_credits"
+        },
+        {
+          "name": "500 Credits",
+          "desc": "500 episodes | Save 10,000 Ks",
+          "price": "65,000 Ks",
+          "id": "500_credits"
+        }
+      ]
+    },
+    {
       "id": "meitu",
       "category": "creative-apps",
       "name": "Meitu Premium",

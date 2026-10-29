@@ -3520,6 +3520,18 @@ html[data-theme="light"] body {
   gap: 10px;
 }
 
+.product-card__photo,
+.plan-list__photo {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.product-card__photo {
+  aspect-ratio: 1168 / 784;
+  object-fit: cover;
+}
+
 .product-logo {
   width: 56px;
   height: 56px;

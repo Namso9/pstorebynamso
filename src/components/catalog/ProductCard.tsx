@@ -28,17 +28,29 @@ export function ProductCard({ product, onViewPlans, index = 0 }: ProductCardProp
       id={`app-${product.id}`}
       {...revealMotion}
     >
+      {product.imageLayout === "banner" ? (
+        <Image
+          className="product-card__photo"
+          src={publicAssetPath(product.image)}
+          alt={`${product.name} price list`}
+          width={1168}
+          height={784}
+          loading="lazy"
+        />
+      ) : null}
       <div className="product-card__identity">
-        <span className="product-logo-frame">
-          <Image
-            className={productLogoClass(product)}
-            src={publicAssetPath(product.image)}
-            alt={product.name}
-            width={64}
-            height={64}
-            loading="eager"
-          />
-        </span>
+        {product.imageLayout !== "banner" ? (
+          <span className="product-logo-frame">
+            <Image
+              className={productLogoClass(product)}
+              src={publicAssetPath(product.image)}
+              alt={product.name}
+              width={64}
+              height={64}
+              loading="eager"
+            />
+          </span>
+        ) : null}
         <div>
           <h2>{product.name}</h2>
           <p>{product.subtitle}</p>

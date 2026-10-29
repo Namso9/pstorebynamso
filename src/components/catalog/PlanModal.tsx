@@ -85,7 +85,7 @@ export function PlanModal({
         </span>
       }
       icon={
-        product ? (
+        product && product.imageLayout !== "banner" ? (
           <span className="plan-modal-icon">
             <Image
               className={["plan-modal-icon__img", product.imageClass]
@@ -102,6 +102,15 @@ export function PlanModal({
     >
       {product ? (
         <div className="plan-list">
+          {product.imageLayout === "banner" ? (
+            <Image
+              className="plan-list__photo"
+              src={publicAssetPath(product.image)}
+              alt={`${product.name} price list and supported websites`}
+              width={1168}
+              height={784}
+            />
+          ) : null}
           {product.plans.length ? (
             product.planPicker === "duration" ? (
               <DurationPicker

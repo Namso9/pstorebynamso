@@ -65,6 +65,7 @@ function isProduct(value: unknown): value is CatalogProduct {
     typeof value.name === "string" &&
     typeof value.subtitle === "string" &&
     typeof value.image === "string" &&
+    (value.imageLayout === undefined || value.imageLayout === "banner") &&
     isOptionalString(value.imageClass) &&
     isOptionalString(value.modalTitle) &&
     (value.planPicker === undefined || value.planPicker === "duration") &&
