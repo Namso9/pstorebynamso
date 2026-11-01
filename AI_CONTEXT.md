@@ -39,6 +39,15 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-11-02: AI Movie Bot Credits prices are 100/220/330/550 credits at
+  15,000/30,000/45,000/75,000 Ks. The three larger plans say Manual delivery,
+  and their old out-of-stock markers are removed. The four existing checkout
+  IDs are unchanged. The panel operation switches the larger bot plans to
+  manual order requests; the 100-credit plan still auto-delivers one code.
+  This release checkout is `.release/ai-movie-prices-final`. Local lint, typecheck,
+  build, CSP and catalog/fallback checks pass. Deployment status is in root
+  STATUS.md.
+
 - 2026-10-29: Inspected the 10 existing Streaming FAQs; no Bioscope or AI Movie
   overlap. Added the owner's four questions as one group at the end (14 total),
   including three numbered redeem/download steps and the tutorial post

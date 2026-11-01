@@ -1167,27 +1167,25 @@
           "bot": true
         },
         {
-          "name": "200 Credits",
-          "desc": "200 credits | Save 2,000 Ks",
-          "price": "28,000 Ks",
+          "name": "220 Credits",
+          "desc": "220 credits | Manual delivery",
+          "price": "30,000 Ks",
           "id": "200_credits",
           "bot": true
         },
         {
-          "name": "300 Credits",
-          "desc": "300 credits | Save 5,000 Ks",
-          "price": "40,000 Ks",
+          "name": "330 Credits",
+          "desc": "330 credits | Manual delivery",
+          "price": "45,000 Ks",
           "id": "300_credits",
-          "bot": true,
-          "stock": false
+          "bot": true
         },
         {
-          "name": "500 Credits",
-          "desc": "500 credits | Save 10,000 Ks",
-          "price": "65,000 Ks",
+          "name": "550 Credits",
+          "desc": "550 credits | Manual delivery",
+          "price": "75,000 Ks",
           "id": "500_credits",
-          "bot": true,
-          "stock": false
+          "bot": true
         }
       ]
     },
