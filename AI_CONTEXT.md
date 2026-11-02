@@ -40,8 +40,9 @@ Functions, URLs, SEO metadata, and production integrations.
 ## Current Status
 
 - 2026-11-02: AI Movie Bot Credits prices are 100/220/330/550 credits at
-  15,000/30,000/45,000/75,000 Ks. The three larger plans say Manual delivery,
-  and their old out-of-stock markers are removed. The four existing checkout
+  15,000/30,000/45,000/75,000 Ks. The three larger plans are fulfilled manually
+  in the bot and panel; the website descriptions show only credit amounts.
+  Their old out-of-stock markers are removed. The four existing checkout
   IDs are unchanged. The panel operation switches the larger bot plans to
   manual order requests; the 100-credit plan still auto-delivers one code.
   This release checkout is `.release/ai-movie-prices-final`. Local lint, typecheck,

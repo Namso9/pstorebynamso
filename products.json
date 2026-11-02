@@ -1168,21 +1168,21 @@
         },
         {
           "name": "220 Credits",
-          "desc": "220 credits | Manual delivery",
+          "desc": "220 credits",
           "price": "30,000 Ks",
           "id": "200_credits",
           "bot": true
         },
         {
           "name": "330 Credits",
-          "desc": "330 credits | Manual delivery",
+          "desc": "330 credits",
           "price": "45,000 Ks",
           "id": "300_credits",
           "bot": true
         },
         {
           "name": "550 Credits",
-          "desc": "550 credits | Manual delivery",
+          "desc": "550 credits",
           "price": "75,000 Ks",
           "id": "500_credits",
           "bot": true
