@@ -1,5 +1,5 @@
 {
-  "updated": "04 Nov 2026",
+  "updated": "05 Nov 2026",
   "window_days": 7,
   "items": [
     "short_drama",
@@ -7,8 +7,8 @@
     "spotify_individual",
     "netflix_tv",
     "express_phone",
+    "zoom",
     "bioscope",
-    "capcut",
-    "spotify_canada"
+    "capcut"
   ]
 }
