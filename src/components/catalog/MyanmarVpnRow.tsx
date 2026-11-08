@@ -21,7 +21,7 @@ const MotionLink = motion.create(Link);
  * `myanmar-vless` lands via the panel, not this repo — or is later retired
  * simply drops out instead of rendering a dead tile.
  */
-const FEATURED_IDS = ["myanmar-vless", "proton", "nord", "express_phone"];
+const FEATURED_IDS = ["myanmar-vless", "proton", "nord", "express_vpn"];
 
 type MyanmarVpnRowProps = {
   catalog: CatalogData;

@@ -658,13 +658,6 @@
           "price": "41,000 Ks",
           "id": "30_days_warranty",
           "bot": true
-        },
-        {
-          "name": "15 days warranty",
-          "desc": "Our Mail (Private Acc)",
-          "price": "40,000 Ks",
-          "id": "15_days_warranty",
-          "stock": false
         }
       ]
     },
@@ -782,7 +775,7 @@
         {
           "name": "1 Month",
           "desc": "Pro Plan (Official Price 20$)",
-          "price": "35,000 Ks",
+          "price": "45,000 Ks",
           "id": "1_month",
           "bot": true
         },
@@ -795,51 +788,40 @@
       ]
     },
     {
-      "id": "express_phone",
+      "id": "express_vpn",
       "category": "premium-vpn-apps",
-      "name": "Express VPN (Phone)",
-      "subtitle": "One Device Plan",
+      "name": "Express VPN",
+      "subtitle": "Phone and PC plans",
       "image": "images/express.svg",
       "imageClass": "expressvpn-logo",
-      "modalTitle": "Express VPN (Phone)",
+      "modalTitle": "Express VPN",
       "plans": [
         {
-          "name": "6 Months",
-          "desc": "One Device",
+          "name": "Phone - 6 Months",
+          "desc": "One Phone",
           "price": "20,000 Ks",
-          "id": "6_months",
+          "id": "phone_6_months",
           "bot": true
         },
         {
-          "name": "1 Year",
-          "desc": "One Device",
+          "name": "Phone - 1 Year",
+          "desc": "One Phone",
           "price": "35,000 Ks",
-          "id": "1_year",
+          "id": "phone_1_year",
           "bot": true
-        }
-      ]
-    },
-    {
-      "id": "express_pc",
-      "category": "premium-vpn-apps",
-      "name": "Express VPN (PC)",
-      "subtitle": "One Device Plan",
-      "image": "images/express.svg",
-      "imageClass": "expressvpn-logo",
-      "modalTitle": "Express VPN (PC)",
-      "plans": [
+        },
         {
-          "name": "6 Months",
+          "name": "PC - 6 Months",
           "desc": "Pro Version(One PC)",
           "price": "20,000 Ks",
-          "id": "6_months",
+          "id": "pc_6_months",
           "bot": true
         },
         {
-          "name": "1 Year",
+          "name": "PC - 1 Year",
           "desc": "Pro Version(လစဉ် Key လဲရန် မလို)",
           "price": "35,000 Ks",
-          "id": "1_year",
+          "id": "pc_1_year",
           "bot": true
         }
       ]

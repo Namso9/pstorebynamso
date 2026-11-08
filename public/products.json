@@ -92,9 +92,9 @@
           "bot": true
         },
         {
-          "name": "Whole Acc 6 Months",
+          "name": "Whole Acc 7 Months",
           "desc": "(2-3 Devices)",
-          "price": "90,000 Ks",
+          "price": "110,000 Ks",
           "id": "whole_acc_6_months",
           "bot": true
         }
@@ -187,6 +187,31 @@
       ]
     },
     {
+      "id": "spotify_individual",
+      "category": "music-apps",
+      "name": "Spotify Individual",
+      "subtitle": "us,ca,asia mix region",
+      "image": "images/spotify.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Spotify Individual",
+      "plans": [
+        {
+          "name": "3 Months",
+          "desc": "Individual Plan",
+          "price": "20,000 Ks",
+          "id": "3_months",
+          "bot": true
+        },
+        {
+          "name": "6 Months",
+          "desc": "Individual Plan",
+          "price": "35,000 Ks",
+          "id": "6_months",
+          "bot": true
+        }
+      ]
+    },
+    {
       "id": "soundcloud",
       "category": "music-apps",
       "name": "SoundCloud",
@@ -241,28 +266,28 @@
         {
           "name": "1 Month",
           "desc": "Monthly",
-          "price": "29,000 Ks",
+          "price": "20,000 Ks",
           "id": "1_month",
           "bot": true
         },
         {
           "name": "3 Months",
           "desc": "Quarterly",
-          "price": "85,000 Ks",
+          "price": "59,000 Ks",
           "id": "3_months",
           "bot": true
         },
         {
-          "name": "6 Months",
+          "name": "6 Months ⭐ Most Popular",
           "desc": "⭐ Most Popular",
-          "price": "169,000 Ks",
+          "price": "118,000 Ks",
           "id": "6_months",
           "bot": true
         },
         {
-          "name": "1 Year",
+          "name": "1 Year 🔥 Best Value",
           "desc": "🔥 Best Value",
-          "price": "329,000 Ks",
+          "price": "230,000 Ks",
           "id": "1_year",
           "bot": true
         }
@@ -280,23 +305,23 @@
         {
           "name": "3 Months",
           "desc": "Gift Link",
-          "price": "55,000 Ks",
+          "price": "63,000 Ks",
           "id": "3_months",
-          "stock": false
+          "bot": true
         },
         {
           "name": "6 Months",
           "desc": "Gift Link",
-          "price": "90,000 Ks",
+          "price": "88,000 Ks",
           "id": "6_months",
-          "stock": false
+          "bot": true
         },
         {
           "name": "1 Year",
           "desc": "Gift Link",
-          "price": "140,000 Ks",
+          "price": "150,000 Ks",
           "id": "1_year",
-          "stock": false
+          "bot": true
         }
       ]
     },
@@ -310,37 +335,27 @@
       "modalTitle": "Netflix TV Plans (4K Ultra HD)",
       "plans": [
         {
-          "header": "🔴 Premium Plan (No Household Code)"
+          "header": "🔴 Premium Plan"
         },
         {
-          "name": "1 Month",
-          "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
-          "price": "28,000 Ks",
+          "name": "1M Premium (TV)",
+          "desc": "1 Profile · TV",
+          "price": "25,000 Ks",
           "id": "1_month",
           "bot": true
         },
         {
-          "name": "2 Months",
-          "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
-          "price": "56,000 Ks",
+          "name": "2M Premium (TV)",
+          "desc": "1 Profile · TV",
+          "price": "53,000 Ks",
           "id": "2_months",
           "bot": true
         },
         {
-          "name": "3 Months",
-          "desc": "10 ရက်တစ်ခါ အကောင့်ပြောင်း",
-          "price": "83,000 Ks",
+          "name": "3M Premium (TV)",
+          "desc": "1 Profile · TV",
+          "price": "80,000 Ks",
           "id": "3_months",
-          "bot": true
-        },
-        {
-          "header": "🔴 Basic Plan (Household code တက်နိုင်ပါတယ်)"
-        },
-        {
-          "name": "1 Month",
-          "desc": "1 Profile (1 Device)",
-          "price": "23,000 Ks",
-          "id": "1_month_2",
           "bot": true
         }
       ]
@@ -358,34 +373,24 @@
           "header": "🔴 Premium Plan (Can Renew Without PF Change)"
         },
         {
-          "name": "1 Month",
+          "name": "1M Premium (Phone)",
           "desc": "1 Profile (No TV)",
-          "price": "26,000 Ks",
+          "price": "24,000 Ks",
           "id": "1_month",
           "bot": true
         },
         {
-          "name": "2 Months",
+          "name": "2M Premium (Phone)",
           "desc": "1 Profile (No TV)",
-          "price": "52,000 Ks",
+          "price": "50,000 Ks",
           "id": "2_months",
           "bot": true
         },
         {
-          "name": "3 Months",
+          "name": "3M Premium (Phone)",
           "desc": "1 Profile (No TV)",
-          "price": "77,000 Ks",
+          "price": "75,000 Ks",
           "id": "3_months",
-          "bot": true
-        },
-        {
-          "header": "🔴 Basic Plan (Can't Renew, Monthly Change)"
-        },
-        {
-          "name": "1 Month",
-          "desc": "1 Profile (No TV)",
-          "price": "20,000 Ks",
-          "id": "1_month_2",
           "bot": true
         }
       ]
@@ -404,7 +409,7 @@
           "desc": "No Ads (Monthly Change)",
           "price": "10,000 Ks",
           "id": "1_month_our_mail",
-          "stock": false
+          "bot": true
         },
         {
           "name": "3 Month cus mail",
@@ -648,18 +653,11 @@
       "modalTitle": "ChatGPT 1 Month Plus Plan",
       "plans": [
         {
-          "name": "1 Month",
+          "name": "1 Month No Warrenty Plan",
           "desc": "Our Mail (Private Acc)",
-          "price": "65,000 Ks",
+          "price": "41,000 Ks",
           "id": "30_days_warranty",
-          "stock": false
-        },
-        {
-          "name": "15 days warranty",
-          "desc": "Our Mail (Private Acc)",
-          "price": "40,000 Ks",
-          "id": "15_days_warranty",
-          "stock": false
+          "bot": true
         }
       ]
     },
@@ -734,8 +732,9 @@
         {
           "name": "1 Month",
           "desc": "Super plan",
-          "contact": true,
-          "id": "1_month"
+          "id": "1_month",
+          "price": "55,000 Ks",
+          "bot": true
         }
       ]
     },
@@ -749,16 +748,18 @@
       "modalTitle": "Stealthwriter AI Plans",
       "plans": [
         {
-          "name": "1 Month",
+          "name": "1 month starter plan",
           "desc": "Starter Plan (Official Price 20$)",
           "id": "1_month",
-          "contact": true
+          "price": "40,000 Ks",
+          "bot": true
         },
         {
           "name": "1 Month",
           "desc": "Plus Plan (Official Price 50$)",
           "id": "1_month_2",
-          "contact": true
+          "contact": true,
+          "stock": false
         }
       ]
     },
@@ -774,7 +775,7 @@
         {
           "name": "1 Month",
           "desc": "Pro Plan (Official Price 20$)",
-          "price": "35,000 Ks",
+          "price": "45,000 Ks",
           "id": "1_month",
           "bot": true
         },
@@ -787,51 +788,40 @@
       ]
     },
     {
-      "id": "express_phone",
+      "id": "express_vpn",
       "category": "premium-vpn-apps",
-      "name": "Express VPN (Phone)",
-      "subtitle": "One Device Plan",
+      "name": "Express VPN",
+      "subtitle": "Phone and PC plans",
       "image": "images/express.svg",
       "imageClass": "expressvpn-logo",
-      "modalTitle": "Express VPN (Phone)",
+      "modalTitle": "Express VPN",
       "plans": [
         {
-          "name": "6 Months",
-          "desc": "One Device",
+          "name": "Phone - 6 Months",
+          "desc": "One Phone",
           "price": "20,000 Ks",
-          "id": "6_months",
+          "id": "phone_6_months",
           "bot": true
         },
         {
-          "name": "1 Year",
-          "desc": "One Device",
+          "name": "Phone - 1 Year",
+          "desc": "One Phone",
           "price": "35,000 Ks",
-          "id": "1_year",
+          "id": "phone_1_year",
           "bot": true
-        }
-      ]
-    },
-    {
-      "id": "express_pc",
-      "category": "premium-vpn-apps",
-      "name": "Express VPN (PC)",
-      "subtitle": "One Device Plan",
-      "image": "images/express.svg",
-      "imageClass": "expressvpn-logo",
-      "modalTitle": "Express VPN (PC)",
-      "plans": [
+        },
         {
-          "name": "6 Months",
+          "name": "PC - 6 Months",
           "desc": "Pro Version(One PC)",
           "price": "20,000 Ks",
-          "id": "6_months",
+          "id": "pc_6_months",
           "bot": true
         },
         {
-          "name": "1 Year",
+          "name": "PC - 1 Year",
           "desc": "Pro Version(လစဉ် Key လဲရန် မလို)",
           "price": "35,000 Ks",
-          "id": "1_year",
+          "id": "pc_1_year",
           "bot": true
         }
       ]
@@ -1083,8 +1073,7 @@
           "name": "2 Months",
           "price": "10,000 Ks",
           "id": "2_months",
-          "bot": true,
-          "bonus": "+7 days"
+          "bot": true
         },
         {
           "name": "3 Months",
@@ -1141,6 +1130,44 @@
           "id": "12_months",
           "bot": true,
           "bonus": "+60 days"
+        }
+      ]
+    },
+    {
+      "id": "short_drama",
+      "category": "streaming-apps",
+      "name": "AI Movie Bot Credits",
+      "subtitle": "Credits for AI Movie Bot",
+      "image": "images/reelscap.jpg",
+      "modalTitle": "AI Movie Bot Credits",
+      "plans": [
+        {
+          "name": "100 Credits",
+          "desc": "100 credits",
+          "price": "15,000 Ks",
+          "id": "100_credits",
+          "bot": true
+        },
+        {
+          "name": "220 Credits",
+          "desc": "220 credits",
+          "price": "30,000 Ks",
+          "id": "200_credits",
+          "bot": true
+        },
+        {
+          "name": "330 Credits",
+          "desc": "330 credits",
+          "price": "45,000 Ks",
+          "id": "300_credits",
+          "bot": true
+        },
+        {
+          "name": "550 Credits",
+          "desc": "550 credits",
+          "price": "75,000 Ks",
+          "id": "500_credits",
+          "bot": true
         }
       ]
     },

@@ -39,6 +39,14 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-11-08: Prepared a single Express VPN product ID `express_vpn` with
+  Phone and PC 6-month and 1-year plans. Perplexity 1 Month is 45,000 Ks;
+  ChatGPT shows only its 41,000 Ks plan; its FAQ reflects no warranty.
+  The bot accepts legacy Express links, and the panel operation updates the
+  SQLite mappings. This release checkout is `.release/catalog-nov08-final`.
+  Lint, typecheck, build, CSP, focused catalog checks, and npm audit pass.
+  Production status is tracked in root STATUS.md.
+
 - 2026-11-02: AI Movie Bot Credits prices are 100/220/330/550 credits at
   15,000/30,000/45,000/75,000 Ks. The three larger plans are fulfilled manually
   in the bot and panel; the website descriptions show only credit amounts.
