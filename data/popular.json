@@ -1,12 +1,12 @@
 {
-  "updated": "07 Nov 2026",
+  "updated": "08 Nov 2026",
   "window_days": 7,
   "items": [
     "short_drama",
     "chatgpt",
+    "gemini",
     "netflix_tv",
     "bioscope",
-    "gemini",
     "proton",
     "spotify_individual",
     "zoom"
