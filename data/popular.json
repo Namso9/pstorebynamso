@@ -5,10 +5,10 @@
     "short_drama",
     "gemini",
     "chatgpt",
-    "netflix_tv",
     "bioscope",
+    "netflix_tv",
     "zoom",
-    "netflix_phone",
-    "spotify_individual"
+    "spotify_individual",
+    "netflix_phone"
   ]
 }
