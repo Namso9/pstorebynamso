@@ -39,6 +39,12 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
+- 2026-11-08 correction: Express VPN has exactly two One Device plans,
+  6 Months / 20,000 Ks and 1 Year / 35,000 Ks. Mail/password only; the FAQ
+  removes the PC key instructions. Bot uses existing Phone stock. Release
+  checkout: `.release/express-two-plans`. Code gates and production rollout
+  are recorded in root STATUS.md.
+
 - 2026-11-08: Prepared a single Express VPN product ID `express_vpn` with
   Phone and PC 6-month and 1-year plans. Perplexity 1 Month is 45,000 Ks;
   ChatGPT shows only its 41,000 Ks plan; its FAQ reflects no warranty.

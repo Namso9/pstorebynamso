@@ -159,7 +159,7 @@
       },
       {
         "q": "Express က ဘယ်လိုသုံးရလဲ?",
-        "a_html": "<p>\n                    1. Express VPN App Down ပါ<br>\n                    2. Sign in ဝင် ပါ<br>\n                    3.  ဖုန်းဆို( Mail & Pw)\n                        Laptop ဆို ( Key ) ထည့် ပါ<br>\n                    4. Location ရွေး ပါ<br>\n                    5. Connect ပြီးသုံးလို့ရပါပြီ\n                </p>"
+        "a_html": "<p>Install the Express VPN app, sign in with the mail and password we provide, choose a location, and connect. Each plan is for one device.</p>"
       },
       {
         "q": "Express က Acc ဝင်ပြီးရင် Mail/Pw ပြန်ကြည့်လို့ရလား?",
