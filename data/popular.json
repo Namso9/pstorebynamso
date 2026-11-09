@@ -4,11 +4,11 @@
   "items": [
     "gemini",
     "express_vpn",
-    "chatgpt",
-    "bioscope",
-    "short_drama",
     "netflix_phone",
-    "snapchat",
-    "mytel-data"
+    "chatgpt",
+    "netflix_tv",
+    "spotify_individual",
+    "spotify_us",
+    "bioscope"
   ]
 }
