@@ -7,6 +7,7 @@ const eslintConfig = defineConfig([
   ...nextTs,
   globalIgnores([
     ".next/**",
+    ".migration-backups/**",
     "out/**",
     ".wrangler/**",
     "next-env.d.ts",

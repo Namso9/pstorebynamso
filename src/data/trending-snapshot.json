@@ -1,0 +1,54 @@
+{
+  "updated": "06 Nov 2026",
+  "window_days": 7,
+  "items": [
+    {
+      "id": "short_drama",
+      "name": "AI Movie Bot Credits",
+      "desc": "Credits for AI Movie Bot",
+      "price": "From 15,000 Ks",
+      "image": "/images/reelscap.jpg",
+      "href": "/category/streaming"
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT Plus",
+      "desc": "GPT Latest Model",
+      "price": "From 41,000 Ks",
+      "image": "/images/chatgpt.svg",
+      "href": "/category/ai"
+    },
+    {
+      "id": "express_phone",
+      "name": "ExpressVPN",
+      "desc": "One Device Plan",
+      "price": "From 20,000 Ks",
+      "image": "/images/express.svg",
+      "href": "/category/vpn"
+    },
+    {
+      "id": "netflix_tv",
+      "name": "Netflix (TV Plan)",
+      "desc": "For TV / TV Box / PS",
+      "price": "From 25,000 Ks",
+      "image": "/images/netflix.svg",
+      "href": "/category/streaming"
+    },
+    {
+      "id": "bioscope",
+      "name": "Bioscope Premium",
+      "desc": "Myanmar Streaming App",
+      "price": "From 5,000 Ks",
+      "image": "/images/bioscope.webp",
+      "href": "/category/streaming"
+    },
+    {
+      "id": "proton",
+      "name": "Proton VPN",
+      "desc": "Secure VPN \u00b7 Swiss Privacy",
+      "price": "From 7,000 Ks",
+      "image": "/images/proton.webp",
+      "href": "/category/vpn"
+    }
+  ]
+}

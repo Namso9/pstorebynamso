@@ -7,12 +7,12 @@ import { useSwitchHaptics } from "@/hooks/useHapticMode";
 type HapticSwitchMode = "bubble" | "submit";
 
 /**
- * WHERE THIS MAY BE MOUNTED — the rule that replaced the drag guard.
+ * WHERE THIS MAY BE MOUNTED \u2014 the rule that replaced the drag guard.
  *
  * WebKit's `switch` control can be toggled by DRAGGING it, so an overlay
  * stretched over a big control could turn a scroll into an activation. The
  * first answer was a slop guard in `onClick`: a click whose pointer had
- * travelled more than 10px was swallowed. It cost more than it bought — 10px
+ * travelled more than 10px was swallowed. It cost more than it bought \u2014 10px
  * is about a millimetre and a half, so an ordinary thumb tap on a large target
  * exceeded it and the button "needed two presses".
  *
@@ -21,7 +21,7 @@ type HapticSwitchMode = "bubble" | "submit";
  * toggle, a plan row, the payment
  * platform buttons, and the order form's submit. Never on a row or tile a
  * finger scrolls over (FAQ questions, whole product/category/review/popular
- * tiles, search results, nav items) — those keep the Android `data-haptic`
+ * tiles, search results, nav items) \u2014 those keep the Android `data-haptic`
  * path, which cannot touch click semantics because it only reads events, and
  * iOS simply gets no buzz there. The product card's **View Plans** button was
  * on this list until the same day's follow-up report: it sits in the middle
@@ -36,11 +36,11 @@ type HapticSwitchMode = "bubble" | "submit";
 
 type HapticSwitchProps = {
   /**
-   * `bubble` (default) — the host is a `<button type="button">` whose behaviour
+   * `bubble` (default) \u2014 the host is a `<button type="button">` whose behaviour
    * is a React `onClick`. The tap lands on this switch, the click bubbles up
    * and the host handler runs exactly as before.
    *
-   * `submit` — the host is a `<button type="submit">`. A click on the switch
+   * `submit` \u2014 the host is a `<button type="submit">`. A click on the switch
    * makes IT the activation target, so the browser would never submit the
    * form; this mode re-runs the submission explicitly (validation included).
    */
@@ -60,19 +60,19 @@ type HapticSwitchProps = {
  * ACCEPTED TRADE-OFF, deliberate and documented: `<input>` is interactive
  * content, so nesting it in a `<button>` is an HTML conformance error, and it
  * is the only shape in which WebKit will play the haptic (the published
- * `ios-haptics` library does the same thing). It is not a parsing error — the
- * static export's markup round-trips unchanged — and the cost is contained:
+ * `ios-haptics` library does the same thing). It is not a parsing error \u2014 the
+ * static export's markup round-trips unchanged \u2014 and the cost is contained:
  * `tabIndex={-1}` keeps it out of the tab order, `aria-hidden` keeps it out of
  * the accessibility tree, so the host button stays a single control for
  * keyboard and screen-reader users, who never reach this element. Keyboard
  * activation, VoiceOver activation and the CSS `:active` / `:hover` states all
  * still resolve on the button, which is an ancestor of the activated element.
- * The alternative — wrapping every button in a positioned element — would
+ * The alternative \u2014 wrapping every button in a positioned element \u2014 would
  * rewrite the layout of a dozen flex and grid parents for a conformance win.
  */
 export function HapticSwitch({ mode = "bubble" }: HapticSwitchProps) {
   // `false` while the static export is prerendered and hydrated, then the
-  // real answer — so the SSR markup carries no platform assumption.
+  // real answer \u2014 so the SSR markup carries no platform assumption.
   const enabled = useSwitchHaptics();
   const inputRef = useRef<HTMLInputElement>(null);
   const lastClickAt = useRef(0);
@@ -85,7 +85,7 @@ export function HapticSwitch({ mode = "bubble" }: HapticSwitchProps) {
 
   // Bubble mode only: a DRAG on the switch commits the toggle (and plays the
   // haptic) without dispatching a click, so the host's React onClick never
-  // ran — the owner's "it buzzes but nothing happens" on the theme switch.
+  // ran \u2014 the owner's "it buzzes but nothing happens" on the theme switch.
   // Every committed toggle fires `change`, so activate the host from there;
   // a tap already fired a click that bubbled to the host a moment earlier,
   // and the timestamp keeps that tap from activating twice.
@@ -106,7 +106,7 @@ export function HapticSwitch({ mode = "bubble" }: HapticSwitchProps) {
   const handleClick = (event: MouseEvent<HTMLInputElement>) => {
     lastClickAt.current = Date.now();
     // Bubble mode needs nothing more: the click reaches the host's own
-    // handler. Never call preventDefault on the tap path — cancelling the
+    // handler. Never call preventDefault on the tap path \u2014 cancelling the
     // toggle cancels the haptic that is the whole point of this element.
     if (mode !== "submit") return;
 

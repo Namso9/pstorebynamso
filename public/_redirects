@@ -33,3 +33,29 @@
 /bioscope                             /bioscope-download/                301
 /bioscope/                            /bioscope-download/                301
 /bioscope-download.html               /bioscope-download/                301
+
+# Entry points retained by the imported website design.
+/streaming-apps /category/streaming/ 301
+/streaming-apps/ /category/streaming/ 301
+/ai-apps /category/ai/ 301
+/ai-apps/ /category/ai/ 301
+/premium-vpn-apps /category/vpn/ 301
+/premium-vpn-apps/ /category/vpn/ 301
+/music-apps /category/music/ 301
+/music-apps/ /category/music/ 301
+/creative-apps /category/creative-work/ 301
+/creative-apps/ /category/creative-work/ 301
+/mobile-data /category/mobile-data/ 301
+/mobile-data/ /category/mobile-data/ 301
+/social /category/social/ 301
+/social/ /category/social/ 301
+/reviews/ /#customer-reviews-title 301
+/reviews /#customer-reviews-title 301
+/terms-of-service/ /terms-and-conditions/ 301
+/terms-of-service /terms-and-conditions/ 301
+/terms-of-service-vpn/ /terms-and-conditions/ 301
+/terms-of-service-vpn /terms-and-conditions/ 301
+/expressvpn-location-guide/ /product/expressvpn/ 301
+/expressvpn-location-guide /product/expressvpn/ 301
+/product/express-vpn-phone/ /product/expressvpn/ 301
+/product/express-vpn-phone /product/expressvpn/ 301

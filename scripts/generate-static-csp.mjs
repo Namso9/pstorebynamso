@@ -21,14 +21,14 @@ const compatibilityPolicy =
   `default-src 'self'; script-src 'self' 'unsafe-inline' ${cloudflareWebAnalyticsScripts}; ` +
   "script-src-attr 'none'; " +
   "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; " +
-  "font-src https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; " +
+  "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; " +
   "connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; " +
   "frame-ancestors 'none'";
 
 const nonScriptDirectives =
   "script-src-attr 'none'; " +
   "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; " +
-  "font-src https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; " +
+  "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; " +
   "connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; " +
   "frame-ancestors 'none'";
 

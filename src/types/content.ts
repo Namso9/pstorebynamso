@@ -17,7 +17,7 @@ export type ReviewsData = {
 /**
  * "Most viewed this week", written by the panel from real storefront clicks.
  *
- * `items` is a RANKED id list and nothing else — no counts. Publishing raw
+ * `items` is a RANKED id list and nothing else \u2014 no counts. Publishing raw
  * click totals on a public file would put the store's traffic volume in the
  * open for no gain to the visitor. More ids than the grid shows are published
  * on purpose: the storefront drops any id the live catalog no longer has, so

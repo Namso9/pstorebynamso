@@ -27,3 +27,6 @@ public/images/review[0-9]*.webp
 public/images/review[0-9]*.jpg
 public/images/review[0-9]*.jpeg
 public/images/review[0-9]*.png
+
+# Local recovery snapshots for the source consolidation.
+.migration-backups/

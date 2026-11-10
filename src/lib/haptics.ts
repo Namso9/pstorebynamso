@@ -4,24 +4,24 @@
  * Two completely separate mechanisms, because no single API covers both
  * platforms:
  *
- * 1. Android (Chrome, Firefox, Samsung Internet, DuckDuckGo, Edge — every
+ * 1. Android (Chrome, Firefox, Samsung Internet, DuckDuckGo, Edge \u2014 every
  *    engine there ships it): `navigator.vibrate()`. Real per-place intensity,
  *    because we control the millisecond duration and the pattern. Armed from a
  *    delegated `pointerdown` listener (see `HapticRoot`) so the buzz lands on
  *    the press, the way a physical button does, rather than on release.
  *
- * 2. iOS / iPadOS — Safari, Chrome, Firefox, DuckDuckGo are ALL WebKit and
+ * 2. iOS / iPadOS \u2014 Safari, Chrome, Firefox, DuckDuckGo are ALL WebKit and
  *    none of them implement the Vibration API. The only Taptic Engine a web
  *    page can reach is the one Safari 17.4+ plays when an
  *    `<input type="checkbox" switch>` toggles. Apple patched the old
  *    "programmatically `.click()` a hidden switch" trick in iOS 26.5, but a
- *    REAL user tap on a real switch still fires it — so `HapticSwitch` lays an
+ *    REAL user tap on a real switch still fires it \u2014 so `HapticSwitch` lays an
  *    invisible switch over the control and lets the finger land on it.
  *    `HapticRoot` still keeps the programmatic path as a best-effort fallback
- *    for iOS 17.4–26.4 and for controls that cannot carry an overlay (links).
+ *    for iOS 17.4\u201326.4 and for controls that cannot carry an overlay (links).
  *
  * Consequence to keep in mind: intensity is tunable on Android only. iOS gets
- * one fixed system tick per tap — that is all WebKit exposes.
+ * one fixed system tick per tap \u2014 that is all WebKit exposes.
  */
 
 export type HapticIntensity =
@@ -91,7 +91,7 @@ export function isIosWebKit(): boolean {
 
 /**
  * Major iOS/iPadOS version, or null when it cannot be read. Covers both user
- * agent shapes: the iPhone/iPad one ("… CPU iPhone OS 18_1 like Mac OS X …",
+ * agent shapes: the iPhone/iPad one ("\u2026 CPU iPhone OS 18_1 like Mac OS X \u2026",
  * which Chrome, Firefox and DuckDuckGo on iOS all keep) and the desktop-mode
  * iPadOS one, where only "Version/18.0" gives the release away.
  */
@@ -107,11 +107,11 @@ export function iosMajorVersion(): number | null {
 /**
  * True when this device gets its haptics from the WebKit switch overlay.
  *
- * Gated at iOS 18, the release that gave the switch control its haptic — the
+ * Gated at iOS 18, the release that gave the switch control its haptic \u2014 the
  * `switch` attribute itself landed in Safari 17.4 but stayed silent. iOS
- * 17.4–17.x is not left out: `HapticRoot`'s programmatic path still works
+ * 17.4\u201317.x is not left out: `HapticRoot`'s programmatic path still works
  * there, and it only stands down for controls that carry an overlay. An
- * unreadable version therefore has to fail CLOSED — mounting a silent overlay
+ * unreadable version therefore has to fail CLOSED \u2014 mounting a silent overlay
  * would also switch off the fallback that would have worked.
  *
  * The `:has()` check is what keeps the overlay safe rather than merely useful.
@@ -134,7 +134,7 @@ export function usesSwitchHaptics(): boolean {
 
 /**
  * Play a haptic through the Vibration API. Returns false when the platform has
- * no vibration motor exposed to the web (every iOS browser) — callers must
+ * no vibration motor exposed to the web (every iOS browser) \u2014 callers must
  * treat a haptic as a best-effort nicety, never as confirmation of anything.
  */
 export function vibrate(intensity: HapticIntensity): boolean {

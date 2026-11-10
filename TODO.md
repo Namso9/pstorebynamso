@@ -2,6 +2,122 @@
 
 ## Status
 
+2026-11-10 release acceptance: PASS. The owner approved the final phone test
+and authorized commit/push/production deployment. Release source is prepared
+on upstream 48512b2 in /private/tmp/pstore-ios-motion-release-20261110, keeping
+the current 46-product catalog and dependency security fixes. All checks pass;
+the release dependency audit reports zero vulnerabilities. The local approved
+checkpoint is 107f4f0. See integration/RELEASE_20261110.md for publication state.
+Older pending-preview and dependency findings below are historical.
+
+2026-11-10 owner phone acceptance: PASS. The owner confirmed all changes in
+the final 9d924b8d preview work on a phone and explicitly authorized commit,
+push and production deployment. Release preparation preserves current upstream
+catalog/content and dependency fixes. Production verification will be recorded
+after deployment. Older pending-preview entries below are historical.
+
+iOS-inspired motion refinement (2026-11-10): PREVIEW, PHONE TEST PENDING.
+
+- Native forward/back navigation now uses opaque, layered push/pop movement
+  with matched 440ms timing. The previous page recedes beneath the next page;
+  the reverse direction reveals it. Header stays stationary.
+- Dialogs retain their different directions, with shorter travel and restrained
+  springs (480ms opening, 320ms closing). Home zoom is subtler. Older-browser
+  and history entry use smaller directional movement without fading to blank.
+  First paint, reduced motion, focus, URLs and cancellation remain protected.
+- Build, lint (four existing warnings), typecheck, CSP, commerce, migration,
+  carousel and motion lifecycle/CSS invariants pass. All 14 served assets
+  match the build. The audit retains 16 findings; 93 protected hashes match.
+- Test: https://9d924b8d.pstorebynamso.pages.dev/
+  Alias: https://homepage-perf-test.pstorebynamso.pages.dev/
+  Home/Music return HTTP 200 with CSP/noindex. Production remains
+  001124df-b878-45d8-bf1a-d96e63e24ab4. No commit or push.
+  Physical phone smoothness/visual acceptance remains pending.
+
+Directional motion update (2026-11-10): PREVIEW, PENDING PHONE TEST.
+
+- Forward/detail navigation enters from the right; back/parent navigation
+  enters from the left. Category links use their relative catalog order.
+  Browser Back/Forward tracks visited routes, including Forward from home.
+- Home uses a soft zoom; information pages use a vertical fade. Route entry
+  lasts 420ms and exit 200ms. Native snapshots and older-browser fallback use
+  matching directions. Reduced motion, immediate first paint, URLs, focus,
+  cancellation and scroll cleanup are preserved.
+- Search drops from above (320ms), plans rise from below (320ms), reviews
+  zoom in (320ms); all close in the reverse direction (200ms).
+- Lint (four existing warnings), typecheck, build, CSP, commerce, migration,
+  carousel and expanded offline motion checks pass. Audit retains 16 findings.
+  All 93 protected catalog/content/Function/dependency hashes are unchanged.
+- Preview: https://e6ee3fd5.pstorebynamso.pages.dev/
+  Alias: https://homepage-perf-test.pstorebynamso.pages.dev/
+  Home/Music return HTTP 200 with CSP and noindex. Production is unchanged at
+  001124df-b878-45d8-bf1a-d96e63e24ab4. No commit or push.
+- Physical phone acceptance remains pending. Test both navigation directions,
+  Back/Forward, search, plans and reviews in both themes and reduced motion.
+
+- [x] Inspect the owner's motion reference and replace the horizontal page
+  slide with sequential zoom/fade: 300ms out to 92%, 600ms in from 106%.
+- [x] Add older-browser exit/entry and safe Back/rapid-click cancellation.
+- [x] Deploy the refinement to the existing test preview, preserving production.
+- [x] Accept the new motion on a physical phone: home/category menu -> Music,
+  category switching, browser Back, search -> product and reduced motion.
+  Current test: `https://5642067d.pstorebynamso.pages.dev/`; alias:
+  `https://homepage-perf-test.pstorebynamso.pages.dev/`. Keep PENDING PHONE TEST.
+
+2026-11-10 production release `001124df-b878-45d8-bf1a-d96e63e24ab4` is live at
+`https://pstorebynamso.com/`, explicitly authorized by the owner. Includes
+homepage performance improvements, current category/page and dialog motion,
+and the product-title double-tap shortcut. Lint, typecheck, build, CSP,
+commerce, route, motion and carousel checks pass. Live homepage asset
+references match the export. Chrome touch emulation passes search -> detail
+-> double-tap -> plans -> close for ChatGPT Plus and Spotify on production.
+Physical phone performance acceptance remains pending. Dependency audit
+retains 16 findings (7 moderate, 8 high, 1 critical). Source edits remain
+uncommitted. Rollback deployment is `b2551cdb-7367-43d8-80d3-071bf3a35105`.
+
+
+- [x] Add short page, plans/search/review dialog, FAQ and menu transitions,
+  preserving immediate initial content and supporting reduced motion.
+- [x] Check motion lifecycle offline, including cancelled navigation, focus,
+  rapid dialog reopen, overlapping exits and scroll-lock cleanup.
+- [x] Upload motion transitions to the existing Cloudflare test preview and
+  verify served pages/assets, preview headers and unchanged production.
+- [x] Review the motion preview on phones at 360/390/430px in both themes,
+  including search keyboard, FAQ opening/closing, title double-tap and reduced
+  motion. Current preview: `https://5642067d.pstorebynamso.pages.dev/` (alias:
+  `https://homepage-perf-test.pstorebynamso.pages.dev/`). Keep PENDING PHONE TEST
+  until the owner confirms an improvement without regressions.
+
+- [x] Add a hidden double-tap shortcut on every product detail title to open
+  the live View Plans dialog. Preview deployed for phone testing.
+- [x] Verify search -> detail -> title double-tap -> plans -> close for
+  ChatGPT Plus and Spotify using Chrome touch emulation. The owner's reported
+  failure was on production, which serves the earlier build. Test the preview.
+- [x] Confirm the title double-tap opens and closes View Plans on a phone,
+  including ChatGPT Plus and another product.
+- [x] Commit imported source checkpoint (`b956117`).
+- [x] Implement homepage performance steps 1-3, retaining the rotating hero.
+- [x] Confirm the Cloudflare preview feels faster on a phone before marking
+  performance PASS. See `integration/PERFORMANCE_TEST.md`.
+
+2026-11-10: The latest website source from `newsite_clean/orbit` is now the
+active `src/` tree in this Git project. See `integration/HANDOFF.md`.
+
+- [x] Preserve Git history/index and recover every pre-existing local edit.
+- [x] Import the current design and assets without changing root catalog data,
+  content, canonical images or Pages Functions.
+- [x] Pass lint, typecheck, static build, CSP, offline commerce checks for both
+  catalog snapshots, route/asset checks and file-preservation checks.
+- [x] Retain the Desktop source and `.migration-backups/20261110-orbit-source/`.
+- [ ] Resolve the existing dependency audit before treating this as a clean
+  release: 16 findings, including one critical; dependencies are unchanged.
+- [ ] Review the historical Zoom price assertion separately. Its expected
+  prices differ from the preserved local catalog; the import changes no prices.
+- [ ] Perform owner-authorized browser/phone and production verification for
+  a future release. This consolidation does not commit, push or deploy.
+
+## Historical status (2026-08-23)
+
 Current stage (2026-08-23): the migration (P0-P9) and all follow-up polish,
 haptics, FAQ/review, Ask Price, and checkout work are complete and live. Two
 2026-08-23 additions are now shipped:

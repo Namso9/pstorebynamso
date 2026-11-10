@@ -55,7 +55,7 @@ export type OrderFormCardProps = {
   /**
    * Fired the moment the customer puts anything into this form. The step above
    * uses it to stop swapping the form out for a stock notice once there is
-   * work — or a submitted order — to lose.
+   * work \u2014 or a submitted order \u2014 to lose.
    */
   onEngaged?: () => void;
   /**
@@ -74,7 +74,7 @@ export type OrderFormCardProps = {
   engaged?: boolean;
   /**
    * True when the payment step renders above this card and has already shown
-   * the Ask Price notice — this card must not repeat it.
+   * the Ask Price notice \u2014 this card must not repeat it.
    */
   askPriceHandledAbove?: boolean;
   /** `h2` where the page already carries its own `h1` above the card. */
@@ -84,7 +84,7 @@ export type OrderFormCardProps = {
 const MAIL_REQUIRED_PRODUCTS = new Set(["zoom", "canva", "duolingo"]);
 /**
  * Products whose order cannot be fulfilled without the SIM number the data is
- * loaded onto. Mirrored server-side in `functions/api/order.js` — a client-side
+ * loaded onto. Mirrored server-side in `functions/api/order.js` \u2014 a client-side
  * `required` is not a validation. Keep the two lists in step, and note that
  * `resolveProductIdFromText` in `src/services/order.ts` is what makes a
  * hand-typed "Atom 24GB" resolve to an id in this set.
@@ -92,12 +92,12 @@ const MAIL_REQUIRED_PRODUCTS = new Set(["zoom", "canva", "duolingo"]);
 const PHONE_REQUIRED_PRODUCTS = new Set(["atom-data", "mytel-data"]);
 const GEMINI_PRODUCT_ID = "gemini";
 const GEMINI_LINK_PLAN_ID = "18_months";
-const FILE_IDLE_TEXT = "Screenshot ရွေးရန် နှိပ်ပါ";
+const FILE_IDLE_TEXT = "Screenshot \u101b\u103d\u1031\u1038\u101b\u1014\u103a \u1014\u103e\u102d\u1015\u103a\u1015\u102b";
 /**
  * The same free-text rule the server applies in `functions/api/order.js`.
  * It MUST be checked here too: the server gates on this text as well as on
  * `product_id`, and `resolveProductIdFromText` returns on the first catalog
- * NAME match before it reaches its atom/mytel fallbacks — so "Tidal + Mytel
+ * NAME match before it reaches its atom/mytel fallbacks \u2014 so "Tidal + Mytel
  * 22GB" resolves to `tidal`. Without this clause the field would be hidden
  * while the server demanded it, and the customer, who has already transferred
  * the money, would get a 400 with nothing on screen left to fill in.
@@ -122,11 +122,11 @@ function errorKind(message: string, name: string): Extract<SubmitResult, { statu
 function ErrorMessage({ kind }: { kind: Extract<SubmitResult, { status: "error" }> ["kind"] }) {
   const fallback = (
     <>
-      {" "}(သို့) Telegram Bot{" "}
+      {" "}(&#4126;&#4141;&#4143;&#4151;) Telegram Bot{" "}
       <a href="https://t.me/PSNamso_bot" target="_blank" rel="noopener noreferrer">
         @PSNamso_bot
       </a>{" "}
-      (သို့){" "}
+      (&#4126;&#4141;&#4143;&#4151;){" "}
       <a
         href="https://www.messenger.com/t/happyyou2020"
         target="_blank"
@@ -134,51 +134,51 @@ function ErrorMessage({ kind }: { kind: Extract<SubmitResult, { status: "error" 
       >
         Page Messenger
       </a>{" "}
-      ကနေ ဆက်သွယ်နိုင်ပါတယ်။
+      &#4096;&#4116;&#4145; &#4102;&#4096;&#4154;&#4126;&#4157;&#4122;&#4154;&#4116;&#4141;&#4143;&#4100;&#4154;&#4117;&#4139;&#4112;&#4122;&#4154;&#4171;
     </>
   );
 
   if (kind === "missing-file") {
     return (
-      <>ငွေလွှဲ Screenshot ရွေးပေးပါဦး — အပေါ်က “{FILE_IDLE_TEXT}” ကိုနှိပ်ပြီး ပုံရွေးပါ။</>
+      <>&#4100;&#4157;&#4145;&#4124;&#4157;&#4158;&#4146; Screenshot &#4123;&#4157;&#4145;&#4152;&#4117;&#4145;&#4152;&#4117;&#4139;&#4134;&#4152; &#8212; &#4129;&#4117;&#4145;&#4139;&#4154;&#4096; &#8220;{FILE_IDLE_TEXT}&#8221; &#4096;&#4141;&#4143;&#4116;&#4158;&#4141;&#4117;&#4154;&#4117;&#4156;&#4142;&#4152; &#4117;&#4143;&#4150;&#4123;&#4157;&#4145;&#4152;&#4117;&#4139;&#4171;</>
     );
   }
   if (kind === "file-too-large") {
-    return <>Screenshot ဖိုင်က 8MB ထက်ကြီးနေပါတယ်။ ပိုသေးတဲ့ပုံ ပြန်ရွေးပေးပါ။</>;
+    return <>Screenshot &#4118;&#4141;&#4143;&#4100;&#4154;&#4096; 8MB &#4113;&#4096;&#4154;&#4096;&#4156;&#4142;&#4152;&#4116;&#4145;&#4117;&#4139;&#4112;&#4122;&#4154;&#4171; &#4117;&#4141;&#4143;&#4126;&#4145;&#4152;&#4112;&#4146;&#4151;&#4117;&#4143;&#4150; &#4117;&#4156;&#4116;&#4154;&#4123;&#4157;&#4145;&#4152;&#4117;&#4145;&#4152;&#4117;&#4139;&#4171;</>;
   }
   if (kind === "unsupported-file") {
     return (
       <>
-        ဒီ screenshot ဖိုင်အမျိုးအစားကို လက်မခံပါ။ ပုံကို <strong>JPG / PNG</strong>{" "}
-        အနေနဲ့ ပြန်သိမ်းပြီး (iPhone ဆိုရင် screenshot ကို Photos ထဲကနေ share → save
-        အသစ်လုပ်ပြီး) ထပ်တင်ပေးပါ။
+        &#4114;&#4142; screenshot &#4118;&#4141;&#4143;&#4100;&#4154;&#4129;&#4121;&#4155;&#4141;&#4143;&#4152;&#4129;&#4101;&#4140;&#4152;&#4096;&#4141;&#4143; &#4124;&#4096;&#4154;&#4121;&#4097;&#4150;&#4117;&#4139;&#4171; &#4117;&#4143;&#4150;&#4096;&#4141;&#4143; <strong>JPG / PNG</strong>{" "}
+        &#4129;&#4116;&#4145;&#4116;&#4146;&#4151; &#4117;&#4156;&#4116;&#4154;&#4126;&#4141;&#4121;&#4154;&#4152;&#4117;&#4156;&#4142;&#4152; (iPhone &#4102;&#4141;&#4143;&#4123;&#4100;&#4154; screenshot &#4096;&#4141;&#4143; Photos &#4113;&#4146;&#4096;&#4116;&#4145; share &#8594; save
+        &#4129;&#4126;&#4101;&#4154;&#4124;&#4143;&#4117;&#4154;&#4117;&#4156;&#4142;&#4152;) &#4113;&#4117;&#4154;&#4112;&#4100;&#4154;&#4117;&#4145;&#4152;&#4117;&#4139;&#4171;
       </>
     );
   }
   if (kind === "missing-fields") {
-    return <>လိုအပ်တဲ့ အချက်အလက် မပြည့်စုံသေးပါ — * ပါတဲ့ အကွက်အားလုံး ဖြည့်ပေးပါ။</>;
+    return <>&#4124;&#4141;&#4143;&#4129;&#4117;&#4154;&#4112;&#4146;&#4151; &#4129;&#4097;&#4155;&#4096;&#4154;&#4129;&#4124;&#4096;&#4154; &#4121;&#4117;&#4156;&#4106;&#4151;&#4154;&#4101;&#4143;&#4150;&#4126;&#4145;&#4152;&#4117;&#4139; &#8212; * &#4117;&#4139;&#4112;&#4146;&#4151; &#4129;&#4096;&#4157;&#4096;&#4154;&#4129;&#4140;&#4152;&#4124;&#4143;&#4150;&#4152; &#4118;&#4156;&#4106;&#4151;&#4154;&#4117;&#4145;&#4152;&#4117;&#4139;&#4171;</>;
   }
   if (kind === "bad-phone") {
     return (
       <>
-        Data ထည့်မည့် ဖုန်းနံပါတ်ကို <strong>09xxxxxxxxx</strong> ပုံစံဖြင့်
-        ပြန်ရေးပေးပါ။{fallback}
+        Data &#4113;&#4106;&#4151;&#4154;&#4121;&#4106;&#4151;&#4154; &#4118;&#4143;&#4116;&#4154;&#4152;&#4116;&#4150;&#4117;&#4139;&#4112;&#4154;&#4096;&#4141;&#4143; <strong>09xxxxxxxxx</strong> &#4117;&#4143;&#4150;&#4101;&#4150;&#4118;&#4156;&#4100;&#4151;&#4154;
+        &#4117;&#4156;&#4116;&#4154;&#4123;&#4145;&#4152;&#4117;&#4145;&#4152;&#4117;&#4139;&#4171;{fallback}
       </>
     );
   }
   if (kind === "delivery") {
-    return <>Order က Admin ဆီ မရောက်သေးပါ။ ခဏနေ ထပ်ကြိုးစားပါ{fallback}</>;
+    return <>Order &#4096; Admin &#4102;&#4142; &#4121;&#4123;&#4145;&#4140;&#4096;&#4154;&#4126;&#4145;&#4152;&#4117;&#4139;&#4171; &#4097;&#4111;&#4116;&#4145; &#4113;&#4117;&#4154;&#4096;&#4156;&#4141;&#4143;&#4152;&#4101;&#4140;&#4152;&#4117;&#4139;{fallback}</>;
   }
   if (kind === "timeout") {
     return (
       <>
-        Order ပို့တာ အချိန်ကြာနေလို့ ရပ်လိုက်ပါတယ်။{" "}
-        <strong>Order က ရောက်နှင့်ပြီး ဖြစ်နေနိုင်ပါတယ်</strong> — ထပ်မတင်ခင် အောက်က
-        လမ်းကြောင်းတစ်ခုကနေ Admin ကို အရင် စစ်ပေးပါ။{fallback}
+        Order &#4117;&#4141;&#4143;&#4151;&#4112;&#4140; &#4129;&#4097;&#4155;&#4141;&#4116;&#4154;&#4096;&#4156;&#4140;&#4116;&#4145;&#4124;&#4141;&#4143;&#4151; &#4123;&#4117;&#4154;&#4124;&#4141;&#4143;&#4096;&#4154;&#4117;&#4139;&#4112;&#4122;&#4154;&#4171;{" "}
+        <strong>Order &#4096; &#4123;&#4145;&#4140;&#4096;&#4154;&#4116;&#4158;&#4100;&#4151;&#4154;&#4117;&#4156;&#4142;&#4152; &#4118;&#4156;&#4101;&#4154;&#4116;&#4145;&#4116;&#4141;&#4143;&#4100;&#4154;&#4117;&#4139;&#4112;&#4122;&#4154;</strong> &#8212; &#4113;&#4117;&#4154;&#4121;&#4112;&#4100;&#4154;&#4097;&#4100;&#4154; &#4129;&#4145;&#4140;&#4096;&#4154;&#4096;
+        &#4124;&#4121;&#4154;&#4152;&#4096;&#4156;&#4145;&#4140;&#4100;&#4154;&#4152;&#4112;&#4101;&#4154;&#4097;&#4143;&#4096;&#4116;&#4145; Admin &#4096;&#4141;&#4143; &#4129;&#4123;&#4100;&#4154; &#4101;&#4101;&#4154;&#4117;&#4145;&#4152;&#4117;&#4139;&#4171;{fallback}
       </>
     );
   }
-  return <>Order ပို့မရသေးပါ။ Internet ပြန်စစ်ပြီး ထပ်ကြိုးစားပါ{fallback}</>;
+  return <>Order &#4117;&#4141;&#4143;&#4151;&#4121;&#4123;&#4126;&#4145;&#4152;&#4117;&#4139;&#4171; Internet &#4117;&#4156;&#4116;&#4154;&#4101;&#4101;&#4154;&#4117;&#4156;&#4142;&#4152; &#4113;&#4117;&#4154;&#4096;&#4156;&#4141;&#4143;&#4152;&#4101;&#4140;&#4152;&#4117;&#4139;{fallback}</>;
 }
 
 /**
@@ -198,7 +198,7 @@ function OrderDoneCard({
   headingLevel: "h1" | "h2";
 }) {
   // This card replaces the form, so it also inherits its place in the document
-  // outline — on /order/ it is the page's only heading.
+  // outline \u2014 on /order/ it is the page's only heading.
   const Heading = headingLevel;
   return (
     <section
@@ -211,16 +211,16 @@ function OrderDoneCard({
         ref={panelRef}
       >
         <Heading id="order-done-title" className="order-result__title">
-          ✓ Order တင်ပြီးပါပြီ!
+          &#10003; Order &#4112;&#4100;&#4154;&#4117;&#4156;&#4142;&#4152;&#4117;&#4139;&#4117;&#4156;&#4142;!
         </Heading>
         <p>
           Order ID: <strong>{result.orderId}</strong>
         </p>
         <p>
-          Admin က သင့် Viber (သို့) Telegram ကနေ မကြာခင် ဆက်သွယ်ပြီး Account
-          ပို့ပေးပါမယ်။
+          Admin &#4096; &#4126;&#4100;&#4151;&#4154; Viber (&#4126;&#4141;&#4143;&#4151;) Telegram &#4096;&#4116;&#4145; &#4121;&#4096;&#4156;&#4140;&#4097;&#4100;&#4154; &#4102;&#4096;&#4154;&#4126;&#4157;&#4122;&#4154;&#4117;&#4156;&#4142;&#4152; Account
+          &#4117;&#4141;&#4143;&#4151;&#4117;&#4145;&#4152;&#4117;&#4139;&#4121;&#4122;&#4154;&#4171;
         </p>
-        <p>မေးစရာရှိရင် Order ID နဲ့ ဆက်သွယ်ပါ။</p>
+        <p>&#4121;&#4145;&#4152;&#4101;&#4123;&#4140;&#4123;&#4158;&#4141;&#4123;&#4100;&#4154; Order ID &#4116;&#4146;&#4151; &#4102;&#4096;&#4154;&#4126;&#4157;&#4122;&#4154;&#4117;&#4139;&#4171;</p>
         <div className="order-result__actions">
           <a
             className="button button--primary button--md"
@@ -299,7 +299,7 @@ export function OrderFormCard({
     onDone(result.status === "success");
   }, [onDone, result.status]);
 
-  // Outcome haptic, plus bringing the outcome into view — on a phone both the
+  // Outcome haptic, plus bringing the outcome into view \u2014 on a phone both the
   // success panel and the error panel render below a form taller than the
   // screen. `result` (not `result.status`) is the dependency on purpose: every
   // setResult produces a new object, so a second failed attempt buzzes again
@@ -355,8 +355,8 @@ export function OrderFormCard({
     if (askPriceHandledAbove) return null;
     return (
       <section className="order-form-card-next checkout-unavailable" role="status">
-        <Heading id="order-form-title"><Icon name="file" />Order မတင်ခင် မေးပေးပါ</Heading>
-        <p>ဒီ plan အတွက် ငွေမလွှဲခင် လက်ရှိစျေးနှုန်းနဲ့ order availability ကို Admin ကို အရင်မေးပေးပါ။</p>
+        <Heading id="order-form-title"><Icon name="file" />Order &#4121;&#4112;&#4100;&#4154;&#4097;&#4100;&#4154; &#4121;&#4145;&#4152;&#4117;&#4145;&#4152;&#4117;&#4139;</Heading>
+        <p>&#4114;&#4142; plan &#4129;&#4112;&#4157;&#4096;&#4154; &#4100;&#4157;&#4145;&#4121;&#4124;&#4157;&#4158;&#4146;&#4097;&#4100;&#4154; &#4124;&#4096;&#4154;&#4123;&#4158;&#4141;&#4101;&#4155;&#4145;&#4152;&#4116;&#4158;&#4143;&#4116;&#4154;&#4152;&#4116;&#4146;&#4151; order availability &#4096;&#4141;&#4143; Admin &#4096;&#4141;&#4143; &#4129;&#4123;&#4100;&#4154;&#4121;&#4145;&#4152;&#4117;&#4145;&#4152;&#4117;&#4139;&#4171;</p>
         <div className="plan-contact-row">
           <a
             className="button button--primary button--md"
@@ -515,13 +515,13 @@ export function OrderFormCard({
 
   return (
     <section className="order-form-card-next" aria-labelledby="order-form-title">
-      <Heading id="order-form-title"><Icon name="file" />Order တင်ရန်</Heading>
+      <Heading id="order-form-title"><Icon name="file" />Order &#4112;&#4100;&#4154;&#4123;&#4116;&#4154;</Heading>
       {/* A customer reading this has already transferred money. Anything that
           reads as "or do something else instead" belongs before that point,
-          not here — say what to do and what happens next. */}
+          not here \u2014 say what to do and what happens next. */}
       <p className="order-form-card-next__intro">
-        အချက်အလက်ဖြည့်ပြီး ငွေလွှဲ screenshot တင်ပါ။ Admin က သင့်{" "}
-        <strong>Viber (သို့) Telegram</strong> ကနေ Account ပို့ပေးပါမယ်။
+        &#4129;&#4097;&#4155;&#4096;&#4154;&#4129;&#4124;&#4096;&#4154;&#4118;&#4156;&#4106;&#4151;&#4154;&#4117;&#4156;&#4142;&#4152; &#4100;&#4157;&#4145;&#4124;&#4157;&#4158;&#4146; screenshot &#4112;&#4100;&#4154;&#4117;&#4139;&#4171; Admin &#4096; &#4126;&#4100;&#4151;&#4154;{" "}
+        <strong>Viber (&#4126;&#4141;&#4143;&#4151;) Telegram</strong> &#4096;&#4116;&#4145; Account &#4117;&#4141;&#4143;&#4151;&#4117;&#4145;&#4152;&#4117;&#4139;&#4121;&#4122;&#4154;&#4171;
       </p>
 
       <form onSubmit={submitOrder} onInput={clearOutcome}>
@@ -533,14 +533,14 @@ export function OrderFormCard({
         <input type="hidden" name="plan_id" value={prefilledPlanId} />
 
         <div className="order-field">
-          <label htmlFor="order-name">နာမည် *</label>
+          <label htmlFor="order-name">&#4116;&#4140;&#4121;&#4106;&#4154; *</label>
           <input
             id="order-name"
             name="name"
             type="text"
             required
             maxLength={60}
-            placeholder="သင့်နာမည်"
+            placeholder="&#4126;&#4100;&#4151;&#4154;&#4116;&#4140;&#4121;&#4106;&#4154;"
             autoComplete="name"
             value={name}
             onChange={(event) => setName(event.target.value)}
@@ -548,22 +548,22 @@ export function OrderFormCard({
         </div>
 
         <div className="order-field">
-          <label htmlFor="order-product">ဝယ်ယူလိုသည့် ပစ္စည်း *</label>
+          <label htmlFor="order-product">&#4125;&#4122;&#4154;&#4122;&#4144;&#4124;&#4141;&#4143;&#4126;&#4106;&#4151;&#4154; &#4117;&#4101;&#4153;&#4101;&#4106;&#4154;&#4152; *</label>
           <input
             id="order-product"
             name="product"
             type="text"
             required
             maxLength={120}
-            placeholder="ဥပမာ - Netflix 1 Month"
+            placeholder="&#4133;&#4117;&#4121;&#4140; - Netflix 1 Month"
             value={productText}
             onChange={(event) => updateProduct(event.target.value)}
             aria-describedby={showOutOfStock ? "order-stock-warning" : undefined}
           />
           {showOutOfStock ? (
             <p id="order-stock-warning" className="order-stock-warning" role="alert">
-              သတိပြုရန် — ဒီ plan က လောလောဆယ် stock မရှိပါ။ Order တင်ထားရင် stock
-              ပြန်ရှိချိန် Admin က အကြောင်းပြန်ပါမယ်။
+              &#4126;&#4112;&#4141;&#4117;&#4156;&#4143;&#4123;&#4116;&#4154; &#8212; &#4114;&#4142; plan &#4096; &#4124;&#4145;&#4140;&#4124;&#4145;&#4140;&#4102;&#4122;&#4154; stock &#4121;&#4123;&#4158;&#4141;&#4117;&#4139;&#4171; Order &#4112;&#4100;&#4154;&#4113;&#4140;&#4152;&#4123;&#4100;&#4154; stock
+              &#4117;&#4156;&#4116;&#4154;&#4123;&#4158;&#4141;&#4097;&#4155;&#4141;&#4116;&#4154; Admin &#4096; &#4129;&#4096;&#4156;&#4145;&#4140;&#4100;&#4154;&#4152;&#4117;&#4156;&#4116;&#4154;&#4117;&#4139;&#4121;&#4122;&#4154;&#4171;
             </p>
           ) : null}
         </div>
@@ -574,7 +574,7 @@ export function OrderFormCard({
             a hidden input Chrome cannot focus dead-ends the whole submit with
             "an invalid form control is not focusable". */}
         <div className="order-field" hidden={!phoneRequired}>
-          <label htmlFor="order-phone">Data ထည့်မည့် ဖုန်းနံပါတ် *</label>
+          <label htmlFor="order-phone">Data &#4113;&#4106;&#4151;&#4154;&#4121;&#4106;&#4151;&#4154; &#4118;&#4143;&#4116;&#4154;&#4152;&#4116;&#4150;&#4117;&#4139;&#4112;&#4154; *</label>
           <input
             id="order-phone"
             name="phone"
@@ -585,26 +585,26 @@ export function OrderFormCard({
             placeholder="09xxxxxxxxx"
             autoComplete={phoneRequired ? "tel" : "off"}
             pattern={phoneRequired ? MM_PHONE_PATTERN : undefined}
-            title="Data ထည့်ပေးရမည့် နံပါတ်ကို 09xxxxxxxxx ပုံစံဖြင့် ရေးပါ"
+            title="Data &#4113;&#4106;&#4151;&#4154;&#4117;&#4145;&#4152;&#4123;&#4121;&#4106;&#4151;&#4154; &#4116;&#4150;&#4117;&#4139;&#4112;&#4154;&#4096;&#4141;&#4143; 09xxxxxxxxx &#4117;&#4143;&#4150;&#4101;&#4150;&#4118;&#4156;&#4100;&#4151;&#4154; &#4123;&#4145;&#4152;&#4117;&#4139;"
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
           />
           <p className="order-field__hint">
-            Data ထည့်ပေးမည့် နံပါတ်ကို အတိအကျ ရေးပါ။ အောက်က Contact နဲ့
-            မတူညီလည်း ရပါတယ် — Contact က ပြန်ဆက်သွယ်ရန်၊ ဒါက data ဝင်မည့် SIM ပါ။
+            Data &#4113;&#4106;&#4151;&#4154;&#4117;&#4145;&#4152;&#4121;&#4106;&#4151;&#4154; &#4116;&#4150;&#4117;&#4139;&#4112;&#4154;&#4096;&#4141;&#4143; &#4129;&#4112;&#4141;&#4129;&#4096;&#4155; &#4123;&#4145;&#4152;&#4117;&#4139;&#4171; &#4129;&#4145;&#4140;&#4096;&#4154;&#4096; Contact &#4116;&#4146;&#4151;
+            &#4121;&#4112;&#4144;&#4106;&#4142;&#4124;&#4106;&#4154;&#4152; &#4123;&#4117;&#4139;&#4112;&#4122;&#4154; &#8212; Contact &#4096; &#4117;&#4156;&#4116;&#4154;&#4102;&#4096;&#4154;&#4126;&#4157;&#4122;&#4154;&#4123;&#4116;&#4154;&#4170; &#4114;&#4139;&#4096; data &#4125;&#4100;&#4154;&#4121;&#4106;&#4151;&#4154; SIM &#4117;&#4139;&#4171;
           </p>
         </div>
 
         <div className="order-field" hidden={!showMailField}>
           <label htmlFor="order-mail">
-            {mailRequired ? "Upgrade လုပ်မည့် သင့် Email *" : "Gmail (optional)"}
+            {mailRequired ? "Upgrade \u101c\u102f\u1015\u103a\u1019\u100a\u1037\u103a \u101e\u1004\u1037\u103a Email *" : "Gmail (optional)"}
           </label>
           <input
             id="order-mail"
             name="customer_mail"
             /* While this field is hidden, a leftover value still fails email
                validation, and Chrome then refuses to submit with "an invalid
-               form control is not focusable" — a dead end the customer cannot
+               form control is not focusable" \u2014 a dead end the customer cannot
                see or fix. Dropping to `text` while hidden keeps the value and
                the multipart contract intact and only skips the format check. */
             type={showMailField ? "email" : "text"}
@@ -617,8 +617,8 @@ export function OrderFormCard({
           />
           <p className="order-field__hint">
             {mailRequired
-              ? "ဒီ product က သင့် mail ပေါ်မှာ တင်ပေးရတာမို့ Email ဖြည့်ပေးပါ။"
-              : "Gemini က သင့် Gmail + Password နဲ့ တင်ပေးရပါတယ်။ အခုမဖြည့်ချင်ရင် Admin ဆက်သွယ်လာချိန် ပေးလို့ရပါတယ်။"}
+              ? "\u1012\u102e product \u1000 \u101e\u1004\u1037\u103a mail \u1015\u1031\u102b\u103a\u1019\u103e\u102c \u1010\u1004\u103a\u1015\u1031\u1038\u101b\u1010\u102c\u1019\u102d\u102f\u1037 Email \u1016\u103c\u100a\u1037\u103a\u1015\u1031\u1038\u1015\u102b\u104b"
+              : "Gemini \u1000 \u101e\u1004\u1037\u103a Gmail + Password \u1014\u1032\u1037 \u1010\u1004\u103a\u1015\u1031\u1038\u101b\u1015\u102b\u1010\u101a\u103a\u104b \u1021\u1001\u102f\u1019\u1016\u103c\u100a\u1037\u103a\u1001\u103b\u1004\u103a\u101b\u1004\u103a Admin \u1006\u1000\u103a\u101e\u103d\u101a\u103a\u101c\u102c\u1001\u103b\u102d\u1014\u103a \u1015\u1031\u1038\u101c\u102d\u102f\u1037\u101b\u1015\u102b\u1010\u101a\u103a\u104b"}
           </p>
         </div>
 
@@ -641,12 +641,12 @@ export function OrderFormCard({
               checked={showPassword}
               onChange={(event) => setShowPassword(event.target.checked)}
             />
-            Password ပြရန်
+            Password &#4117;&#4156;&#4123;&#4116;&#4154;
           </label>
         </div>
 
         <div className="order-field">
-          <label htmlFor="order-payment">ငွေလွှဲထားသည့် နည်းလမ်း *</label>
+          <label htmlFor="order-payment">&#4100;&#4157;&#4145;&#4124;&#4157;&#4158;&#4146;&#4113;&#4140;&#4152;&#4126;&#4106;&#4151;&#4154; &#4116;&#4106;&#4154;&#4152;&#4124;&#4121;&#4154;&#4152; *</label>
           <select
             id="order-payment"
             name="payment"
@@ -656,7 +656,7 @@ export function OrderFormCard({
             value={payment || defaultPayment}
             onChange={(event) => setPayment(event.target.value)}
           >
-            <option value="">ရွေးပါ</option>
+            <option value="">&#4123;&#4157;&#4145;&#4152;&#4117;&#4139;</option>
             <option>KBZ Pay</option>
             <option>Wave Pay</option>
             <option>AYA Pay</option>
@@ -666,7 +666,7 @@ export function OrderFormCard({
 
         <div className="order-field">
           <label htmlFor="order-contact">
-            ပြန်ဆက်သွယ်ရန် Viber နံပါတ် သို့မဟုတ် Telegram Username *
+            &#4117;&#4156;&#4116;&#4154;&#4102;&#4096;&#4154;&#4126;&#4157;&#4122;&#4154;&#4123;&#4116;&#4154; Viber &#4116;&#4150;&#4117;&#4139;&#4112;&#4154; &#4126;&#4141;&#4143;&#4151;&#4121;&#4127;&#4143;&#4112;&#4154; Telegram Username *
           </label>
           <input
             id="order-contact"
@@ -674,17 +674,17 @@ export function OrderFormCard({
             type="text"
             required
             maxLength={40}
-            placeholder="09xxxxxxxxx (သို့) @username"
+            placeholder="09xxxxxxxxx (&#4126;&#4141;&#4143;&#4151;) @username"
             autoComplete="off"
             pattern={CONTACT_PATTERN}
-            title="Viber နံပါတ် (09xxxxxxxxx) သို့မဟုတ် Telegram username (@username) ဖြည့်ပေးပါ"
+            title="Viber &#4116;&#4150;&#4117;&#4139;&#4112;&#4154; (09xxxxxxxxx) &#4126;&#4141;&#4143;&#4151;&#4121;&#4127;&#4143;&#4112;&#4154; Telegram username (@username) &#4118;&#4156;&#4106;&#4151;&#4154;&#4117;&#4145;&#4152;&#4117;&#4139;"
             value={contact}
             onChange={(event) => setContact(event.target.value)}
           />
         </div>
 
         <div className="order-field">
-          <span className="order-field__label">ငွေလွှဲ Screenshot *</span>
+          <span className="order-field__label">&#4100;&#4157;&#4145;&#4124;&#4157;&#4158;&#4146; Screenshot *</span>
           <input
             ref={fileInputRef}
             className="order-file-input"
@@ -702,20 +702,20 @@ export function OrderFormCard({
             htmlFor="order-screenshot"
             data-haptic="light"
           >
-            <span aria-hidden="true">▣</span>
+            <span aria-hidden="true">&#9635;</span>
             <span>{file?.name || FILE_IDLE_TEXT}</span>
           </label>
-          <p className="order-field__hint order-field__hint--file">JPG, PNG, WebP နှင့် mobile image များ — အများဆုံး 8MB</p>
+          <p className="order-field__hint order-field__hint--file">JPG, PNG, WebP &#4116;&#4158;&#4100;&#4151;&#4154; mobile image &#4121;&#4155;&#4140;&#4152; &#8212; &#4129;&#4121;&#4155;&#4140;&#4152;&#4102;&#4143;&#4150;&#4152; 8MB</p>
         </div>
 
         <div className="order-field">
-          <label htmlFor="order-note">မှတ်ချက် (optional)</label>
+          <label htmlFor="order-note">&#4121;&#4158;&#4112;&#4154;&#4097;&#4155;&#4096;&#4154; (optional)</label>
           <textarea
             id="order-note"
             name="note"
             rows={2}
             maxLength={300}
-            placeholder="ထပ်ဖြည့်ပြောချင်တာရှိရင် ရေးပါ"
+            placeholder="&#4113;&#4117;&#4154;&#4118;&#4156;&#4106;&#4151;&#4154;&#4117;&#4156;&#4145;&#4140;&#4097;&#4155;&#4100;&#4154;&#4112;&#4140;&#4123;&#4158;&#4141;&#4123;&#4100;&#4154; &#4123;&#4145;&#4152;&#4117;&#4139;"
             value={note}
             onChange={(event) => setNote(event.target.value)}
           />
@@ -738,7 +738,7 @@ export function OrderFormCard({
           data-haptic="medium"
           disabled={result.status === "submitting"}
         >
-          {result.status === "submitting" ? "ပို့နေသည်…" : "Order တင်မယ်"}
+          {result.status === "submitting" ? "\u1015\u102d\u102f\u1037\u1014\u1031\u101e\u100a\u103a\u2026" : "Order \u1010\u1004\u103a\u1019\u101a\u103a"}
           {/* `submit` mode: on iOS the tap lands on the overlay switch, which
               would otherwise become the activation target and silently cancel
               the submission. It re-runs `requestSubmit()` on this button. */}

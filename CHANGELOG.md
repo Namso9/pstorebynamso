@@ -2,6 +2,117 @@
 
 ## Unreleased
 
+2026-11-10 release acceptance: PASS. The owner approved the final phone test
+and authorized commit/push/production deployment. Release source is prepared
+on upstream 48512b2 in /private/tmp/pstore-ios-motion-release-20261110, keeping
+the current 46-product catalog and dependency security fixes. All checks pass;
+the release dependency audit reports zero vulnerabilities. The local approved
+checkpoint is 107f4f0. See integration/RELEASE_20261110.md for publication state.
+Older pending-preview and dependency findings below are historical.
+
+2026-11-10 owner phone acceptance: PASS. The owner confirmed all changes in
+the final 9d924b8d preview work on a phone and explicitly authorized commit,
+push and production deployment. Release preparation preserves current upstream
+catalog/content and dependency fixes. Production verification will be recorded
+after deployment. Older pending-preview entries below are historical.
+
+iOS-inspired motion refinement (2026-11-10): PREVIEW, PHONE TEST PENDING.
+
+- Native forward/back navigation now uses opaque, layered push/pop movement
+  with matched 440ms timing. The previous page recedes beneath the next page;
+  the reverse direction reveals it. Header stays stationary.
+- Dialogs retain their different directions, with shorter travel and restrained
+  springs (480ms opening, 320ms closing). Home zoom is subtler. Older-browser
+  and history entry use smaller directional movement without fading to blank.
+  First paint, reduced motion, focus, URLs and cancellation remain protected.
+- Build, lint (four existing warnings), typecheck, CSP, commerce, migration,
+  carousel and motion lifecycle/CSS invariants pass. All 14 served assets
+  match the build. The audit retains 16 findings; 93 protected hashes match.
+- Test: https://9d924b8d.pstorebynamso.pages.dev/
+  Alias: https://homepage-perf-test.pstorebynamso.pages.dev/
+  Home/Music return HTTP 200 with CSP/noindex. Production remains
+  001124df-b878-45d8-bf1a-d96e63e24ab4. No commit or push.
+  Physical phone smoothness/visual acceptance remains pending.
+
+Directional motion update (2026-11-10): PREVIEW, PENDING PHONE TEST.
+
+- Forward/detail navigation enters from the right; back/parent navigation
+  enters from the left. Category links use their relative catalog order.
+  Browser Back/Forward tracks visited routes, including Forward from home.
+- Home uses a soft zoom; information pages use a vertical fade. Route entry
+  lasts 420ms and exit 200ms. Native snapshots and older-browser fallback use
+  matching directions. Reduced motion, immediate first paint, URLs, focus,
+  cancellation and scroll cleanup are preserved.
+- Search drops from above (320ms), plans rise from below (320ms), reviews
+  zoom in (320ms); all close in the reverse direction (200ms).
+- Lint (four existing warnings), typecheck, build, CSP, commerce, migration,
+  carousel and expanded offline motion checks pass. Audit retains 16 findings.
+  All 93 protected catalog/content/Function/dependency hashes are unchanged.
+- Preview: https://e6ee3fd5.pstorebynamso.pages.dev/
+  Alias: https://homepage-perf-test.pstorebynamso.pages.dev/
+  Home/Music return HTTP 200 with CSP and noindex. Production is unchanged at
+  001124df-b878-45d8-bf1a-d96e63e24ab4. No commit or push.
+- Physical phone acceptance remains pending. Test both navigation directions,
+  Back/Forward, search, plans and reviews in both themes and reduced motion.
+
+### Sequential page zoom (2026-11-10, test preview)
+
+- Match the owner's selected motion style: shrink/fade the outgoing page over
+  300ms, then settle/fade the incoming page from 106% over 600ms. Keep the
+  header still and initial content immediate. Search result navigation uses
+  the same transition. Older browsers receive a Web Animations fallback;
+  reduced motion and interrupted navigation remain supported.
+- Upload to the existing Cloudflare test preview. Production is unchanged by
+  this follow-up. Physical phone acceptance remains pending.
+
+2026-11-10 production release `001124df-b878-45d8-bf1a-d96e63e24ab4` is live at
+`https://pstorebynamso.com/`, explicitly authorized by the owner. Includes
+homepage performance improvements, current category/page and dialog motion,
+and the product-title double-tap shortcut. Lint, typecheck, build, CSP,
+commerce, route, motion and carousel checks pass. Live homepage asset
+references match the export. Chrome touch emulation passes search -> detail
+-> double-tap -> plans -> close for ChatGPT Plus and Spotify on production.
+Physical phone performance acceptance remains pending. Dependency audit
+retains 16 findings (7 moderate, 8 high, 1 critical). Source edits remain
+uncommitted. Rollback deployment is `b2551cdb-7367-43d8-80d3-071bf3a35105`.
+
+
+### Motion transitions (2026-11-10, test preview)
+
+- Add quick transitions to page navigation, plans/search/review dialogs, FAQs
+  and the category menu. Keep initial content immediate and disable the new
+  motion for reduced-motion preferences.
+- Keep dialog focus and scroll locking active through exit, restore focus on
+  closure or rapid reopen, and use client navigation for homepage category and
+  trending links without prefetching. Replace search-field width animation
+  with a short fade/translation. Uploaded to the existing Cloudflare test
+  preview with owner authorization; pages and assets are verified. Production
+  is unchanged. Phone visual acceptance remains pending.
+
+### Product detail shortcut (2026-11-10)
+
+- Double-tapping any product title on its detail page opens the existing View
+  Plans dialog. Normal title appearance and inline plan selection remain.
+  Uploaded to the Cloudflare test preview for phone acceptance.
+
+### Homepage performance preview (2026-11-10)
+
+- Show hero copy and sections immediately and stop offscreen carousel autoplay.
+  Retain the rotating hero. Preview testing is pending phone acceptance.
+
+### Website source consolidation (2026-11-10)
+
+- Imported the current website from `newsite_clean/orbit` into the existing Git
+  project, including its homepage, category/product pages, order design, local
+  fonts and public assets. Kept the Desktop source and a recoverable snapshot
+  of the retired frontend and local edits.
+- Retained catalog/content/image ownership, exact Pages Functions, Git history
+  and index, and dependency lockfile. Added current route/asset, offline commerce
+  and preservation checks. Allowed the new self-hosted fonts in strict CSP.
+- Adjusted internal footer links, device detection and curated static slugs to
+  satisfy this project's lint rules and retain redirect targets with both
+  catalog snapshots. No production deployment occurred.
+
 ### Added
 
 - A search-first homepage redesign. The hero is now a full-bleed solid

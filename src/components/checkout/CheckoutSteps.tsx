@@ -19,20 +19,20 @@ const STEPS: { key: CheckoutStepKey; label: string }[] = [
  * body below the rail is what resolves that.
  */
 const CAPTIONS: Record<CheckoutStepKey, string> = {
-  order: "အဆင့် ၁ / ၃ — Plan ရွေးပါ။",
-  payment: "အဆင့် ၂ / ၃ — ငွေပေးချေမှု အဆင့်။",
-  done: "အဆင့် ၃ / ၃ — Order ရောက်ပါပြီ။",
+  order: "\u1021\u1006\u1004\u1037\u103a \u1041 / \u1043 \u2014 Plan \u101b\u103d\u1031\u1038\u1015\u102b\u104b",
+  payment: "\u1021\u1006\u1004\u1037\u103a \u1042 / \u1043 \u2014 \u1004\u103d\u1031\u1015\u1031\u1038\u1001\u103b\u1031\u1019\u103e\u102f \u1021\u1006\u1004\u1037\u103a\u104b",
+  done: "\u1021\u1006\u1004\u1037\u103a \u1043 / \u1043 \u2014 Order \u101b\u1031\u102c\u1000\u103a\u1015\u102b\u1015\u103c\u102e\u104b",
 };
 
 const STATE_LABELS = {
-  done: "ပြီးပါပြီ",
-  current: "လက်ရှိအဆင့်",
-  todo: "မလုပ်ရသေး",
+  done: "\u1015\u103c\u102e\u1038\u1015\u102b\u1015\u103c\u102e",
+  current: "\u101c\u1000\u103a\u101b\u103e\u102d\u1021\u1006\u1004\u1037\u103a",
+  todo: "\u1019\u101c\u102f\u1015\u103a\u101b\u101e\u1031\u1038",
 } as const;
 
 /**
- * The Order → Payment → Done rail shown across checkout, so a customer can see
- * how many steps are left before they part with money. Presentation only — it
+ * The Order \u2192 Payment \u2192 Done rail shown across checkout, so a customer can see
+ * how many steps are left before they part with money. Presentation only \u2014 it
  * carries no links and no state of its own; each page passes the step it is on.
  */
 export function CheckoutSteps({ current, caption }: CheckoutStepsProps) {
@@ -56,10 +56,10 @@ export function CheckoutSteps({ current, caption }: CheckoutStepsProps) {
               ) : null}
               <span className="checkout-steps__pill">
                 <span className="checkout-steps__badge" aria-hidden="true">
-                  {state === "done" ? "✓" : index + 1}
+                  {state === "done" ? "\u2713" : index + 1}
                 </span>
                 <span className="checkout-steps__text">{step.label}</span>
-                <span className="sr-only"> — {STATE_LABELS[state]}</span>
+                <span className="sr-only"> &#8212; {STATE_LABELS[state]}</span>
               </span>
             </li>
           );

@@ -4,7 +4,31 @@ Premium Store by Namso storefront. Next.js App Router static export (`out/`,
 trailing slashes, unoptimized images), deployed to Cloudflare Pages. See
 `AI_CONTEXT.md` for the working agreements and `TODO.md` for the task queue.
 
-## Homepage design system (2026-08-24 redesign)
+## Active website source (2026-11-10)
+
+The active `src/` tree is the latest website imported from
+`/Users/ymp/Desktop/newsite_clean/orbit`. Work on the homepage in
+`src/app/page.tsx`, `src/components/Hero.tsx` and `src/app/globals.css`.
+The original Desktop folder remains intact. The retired frontend and all
+pre-existing local edits are retained in
+`.migration-backups/20261110-orbit-source/`.
+
+Root `products.json`, `data/`, `images/` and `functions/` retain their existing
+ownership and contents. Read `integration/HANDOFF.md` for the catalog snapshot
+differences, verification results and release limits.
+
+- `npm run dev`: Next design development; it does not execute Pages Functions.
+- `npm run build` then `npm start`: Pages preview at `http://localhost:3000`.
+- Current checks: `npm run lint`, `npm run typecheck`, `npm run build`,
+  `npm run csp:check`, `npm run integration:check`, `npm run migration:check`,
+  `npm run content-source:check`, and `npm audit`.
+- Import recovery check: `npm run migration:check -- --preservation`.
+
+Historical UI/browser QA scripts and the older design notes below refer to the
+retired frontend. The existing dependency audit has 16 findings and the old
+Zoom price assertion has a catalog-baseline mismatch; see the current handoff.
+
+## Archived homepage design system (2026-08-24)
 
 The homepage is a search-first, color-coded category grid. The rules:
 

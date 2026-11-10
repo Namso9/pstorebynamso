@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "prebuild": "node scripts/sync-live-data.mjs && node scripts/clean-static-export.mjs",
-    "build": "next build && node scripts/generate-static-csp.mjs",
+    "build": "next build --webpack && node scripts/generate-static-csp.mjs",
     "csp:check": "node scripts/generate-static-csp.mjs --check",
     "zoom:check": "node scripts/check-zoom-contract.mjs",
     "live-data:check": "node qa/live-data-proxy-check.mjs",
@@ -25,7 +25,10 @@
     "home-modal:check": "node qa/home-plan-modal-check.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "preview": "wrangler pages dev out --compatibility-date=2026-08-02"
+    "preview": "wrangler pages dev out --compatibility-date=2026-08-02 --port 3000",
+    "start": "npm run preview",
+    "integration:check": "node qa/commerce-integration-check.cjs && node qa/live-data-proxy-check.mjs",
+    "migration:check": "node qa/source-migration-check.mjs"
   },
   "dependencies": {
     "motion": "12.43.0",

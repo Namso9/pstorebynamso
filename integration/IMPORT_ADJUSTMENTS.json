@@ -1,0 +1,5 @@
+{
+  "src/components/BioscopeGuide.tsx": "Use a hydration-safe navigator snapshot to satisfy the existing project hooks lint rule without changing device selection.",
+  "src/components/Footer.tsx": "Use Next Link for internal navigation with prefetch disabled to satisfy the project lint rules and avoid background route downloads.",
+  "src/app/product/[slug]/page.tsx": "Export curated design slugs as well as preserved local catalog slugs, so Express legacy redirects still resolve when the two catalog snapshots differ."
+}

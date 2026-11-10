@@ -5,9 +5,10 @@ Read the larger documents only when the current task requires their details.
 
 ## Project Goal
 
-Migrate the existing static PStore website to a mobile-first Next.js application
-while preserving all content, catalog data, checkout behavior, Cloudflare
-Functions, URLs, SEO metadata, and production integrations.
+Maintain the mobile-first PStore storefront in this Git project. The active
+website source was imported from `/Users/ymp/Desktop/newsite_clean/orbit` on
+2026-11-10. Read `integration/HANDOFF.md` for the current source, verification,
+catalog boundaries and recovery instructions before using historical UI notes.
 
 ## Approved Stack
 
@@ -39,84 +40,201 @@ Functions, URLs, SEO metadata, and production integrations.
 
 ## Current Status
 
-- 2026-11-08 correction: Express VPN has exactly two One Device plans,
-  6 Months / 20,000 Ks and 1 Year / 35,000 Ks. Mail/password only; the FAQ
-  removes the PC key instructions. Bot uses existing Phone stock. Release
-  checkout: `.release/express-two-plans`. Code gates and production rollout
-  are recorded in root STATUS.md.
+2026-11-10 release acceptance: PASS. The owner approved the final phone test
+and authorized commit/push/production deployment. Release source is prepared
+on upstream 48512b2 in /private/tmp/pstore-ios-motion-release-20261110, keeping
+the current 46-product catalog and dependency security fixes. All checks pass;
+the release dependency audit reports zero vulnerabilities. The local approved
+checkpoint is 107f4f0. See integration/RELEASE_20261110.md for publication state.
+Older pending-preview and dependency findings below are historical.
 
-- 2026-11-08: Prepared a single Express VPN product ID `express_vpn` with
-  Phone and PC 6-month and 1-year plans. Perplexity 1 Month is 45,000 Ks;
-  ChatGPT shows only its 41,000 Ks plan; its FAQ reflects no warranty.
-  The bot accepts legacy Express links, and the panel operation updates the
-  SQLite mappings. This release checkout is `.release/catalog-nov08-final`.
-  Lint, typecheck, build, CSP, focused catalog checks, and npm audit pass.
-  Production status is tracked in root STATUS.md.
+2026-11-10 owner phone acceptance: PASS. The owner confirmed all changes in
+the final 9d924b8d preview work on a phone and explicitly authorized commit,
+push and production deployment. Release preparation preserves current upstream
+catalog/content and dependency fixes. Production verification will be recorded
+after deployment. Older pending-preview entries below are historical.
 
-- 2026-11-02: AI Movie Bot Credits prices are 100/220/330/550 credits at
-  15,000/30,000/45,000/75,000 Ks. The three larger plans are fulfilled manually
-  in the bot and panel; the website descriptions show only credit amounts.
-  Their old out-of-stock markers are removed. The four existing checkout
-  IDs are unchanged. The panel operation switches the larger bot plans to
-  manual order requests; the 100-credit plan still auto-delivers one code.
-  This release checkout is `.release/ai-movie-prices-final`. Local lint, typecheck,
-  build, CSP and catalog/fallback checks pass. Deployment status is in root
-  STATUS.md.
+iOS-inspired motion refinement (2026-11-10): PREVIEW, PHONE TEST PENDING.
 
-- 2026-10-29: Inspected the 10 existing Streaming FAQs; no Bioscope or AI Movie
-  overlap. Added the owner's four questions as one group at the end (14 total),
-  including three numbered redeem/download steps and the tutorial post
-  `https://t.me/premiumstorebzzz/562`. Ordered rich-text lists now display
-  decimal markers. Canonical source remains `data/faq.json`; build mirrors it.
-  Release checkout: `.release/streaming-movie-faq`.
+- Native forward/back navigation now uses opaque, layered push/pop movement
+  with matched 440ms timing. The previous page recedes beneath the next page;
+  the reverse direction reveals it. Header stays stationary.
+- Dialogs retain their different directions, with shorter travel and restrained
+  springs (480ms opening, 320ms closing). Home zoom is subtler. Older-browser
+  and history entry use smaller directional movement without fading to blank.
+  First paint, reduced motion, focus, URLs and cancellation remain protected.
+- Build, lint (four existing warnings), typecheck, CSP, commerce, migration,
+  carousel and motion lifecycle/CSS invariants pass. All 14 served assets
+  match the build. The audit retains 16 findings; 93 protected hashes match.
+- Test: https://9d924b8d.pstorebynamso.pages.dev/
+  Alias: https://homepage-perf-test.pstorebynamso.pages.dev/
+  Home/Music return HTTP 200 with CSP/noindex. Production remains
+  001124df-b878-45d8-bf1a-d96e63e24ab4. No commit or push.
+  Physical phone smoothness/visual acceptance remains pending.
 
-- 2026-10-29: ReelsCap layout stability fix: `usesProductBanner` in
-  `src/data/product-media.ts` keeps this product/logo compact even if an older
-  catalog response contains `imageLayout: banner`. ProductCard and PlanModal
-  use the same policy for initial HTML and live refreshes. The focused
-  `node qa/reelscap-layout-check.mjs` regression renders both components with
-  current and legacy catalog data and verifies identical compact markup.
+Directional motion update (2026-11-10): PREVIEW, PENDING PHONE TEST.
 
-- 2026-10-29: Release `c279161` uses the standard ReelsCap logo size, removes
-  Netflix Phone Basic, updates CapCut to 7 months / 110,000 Ks with its existing
-  ID, and adds Spotify Individual under Music Apps with the subtitle
-  `us,ca,asia mix region` and 3/6-month plans at 20,000/35,000 Ks. The shared
-  bot/panel catalog was updated by operation `b751158` with a private backup.
-  Lint, typecheck, build and CSP pass; dependency advisories are pre-existing.
-  Desktop browser preview awaits permission. Release checkout:
-  `.release/catalog-oct29-final`. The panel's concurrent FAQ deletion is kept.
+- Forward/detail navigation enters from the right; back/parent navigation
+  enters from the left. Category links use their relative catalog order.
+  Browser Back/Forward tracks visited routes, including Forward from home.
+- Home uses a soft zoom; information pages use a vertical fade. Route entry
+  lasts 420ms and exit 200ms. Native snapshots and older-browser fallback use
+  matching directions. Reduced motion, immediate first paint, URLs, focus,
+  cancellation and scroll cleanup are preserved.
+- Search drops from above (320ms), plans rise from below (320ms), reviews
+  zoom in (320ms); all close in the reverse direction (200ms).
+- Lint (four existing warnings), typecheck, build, CSP, commerce, migration,
+  carousel and expanded offline motion checks pass. Audit retains 16 findings.
+  All 93 protected catalog/content/Function/dependency hashes are unchanged.
+- Preview: https://e6ee3fd5.pstorebynamso.pages.dev/
+  Alias: https://homepage-perf-test.pstorebynamso.pages.dev/
+  Home/Music return HTTP 200 with CSP and noindex. Production is unchanged at
+  001124df-b878-45d8-bf1a-d96e63e24ab4. No commit or push.
+- Physical phone acceptance remains pending. Test both navigation directions,
+  Back/Forward, search, plans and reviews in both themes and reduced motion.
+
+- 2026-11-10 page motion refinement: owner-requested sequential zoom/fade is
+  uploaded to the existing `homepage-perf-test` branch. The outgoing page
+  shrinks to 92% and fades over 300ms; the next page settles from 106% over
+  600ms, with a stationary header. Native snapshots and an older-browser
+  fallback preserve immediate first paint, reduced motion, query/hash values
+  and Back cancellation. Search results use the same navigation. Preview:
+  `https://5642067d.pstorebynamso.pages.dev/`; alias:
+  `https://homepage-perf-test.pstorebynamso.pages.dev/`.
+  Build, lint (four existing warnings), typecheck, CSP, commerce, migration,
+  carousel and offline motion lifecycle checks pass. Audit retains 16 findings.
+  Status is PENDING PHONE TEST. This update is preview-only; production remains
+  `001124df-b878-45d8-bf1a-d96e63e24ab4`. No commit or push was made.
+
+2026-11-10 production release `001124df-b878-45d8-bf1a-d96e63e24ab4` is live at
+`https://pstorebynamso.com/`, explicitly authorized by the owner. Includes
+homepage performance improvements, current category/page and dialog motion,
+and the product-title double-tap shortcut. Lint, typecheck, build, CSP,
+commerce, route, motion and carousel checks pass. Live homepage asset
+references match the export. Chrome touch emulation passes search -> detail
+-> double-tap -> plans -> close for ChatGPT Plus and Spotify on production.
+Physical phone performance acceptance remains pending. Dependency audit
+retains 16 findings (7 moderate, 8 high, 1 critical). Source edits remain
+uncommitted. Rollback deployment is `b2551cdb-7367-43d8-80d3-071bf3a35105`.
+
+
+- 2026-11-10 shortcut verification: the owner reported failure on
+  `pstorebynamso.com`, whose production build predates the title shortcut.
+  Owner-authorized Chrome touch emulation verified search, detail navigation,
+  a single tap staying closed, a double-tap opening the correct live plans,
+  and close/scroll restoration for ChatGPT Plus and Spotify on
+  `https://homepage-perf-test.pstorebynamso.pages.dev/`. Direct touch tests also
+  passed on the original `116d2928` preview. The same gesture on production
+  reproduced the reported failure. Continue phone acceptance on the preview.
+
+- 2026-11-10 motion preview: visible page content gets a 220ms
+  transition on client navigation; initial content and live catalog refreshes
+  stay immediate. Plans, search and review dialogs use shared Motion entry/exit
+  animations (160-240ms), with focus trapping, focus return and scroll locking
+  through closure. FAQ/menu disclosures have lightweight CSS motion; FAQ height
+  transitions progressively enhance supporting browsers. Reduced motion skips
+  the new animations. Build, lint (four existing warnings), typecheck, CSP,
+  commerce, migration, carousel and offline motion lifecycle checks pass.
+  The audit retains 16 existing findings. No dependencies, catalog, Functions
+  or checkout contracts changed. Uploaded with owner authorization to the
+  existing test branch: `https://homepage-perf-test.pstorebynamso.pages.dev/`
+  (immutable `https://024bae1b.pstorebynamso.pages.dev/`). Preview pages return
+  HTTP 200; CSS/layout JavaScript match the local build byte for byte.
+  Preview noindex and CSP are present. Production deployment is unchanged.
+  Status: PENDING PHONE TEST; mark PASS only after owner acceptance.
+  Changes remain uncommitted; no Git push was performed.
+
+- 2026-11-10 product detail shortcut: double-tapping a product title now opens
+  the existing live View Plans dialog on every detail page. The shared
+  `/product-details/` fallback also uses it. Lint, typecheck, build, CSP,
+  commerce, migration and carousel checks pass. Uploaded to the existing
+  Cloudflare test preview at `https://homepage-perf-test.pstorebynamso.pages.dev/`
+  (immutable `https://116d2928.pstorebynamso.pages.dev/`). Phone gesture
+  acceptance is pending. Production and Git remote are unchanged; these edits
+  remain uncommitted, alongside the earlier performance edits.
+
+- 2026-11-10 performance preview: source baseline is now committed locally as
+  `b956117`, explicitly authorized by the owner. Steps 1-3 remove hero entrance
+  delays, make sections visible immediately and pause shared carousel autoplay
+  offscreen/hidden/reduced-motion. The rotating hero is unchanged. Preview:
+  `https://homepage-perf-test.pstorebynamso.pages.dev/`. Performance edits remain
+  uncommitted. Phone acceptance is PENDING; see `integration/PERFORMANCE_TEST.md`.
+  The import preservation command is a historical pre-commit gate; use the
+  ordinary migration check for subsequent intentional source changes.
+
+- 2026-11-10: Latest website source consolidated into this project: 98 source
+  files and 110 additional public assets. The complete previous frontend and
+  pre-existing edits are retained in
+  `.migration-backups/20261110-orbit-source/`, with Git patches and hash manifest.
+  Desktop `newsite_clean/orbit`, Git HEAD/refs/index, package lockfile, all 91
+  protected root catalog/content/image/Function files, and existing local
+  catalog changes are unchanged. The local 47-product/103-plan catalog is
+  intentionally retained; the imported 46-product/100-plan reference is tested
+  separately. No catalog publication or backend change was made.
+- Local validation: lint passes with four warnings; typecheck, webpack static
+  build, strict CSP, offline commerce tests against both catalogs, live-data
+  proxy checks, content mirrors and source-preservation checks pass. Export:
+  74 HTML pages, 50 redirects and 213 checked local references. Three small
+  import compatibility changes are listed in `integration/IMPORT_ADJUSTMENTS.json`.
+- Existing dependency audit reports 16 findings (7 moderate, 8 high, 1 critical).
+  The historical Zoom price assertion also fails against the preserved local
+  catalog. Neither the lockfile nor catalog was rewritten to hide these findings.
+  Browser/phone and live production order checks were not performed. No commit,
+  push, deployment, credential copy or deletion of the Desktop source occurred.
+- Active commands: `npm run dev` for Next design development; `npm run build`
+  followed by `npm start` for the existing Pages Functions preview at port 3000.
+  Historical browser QA scripts target the retired frontend. Current acceptance
+  commands and remaining release limits are in `integration/HANDOFF.md`.
+
+## Earlier release history
+
+The entries below describe the previous frontend and earlier deployments.
+
+- 2026-10-29: Streaming FAQ update `f0f4487` from release checkout
+  `.release/streaming-movie-faq`: inspected existing 10 entries for overlap,
+  added four Bioscope/AI Movie FAQs (14 total), kept the owner's wording and
+  tutorial post /562, and enabled decimal markers for ordered rich-text lists.
+  Lint, typecheck, build, CSP and source/export checks pass.
+
+- 2026-10-29: ReelsCap stability fix `9f991cc` in the release checkout
+  `.release/reelscap-stable`: a shared presentation policy keeps the card
+  and plan-dialog logo compact even when a legacy catalog says banner.
+  Current/legacy/current render regression, lint, typecheck, build and CSP pass.
+
+- 2026-10-29: Package release `c279161`: standard ReelsCap logo size; Netflix
+  Phone starts at 24,000 Ks with Basic removed; Spotify Individual in Music
+  Apps has `us,ca,asia mix region`, 3 months / 20,000 and 6 months / 35,000 Ks;
+  CapCut is 7 months / 110,000 Ks using its existing checkout ID. Bot/panel
+  catalog operation `b751158` is applied. Release checkout is
+  `.release/catalog-oct29-final`. Desktop browser preview awaits permission.
 
 - 2026-10-29: AI Movie Bot Credits is live in Streaming Apps. Release `889c131`
   renamed the product, changed plan descriptions to credits, and enabled bot
-  checkout for all four existing IDs. Prices remain 15,000/28,000/40,000/65,000
-  Ks, and `images/reelscap.jpg` remains the product image. The sale bot and
-  panel are deployed with matching mappings. Cloudflare Pages check succeeded;
-  the public catalog and rendered Streaming page show the new name and image.
-  No live order was submitted. The original checkout is behind upstream; the
-  product release checkout is `.release/ai-movie-release`.
+  checkout for all four existing IDs. One inventory code `c` equals 100 credits.
+  Prices remain 15,000/28,000/40,000/65,000 Ks, and `images/reelscap.jpg`
+  remains the product image. The sale bot and panel have matching mappings.
+  Cloudflare Pages succeeded; the public catalog and rendered page show the
+  new name and image. No live order was submitted. The original checkout is
+  behind upstream; the release checkout is `.release/ai-movie-release`.
 
-- 2026-10-29: The owner supplied a new ReelsCap logo for Short Drama Bot
-  Credits. The catalog now points to `images/reelscap.jpg`, displayed as the
-  wide product image on the Streaming card and plan dialog. The four credit
-  plans, prices, checkout, and product IDs are unchanged. The earlier price
-  flyer remains in the repository but is no longer the product image.
-  Release `1febb09` passed lint, typecheck, build, CSP, and export checks;
-  Cloudflare Pages reported a successful deployment. The normal production
-  page and catalog use the new image, and the served photo matches the source
-  SHA-256. No order was submitted.
+- 2026-10-29: The owner-supplied ReelsCap logo is live as the Short Drama Bot
+  Credits product image (release `1febb09`). It appears on the Streaming card
+  and plan dialog. Four plans, prices, checkout, and IDs are unchanged. The
+  normal production page and catalog use the new image; the served photo
+  matches the source SHA-256. No order was submitted. The earlier price flyer
+  remains in the repository but is no longer the product image.
 
-- 2026-10-29: Short Drama Bot Credits was added to Streaming Apps from the
-  owner's `IMG_0763.JPG`. The website has four plans: 100/200/300/500 credits
-  for 15,000/28,000/40,000/65,000 Ks. The supplied photo appears on the
-  product card and in the plan dialog. Checkout uses the website order form;
-  bot checkout awaits confirmed bot plan IDs. The catalog source is root
-  `products.json`; `prebuild` regenerates its public mirror. This release was
-  prepared from the latest `origin/main` to preserve panel catalog updates.
-  Commit `f5f343f` is live through the existing Pages Git integration. The
-  production Streaming page and catalog show the product and all four prices;
-  the served photo matches the source SHA-256. The payment route returns 200.
-  No live order was submitted. Lint, typecheck, build, CSP, and export checks
-  pass; `npm audit --omit=dev` reports 3 existing dependency advisories.
+- 2026-10-29 (shipped via release checkout): Added Short Drama Bot Credits under
+  Streaming Apps from the owner's `IMG_0763.JPG` photo. The four website plans
+  are 100/200/300/500 credits at 15,000/28,000/40,000/65,000 Ks. The photo
+  renders as a wide card image and in the plan dialog. These plans use the
+  website order form; bot checkout is intentionally absent until bot plan IDs
+  are confirmed. Lint, typecheck, build, CSP, catalog/export photo checks, and
+  diff check pass. `npm audit --omit=dev` reports 3 existing dependency
+  advisories (2 high, 1 critical); no dependency change was made. The local
+  branch remains behind upstream, and pre-existing review-33 edits were kept.
+  Release commit `f5f343f` is live. Production page, catalog, and photo hash
+  match the release; the payment route returns 200. No order was submitted.
 
 - 2026-10-26: Added the owner's Downloads photo `IMG_0623.heic` as
   `images/review33.webp` (1147 x 1805, about 78 KB) and appended it to the

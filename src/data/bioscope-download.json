@@ -1,0 +1,338 @@
+{
+  "updated": "23 Aug 2026",
+  "app": {
+    "name": "Bioscope",
+    "subtitle": "Myanmar Streaming App",
+    "tagline": "Bioscope app \u1000\u102d\u102f \u1016\u102f\u1014\u103a\u1038, TV, Computer \u1021\u101c\u102d\u102f\u1000\u103a official download link \u1010\u103d\u1031\u1014\u1032\u1037 \u1001\u103b\u1000\u103a\u1001\u103b\u1004\u103a\u1038 install \u101c\u102f\u1015\u103a\u1014\u102d\u102f\u1004\u103a\u1015\u102b\u1010\u101a\u103a\u104b",
+    "logo": "images/bioscope.webp",
+    "logoClass": "bioscope-logo"
+  },
+  "groups": [
+    {
+      "id": "phone",
+      "label": "Phone & Tablet",
+      "hint": "Android \u1016\u102f\u1014\u103a\u1038, iPhone, iPad",
+      "detect": [
+        "android",
+        "ios"
+      ]
+    },
+    {
+      "id": "tv",
+      "label": "TV & TV Box",
+      "hint": "Android TV, TV Box, Fire Stick",
+      "detect": [
+        "androidtv"
+      ]
+    },
+    {
+      "id": "computer",
+      "label": "Computer",
+      "hint": "Windows PC \u1014\u103e\u1004\u1037\u103a Mac",
+      "detect": [
+        "windows",
+        "mac"
+      ]
+    }
+  ],
+  "downloads": [
+    {
+      "id": "android-phone-apk",
+      "group": "phone",
+      "title": "Android Phone",
+      "note": "Android \u1016\u102f\u1014\u103a\u1038\u1021\u102c\u1038\u101c\u102f\u1036\u1038\u1021\u1010\u103d\u1000\u103a official APK file",
+      "kind": "apk",
+      "detect": "android",
+      "version": "2.2.1",
+      "size": "61.8 MB",
+      "action": "APK \u1000\u102d\u102f Download \u101c\u102f\u1015\u103a\u101b\u1014\u103a",
+      "href": "https://link.bioscopeapp.com/download/Bioscope-Android-V2.2.1.apk",
+      "featured": true
+    },
+    {
+      "id": "android-phone-play",
+      "group": "phone",
+      "title": "Google Play",
+      "note": "Play Store \u1019\u103e install \u101c\u102f\u1015\u103a\u101c\u102d\u102f\u101e\u1030\u1019\u103b\u102c\u1038\u1021\u1010\u103d\u1000\u103a",
+      "kind": "store",
+      "action": "Play Store \u1019\u103e\u102c \u1016\u103d\u1004\u1037\u103a\u101b\u1014\u103a",
+      "href": "https://play.google.com/store/apps/details?id=com.channelmyanmar.cmofficial"
+    },
+    {
+      "id": "ios-testflight",
+      "group": "phone",
+      "title": "iPhone / iPad",
+      "note": "TestFlight 1, 2, 4 \u1021\u102c\u1038\u101c\u102f\u1036\u1038 \u1021\u1010\u1030\u1010\u1030\u1015\u102b\u104b Beta full \u1019\u1016\u103c\u1005\u103a\u1014\u1031\u1010\u102c \u1010\u1005\u103a\u1001\u102f\u1001\u102f\u1000\u1014\u1031 \u101e\u103d\u1004\u103a\u1038\u101c\u102d\u102f\u1000\u103a\u1015\u102b \u2014 \u1010\u1005\u103a\u1001\u102f\u101e\u103d\u1004\u103a\u1038\u101b\u102f\u1036\u1014\u1032\u1037 \u101c\u102f\u1036\u101c\u1031\u102c\u1000\u103a\u1015\u102b\u1010\u101a\u103a\u104b",
+      "kind": "testflight",
+      "detect": "ios",
+      "action": "TestFlight 1",
+      "href": "https://testflight.apple.com/join/JKFM3C7G",
+      "alternates": [
+        {
+          "label": "TestFlight 2",
+          "href": "https://testflight.apple.com/join/cpVQNBWM"
+        },
+        {
+          "label": "TestFlight 4",
+          "href": "https://testflight.apple.com/join/sE1ZHAB2"
+        }
+      ]
+    },
+    {
+      "id": "android-tv-apk",
+      "group": "tv",
+      "title": "Android TV / TV Box",
+      "note": "Android TV, TV Box \u1014\u103e\u1004\u1037\u103a Fire Stick \u1021\u1010\u103d\u1000\u103a TV build",
+      "kind": "apk",
+      "detect": "androidtv",
+      "version": "1.1.2",
+      "size": "49.2 MB",
+      "action": "TV APK \u1000\u102d\u102f Download \u101c\u102f\u1015\u103a\u101b\u1014\u103a",
+      "href": "https://link.bioscopeapp.com/download/Bioscope-Android-TV-V1.1.2.apk",
+      "featured": true
+    },
+    {
+      "id": "windows-exe",
+      "group": "computer",
+      "title": "Windows PC",
+      "kind": "exe",
+      "detect": "windows",
+      "version": "1.2.1-F002",
+      "size": "27.4 MB",
+      "action": "Installer \u1000\u102d\u102f Download \u101c\u102f\u1015\u103a\u101b\u1014\u103a",
+      "href": "https://link.bioscopeapp.com/download/Bioscope-V1.2.1-F002.exe",
+      "featured": true
+    },
+    {
+      "id": "windows-zip",
+      "group": "computer",
+      "title": "Windows PC (Zip)",
+      "kind": "zip",
+      "version": "1.2.1-F002",
+      "size": "26.8 MB",
+      "action": "Zip \u1000\u102d\u102f Download \u101c\u102f\u1015\u103a\u101b\u1014\u103a",
+      "href": "https://link.bioscopeapp.com/download/Bioscope-V1.2.1-F002.zip"
+    },
+    {
+      "id": "mac-dmg",
+      "group": "computer",
+      "title": "Mac",
+      "note": "macOS \u1021\u1010\u103d\u1000\u103a disk image",
+      "kind": "dmg",
+      "detect": "mac",
+      "version": "1.1.3-F002",
+      "size": "43.4 MB",
+      "action": "Mac Version \u1000\u102d\u102f Download \u101c\u102f\u1015\u103a\u101b\u1014\u103a",
+      "href": "https://bioscopeapp.com/downloads/Bioscope-V1.1.3-F002.dmg"
+    }
+  ],
+  "guides": [
+    {
+      "group": "phone",
+      "sections": [
+        {
+          "title": "Android \u1016\u102f\u1014\u103a\u1038\u1019\u103e\u102c install \u101c\u102f\u1015\u103a\u1014\u100a\u103a\u1038",
+          "steps": [
+            {
+              "text": "\u1021\u1015\u1031\u102b\u103a\u1000 APK download button \u1000\u102d\u102f \u1014\u103e\u102d\u1015\u103a\u1015\u102b\u104b"
+            },
+            {
+              "text": "Settings \u2192 Security \u1011\u1032\u1000 \u201cInstall unknown apps\u201d \u1000\u102d\u102f \u1016\u103d\u1004\u1037\u103a\u1015\u1031\u1038\u1015\u102b\u104b"
+            },
+            {
+              "text": "Downloads folder \u1011\u1032\u1000 APK file \u1000\u102d\u102f \u1014\u103e\u102d\u1015\u103a\u1015\u103c\u102e\u1038 Install \u101c\u102f\u1015\u103a\u1015\u102b\u104b"
+            },
+            {
+              "text": "App \u1000\u102d\u102f \u1016\u103d\u1004\u1037\u103a\u1015\u103c\u102e\u1038 account \u1016\u103c\u1004\u1037\u103a sign in \u101d\u1004\u103a\u1015\u102b\u104b"
+            }
+          ]
+        },
+        {
+          "title": "iPhone / iPad \u1019\u103e\u102c install \u101c\u102f\u1015\u103a\u1014\u100a\u103a\u1038",
+          "steps": [
+            {
+              "kind": "note",
+              "text": "iOS \u1021\u1010\u103d\u1000\u103a Bioscope App install \u1015\u103c\u102f\u101c\u102f\u1015\u103a\u1014\u100a\u103a\u1038 \u1021\u1006\u1004\u1037\u103a\u1006\u1004\u1037\u103a\u1000\u102d\u102f \u1021\u1031\u102c\u1000\u103a\u1019\u103e\u102c \u1015\u103c\u101e\u1015\u1031\u1038\u1011\u102c\u1038\u1015\u102b\u1010\u101a\u103a\u104b \u1021\u1015\u1031\u102b\u103a\u1000 TestFlight button \u1000\u102d\u102f \u1021\u101b\u1004\u103a\u1014\u103e\u102d\u1015\u103a\u1015\u102b\u104b"
+            },
+            {
+              "kind": "note",
+              "text": "TestFlight 1, 2, 4 \u1019\u103e\u102c\u101b\u103e\u102d\u101e\u1031\u102c App \u1019\u103b\u102c\u1038\u1021\u102c\u1038\u101c\u102f\u1036\u1038 \u1021\u1010\u1030\u1010\u1030\u1015\u1032 \u1016\u103c\u1005\u103a\u1015\u102b\u101e\u100a\u103a\u104b Beta full \u1019\u1016\u103c\u1005\u103a\u1014\u1031\u101e\u1031\u102c TestFlight 1 / 2 / 4 \u1010\u1005\u103a\u1001\u102f\u1001\u102f\u1000\u1014\u1031 \u101e\u103d\u1004\u103a\u1038\u101c\u102d\u102f\u1000\u103a\u1015\u102b\u104b \u1010\u1005\u103a\u1014\u1031\u101b\u102c\u1000\u1014\u1031 \u1010\u1005\u103a\u1001\u102b\u1015\u1032 \u101e\u103d\u1004\u103a\u1038\u1011\u102c\u1038\u101b\u102f\u1036\u1016\u103c\u1004\u1037\u103a \u101c\u102f\u1036\u101c\u1031\u102c\u1000\u103a\u1015\u102b\u101e\u100a\u103a \u2014 \u1014\u103e\u1005\u103a\u1001\u102f \u101e\u103d\u1004\u103a\u1038\u1005\u101b\u102c \u1019\u101c\u102d\u102f\u1021\u1015\u103a\u1015\u102b\u104b"
+            },
+            {
+              "text": "View in App Store \u1000\u102d\u102f \u1014\u103e\u102d\u1015\u103a\u1015\u102b\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-01.webp",
+                  "alt": "TestFlight page \u1015\u1031\u102b\u103a\u101b\u103e\u102d View in App Store button",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "text": "TestFlight App \u1000\u102d\u102f Download \u1006\u103d\u1032\u1015\u102b\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-02.webp",
+                  "alt": "App Store \u1015\u1031\u102b\u103a\u101b\u103e\u102d TestFlight app \u1000\u102d\u102f download \u101c\u102f\u1015\u103a\u1014\u1031\u101e\u100a\u103a",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "text": "Open \u1000\u102d\u102f \u1014\u103e\u102d\u1015\u103a\u1015\u102b\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-03.webp",
+                  "alt": "TestFlight app \u1000\u102d\u102f Open \u1014\u103e\u102d\u1015\u103a\u1014\u1031\u101e\u100a\u103a",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "kind": "note",
+              "text": "Bioscope App \u1000\u102d\u102f \u1015\u1011\u1019\u1006\u102f\u1036\u1038 \u1005\u1011\u100a\u1037\u103a\u1010\u1032\u1037 user \u1010\u103d\u1031\u1019\u103e\u102c Redeem Code \u1016\u103c\u100a\u1037\u103a\u101b\u1019\u101a\u1037\u103a \u1014\u1031\u101b\u102c \u1015\u1031\u102b\u103a\u1010\u1010\u103a\u1015\u102b\u1010\u101a\u103a\u104b \u1021\u1032\u101c\u102d\u102f\u1015\u1031\u102b\u103a\u101c\u102c\u1001\u1032\u1037\u101b\u1004\u103a Redeem page \u1019\u103e\u102c Cancel \u1000\u102d\u102f \u1014\u103e\u102d\u1015\u103a\u1015\u102b\u104b Recent \u1000\u102d\u102f \u101b\u103e\u1004\u103a\u1038\u1015\u102b\u104b \u1021\u1015\u1031\u102b\u103a\u1000 TestFlight link \u1000\u102d\u102f \u1015\u103c\u1014\u103a\u1014\u103e\u102d\u1015\u103a\u1015\u103c\u102e\u1038 Bioscope App \u1000\u102d\u102f \u101e\u103d\u1004\u103a\u1038\u101c\u102d\u102f\u1037\u101b\u1015\u102b\u101c\u102d\u1019\u1037\u103a\u1019\u101a\u103a\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-04.webp",
+                  "alt": "TestFlight \u101b\u1032\u1037 Redeem Code dialog",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "text": "Bioscope App \u1000\u102d\u102f Install \u101c\u102f\u1015\u103a\u1015\u102b\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-05.webp",
+                  "alt": "TestFlight \u1011\u1032\u1000 Install button",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "text": "Install \u1015\u103c\u102e\u1038\u1010\u102c\u1014\u103e\u1004\u1037\u103a Open \u1000\u102d\u102f \u1014\u103e\u102d\u1015\u103a\u1015\u103c\u102e\u1038 Bioscope App \u1000\u102d\u102f \u1021\u101e\u102f\u1036\u1038\u1015\u103c\u102f\u1014\u102d\u102f\u1004\u103a\u1015\u102b\u1015\u103c\u102e\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/ios-06.webp",
+                  "alt": "TestFlight \u1011\u1032\u1000 Open button",
+                  "width": 620,
+                  "height": 1342
+                }
+              ]
+            },
+            {
+              "kind": "warning",
+              "text": "Bioscope App \u101e\u100a\u103a copyright content \u1019\u103b\u102c\u1038\u1000\u103c\u1031\u102c\u1004\u1037\u103a Apple Store \u1015\u1031\u102b\u103a\u1011\u102d \u1010\u1004\u103a\u104d\u1019\u101b\u101e\u1031\u1038\u101e\u101c\u102d\u102f TestFlight \u1010\u103d\u1004\u103a\u101c\u100a\u103a\u1038 \u1021\u1001\u103b\u102d\u1014\u103a\u1019\u101b\u103d\u1031\u1038 \u1016\u103c\u102f\u1010\u103a\u1001\u103b\u1001\u1036\u101b\u1014\u102d\u102f\u1004\u103a\u1015\u102b\u101e\u100a\u103a\u104b \u101e\u102d\u102f\u1037\u1016\u103c\u1005\u103a\u1015\u102b\u104d Android / Windows OS \u1019\u103b\u102c\u1038\u1019\u103e \u1021\u101c\u1031\u1038\u1011\u102c\u1038 \u1021\u101e\u102f\u1036\u1038\u1015\u103c\u102f\u1015\u1031\u1038\u1015\u102b\u101b\u1014\u103a\u1014\u103e\u1004\u1037\u103a Apple Store \u1016\u1000\u103a\u1000 \u1016\u103c\u102f\u1010\u103a\u1001\u103b\u1001\u1036\u101b\u101e\u1031\u102c \u1000\u102d\u1005\u1039\u1005\u101b\u1015\u103a\u1019\u103b\u102c\u1038\u1000\u102d\u102f \u1021\u1005\u102c\u1038\u1011\u102d\u102f\u1038 \u1006\u1031\u102c\u1004\u103a\u101b\u103d\u1000\u103a\u1015\u1031\u1038\u1014\u102d\u102f\u1004\u103a\u1019\u100a\u103a \u1019\u101f\u102f\u1010\u103a\u1000\u103c\u1031\u102c\u1004\u103a\u1038\u1000\u102d\u102f\u101c\u100a\u103a\u1038 \u1000\u103c\u102d\u102f\u1010\u1004\u103a \u1021\u101e\u102d\u1015\u1031\u1038\u1021\u1015\u103a\u1015\u102b\u101e\u100a\u103a\u104b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "tv",
+      "sections": [
+        {
+          "title": "Android TV / TV Box \u1019\u103e\u102c install \u101c\u102f\u1015\u103a\u1014\u100a\u103a\u1038",
+          "steps": [
+            {
+              "text": "\u1021\u1015\u1031\u102b\u103a\u1000 TV APK \u1000\u102d\u102f download \u101c\u102f\u1015\u103a\u1015\u102b\u104b"
+            },
+            {
+              "text": "APK \u1000\u102d\u102f Install \u101c\u102f\u1015\u103a\u1015\u102b\u104b"
+            },
+            {
+              "text": "App \u1000\u102d\u102f Open \u101c\u102f\u1015\u103a\u1015\u103c\u102e\u1038 \u1021\u101e\u102f\u1036\u1038\u1015\u103c\u102f\u1015\u102b\u104b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "computer",
+      "sections": [
+        {
+          "title": "Windows PC \u1019\u103e\u102c install \u101c\u102f\u1015\u103a\u1014\u100a\u103a\u1038",
+          "steps": [
+            {
+              "text": "Installer (.exe) \u1000\u102d\u102f download \u101c\u102f\u1015\u103a\u1015\u102b\u104b"
+            },
+            {
+              "text": "File \u1000\u102d\u102f double-click \u1014\u103e\u102d\u1015\u103a\u1015\u102b\u104b"
+            },
+            {
+              "text": "SmartScreen \u1015\u1031\u102b\u103a\u101c\u102c\u1015\u102b\u1000 More info \u2192 Run anyway \u1000\u102d\u102f \u1014\u103e\u102d\u1015\u103a\u1015\u102b\u104b"
+            },
+            {
+              "text": "Install \u1015\u103c\u102e\u1038\u101b\u1004\u103a Desktop shortcut \u1019\u103e \u1016\u103d\u1004\u1037\u103a\u1015\u102b\u104b"
+            }
+          ]
+        },
+        {
+          "title": "Mac \u1019\u103e\u102c install \u101c\u102f\u1015\u103a\u1014\u100a\u103a\u1038",
+          "steps": [
+            {
+              "text": "Download \u1015\u103c\u102f\u101c\u102f\u1015\u103a\u1011\u102c\u1038\u101e\u1031\u102c Bioscope App \u1000\u102d\u102f \u1016\u103d\u1004\u1037\u103a\u1015\u103c\u102e\u1038 Applications folder \u1011\u1032 \u1006\u103d\u1032\u1011\u100a\u1037\u103a\u1015\u102b\u104b"
+            },
+            {
+              "text": "Applications folder \u1011\u1032\u1019\u103e Bioscope App \u1000\u102d\u102f \u1016\u103d\u1004\u1037\u103a\u101c\u102d\u102f\u1000\u103a\u1015\u102b\u1000 \u1015\u102f\u1036\u1011\u1032\u1000\u101c\u102d\u102f Alert \u1010\u103d\u1031\u1037\u101b\u1015\u102b\u1019\u101a\u103a\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/mac-01.webp",
+                  "alt": "macOS \u101b\u1032\u1037 Bioscope can not be opened alert",
+                  "width": 1200,
+                  "height": 1200
+                }
+              ]
+            },
+            {
+              "text": "macOS Settings \u1000\u102d\u102f \u1016\u103d\u1004\u1037\u103a\u1015\u103c\u102e\u1038 Privacy & Security \u1021\u1031\u102c\u1000\u103a\u1019\u103e\u102c Bioscope App \u1000\u102d\u102f Open Anyway \u1015\u103c\u102f\u101c\u102f\u1015\u103a\u1015\u1031\u1038\u1015\u102b\u104b macOS version \u1021\u101c\u102d\u102f\u1000\u103a \u1021\u1031\u102c\u1000\u103a\u1000 \u1015\u102f\u1036\u1005\u1036 \u1042 \u1019\u103b\u102d\u102f\u1038\u1019\u103e\u102c \u1010\u1005\u103a\u1019\u103b\u102d\u102f\u1038 \u1010\u103d\u1031\u1037\u101b\u1015\u102b\u1019\u101a\u103a\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/mac-02.webp",
+                  "alt": "Privacy & Security \u1011\u1032\u1000 Open Anyway \u2014 \u1015\u102f\u1036\u1005\u1036 \u1041",
+                  "width": 1200,
+                  "height": 407,
+                  "caption": "\u1015\u102f\u1036\u1005\u1036 \u1041"
+                },
+                {
+                  "src": "images/bioscope/mac-03.webp",
+                  "alt": "Privacy & Security \u1011\u1032\u1000 Open Anyway \u2014 \u1015\u102f\u1036\u1005\u1036 \u1042",
+                  "width": 1200,
+                  "height": 450,
+                  "caption": "\u1015\u102f\u1036\u1005\u1036 \u1042"
+                }
+              ]
+            },
+            {
+              "text": "Password \u101c\u102c\u1010\u1031\u102c\u1004\u103a\u1038\u1015\u102b\u1000 \u1005\u1000\u103a\u101b\u1032\u1037 Login Password \u1000\u102d\u102f \u101b\u102d\u102f\u1000\u103a\u1011\u100a\u1037\u103a\u1015\u1031\u1038\u1015\u102b\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/mac-04.webp",
+                  "alt": "Privacy & Security \u101b\u1032\u1037 password prompt",
+                  "width": 1200,
+                  "height": 1500
+                }
+              ]
+            },
+            {
+              "text": "Applications folder \u1011\u1032\u1019\u103e Bioscope App \u1000\u102d\u102f \u1015\u103c\u1014\u103a\u1016\u103d\u1004\u1037\u103a\u1015\u103c\u102e\u1038 \u1015\u102f\u1036\u1011\u1032\u1000\u1021\u1010\u102d\u102f\u1004\u103a\u1038 Open \u1000\u102d\u102f \u1014\u103e\u102d\u1015\u103a\u1015\u103c\u102e\u1038 \u1021\u101e\u102f\u1036\u1038\u1015\u103c\u102f\u1014\u102d\u102f\u1004\u103a\u1015\u102b\u1015\u103c\u102e\u104b",
+              "images": [
+                {
+                  "src": "images/bioscope/mac-05.webp",
+                  "alt": "Open \u1000\u102d\u102f \u1014\u103e\u102d\u1015\u103a\u101b\u1019\u100a\u1037\u103a macOS dialog",
+                  "width": 1200,
+                  "height": 1200
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

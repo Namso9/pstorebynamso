@@ -1,0 +1,1041 @@
+[
+  {
+    "slug": "streaming",
+    "name": "Streaming",
+    "headline": "Movie nights, every night",
+    "sub": "Netflix, YouTube, Disney+, HBO Max and more, delivered to your account.",
+    "hero": "/category/streaming.jpg",
+    "products": [
+      {
+        "name": "AI Movie Bot Credits",
+        "desc": "Credits for making AI movie videos with the Telegram bot.",
+        "initials": "AI",
+        "brand": "#6748B9",
+        "from": "from 15,000 Ks",
+        "plans": [
+          {
+            "label": "100 Credits",
+            "price": "15,000 Ks",
+            "catalogPlanId": "100_credits"
+          },
+          {
+            "label": "200 Credits",
+            "price": "28,000 Ks",
+            "catalogPlanId": "200_credits"
+          },
+          {
+            "label": "300 Credits",
+            "price": "40,000 Ks",
+            "soldOut": true,
+            "catalogPlanId": "300_credits"
+          },
+          {
+            "label": "500 Credits",
+            "price": "65,000 Ks",
+            "soldOut": true,
+            "catalogPlanId": "500_credits"
+          }
+        ],
+        "catalogId": "short_drama"
+      },
+      {
+        "name": "Netflix (TV Plan)",
+        "desc": "Premium plan for TV. One profile, works on your television.",
+        "logo": "/logos/netflix.svg",
+        "brand": "#E50914",
+        "from": "from 25,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - Premium (TV) - 1 Profile",
+            "price": "25,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "2 Months - Premium (TV) - 1 Profile",
+            "price": "53,000 Ks",
+            "catalogPlanId": "2_months"
+          },
+          {
+            "label": "3 Months - Premium (TV) - 1 Profile",
+            "price": "80,000 Ks",
+            "catalogPlanId": "3_months"
+          }
+        ],
+        "catalogId": "netflix_tv"
+      },
+      {
+        "name": "Netflix (Phone/PC)",
+        "desc": "Premium or Basic plan for phone and PC. One profile, no TV.",
+        "logo": "/logos/netflix.svg",
+        "brand": "#E50914",
+        "from": "from 20,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - Premium - renew without profile change",
+            "price": "24,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "2 Months - Premium - renew without profile change",
+            "price": "50,000 Ks",
+            "catalogPlanId": "2_months"
+          },
+          {
+            "label": "3 Months - Premium - renew without profile change",
+            "price": "75,000 Ks",
+            "catalogPlanId": "3_months"
+          },
+          {
+            "label": "1 Month - Basic - monthly change, no renew",
+            "price": "20,000 Ks",
+            "catalogPlanId": ""
+          }
+        ],
+        "catalogId": "netflix_phone"
+      },
+      {
+        "name": "YouTube Premium",
+        "desc": "No ads, background play and YouTube Music included.",
+        "initials": "YT",
+        "brand": "#FF0000",
+        "from": "from 10,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - our mail - monthly change",
+            "price": "10,000 Ks",
+            "soldOut": true,
+            "catalogPlanId": "1_month_our_mail"
+          },
+          {
+            "label": "3 Months - your own mail invite",
+            "price": "55,000 Ks",
+            "catalogPlanId": "3_month_cus_mail"
+          },
+          {
+            "label": "1 Year - your own mail invite",
+            "price": "150,000 Ks",
+            "catalogPlanId": "1_year_cus_mail"
+          }
+        ],
+        "catalogId": "youtube_premium"
+      },
+      {
+        "name": "Disney+",
+        "desc": "Disney, Marvel, Star Wars and Pixar in one app.",
+        "initials": "D+",
+        "brand": "#113CCF",
+        "from": "18,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - US VPN required",
+            "price": "18,000 Ks",
+            "catalogPlanId": "1_month"
+          }
+        ],
+        "catalogId": "disneyplus"
+      },
+      {
+        "name": "HBO Max",
+        "desc": "HBO originals and blockbuster movies, no VPN needed.",
+        "initials": "HBO",
+        "brand": "#991EEB",
+        "from": "18,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - no VPN needed",
+            "price": "18,000 Ks",
+            "catalogPlanId": "1_month"
+          }
+        ],
+        "catalogId": "hbomax"
+      },
+      {
+        "name": "Prime Video",
+        "desc": "Amazon originals and movies, 28-30 day plans.",
+        "initials": "PV",
+        "brand": "#00A8E1",
+        "from": "from 24,800 Ks",
+        "plans": [
+          {
+            "label": "1 Month - for TV",
+            "price": "25,800 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "1 Month - for phone/laptop",
+            "price": "24,800 Ks",
+            "catalogPlanId": "1_month_2"
+          }
+        ],
+        "catalogId": "prime"
+      },
+      {
+        "name": "Peacock TV",
+        "desc": "NBC shows, movies and live sports.",
+        "initials": "P",
+        "brand": "#101010",
+        "from": "25,000 Ks",
+        "plans": [
+          {
+            "label": "3 Months - US VPN required",
+            "price": "25,000 Ks",
+            "catalogPlanId": "3_month"
+          }
+        ],
+        "catalogId": "peacock"
+      },
+      {
+        "name": "Bioscope Premium",
+        "desc": "Local favourite movies and series, plans up to a full year.",
+        "initials": "B",
+        "brand": "#E6006F",
+        "from": "from 5,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month",
+            "price": "5,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "2 Months",
+            "price": "10,000 Ks",
+            "catalogPlanId": "2_months"
+          },
+          {
+            "label": "3 Months + 7 days",
+            "price": "15,000 Ks",
+            "catalogPlanId": "3_months"
+          },
+          {
+            "label": "4 Months + 7 days",
+            "price": "20,000 Ks",
+            "catalogPlanId": "4_months"
+          },
+          {
+            "label": "6 Months + 30 days",
+            "price": "30,000 Ks",
+            "catalogPlanId": "6_months"
+          },
+          {
+            "label": "7 Months + 30 days",
+            "price": "35,000 Ks",
+            "catalogPlanId": "7_months"
+          },
+          {
+            "label": "9 Months + 37 days",
+            "price": "45,000 Ks",
+            "catalogPlanId": "9_months"
+          },
+          {
+            "label": "10 Months + 37 days",
+            "price": "50,000 Ks",
+            "catalogPlanId": "10_months"
+          },
+          {
+            "label": "11 Months + 37 days",
+            "price": "55,000 Ks",
+            "catalogPlanId": "11_months"
+          },
+          {
+            "label": "12 Months + 60 days",
+            "price": "60,000 Ks",
+            "catalogPlanId": "12_months"
+          }
+        ],
+        "catalogId": "bioscope"
+      }
+    ]
+  },
+  {
+    "slug": "ai",
+    "name": "AI Tools",
+    "headline": "The smartest tools, one place",
+    "sub": "ChatGPT, Gemini, Grok, Perplexity and more, set up within minutes.",
+    "hero": "/category/ai.jpg",
+    "products": [
+      {
+        "name": "ChatGPT Plus",
+        "desc": "Private account on our mail, ready to use right away.",
+        "logo": "/logos/chatgpt.svg",
+        "brand": "#10A37F",
+        "from": "from 41,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - no warranty - our mail (private acc)",
+            "price": "41,000 Ks",
+            "catalogPlanId": "30_days_warranty"
+          },
+          {
+            "label": "1 Month - 15 days warranty - our mail (private acc)",
+            "price": "40,000 Ks",
+            "soldOut": true,
+            "catalogPlanId": ""
+          }
+        ],
+        "catalogId": "chatgpt"
+      },
+      {
+        "name": "Gemini AI",
+        "desc": "Google's most capable AI on your own Gmail.",
+        "logo": "/logos/gemini.svg",
+        "brand": "#4E82EE",
+        "from": "from 25,000 Ks",
+        "plans": [
+          {
+            "label": "12 Months - needs your Gmail and password",
+            "price": "35,000 Ks",
+            "catalogPlanId": "12_months"
+          },
+          {
+            "label": "18 Months - promotion link",
+            "price": "25,000 Ks",
+            "catalogPlanId": "18_months"
+          }
+        ],
+        "catalogId": "gemini"
+      },
+      {
+        "name": "Manus AI Agent",
+        "desc": "An AI agent that works tasks for you, one year plan.",
+        "initials": "M",
+        "brand": "#1A1A1A",
+        "from": "Contact store",
+        "plans": [
+          {
+            "label": "1 Year - AI Agent",
+            "price": "Contact store",
+            "catalogPlanId": "1_year_5000_credits"
+          }
+        ],
+        "catalogId": "manus"
+      },
+      {
+        "name": "Gamma AI",
+        "desc": "AI slides and documents, Ultra plan.",
+        "initials": "G",
+        "brand": "#8B5CF6",
+        "from": "Contact store",
+        "plans": [
+          {
+            "label": "1 Month - Ultra plan",
+            "price": "Contact store",
+            "catalogPlanId": "1_month"
+          }
+        ],
+        "catalogId": "gamma"
+      },
+      {
+        "name": "Super Grok AI",
+        "desc": "xAI's Grok on the Super plan.",
+        "initials": "GK",
+        "brand": "#111111",
+        "from": "55,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - Super plan",
+            "price": "55,000 Ks",
+            "catalogPlanId": "1_month"
+          }
+        ],
+        "catalogId": "grok"
+      },
+      {
+        "name": "Stealth Writer AI",
+        "desc": "Humanize AI text. Official price 20$ a month.",
+        "initials": "SW",
+        "brand": "#334155",
+        "from": "from 40,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - Starter plan",
+            "price": "40,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "1 Month - Plus plan",
+            "price": "Contact store",
+            "soldOut": true,
+            "catalogPlanId": "1_month_2"
+          }
+        ],
+        "catalogId": "stealthwriter"
+      },
+      {
+        "name": "Perplexity AI",
+        "desc": "AI answers with sources, Pro plan.",
+        "initials": "P",
+        "brand": "#20808D",
+        "from": "from 35,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - Pro plan",
+            "price": "35,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "1 Year - Pro plan",
+            "price": "Contact store",
+            "catalogPlanId": "1_year"
+          }
+        ],
+        "catalogId": "perplexity"
+      }
+    ]
+  },
+  {
+    "slug": "vpn",
+    "name": "VPN",
+    "headline": "Private, secure, everywhere",
+    "sub": "Browse without borders and keep your traffic yours, on every device.",
+    "hero": "/category/vpn.jpg",
+    "products": [
+      {
+        "name": "ExpressVPN",
+        "desc": "Fast, reliable VPN for one device.",
+        "initials": "EV",
+        "brand": "#DA3940",
+        "from": "from 20,000 Ks",
+        "plans": [
+          {
+            "label": "6 Months - one device",
+            "price": "20,000 Ks",
+            "catalogPlanId": "6_months"
+          },
+          {
+            "label": "1 Year - one device",
+            "price": "35,000 Ks",
+            "catalogPlanId": "1_year"
+          }
+        ],
+        "catalogId": "express_vpn"
+      },
+      {
+        "name": "Express VPN (PC)",
+        "desc": "Pro version for one PC, no monthly key change.",
+        "initials": "EV",
+        "brand": "#DA3940",
+        "from": "from 20,000 Ks",
+        "plans": [
+          {
+            "label": "6 Months - Pro version (one PC)",
+            "price": "20,000 Ks",
+            "catalogPlanId": ""
+          },
+          {
+            "label": "1 Year - Pro version",
+            "price": "35,000 Ks",
+            "catalogPlanId": ""
+          }
+        ],
+        "catalogId": ""
+      },
+      {
+        "name": "Jump Jump VPN",
+        "desc": "Popular VPN with whole-account plans for two devices.",
+        "initials": "JJ",
+        "brand": "#FF6B00",
+        "from": "from 19,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - one device",
+            "price": "19,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "6 Months - 2 devices (whole acc)",
+            "price": "150,000 Ks",
+            "catalogPlanId": "6_months"
+          },
+          {
+            "label": "1 Year - 2 devices (whole acc)",
+            "price": "200,000 Ks",
+            "catalogPlanId": "1_year"
+          }
+        ],
+        "catalogId": "jumpjump"
+      },
+      {
+        "name": "Lets VPN",
+        "desc": "Platinum plan, stable and fast.",
+        "initials": "LV",
+        "brand": "#00B2FF",
+        "from": "from 50,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - Platinum plan",
+            "price": "50,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "3 Months - Platinum plan",
+            "price": "120,000 Ks",
+            "catalogPlanId": "3_months"
+          },
+          {
+            "label": "1 Year - Platinum plan",
+            "price": "360,000 Ks",
+            "catalogPlanId": "1_year"
+          }
+        ],
+        "catalogId": "letsvpn"
+      },
+      {
+        "name": "Hiddify / V2Box / V2Ray",
+        "desc": "High-data VPN keys, up to 600GB a year.",
+        "initials": "V2",
+        "brand": "#3B82F6",
+        "from": "from 8,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - 250GB data",
+            "price": "8,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "6 Months - 250GB data",
+            "price": "20,000 Ks",
+            "catalogPlanId": "6_months"
+          },
+          {
+            "label": "6 Months - 500GB data",
+            "price": "28,000 Ks",
+            "catalogPlanId": "6_months_500gb"
+          },
+          {
+            "label": "1 Year - 600GB data",
+            "price": "40,000 Ks",
+            "catalogPlanId": "1_year_600gb"
+          }
+        ],
+        "catalogId": "happ"
+      },
+      {
+        "name": "Norton VPN",
+        "desc": "Trusted security brand, one device.",
+        "initials": "N",
+        "brand": "#EAB308",
+        "from": "15,000 Ks",
+        "plans": [
+          {
+            "label": "3 Months - one device",
+            "price": "15,000 Ks",
+            "catalogPlanId": "3_month"
+          }
+        ],
+        "catalogId": "norton"
+      },
+      {
+        "name": "Nord VPN",
+        "desc": "Global servers, one device.",
+        "initials": "N",
+        "brand": "#4687FF",
+        "from": "9,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - one device",
+            "price": "9,000 Ks",
+            "catalogPlanId": "1_month"
+          }
+        ],
+        "catalogId": "nord"
+      },
+      {
+        "name": "Myanmar Vless Key",
+        "desc": "Local Vless VPN key, one device.",
+        "initials": "MM",
+        "brand": "#DC2626",
+        "from": "3,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - 1 device",
+            "price": "3,000 Ks",
+            "catalogPlanId": "1_month"
+          }
+        ],
+        "catalogId": "myanmar-vless"
+      },
+      {
+        "name": "Proton VPN",
+        "desc": "Privacy-first VPN, one device.",
+        "initials": "P",
+        "brand": "#6D4AFF",
+        "from": "7,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - one device",
+            "price": "7,000 Ks",
+            "catalogPlanId": "1_month"
+          }
+        ],
+        "catalogId": "proton"
+      }
+    ]
+  },
+  {
+    "slug": "mobile-data",
+    "name": "Mobile Data",
+    "headline": "Stay connected, anywhere",
+    "sub": "Atom and Mytel data packs, topped up straight to your number.",
+    "hero": "/category/mobile-data.jpg",
+    "products": [
+      {
+        "name": "Atom Data",
+        "desc": "30-day packs with Atom minutes and SMS included.",
+        "initials": "A",
+        "brand": "#0EA5E9",
+        "from": "from 15,000 Ks",
+        "plans": [
+          {
+            "label": "24 GB - 30 days - 8000 Atom mins - 5000 SMS",
+            "price": "15,000 Ks",
+            "catalogPlanId": "24gb_30d"
+          },
+          {
+            "label": "130 GB - 30 days - 8000 Atom mins - 5000 SMS",
+            "price": "31,000 Ks",
+            "catalogPlanId": "130gb_30d"
+          }
+        ],
+        "catalogId": "atom-data"
+      },
+      {
+        "name": "Mytel Data",
+        "desc": "30-day data-only packs, up to 120 GB.",
+        "initials": "M",
+        "brand": "#F58220",
+        "from": "from 16,000 Ks",
+        "plans": [
+          {
+            "label": "15 GB - 30 days - data only",
+            "price": "16,000 Ks",
+            "catalogPlanId": "15gb_30d"
+          },
+          {
+            "label": "40 GB - 30 days - data only",
+            "price": "21,000 Ks",
+            "catalogPlanId": "40gb_30d"
+          },
+          {
+            "label": "120 GB - 30 days - data only",
+            "price": "35,000 Ks",
+            "catalogPlanId": "120gb_30d"
+          }
+        ],
+        "catalogId": "mytel-data"
+      }
+    ]
+  },
+  {
+    "slug": "music",
+    "name": "Music",
+    "headline": "Music, without limits",
+    "sub": "Ad-free listening, offline playback and unlimited skips. Pick a plan and press play.",
+    "hero": "/category/music-v2.jpg",
+    "products": [
+      {
+        "name": "Spotify (US Region)",
+        "desc": "Premium plan on a US region account.",
+        "logo": "/logos/spotify.svg",
+        "brand": "#1DB954",
+        "from": "from 45,000 Ks",
+        "plans": [
+          {
+            "label": "6 Months - Premium plan",
+            "price": "45,000 Ks",
+            "catalogPlanId": "6_months"
+          },
+          {
+            "label": "1 Year - Premium plan",
+            "price": "90,000 Ks",
+            "catalogPlanId": "1_year"
+          }
+        ],
+        "catalogId": "spotify_us"
+      },
+      {
+        "name": "Spotify (Canada Region)",
+        "desc": "Premium plan on a Canada region account.",
+        "logo": "/logos/spotify.svg",
+        "brand": "#1DB954",
+        "from": "from 20,000 Ks",
+        "plans": [
+          {
+            "label": "3 Months - Premium plan",
+            "price": "20,000 Ks",
+            "catalogPlanId": "3_months"
+          },
+          {
+            "label": "6 Months - Premium plan",
+            "price": "35,000 Ks",
+            "catalogPlanId": "6_months"
+          }
+        ],
+        "catalogId": "spotify_canada"
+      },
+      {
+        "name": "SoundCloud",
+        "desc": "Offline listening and no ads.",
+        "initials": "SC",
+        "brand": "#FF5500",
+        "from": "8,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - offline + no ads",
+            "price": "8,000 Ks",
+            "catalogPlanId": "1_month"
+          }
+        ],
+        "catalogId": "soundcloud"
+      },
+      {
+        "name": "Tidal",
+        "desc": "Hi-fi music streaming.",
+        "initials": "T",
+        "brand": "#101010",
+        "from": "from 8,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - Starter plan",
+            "price": "8,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "2 Months - most popular",
+            "price": "15,000 Ks",
+            "catalogPlanId": "2_months"
+          }
+        ],
+        "catalogId": "tidal"
+      }
+    ]
+  },
+  {
+    "slug": "creative-work",
+    "name": "Creative & Work",
+    "headline": "Create more, work smarter",
+    "sub": "Design, editing, writing and meeting tools for your everyday work.",
+    "hero": "/category/work.jpg",
+    "products": [
+      {
+        "name": "Picsart Gold",
+        "desc": "Photo editing with premium tools and assets.",
+        "initials": "P",
+        "brand": "#A855F7",
+        "from": "30,000 Ks",
+        "plans": [
+          {
+            "label": "6 Months - one device",
+            "price": "30,000 Ks",
+            "catalogPlanId": "6_months"
+          }
+        ],
+        "catalogId": "picsart"
+      },
+      {
+        "name": "CapCut Pro",
+        "desc": "Pro video editing, whole account for 2-3 devices.",
+        "logo": "/product-logos/capcut-clean.png",
+        "initials": "CC",
+        "brand": "#111111",
+        "from": "from 20,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - whole acc (2-3 devices)",
+            "price": "20,000 Ks",
+            "catalogPlanId": "whole_acc_1_month"
+          },
+          {
+            "label": "6 Months - whole acc (2-3 devices)",
+            "price": "90,000 Ks",
+            "catalogPlanId": "whole_acc_6_months"
+          }
+        ],
+        "catalogId": "capcut"
+      },
+      {
+        "name": "Canva Pro",
+        "desc": "One year of Pro on your personal mail.",
+        "initials": "C",
+        "brand": "#00C4CC",
+        "from": "15,000 Ks",
+        "plans": [
+          {
+            "label": "1 Year - your personal mail",
+            "price": "15,000 Ks",
+            "catalogPlanId": "one_year"
+          }
+        ],
+        "catalogId": "canva"
+      },
+      {
+        "name": "Adobe Creative Cloud",
+        "desc": "The full Adobe suite. Official price 70$ a month.",
+        "initials": "A",
+        "brand": "#FA0F00",
+        "from": "300,000 Ks",
+        "plans": [
+          {
+            "label": "6 months warranty - 1 device",
+            "price": "300,000 Ks",
+            "catalogPlanId": "one_year_one_device"
+          }
+        ],
+        "catalogId": "adobe"
+      },
+      {
+        "name": "Zoom Pro",
+        "desc": "Longer meetings, cloud recording and AI notes.",
+        "logo": "/logos/zoom.svg",
+        "brand": "#2D8CFF",
+        "from": "from 20,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - monthly",
+            "price": "20,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "3 Months - quarterly",
+            "price": "59,000 Ks",
+            "catalogPlanId": "3_months"
+          },
+          {
+            "label": "6 Months - most popular",
+            "price": "118,000 Ks",
+            "catalogPlanId": "6_months"
+          },
+          {
+            "label": "1 Year - best value",
+            "price": "230,000 Ks",
+            "catalogPlanId": "1_year"
+          }
+        ],
+        "catalogId": "zoom"
+      },
+      {
+        "name": "Telegram Premium",
+        "desc": "Premium via gift link, straight to your account.",
+        "initials": "T",
+        "brand": "#2AABEE",
+        "from": "from 63,000 Ks",
+        "plans": [
+          {
+            "label": "3 Months - gift link",
+            "price": "63,000 Ks",
+            "catalogPlanId": "3_months"
+          },
+          {
+            "label": "6 Months - gift link",
+            "price": "85,000 Ks",
+            "catalogPlanId": "6_months"
+          },
+          {
+            "label": "1 Year - gift link",
+            "price": "140,000 Ks",
+            "catalogPlanId": "1_year"
+          }
+        ],
+        "catalogId": "telegram"
+      },
+      {
+        "name": "Windows Lifetime Keys",
+        "desc": "Genuine lifetime activation keys for Windows 10 and 11.",
+        "initials": "W",
+        "brand": "#0078D4",
+        "from": "from 20,000 Ks",
+        "plans": [
+          {
+            "label": "Windows 10 Pro - lifetime key",
+            "price": "20,000 Ks",
+            "catalogPlanId": "windows_10_pro"
+          },
+          {
+            "label": "Windows 11 Pro - lifetime key",
+            "price": "20,000 Ks",
+            "catalogPlanId": "windows_11_pro"
+          },
+          {
+            "label": "Windows 10 Home - lifetime key",
+            "price": "25,000 Ks",
+            "catalogPlanId": "windows_10_home"
+          },
+          {
+            "label": "Windows 11 Home - lifetime key",
+            "price": "25,000 Ks",
+            "catalogPlanId": "windows_11_home"
+          }
+        ],
+        "catalogId": "windows"
+      },
+      {
+        "name": "Office 365 Pro Plus",
+        "desc": "One year of Office apps, random account name.",
+        "initials": "O",
+        "brand": "#D83B01",
+        "from": "29,000 Ks",
+        "plans": [
+          {
+            "label": "1 Year - random name",
+            "price": "29,000 Ks",
+            "catalogPlanId": "one_year"
+          }
+        ],
+        "catalogId": "office"
+      },
+      {
+        "name": "Quillbot Premium",
+        "desc": "Paraphrasing and writing tools, one device.",
+        "initials": "Q",
+        "brand": "#499557",
+        "from": "from 17,000 Ks",
+        "plans": [
+          {
+            "label": "3 Months - one device",
+            "price": "17,000 Ks",
+            "catalogPlanId": "3_months"
+          },
+          {
+            "label": "6 Months - one device",
+            "price": "30,000 Ks",
+            "catalogPlanId": "6_months"
+          }
+        ],
+        "catalogId": "quillbot"
+      },
+      {
+        "name": "Duolingo Super",
+        "desc": "A year of ad-free learning on your own mail.",
+        "logo": "/logos/duolingo.svg",
+        "brand": "#58CC02",
+        "from": "40,000 Ks",
+        "plans": [
+          {
+            "label": "1 Year - with your own mail",
+            "price": "40,000 Ks",
+            "catalogPlanId": "one_year"
+          }
+        ],
+        "catalogId": "duolingo"
+      },
+      {
+        "name": "Duolingo Crack Acc Plan",
+        "desc": "Budget Duolingo accounts with 3 months warranty.",
+        "logo": "/logos/duolingo.svg",
+        "brand": "#58CC02",
+        "from": "from 14,000 Ks",
+        "plans": [
+          {
+            "label": "Max - 3 months warranty - crack acc",
+            "price": "20,000 Ks",
+            "catalogPlanId": "max_3_months_warrant"
+          },
+          {
+            "label": "Super - 3 months warranty - crack acc",
+            "price": "14,000 Ks",
+            "catalogPlanId": "super_3_months_warra"
+          }
+        ],
+        "catalogId": "duolingocrack"
+      },
+      {
+        "name": "Meitu Premium",
+        "desc": "Beauty photo and video editing, VIP and SVIP plans.",
+        "initials": "M",
+        "brand": "#FF4D88",
+        "from": "from 25,000 Ks",
+        "plans": [
+          {
+            "label": "VIP - 2 devices - 1 Month",
+            "price": "25,000 Ks",
+            "catalogPlanId": "vip_1_month"
+          },
+          {
+            "label": "VIP - 2 devices - 1 Year",
+            "price": "150,000 Ks",
+            "catalogPlanId": "vip_1_year"
+          },
+          {
+            "label": "SVIP - 4 devices - 1 Month",
+            "price": "35,000 Ks",
+            "catalogPlanId": "svip_1_month"
+          },
+          {
+            "label": "SVIP - 4 devices - 3 Months",
+            "price": "100,000 Ks",
+            "catalogPlanId": "svip_3_months"
+          },
+          {
+            "label": "SVIP - 4 devices - 1 Year",
+            "price": "250,000 Ks",
+            "catalogPlanId": "svip_1_year"
+          }
+        ],
+        "catalogId": "meitu"
+      },
+      {
+        "name": "Grammarly Premium",
+        "desc": "Advanced writing suggestions on your own mail.",
+        "initials": "G",
+        "brand": "#15C39A",
+        "from": "from 25,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - with your own mail",
+            "price": "25,000 Ks",
+            "catalogPlanId": "1_month"
+          },
+          {
+            "label": "3 Months - with your own mail",
+            "price": "46,000 Ks",
+            "catalogPlanId": "3_months"
+          },
+          {
+            "label": "1 Year - with your own mail",
+            "price": "80,000 Ks",
+            "catalogPlanId": "1_year"
+          }
+        ],
+        "catalogId": "grammarly"
+      },
+      {
+        "name": "Coursera Plus",
+        "desc": "Courses and certificates, mail and password included.",
+        "initials": "C",
+        "brand": "#0056D2",
+        "from": "30,000 Ks",
+        "plans": [
+          {
+            "label": "3 Months - mail & password",
+            "price": "30,000 Ks",
+            "catalogPlanId": "3_months"
+          }
+        ],
+        "catalogId": "coursera"
+      }
+    ]
+  },
+  {
+    "slug": "social",
+    "name": "Social",
+    "headline": "Stand out on social",
+    "sub": "Premium perks for your favourite social apps.",
+    "hero": "/category/social.jpg",
+    "products": [
+      {
+        "name": "Snapchat+",
+        "desc": "Snapchat+ on the family plan.",
+        "initials": "S",
+        "brand": "#111111",
+        "from": "15,000 Ks",
+        "plans": [
+          {
+            "label": "1 Month - family plan",
+            "price": "15,000 Ks",
+            "catalogPlanId": "1_month"
+          }
+        ],
+        "catalogId": "snapchat"
+      }
+    ]
+  }
+]

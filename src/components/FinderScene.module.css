@@ -1,0 +1,61 @@
+.scene.scene{
+  position:relative; isolation:isolate; container-type:inline-size; border-radius:10px; overflow:hidden;
+  background:#d4e6df; color:#233e41;
+  --card-border:rgba(255,255,255,.65); --card-bg:rgba(255,253,246,.76);
+  --card-shadow:0 18px 38px -18px rgba(39,70,62,.28),inset 0 1px 0 rgba(255,255,255,.8);
+}
+.landscape{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.daySky,.nightSky{
+  position:absolute; inset:-2%; background-size:cover; background-position:center;
+  transition:opacity 1.2s ease; animation:landscapeBreathe 36s ease-in-out infinite alternate;
+}
+.daySky{ background-image:linear-gradient(#ffffff12,#eee7d018),url("/finder-day.jpg"); }
+.nightSky{ opacity:0; background-image:linear-gradient(#0d19331c,#0c172c26),url("/finder-night.jpg"); }
+.heading{ position:absolute; left:7%; top:8%; z-index:2; max-width:56%; color:#26312e; text-shadow:0 1px 12px #fff9; }
+.eyebrow{ display:block; font-size:9px; letter-spacing:.23em; font-weight:600; opacity:.7; margin-bottom:10px; }
+.categoryLabels{ display:grid; }
+.categoryLabels>span{ grid-area:1/1; font-family:var(--font-fraunces),var(--font-mm),serif; font-size:clamp(18px,3.8cqw,30px); line-height:1.6; opacity:0; transform:translateY(7px); transition:opacity .65s,transform .65s; }
+.categoryLabels>span[data-active="true"]{ opacity:1; transform:none; }
+.logoStage{ position:absolute; inset:35% 8% 21%; perspective:900px; }
+.logoGroup{ position:absolute; inset:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:center; gap:7%; pointer-events:none; }
+.logoSlot{ opacity:0; transform:translateY(24px) scale(.88); filter:blur(5px); transition:opacity .65s ease,transform .9s cubic-bezier(.2,.7,.2,1),filter .65s; }
+.logoGroup[data-active="true"] .logoSlot{ opacity:1; transform:none; filter:none; transition-delay:calc(var(--slot) * 100ms + 150ms); }
+.logoSlot:nth-child(2){ margin-top:-25%; }
+.logoFloat{ text-align:center; animation:logoFloat 9s ease-in-out infinite; animation-delay:calc(var(--slot) * -1.7s); }
+.logoCard{ display:grid; place-items:center; width:100%; aspect-ratio:1; max-width:146px; margin:0 auto; border-radius:8%; background:var(--card-bg); border:1px solid var(--card-border); box-shadow:var(--card-shadow); backdrop-filter:blur(12px); transform:rotate(-4deg); }
+.logoSlot:nth-child(2) .logoCard{ transform:rotate(2deg); }
+.logoSlot:nth-child(3) .logoCard{ transform:rotate(5deg); }
+.logoCard img{ display:block; width:57%; height:57%; object-fit:contain; border-radius:4px; filter:drop-shadow(0 5px 6px #15352e20); }
+.productName{ display:block; margin-top:16px; font-family:var(--font-inter),sans-serif; font-size:clamp(9px,1.65cqw,12px); line-height:1.5; font-weight:500; text-wrap:balance; }
+.controls{ position:absolute; bottom:5%; left:7%; right:6%; display:flex; justify-content:space-between; align-items:center; }
+.dots{ display:flex; align-items:center; }
+.dots button,.pause{ display:grid; place-items:center; width:36px; height:44px; padding:0; border:0; background:transparent; color:inherit; cursor:pointer; }
+.dots button span{ width:5px; height:5px; border-radius:8px; background:currentColor; opacity:.35; transition:width .5s,opacity .5s; }
+.dots button[aria-pressed="true"] span{ width:20px; opacity:.9; }
+.pause{ width:36px; height:36px; border:1px solid currentColor; border-radius:50%; opacity:.7; }
+.pause svg{ width:16px; height:16px; }
+.controls button:focus-visible{ outline:2px solid currentColor; outline-offset:3px; border-radius:20px; }
+.controls button:hover{ opacity:1; }
+:global([data-theme="dark"]) .scene{ color:#ecf1ed; --card-bg:rgba(241,247,244,.85); --card-border:rgba(255,255,255,.8); --card-shadow:0 20px 42px -16px #0007,inset 0 1px 0 #ffffffaa; }
+:global([data-theme="dark"]) .daySky{ opacity:0; }
+:global([data-theme="dark"]) .nightSky{ opacity:1; }
+:global([data-theme="dark"]) .heading{ color:#fffdf6; text-shadow:0 1px 12px #10231d99; }
+.scene[data-paused="true"] *{ animation-play-state:paused; }
+@keyframes landscapeBreathe{ to{ transform:scale(1.035); } }
+@keyframes logoFloat{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-5px); } }
+@media(max-width:600px){
+  .daySky,.nightSky,.logoFloat{ animation:none; }
+  .logoSlot{ filter:none; transition:opacity .65s ease,transform .9s cubic-bezier(.2,.7,.2,1); }
+  .logoCard{ backdrop-filter:none; }
+  .heading{ top:7%; }
+  .eyebrow{ font-size:8px; margin-bottom:4px; }
+  .logoStage{ inset:35% 12% 23%; }
+  .logoCard{ max-width:86px; }
+  .productName{ margin-top:8px; }
+  .controls{ bottom:2%; }
+  .dots button{ width:29px; }
+  .pause{ width:32px; height:32px; }
+}
+@media(prefers-reduced-motion:reduce){
+  .scene *{ animation:none!important; transition:none!important; }
+}

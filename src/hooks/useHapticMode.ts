@@ -14,12 +14,12 @@ import {
  * read anything about the browser: the server snapshot is always `false`, so
  * the prerendered markup carries no platform assumption, and React swaps in
  * the real answer right after hydration. That is what `useSyncExternalStore`
- * is for — the same thing done with `useState` + `useEffect` is a cascading
+ * is for \u2014 the same thing done with `useState` + `useEffect` is a cascading
  * render (and `react-hooks/set-state-in-effect` rejects it).
  *
  * The answer cannot change during a session, so `subscribe` is inert and each
  * snapshot is computed once and cached. `getSnapshot` runs on every render, and
- * it reads the user agent, `CSS.supports` and `localStorage` — none of which
+ * it reads the user agent, `CSS.supports` and `localStorage` \u2014 none of which
  * should be touched that often.
  */
 const subscribe = () => () => {};

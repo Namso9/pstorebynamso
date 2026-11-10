@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useState, type ComponentProps } from "react";
 
 import { useCatalog } from "@/hooks/useCatalog";
 import { OrderFormCard } from "@/components/order/OrderForm";
@@ -24,14 +24,14 @@ type CheckoutFlowProps = {
  * payment panel when this is the payment route, and the order form.
  *
  * Paying and proving the payment used to be two pages, so the rail's Payment
- * step spanned a hop the customer had to make on their own — and the hop was
+ * step spanned a hop the customer had to make on their own \u2014 and the hop was
  * offered next to Messenger and Telegram links, which sent people off-site
  * mid-checkout. Both pages now render the whole step; /order/ simply omits the
  * QR panel for customers who arrive with the payment already made.
  *
  * This component owns the ONE live catalog subscription for the step and hands
- * the same snapshot to every child. That is not only cheaper — each
- * `useCatalog` carries its own request and five-second poll — it is what keeps
+ * the same snapshot to every child. That is not only cheaper \u2014 each
+ * `useCatalog` carries its own request and five-second poll \u2014 it is what keeps
  * the guards honest: the payment panel and the order form both decide whether
  * a plan is buyable, and reading two independently refreshed snapshots could
  * leave one inviting a transfer while the other says to ask the admin first.
@@ -77,18 +77,21 @@ export function CheckoutFlow({
   const done = doneKey === selectionKey;
   // Out of stock is a payment-page stop, not an order-page one: /order/ still
   // accepts the order so the admin can call back.
+  const invalidSelection = Boolean(productId || planId) && !selection?.plan;
   const soldOut = withPayment && selection?.plan?.stock === false;
 
-  // The QR and its "transfer now" copy go the moment stock does — nobody
-  // should be invited to pay for something that cannot be delivered — and
+  // The QR and its "transfer now" copy go the moment stock does \u2014 nobody
+  // should be invited to pay for something that cannot be delivered \u2014 and
   // again once the order is in, where they would only invite a second one.
-  const showPayment = withPayment && !soldOut && !done;
+  const showPayment = withPayment && !soldOut && !done && !invalidSelection;
   // The form only goes if there is nothing to lose. A background refresh lands
   // every five seconds, and unmounting a form mid-session would discard
-  // everything typed, the screenshot chosen, and — worst — the success panel
+  // everything typed, the screenshot chosen, and \u2014 worst \u2014 the success panel
   // of an order already paid for and sent, which is how a customer ends up
   // paying twice.
   const showForm = !soldOut || engaged;
+
+  if (invalidSelection && !engaged && !done) return <section className="payment-card-next" role="status"><h1>Plan unavailable</h1><p>This link no longer identifies an available plan. Choose a current plan before paying.</p><a className="button button--primary" href="/products/">Browse products</a></section>;
 
   return (
     <>
@@ -104,7 +107,7 @@ export function CheckoutFlow({
         <PaymentExperience catalog={catalog} onPlatformChange={handlePlatform} />
       ) : null}
       {showForm ? (
-        <OrderFormCard
+        <StableOrderForm
           key={selectionKey}
           initialCatalog={initialCatalog}
           catalog={catalog}
@@ -124,11 +127,16 @@ export function CheckoutFlow({
   );
 }
 
+function StableOrderForm(props: ComponentProps<typeof OrderFormCard>) {
+  const [baseline] = useState(props.catalog);
+  return <OrderFormCard {...props} initialCatalog={baseline} />;
+}
+
 /**
  * Offers contact and nothing else when the customer has not started. The order
  * form is not an alternative there: it requires a payment method and a
  * transfer screenshot, which is exactly what they have just been told not to
- * send. Once they HAVE started, the form stays below this notice — they may
+ * send. Once they HAVE started, the form stays below this notice \u2014 they may
  * already have transferred, and that order still has to reach the admin.
  */
 function SoldOutNotice({
@@ -143,13 +151,13 @@ function SoldOutNotice({
       <p>
         {engaged ? (
           <>
-            <strong>ဒီ plan stock ကုန်သွားပါပြီ။</strong> ငွေလွှဲပြီးသားဆိုရင်
-            အောက်မှာ Order ဆက်တင်ပါ။ မလွှဲရသေးရင် ငွေမလွှဲပါနဲ့။
+            <strong>&#4114;&#4142; plan stock &#4096;&#4143;&#4116;&#4154;&#4126;&#4157;&#4140;&#4152;&#4117;&#4139;&#4117;&#4156;&#4142;&#4171;</strong> &#4100;&#4157;&#4145;&#4124;&#4157;&#4158;&#4146;&#4117;&#4156;&#4142;&#4152;&#4126;&#4140;&#4152;&#4102;&#4141;&#4143;&#4123;&#4100;&#4154;
+            &#4129;&#4145;&#4140;&#4096;&#4154;&#4121;&#4158;&#4140; Order &#4102;&#4096;&#4154;&#4112;&#4100;&#4154;&#4117;&#4139;&#4171; &#4121;&#4124;&#4157;&#4158;&#4146;&#4123;&#4126;&#4145;&#4152;&#4123;&#4100;&#4154; &#4100;&#4157;&#4145;&#4121;&#4124;&#4157;&#4158;&#4146;&#4117;&#4139;&#4116;&#4146;&#4151;&#4171;
           </>
         ) : (
           <>
-            <strong>ဒီ plan stock မရှိသေးပါ။</strong> ငွေမလွှဲပါနဲ့။ Admin ကို
-            မေးပါ။
+            <strong>&#4114;&#4142; plan stock &#4121;&#4123;&#4158;&#4141;&#4126;&#4145;&#4152;&#4117;&#4139;&#4171;</strong> &#4100;&#4157;&#4145;&#4121;&#4124;&#4157;&#4158;&#4146;&#4117;&#4139;&#4116;&#4146;&#4151;&#4171; Admin &#4096;&#4141;&#4143;
+            &#4121;&#4145;&#4152;&#4117;&#4139;&#4171;
           </>
         )}
       </p>

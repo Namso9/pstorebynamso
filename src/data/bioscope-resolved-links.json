@@ -1,0 +1,16 @@
+{
+  "resolved": {
+    "android-tv-apk": {
+      "href": "https://link.bioscopeapp.com/download/Bioscope-Android-TV-V1.1.3.apk",
+      "version": "1.1.3"
+    },
+    "android-phone-apk": {
+      "href": "https://link.bioscopeapp.com/download/Bioscope-Android-V2.2.4.apk",
+      "version": "2.2.4"
+    },
+    "mac-dmg": {
+      "href": "https://bioscopeapp.com/downloads/Bioscope-V1.1.5.dmg",
+      "version": "1.1.5"
+    }
+  }
+}

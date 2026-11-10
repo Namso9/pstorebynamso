@@ -12,7 +12,7 @@ import { HapticSwitch } from "@/components/common/HapticSwitch";
 type PlatformId = "kpay" | "wave" | "aya";
 
 /**
- * `formValue` must match one of the order form's payment options exactly — it
+ * `formValue` must match one of the order form's payment options exactly \u2014 it
  * is what gets submitted, so a mismatch would silently blank the field.
  */
 const platforms: Record<
@@ -96,7 +96,7 @@ export function PaymentExperience({
   if (selection?.plan && isAskPricePlan(selection.plan)) {
     return (
       <div className="payment-card-next checkout-unavailable" role="status">
-        <p>ဒီ plan အတွက် ငွေမလွှဲခင် လက်ရှိစျေးနှုန်းနဲ့ order availability ကို Admin ကို အရင်မေးပေးပါ။</p>
+        <p>&#4114;&#4142; plan &#4129;&#4112;&#4157;&#4096;&#4154; &#4100;&#4157;&#4145;&#4121;&#4124;&#4157;&#4158;&#4146;&#4097;&#4100;&#4154; &#4124;&#4096;&#4154;&#4123;&#4158;&#4141;&#4101;&#4155;&#4145;&#4152;&#4116;&#4158;&#4143;&#4116;&#4154;&#4152;&#4116;&#4146;&#4151; order availability &#4096;&#4141;&#4143; Admin &#4096;&#4141;&#4143; &#4129;&#4123;&#4100;&#4154;&#4121;&#4145;&#4152;&#4117;&#4145;&#4152;&#4117;&#4139;&#4171;</p>
         <div className="plan-contact-row">
           <a
             className="button button--primary button--md"
@@ -122,26 +122,26 @@ export function PaymentExperience({
   return (
     <div className="payment-card-next">
       <p className="payment-warning-heading">
-        ⚠️ <strong>ငွေမလွှဲခင် သေချာဖတ်ပေးပါ ခင်ဗျ</strong>
+        &#9888;&#65039; <strong>&#4100;&#4157;&#4145;&#4121;&#4124;&#4157;&#4158;&#4146;&#4097;&#4100;&#4154; &#4126;&#4145;&#4097;&#4155;&#4140;&#4118;&#4112;&#4154;&#4117;&#4145;&#4152;&#4117;&#4139; &#4097;&#4100;&#4154;&#4119;&#4155;</strong>
       </p>
       <p>
-        QR ကို Scan ဖတ်ပြီး Note မှာ <strong>&quot;Payment&quot;</strong> လို့ပဲ ရေးပြီး
-        screenshot ပို့ပေးရင် ရပါတယ်ခင်ဗျ။
+        QR &#4096;&#4141;&#4143; Scan &#4118;&#4112;&#4154;&#4117;&#4156;&#4142;&#4152; Note &#4121;&#4158;&#4140; <strong>&quot;Payment&quot;</strong> &#4124;&#4141;&#4143;&#4151;&#4117;&#4146; &#4123;&#4145;&#4152;&#4117;&#4156;&#4142;&#4152;
+        screenshot &#4117;&#4141;&#4143;&#4151;&#4117;&#4145;&#4152;&#4123;&#4100;&#4154; &#4123;&#4117;&#4139;&#4112;&#4122;&#4154;&#4097;&#4100;&#4154;&#4119;&#4155;&#4171;
       </p>
       <div className="vpn-payment-warning" role="note">
-        ❌ စာသေချာဖတ်ပေးပါခဗျ Vpnအတွက်ငွေလွှဲမယ့် customer များ VPN သို့မဟုတ်
-        VPN နှင့်ပတ်သက်သော စကားလုံးများ လုံးဝမထည့်ပါနဲ့ ❌
+        &#10060; &#4101;&#4140;&#4126;&#4145;&#4097;&#4155;&#4140;&#4118;&#4112;&#4154;&#4117;&#4145;&#4152;&#4117;&#4139;&#4097;&#4119;&#4155; Vpn&#4129;&#4112;&#4157;&#4096;&#4154;&#4100;&#4157;&#4145;&#4124;&#4157;&#4158;&#4146;&#4121;&#4122;&#4151;&#4154; customer &#4121;&#4155;&#4140;&#4152; VPN &#4126;&#4141;&#4143;&#4151;&#4121;&#4127;&#4143;&#4112;&#4154;
+        VPN &#4116;&#4158;&#4100;&#4151;&#4154;&#4117;&#4112;&#4154;&#4126;&#4096;&#4154;&#4126;&#4145;&#4140; &#4101;&#4096;&#4140;&#4152;&#4124;&#4143;&#4150;&#4152;&#4121;&#4155;&#4140;&#4152; &#4124;&#4143;&#4150;&#4152;&#4125;&#4121;&#4113;&#4106;&#4151;&#4154;&#4117;&#4139;&#4116;&#4146;&#4151; &#10060;
       </div>
 
       <section className="payment-selector-next" aria-labelledby="platform-title">
-        <h2 id="platform-title">ငွေပေးချေမည့် Platform ကိုရွေးပါ</h2>
+        <h2 id="platform-title">&#4100;&#4157;&#4145;&#4117;&#4145;&#4152;&#4097;&#4155;&#4145;&#4121;&#4106;&#4151;&#4154; Platform &#4096;&#4141;&#4143;&#4123;&#4157;&#4145;&#4152;&#4117;&#4139;</h2>
         <label htmlFor="payment-platform">Select Platform</label>
         <select
           id="payment-platform"
           value={selected}
           onChange={(event) => choosePlatform(event.target.value as PlatformId)}
         >
-          <option value="" disabled>-- Platform ရွေးပါ --</option>
+          <option value="" disabled>-- Platform &#4123;&#4157;&#4145;&#4152;&#4117;&#4139; --</option>
           <option value="kpay">KBZPay (KPay)</option>
           <option value="wave">WavePay</option>
           <option value="aya">AyaPay</option>
@@ -175,7 +175,7 @@ export function PaymentExperience({
               <span>Selected: {platform.label}</span>
             </div>
             <p>{platform.instruction}</p>
-            <p>Note မှာ <strong>&quot;Payment&quot;</strong> လို့ပဲရေးပေးပါ။</p>
+            <p>Note &#4121;&#4158;&#4140; <strong>&quot;Payment&quot;</strong> &#4124;&#4141;&#4143;&#4151;&#4117;&#4146;&#4123;&#4145;&#4152;&#4117;&#4145;&#4152;&#4117;&#4139;&#4171;</p>
             <Image
               src={platform.qr}
               alt={platform.qrAlt}
@@ -192,11 +192,11 @@ export function PaymentExperience({
               thing on the page. Offering a Messenger/Telegram hand-off here
               sent paying customers off-site mid-checkout. */}
           <p>
-            ✅ <strong>{platform.label}</strong> နဲ့ ငွေလွှဲပြီးပါက screenshot ကို
-            Order Form မှာ ပူးတွဲပြီး Order တင်ပေးပါ။
+            &#9989; <strong>{platform.label}</strong> &#4116;&#4146;&#4151; &#4100;&#4157;&#4145;&#4124;&#4157;&#4158;&#4146;&#4117;&#4156;&#4142;&#4152;&#4117;&#4139;&#4096; screenshot &#4096;&#4141;&#4143;
+            Order Form &#4121;&#4158;&#4140; &#4117;&#4144;&#4152;&#4112;&#4157;&#4146;&#4117;&#4156;&#4142;&#4152; Order &#4112;&#4100;&#4154;&#4117;&#4145;&#4152;&#4117;&#4139;&#4171;
           </p>
           <p className="bot-note-next">
-            🤖 Telegram Bot မှာ Wallet ဖြည့်ပြီး တန်းဝယ်လို့လည်း ရပါတယ်။
+            &#129302; Telegram Bot &#4121;&#4158;&#4140; Wallet &#4118;&#4156;&#4106;&#4151;&#4154;&#4117;&#4156;&#4142;&#4152; &#4112;&#4116;&#4154;&#4152;&#4125;&#4122;&#4154;&#4124;&#4141;&#4143;&#4151;&#4124;&#4106;&#4154;&#4152; &#4123;&#4117;&#4139;&#4112;&#4122;&#4154;&#4171;
           </p>
           <a className="button button--primary button--md" href="https://t.me/PSNamso_bot" target="_blank" rel="noopener noreferrer">
             Open Telegram Bot (Top Up)

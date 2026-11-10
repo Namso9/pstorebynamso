@@ -41,7 +41,7 @@ export function resolveCatalogSelection(
 export function selectionLabel(selection: CatalogSelection) {
   const { product, plan } = selection;
   if (!plan) return product.name;
-  return `${product.name} — ${plan.name}${plan.desc ? ` · ${plan.desc}` : ""}${
+  return `${product.name} \u2014 ${plan.name}${plan.desc ? ` \u00b7 ${plan.desc}` : ""}${
     plan.price ? ` (${plan.price})` : ""
   }`;
 }

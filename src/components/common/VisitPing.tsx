@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { trackSession, trackSiteVisit } from "@/services/track";
 
 /**
- * Fires the two anonymous arrival pings — see `track.ts` for exactly what
+ * Fires the two anonymous arrival pings \u2014 see `track.ts` for exactly what
  * leaves the browser (enum-ish constants, no identifier) and why the visit
  * once-guard is module state rather than storage.
  *
