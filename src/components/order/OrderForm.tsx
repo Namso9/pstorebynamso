@@ -81,7 +81,7 @@ export type OrderFormCardProps = {
   headingLevel?: "h1" | "h2";
 };
 
-const MAIL_REQUIRED_PRODUCTS = new Set(["zoom", "canva", "duolingo"]);
+const MAIL_REQUIRED_PRODUCTS = new Set(["zoom", "zoom_business", "canva", "duolingo"]);
 /**
  * Products whose order cannot be fulfilled without the SIM number the data is
  * loaded onto. Mirrored server-side in `functions/api/order.js` \u2014 a client-side

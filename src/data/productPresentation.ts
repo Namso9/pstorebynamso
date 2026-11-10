@@ -39,6 +39,10 @@ export const productPresentation: Record<string, { subtitle: string; imageClass:
     "subtitle": "100 Participants Plan",
     "imageClass": "app-info"
   },
+  "Zoom Business": {
+    "subtitle": "300 or 500 Participants - 1 Month",
+    "imageClass": "app-info"
+  },
   "Telegram Premium": {
     "subtitle": "Exclusive Features",
     "imageClass": "app-info"

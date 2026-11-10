@@ -44,5 +44,6 @@ export const productImages: Record<string, string> = {
   "Tidal": "/product-logos/tidal.svg",
   "Windows Lifetime Keys": "/product-logos/windows.svg",
   "YouTube Premium": "/product-logos/youtube.svg",
+  "Zoom Business": "/product-logos/zoom.svg",
   "Zoom Pro": "/product-logos/zoom.svg"
 };

@@ -33,7 +33,7 @@ export default function WebsiteOrder() {
   const screenshotInput = useRef<HTMLInputElement>(null);
   const [attachedScreenshot, setAttachedScreenshot] = useState<File | null>(null);
   const productId=item?.product.id || "";
-  const needsMail=["zoom","canva","duolingo"].includes(productId) || planId.includes("cus_mail") || (productId==="gemini" && planId!=="18_months");
+  const needsMail=["zoom","zoom_business","canva","duolingo"].includes(productId) || planId.includes("cus_mail") || (productId==="gemini" && planId!=="18_months");
   const needsPassword=productId==="gemini" && planId!=="18_months";
   const field=needsMail ? {name:"email",label:"Email for your subscription",hint:"Use the email address for this subscription.",pattern:undefined} : deliveryField(slug);
   const botHref=order?.plan.bot && !order.plan.contact ? telegramCheckoutHref(catalog.settings,productId,planId) : null;
@@ -83,7 +83,7 @@ export default function WebsiteOrder() {
           </section>
           <section className="info-panel"><h2>2. Contact & delivery</h2>
             <label>Your name<input name="name" autoComplete="name" required maxLength={60} /></label>
-            <label>Contact for delivery<input name="contact" required maxLength={40} placeholder="Telegram username, Viber number or email" /><small>Use a contact we can reach to deliver your purchase.</small></label>
+            <label>Contact for delivery<input name="contact" required maxLength={40} placeholder="Enter your contact" aria-describedby="delivery-contact-help" /><small id="delivery-contact-help">Telegram username, Viber number or email.</small></label>
             {field && <label key={slug}>{field.label}<input name="delivery" type={field.name === "email" ? "email" : "text"} inputMode={field.name === "phone" ? "tel" : undefined} pattern={field.pattern} required maxLength={120} /><small>{field.hint}</small></label>}
             {needsPassword && <label>Account password<input name="customer_pw" type="password" required maxLength={100} autoComplete="off" /></label>}
             <label>Note (optional)<textarea name="note" rows={3} maxLength={200} placeholder="Anything we should know about this order" /></label>
@@ -99,7 +99,7 @@ export default function WebsiteOrder() {
             <label>Payment screenshot<input ref={screenshotInput} name="screenshot" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,image/avif" required onChange={event => { setAttachedScreenshot(event.currentTarget.files?.[0] || null); setError(""); }} /><small>JPG, PNG, WebP, GIF, HEIC or AVIF. Maximum 8 MB.</small></label>
             {attachedScreenshot && <div className="order-attachment" role="status"><span>Screenshot attached: <strong>{attachedScreenshot.name}</strong></span><button type="button" className="order-attachment-remove" aria-label="Remove payment screenshot" onClick={() => { if (screenshotInput.current) screenshotInput.current.value = ""; setAttachedScreenshot(null); }}>&times;</button></div>}
           </section>
-          <label className="order-consent"><input type="checkbox" name="terms" value="accepted" required /> <span>I have checked my plan and payment, and agree to the <Link href="/terms-and-conditions" target="_blank">terms</Link> and <Link href="/refund-policy" target="_blank">refund policy</Link>. See how order details are used in our <Link href="/privacy-policy" target="_blank">privacy policy</Link>.</span></label>
+          <label className="order-consent"><input type="checkbox" name="terms" value="accepted" required /> <span>I have checked my plan and payment, and agree to the <Link href="/terms-and-conditions/" target="_blank" rel="noopener noreferrer">terms</Link> and <Link href="/refund-policy/" target="_blank" rel="noopener noreferrer">refund policy</Link>. See how order details are used in our <Link href="/privacy-policy/" target="_blank" rel="noopener noreferrer">privacy policy</Link>.</span></label>
           <div className="order-honeypot" aria-hidden="true"><input name="extra_field_hp" tabIndex={-1} autoComplete="off" /></div>
           {error && <p className="order-notice" role="alert">{error}</p>}
           <button className="info-action" type="submit" disabled={busy || !order || (!available && !engaged)}>{busy ? "Sending your order..." : "Submit order"}</button>

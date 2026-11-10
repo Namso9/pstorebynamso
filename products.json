@@ -264,32 +264,57 @@
       "modalTitle": "Zoom Pro Plans (100p)",
       "plans": [
         {
-          "name": "1 Month",
-          "desc": "Monthly",
+          "name": "1 Month - 100 p",
+          "desc": "100 p",
           "price": "20,000 Ks",
           "id": "1_month",
           "bot": true
         },
         {
-          "name": "3 Months",
-          "desc": "Quarterly",
+          "name": "3 Months - 100 p",
+          "desc": "100 p",
           "price": "59,000 Ks",
           "id": "3_months",
           "bot": true
         },
         {
-          "name": "6 Months ⭐ Most Popular",
-          "desc": "⭐ Most Popular",
+          "name": "6 Months - 100 p",
+          "desc": "100 p",
           "price": "118,000 Ks",
           "id": "6_months",
           "bot": true
         },
         {
-          "name": "1 Year 🔥 Best Value",
-          "desc": "🔥 Best Value",
+          "name": "1 Year - 100 p",
+          "desc": "100 p",
           "price": "230,000 Ks",
           "id": "1_year",
           "bot": true
+        }
+      ]
+    },
+    {
+      "id": "zoom_business",
+      "category": "creative-apps",
+      "name": "Zoom Business",
+      "subtitle": "300 or 500 Participants - 1 Month",
+      "image": "images/zoom.svg",
+      "imageClass": "app-info",
+      "modalTitle": "Zoom Business Plans",
+      "plans": [
+        {
+          "name": "300 Participants - 1 Month",
+          "desc": "300 participants, 1 month",
+          "price": "50,000 Ks",
+          "id": "300p_1_month",
+          "bot": false
+        },
+        {
+          "name": "500 Participants - 1 Month",
+          "desc": "500 participants, 1 month",
+          "price": "90,000 Ks",
+          "id": "500p_1_month",
+          "bot": false
         }
       ]
     },

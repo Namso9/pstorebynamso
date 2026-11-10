@@ -8,7 +8,7 @@ const MOVE = 1100; // ms rotation to the next card
 
 function Dots() {
   return (
-    <svg className="orbit-dots" viewBox="0 0 16 4" aria-hidden="true">
+    <svg className="premium-store-dots" viewBox="0 0 16 4" aria-hidden="true">
       <circle cx="2" cy="2" r="1.6" />
       <circle cx="8" cy="2" r="1.6" />
       <circle cx="14" cy="2" r="1.6" />
@@ -28,9 +28,9 @@ export default function Hero({ buttons = "anchors" }: { buttons?: HeroButtons })
   useEffect(() => {
     const stage = mediaRef.current;
     if (!stage) return;
-    const base = Array.from(stage.querySelectorAll<HTMLElement>(".orbit-card:not([data-clone])"));
+    const base = Array.from(stage.querySelectorAll<HTMLElement>(".premium-store-card:not([data-clone])"));
     // CC Cylinder look needs close neighbors: each card sits twice on the drum
-    let clones = Array.from(stage.querySelectorAll<HTMLElement>(".orbit-card[data-clone]"));
+    let clones = Array.from(stage.querySelectorAll<HTMLElement>(".premium-store-card[data-clone]"));
     if (clones.length === 0) {
       clones = base.map((c) => {
         const k = c.cloneNode(true) as HTMLElement;
@@ -154,10 +154,10 @@ export default function Hero({ buttons = "anchors" }: { buttons?: HeroButtons })
         </div>
 
         <div className="subscription-visual">
-          <div className="subscription-media orbit-3d" ref={mediaRef} aria-hidden="true">
+          <div className="subscription-media premium-store-3d" ref={mediaRef} aria-hidden="true">
             {/* Music */}
-            <article className="orbit-card orbit-card--dark" style={{ "--i": 0 } as CSSProperties}>
-              <div className="orbit-head">
+            <article className="premium-store-card premium-store-card--dark" style={{ "--i": 0 } as CSSProperties}>
+              <div className="premium-store-head">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 18V6l10-2v12" />
                   <circle cx="6" cy="18" r="3" />
@@ -166,25 +166,25 @@ export default function Hero({ buttons = "anchors" }: { buttons?: HeroButtons })
                 <span>Music</span>
                 <Dots />
               </div>
-              <div className="orbit-media-row">
-                <span className="orbit-thumb orbit-thumb--spotify">
+              <div className="premium-store-media-row">
+                <span className="premium-store-thumb premium-store-thumb--spotify">
                   <img src="/logos/spotify.svg" alt="" />
                 </span>
-                <div className="orbit-wave" aria-hidden="true">
+                <div className="premium-store-wave" aria-hidden="true">
                   {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                     <i key={n} style={{ animationDelay: `${n * -0.13}s` }} />
                   ))}
                 </div>
               </div>
-              <p className="orbit-muted">Good days, on repeat.</p>
-              <div className="orbit-track" />
-              <div className="orbit-times orbit-muted">
+              <p className="premium-store-muted">Good days, on repeat.</p>
+              <div className="premium-store-track" />
+              <div className="premium-store-times premium-store-muted">
                 <span>1:24</span>
                 <span>3:56</span>
               </div>
-              <div className="orbit-controls">
+              <div className="premium-store-controls">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6v12M19 6l-9 6 9 6z" /></svg>
-                <span className="orbit-play">
+                <span className="premium-store-play">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" /></svg>
                 </span>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 6v12M5 6l9 6-9 6z" /></svg>
@@ -192,8 +192,8 @@ export default function Hero({ buttons = "anchors" }: { buttons?: HeroButtons })
             </article>
 
             {/* Streaming */}
-            <article className="orbit-card orbit-card--blue" style={{ "--i": 1 } as CSSProperties}>
-              <div className="orbit-head">
+            <article className="premium-store-card premium-store-card--blue" style={{ "--i": 1 } as CSSProperties}>
+              <div className="premium-store-head">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="4" width="18" height="13" rx="2" />
                   <path d="M8 21h8M12 17v4" />
@@ -202,48 +202,48 @@ export default function Hero({ buttons = "anchors" }: { buttons?: HeroButtons })
                 <span>Streaming</span>
                 <Dots />
               </div>
-              <div className="orbit-video">
-                <img className="orbit-video-brand" src="/logos/netflix.svg" alt="" />
-                <span className="orbit-play">
+              <div className="premium-store-video">
+                <img className="premium-store-video-brand" src="/logos/netflix.svg" alt="" />
+                <span className="premium-store-play">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" /></svg>
                 </span>
-                <span className="orbit-vbar" />
+                <span className="premium-store-vbar" />
               </div>
-              <p className="orbit-muted">Something worth watching.</p>
+              <p className="premium-store-muted">Something worth watching.</p>
             </article>
 
             {/* AI Tools */}
-            <article className="orbit-card orbit-card--blue" style={{ "--i": 2 } as CSSProperties}>
-              <div className="orbit-head">
+            <article className="premium-store-card premium-store-card--blue" style={{ "--i": 2 } as CSSProperties}>
+              <div className="premium-store-head">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z" />
                 </svg>
                 <span>AI Tools</span>
                 <Dots />
               </div>
-              <div className="orbit-input">
-                <span className="orbit-type">Turn my ideas into a plan</span>
-                <span className="orbit-caret" />
+              <div className="premium-store-input">
+                <span className="premium-store-type">Turn my ideas into a plan</span>
+                <span className="premium-store-caret" />
               </div>
-              <div className="orbit-check is-done"><i />Outline created</div>
-              <div className="orbit-check is-done"><i />Key points ready</div>
-              <div className="orbit-check"><i />Next steps suggested</div>
+              <div className="premium-store-check is-done"><i />Outline created</div>
+              <div className="premium-store-check is-done"><i />Key points ready</div>
+              <div className="premium-store-check"><i />Next steps suggested</div>
             </article>
 
             {/* VPN */}
-            <article className="orbit-card orbit-card--dark" style={{ "--i": 3 } as CSSProperties}>
-              <div className="orbit-head">
+            <article className="premium-store-card premium-store-card--dark" style={{ "--i": 3 } as CSSProperties}>
+              <div className="premium-store-head">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 3l7 3v5c0 4.3-3 7.4-7 8.5-4-1.1-7-4.2-7-8.5V6z" />
                 </svg>
                 <span>VPN</span>
                 <Dots />
               </div>
-              <div className="orbit-toggle-row">
-                <span className="orbit-sub">Your private space</span>
-                <span className="orbit-toggle" />
+              <div className="premium-store-toggle-row">
+                <span className="premium-store-sub">Your private space</span>
+                <span className="premium-store-toggle" />
               </div>
-              <svg className="orbit-graph" viewBox="0 0 120 46" preserveAspectRatio="none" aria-hidden="true">
+              <svg className="premium-store-graph" viewBox="0 0 120 46" preserveAspectRatio="none" aria-hidden="true">
                 <line className="grid" x1="30" y1="2" x2="30" y2="44" />
                 <line className="grid" x1="60" y1="2" x2="60" y2="44" />
                 <line className="grid" x1="90" y1="2" x2="90" y2="44" />
@@ -252,18 +252,18 @@ export default function Hero({ buttons = "anchors" }: { buttons?: HeroButtons })
             </article>
 
             {/* Learning */}
-            <article className="orbit-card orbit-card--blue" style={{ "--i": 4 } as CSSProperties}>
-              <div className="orbit-head">
+            <article className="premium-store-card premium-store-card--blue" style={{ "--i": 4 } as CSSProperties}>
+              <div className="premium-store-head">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 5h7a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H3zM21 5h-7a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h7z" />
                 </svg>
                 <span>Learning</span>
                 <Dots />
               </div>
-              <p className="orbit-sub">Build new skills</p>
-              <div className="orbit-lesson"><span>Lesson 1</span><span className="orbit-bar" style={{ "--p": 0.82 } as CSSProperties} /></div>
-              <div className="orbit-lesson"><span>Lesson 2</span><span className="orbit-bar" style={{ "--p": 0.45 } as CSSProperties} /></div>
-              <div className="orbit-lesson"><span>Lesson 3</span><span className="orbit-bar" style={{ "--p": 0.15 } as CSSProperties} /></div>
+              <p className="premium-store-sub">Build new skills</p>
+              <div className="premium-store-lesson"><span>Lesson 1</span><span className="premium-store-bar" style={{ "--p": 0.82 } as CSSProperties} /></div>
+              <div className="premium-store-lesson"><span>Lesson 2</span><span className="premium-store-bar" style={{ "--p": 0.45 } as CSSProperties} /></div>
+              <div className="premium-store-lesson"><span>Lesson 3</span><span className="premium-store-bar" style={{ "--p": 0.15 } as CSSProperties} /></div>
             </article>
           </div>
 

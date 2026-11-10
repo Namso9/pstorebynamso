@@ -1,0 +1,25 @@
+{
+  "id": "zoom_business",
+  "category": "creative-apps",
+  "name": "Zoom Business",
+  "subtitle": "300 or 500 Participants - 1 Month",
+  "image": "images/zoom.svg",
+  "imageClass": "app-info",
+  "modalTitle": "Zoom Business Plans",
+  "plans": [
+    {
+      "name": "300 Participants - 1 Month",
+      "desc": "300 participants, 1 month",
+      "price": "50,000 Ks",
+      "id": "300p_1_month",
+      "bot": false
+    },
+    {
+      "name": "500 Participants - 1 Month",
+      "desc": "500 participants, 1 month",
+      "price": "90,000 Ks",
+      "id": "500p_1_month",
+      "bot": false
+    }
+  ]
+}

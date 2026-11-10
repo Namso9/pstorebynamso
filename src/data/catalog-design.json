@@ -790,27 +790,47 @@
         "from": "from 20,000 Ks",
         "plans": [
           {
-            "label": "1 Month - monthly",
+            "label": "1 Month - 100 p",
             "price": "20,000 Ks",
             "catalogPlanId": "1_month"
           },
           {
-            "label": "3 Months - quarterly",
+            "label": "3 Months - 100 p",
             "price": "59,000 Ks",
             "catalogPlanId": "3_months"
           },
           {
-            "label": "6 Months - most popular",
+            "label": "6 Months - 100 p",
             "price": "118,000 Ks",
             "catalogPlanId": "6_months"
           },
           {
-            "label": "1 Year - best value",
+            "label": "1 Year - 100 p",
             "price": "230,000 Ks",
             "catalogPlanId": "1_year"
           }
         ],
         "catalogId": "zoom"
+      },
+      {
+        "name": "Zoom Business",
+        "desc": "One-month plans for meetings with 300 or 500 participants.",
+        "logo": "/logos/zoom.svg",
+        "brand": "#2D8CFF",
+        "from": "from 50,000 Ks",
+        "plans": [
+          {
+            "label": "300 Participants - 1 Month",
+            "price": "50,000 Ks",
+            "catalogPlanId": "300p_1_month"
+          },
+          {
+            "label": "500 Participants - 1 Month",
+            "price": "90,000 Ks",
+            "catalogPlanId": "500p_1_month"
+          }
+        ],
+        "catalogId": "zoom_business"
       },
       {
         "name": "Telegram Premium",
