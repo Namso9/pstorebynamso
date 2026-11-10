@@ -279,19 +279,8 @@
         "desc": "Google's most capable AI on your own Gmail.",
         "logo": "/logos/gemini.svg",
         "brand": "#4E82EE",
-        "from": "from 25,000 Ks",
-        "plans": [
-          {
-            "label": "12 Months - needs your Gmail and password",
-            "price": "35,000 Ks",
-            "catalogPlanId": "12_months"
-          },
-          {
-            "label": "18 Months - promotion link",
-            "price": "25,000 Ks",
-            "catalogPlanId": "18_months"
-          }
-        ],
+        "from": "Out of stock",
+        "plans": [],
         "catalogId": "gemini"
       },
       {
@@ -344,11 +333,11 @@
         "desc": "Humanize AI text. Official price 20$ a month.",
         "initials": "SW",
         "brand": "#334155",
-        "from": "from 40,000 Ks",
+        "from": "from 50,000 Ks",
         "plans": [
           {
             "label": "1 Month - Starter plan",
-            "price": "40,000 Ks",
+            "price": "50,000 Ks",
             "catalogPlanId": "1_month"
           },
           {

@@ -61,7 +61,7 @@ export function buildCategoryPages(catalog: CatalogData): CategoryPage[] {
       return {
         id:p.id, slug:slugify(visual?.name || reference?.name || p.name), name:visual?.name || p.name, desc:visual?.desc || p.subtitle,
         logo:visual ? productImages[visual.name] || visual.logo : '/' + p.image.replace(/^\//, ''), initials:visual?.initials, brand:visual?.brand || '#555555', plans,
-        from:prices.length ? `From ${Math.min(...prices).toLocaleString('en-US')} Ks` : 'Contact store',
+        from:plans.length === 0 ? 'Out of stock' : prices.length ? `From ${Math.min(...prices).toLocaleString('en-US')} Ks` : 'Contact store',
       };
     }).sort((a, b) => {
       const position = (id: string) => {

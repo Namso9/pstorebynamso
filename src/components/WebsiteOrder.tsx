@@ -24,6 +24,7 @@ export default function WebsiteOrder() {
   const planIndex=item?.product.plans.findIndex(p=>p.id===planId) ?? -1;
   const selectedPlan=item?.product.plans[planIndex] || baseline?.product.plans.find(p=>p.id===planId);
   const order=item && selectedPlan ? {...item,plan:selectedPlan} : null;
+  const productUnavailable=Boolean(liveItem && liveItem.product.plans.length===0);
   const available=Boolean(liveItem?.product.plans.some(p=>p.id===planId && !p.soldOut && !p.contact));
   const [engaged,setEngaged]=useState(false);
   const [payment, setPayment] = useState(paymentMethods[0].name);
@@ -40,7 +41,7 @@ export default function WebsiteOrder() {
   const method = paymentMethods.find(p => p.name === payment)!;
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (busy || !order || (!available && !engaged)) return;
+    if (busy || !order || productUnavailable || (!available && !engaged)) return;
     const form = new FormData(event.currentTarget);
     form.set("product_id",productId);
     form.set("plan_id",planId);
@@ -61,6 +62,12 @@ export default function WebsiteOrder() {
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Please contact the store to check your order before submitting again."); }
     finally { setBusy(false); }
   }
+  if (productUnavailable) return <div className="info-inner website-order">
+    <p className="info-eyebrow">Premium Store</p>
+    <h1>{item?.product.name || "Product unavailable"}</h1>
+    <p className="order-notice" role="status">Out of stock. No plans are currently available.</p>
+    <Link className="info-action" href="/products/">Browse available products</Link>
+  </div>;
   return <div className="info-inner website-order" lang={lang === "mm" ? "my" : "en"}>
     <Link className="info-back" href="/products">{t("Browse products", "Product \u1019\u103b\u102c\u1038 \u1000\u103c\u100a\u1037\u103a\u101b\u1014\u103a")}</Link>
     <p className="info-eyebrow">Premium Store</p>
@@ -72,12 +79,13 @@ export default function WebsiteOrder() {
       <Link className="info-action" href="/contact">Contact support</Link>
     </section> : <>
       <p className="info-lead">Choose your plan, pay with your preferred app, and send your order here.</p>
+      {productUnavailable && <p className="order-notice" role="status">Out of stock. No plans are currently available.</p>}
       {order?.plan.contact && <p className="order-notice" role="status">Please contact the store for the current price before paying.</p>}
       <form onSubmit={submit} onInput={() => { setEngaged(true); if (!baseline && item) setBaseline(item); }}>
         <fieldset disabled={busy} className="order-fields">
           <section className="info-panel"><h2>1. Your plan</h2>
-            <label>Product<select name="product_id" required value={slug} onChange={event => { const next=detailProducts.find(p=>p.slug===event.target.value); setChoice({slug:event.target.value,planId:next?.product.plans[0]?.id || ""}); setBaseline(null); setEngaged(false); }}><option value="">Choose a product</option>{detailProducts.map(p => <option value={p.slug} key={p.slug}>{p.product.name}</option>)}</select></label>
-            {item && <label>Plan<select name="plan_id" value={planId} onChange={event => { setChoice({slug,planId:event.target.value}); setBaseline(null); setEngaged(false); }}>{item.product.plans.map((p) => <option key={p.id} value={p.id} disabled={p.soldOut}>{p.label} - {p.price}{p.soldOut ? " (Out of stock)" : ""}</option>)}</select></label>}
+            <label>Product<select name="product_id" required value={slug} onChange={event => { const next=detailProducts.find(p=>p.slug===event.target.value); setChoice({slug:event.target.value,planId:next?.product.plans[0]?.id || ""}); setBaseline(null); setEngaged(false); }}><option value="">Choose a product</option>{detailProducts.map(p => <option value={p.slug} key={p.slug} disabled={!p.product.plans.length}>{p.product.name}{!p.product.plans.length ? " - Out of stock" : ""}</option>)}</select></label>
+            {item && item.product.plans.length>0 && <label>Plan<select name="plan_id" value={planId} onChange={event => { setChoice({slug,planId:event.target.value}); setBaseline(null); setEngaged(false); }}>{item.product.plans.map((p) => <option key={p.id} value={p.id} disabled={p.soldOut}>{p.label} - {p.price}{p.soldOut ? " (Out of stock)" : ""}</option>)}</select></label>}
             {order && <p className="order-total">Total <strong>{order.plan.price}</strong></p>}
             {order?.plan.soldOut && <p role="status">This plan is out of stock. Please choose another plan.</p>}
           </section>
@@ -102,7 +110,7 @@ export default function WebsiteOrder() {
           <label className="order-consent"><input type="checkbox" name="terms" value="accepted" required /> <span>I have checked my plan and payment, and agree to the <Link href="/terms-and-conditions/" target="_blank" rel="noopener noreferrer">terms</Link> and <Link href="/refund-policy/" target="_blank" rel="noopener noreferrer">refund policy</Link>. See how order details are used in our <Link href="/privacy-policy/" target="_blank" rel="noopener noreferrer">privacy policy</Link>.</span></label>
           <div className="order-honeypot" aria-hidden="true"><input name="extra_field_hp" tabIndex={-1} autoComplete="off" /></div>
           {error && <p className="order-notice" role="alert">{error}</p>}
-          <button className="info-action" type="submit" disabled={busy || !order || (!available && !engaged)}>{busy ? "Sending your order..." : "Submit order"}</button>
+          <button className="info-action" type="submit" disabled={busy || !order || productUnavailable || (!available && !engaged)}>{busy ? "Sending your order..." : "Submit order"}</button>
         </fieldset>
       </form>
       <aside className="info-panel order-alternatives"><h2>Other ways to buy</h2><a href={botHref || "https://t.me/PSNamso_bot"} target="_blank" rel="noopener noreferrer">Shop with Telegram bot</a><a href="https://t.me/Premiumstorezz" target="_blank" rel="noopener noreferrer">Order with Telegram support</a></aside>

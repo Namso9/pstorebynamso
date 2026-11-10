@@ -694,22 +694,7 @@
       "image": "images/gemini.svg",
       "imageClass": "app-info",
       "modalTitle": "Gemini Pro Apply Service Fee",
-      "plans": [
-        {
-          "name": "12 Months",
-          "desc": "need your gmail and pw",
-          "price": "35,000 Ks",
-          "id": "12_months",
-          "bot": true
-        },
-        {
-          "name": "18 Months",
-          "desc": "18 months link • Promotion Price 🔥",
-          "price": "25,000 Ks",
-          "id": "18_months",
-          "bot": true
-        }
-      ]
+      "plans": []
     },
     {
       "id": "manus",
@@ -776,7 +761,7 @@
           "name": "1 month starter plan",
           "desc": "Starter Plan (Official Price 20$)",
           "id": "1_month",
-          "price": "40,000 Ks",
+          "price": "50,000 Ks",
           "bot": true
         },
         {

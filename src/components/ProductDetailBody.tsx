@@ -48,10 +48,10 @@ export default function ProductDetailBody({slug}:{slug:string}) {
               <ProductPlanSelector plans={product.plans} slug={slug} />
             </div>
           </div>
-          <section className="detail-content" aria-labelledby="product-content-title">
+          {details?.content && <section className="detail-content" aria-labelledby="product-content-title">
             <h2 id="product-content-title">Product details</h2>
             <div className="detail-content-body">{details?.content || ""}</div>
-          </section>
+          </section>}
           {slug === "hiddify-v2box-v2ray" && <HappLocations />}
           {slug === "bioscope-premium" && (
             <section className="detail-downloads">
@@ -60,7 +60,7 @@ export default function ProductDetailBody({slug}:{slug:string}) {
               <Link className="info-action" href="/bioscope-download">View downloads</Link>
             </section>
           )}
-          <ProductFaqs faqs={productFaqs[slug] || []} />
+          {product.plans.length > 0 && <ProductFaqs faqs={productFaqs[slug] || []} />}
           {related.length > 0 && (
             <section className="detail-related" aria-labelledby="related-products-title">
               <h2 id="related-products-title">Related products</h2>

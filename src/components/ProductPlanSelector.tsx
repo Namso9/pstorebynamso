@@ -18,6 +18,8 @@ export default function ProductPlanSelector({ slug }: {
   const plan = selected < 0 ? null : plans[selected];
   const purchaseUrl = product && plan ? orderIdHref(product.id,plan.id) : "";
 
+  if (!plans.length) return <p className="order-notice" role="status">Out of stock. No plans are currently available.</p>;
+
   return (
     <div className="detail-purchase">
       <fieldset className="detail-plan-options">

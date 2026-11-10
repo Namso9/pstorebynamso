@@ -46,8 +46,9 @@ if(express.id==='express_vpn'){
 assert.equal(fs.readFileSync('products.json','utf8'),fs.readFileSync('public/products.json','utf8'));
 // Check the active checkout presentation without a browser or any effects.
 const load=Module._load;
+let renderingQuery=`product=netflix_tv&plan=${encodeURIComponent(stableId)}`;
 Module._load=function(request,...rest){
- if(request==='next/navigation')return {useSearchParams:()=>new URLSearchParams(`product=netflix_tv&plan=${encodeURIComponent(stableId)}`)};
+ if(request==='next/navigation')return {useSearchParams:()=>new URLSearchParams(renderingQuery)};
  return load.call(this,request,...rest);
 };
 try{
@@ -58,6 +59,12 @@ try{
  assert(html.includes('website-order'));assert(html.includes('Order on website'));
  assert(html.includes('1. Your plan'));assert(html.includes('2. Contact &amp; delivery'));assert(html.includes('3. Payment'));
  assert(!html.includes('checkout-steps'));assert(!html.includes('payment-card-next'));
+ for(const retiredPlanId of ['12_months','18_months']){
+  renderingQuery=`product=gemini&plan=${retiredPlanId}`;
+  const pausedHtml=renderToStaticMarkup(React.createElement(WebsiteOrder));
+  assert(pausedHtml.includes('Out of stock'));
+  assert(!pausedHtml.includes('<form'),'Retired Gemini links must not collect customer/payment details');
+ }
  const PlanActions=require('../src/components/PlanActions.tsx').default;
  const action=renderToStaticMarkup(React.createElement(PlanActions,{product:express,plan:{...express.plans[0],soldOut:false,contact:false}}));
  assert(action.includes(`/order?product=${encodeURIComponent(express.id)}`) || action.includes(`/order/?product=${encodeURIComponent(express.id)}`),action);assert(!action.includes('Buy in bot'));
@@ -88,6 +95,12 @@ try{
   const mirror=JSON.parse(calls.find(c=>c.url===env.PANEL_INGEST_URL).options.body);
   assert.equal(mirror.product_id,'netflix_tv');assert.equal(mirror.plan_id,stableId);
   assert(!('customer_pw'in mirror));assert(!('screenshot'in mirror));
+  for(const planId of ['12_months','18_months']){
+   const count=calls.length;
+   const result=await onRequestPost({request:makeRequest({product_id:'gemini',plan_id:planId}),env,waitUntil:p=>pending.push(p)});
+   assert.equal(result.status,409);assert.equal((await result.json()).ok,false);
+   assert.equal(calls.length,count,'Paused Gemini orders must not reach Telegram or the panel');
+  }
   const before=calls.length;
   result=await onRequestPost({request:makeRequest({product_id:'atom-data',phone:''}),env,waitUntil:p=>pending.push(p)});
   assert.equal(result.status,400);assert.equal(calls.length,before);

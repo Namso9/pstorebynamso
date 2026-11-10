@@ -49,6 +49,10 @@ export default function ProductPlansButton({ product, className = "all-product-a
     }
   };
 
+  if (!product.plans.length) return titleTrigger
+    ? <h1>{titleTrigger}</h1>
+    : <button type="button" className={className} disabled>Out of stock</button>;
+
   return (
     <>
       {titleTrigger ? (

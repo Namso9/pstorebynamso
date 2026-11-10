@@ -253,6 +253,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const note = clean(form.get('note'), 300);
     const phone = clean(form.get('phone'), 20);
     const productId = clean(form.get('product_id'), 60);
+    // Gemini is paused, including stale forms and old plan URLs.
+    if (productId === 'gemini') return json({ ok: false, error: 'Gemini is out of stock. No plans are currently available.' }, 409);
     const planId = clean(form.get('plan_id'), 60);
     const shot = form.get('screenshot');
 
