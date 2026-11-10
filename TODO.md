@@ -2,6 +2,16 @@
 
 ## Status
 
+2026-11-10 production release: COMPLETE; owner phone acceptance: PASS.
+Code e2015e8 is committed and pushed to main. Cloudflare production deployment
+461c0ba0-e52c-4034-aadf-a300f73931dc is live at https://pstorebynamso.com/.
+Home, Music and ChatGPT return HTTP 200 with CSP; all 14 homepage CSS/JS
+assets match the verified export byte for byte. Release checks pass, with
+four existing lint warnings and zero npm audit vulnerabilities. Current upstream
+catalog, content, dependencies and Pages Functions are retained. No live order
+was submitted. See integration/RELEASE_20261110.md. Older preview/pending
+entries below are historical and superseded by this accepted release.
+
 2026-11-10 release acceptance: PASS. The owner approved the final phone test
 and authorized commit/push/production deployment. Release source is prepared
 on upstream 48512b2 in /private/tmp/pstore-ios-motion-release-20261110, keeping
