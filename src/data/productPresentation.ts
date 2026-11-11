@@ -91,7 +91,7 @@ export const productPresentation: Record<string, { subtitle: string; imageClass:
     "subtitle": "Language Learning",
     "imageClass": "app-info"
   },
-  "Duolingo Crack Acc Plan": {
+  "Duolingo Ready Made Acc": {
     "subtitle": "Better Value",
     "imageClass": "app-info"
   },

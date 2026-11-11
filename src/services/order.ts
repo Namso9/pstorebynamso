@@ -68,7 +68,10 @@ export function resolveProductIdFromText(catalog: CatalogData, text: string) {
   if (normalized.includes("canva")) return "canva";
   if (normalized.includes("zoom")) return "zoom";
   if (normalized.includes("gemini")) return "gemini";
-  if (normalized.includes("duolingo") && !normalized.includes("crack")) {
+  if (normalized.includes("duolingo") && (normalized.includes("ready made") || normalized.includes("crack"))) {
+    return "duolingocrack";
+  }
+  if (normalized.includes("duolingo")) {
     return "duolingo";
   }
   return "";

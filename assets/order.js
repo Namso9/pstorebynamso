@@ -106,7 +106,8 @@
         if (t.indexOf('canva') !== -1) return 'canva';
         if (t.indexOf('zoom') !== -1) return 'zoom';
         if (t.indexOf('gemini') !== -1) return 'gemini';
-        if (t.indexOf('duolingo') !== -1 && t.indexOf('crack') === -1) return 'duolingo';
+        if (t.indexOf('duolingo') !== -1 && (t.indexOf('ready made') !== -1 || t.indexOf('crack') !== -1)) return 'duolingocrack';
+        if (t.indexOf('duolingo') !== -1) return 'duolingo';
         return '';
       }
 

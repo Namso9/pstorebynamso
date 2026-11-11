@@ -6,7 +6,7 @@ import { slugify } from "@/lib/categoryPages";
 export function generateStaticParams() {
  const slugs = new Set([
   ...detailProducts.map(({slug})=>slug),
-  ...designs.flatMap(category=>category.products.map(product=>product.catalogId === 'happ' ? 'hiddify-v2box-v2ray' : slugify(product.name))),
+  ...designs.flatMap(category=>category.products.map(product=>product.catalogId === 'duolingocrack' ? 'duolingo-crack-acc-plan' : product.catalogId === 'happ' ? 'hiddify-v2box-v2ray' : slugify(product.name))),
  ]);
  return [...slugs].map(slug=>({slug}));
 }

@@ -59,7 +59,7 @@ export function buildCategoryPages(catalog: CatalogData): CategoryPage[] {
         return match ? [Number(match[1].replaceAll(',', ''))] : [];
       });
       return {
-        id:p.id, slug:p.id === 'happ' ? 'hiddify-v2box-v2ray' : slugify(visual?.name || reference?.name || p.name), name:visual?.name || p.name, desc:visual?.desc || p.subtitle,
+        id:p.id, slug:p.id === 'duolingocrack' ? 'duolingo-crack-acc-plan' : p.id === 'happ' ? 'hiddify-v2box-v2ray' : slugify(visual?.name || reference?.name || p.name), name:visual?.name || p.name, desc:visual?.desc || p.subtitle,
         logo:visual ? productImages[visual.name] || visual.logo : '/' + p.image.replace(/^\//, ''), initials:visual?.initials, brand:visual?.brand || '#555555', plans,
         from:plans.length === 0 ? 'Out of stock' : prices.length ? `From ${Math.min(...prices).toLocaleString('en-US')} Ks` : 'Contact store',
       };

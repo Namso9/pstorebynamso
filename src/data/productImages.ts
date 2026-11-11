@@ -8,7 +8,7 @@ export const productImages: Record<string, string> = {
   "ChatGPT Plus": "/logos/chatgpt.svg",
   "Coursera Plus": "/product-logos/coursera.webp",
   "Disney+": "/product-logos/disneyplus.svg",
-  "Duolingo Crack Acc Plan": "/product-logos/duolingo.svg",
+  "Duolingo Ready Made Acc": "/product-logos/duolingo.svg",
   "Duolingo Super": "/product-logos/duolingo.svg",
   "Express VPN (PC)": "/product-logos/express.svg",
   "ExpressVPN": "/product-logos/express.svg",
