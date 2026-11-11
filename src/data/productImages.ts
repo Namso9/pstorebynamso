@@ -16,7 +16,7 @@ export const productImages: Record<string, string> = {
   "Gemini AI": "/product-logos/gemini.svg",
   "Grammarly Premium": "/product-logos/grammarly.webp",
   "HBO Max": "/product-logos/hbomax.webp",
-  "Hiddify / V2Box / V2Ray": "/product-logos/happ.webp",
+  "Happ / V2Box / V2Ray": "/product-logos/happ.webp",
   "Jump Jump VPN": "/product-logos/jumpjump.svg",
   "Lets VPN": "/product-logos/letsvpn.webp",
   "Manus AI Agent": "/product-logos/manus.png",

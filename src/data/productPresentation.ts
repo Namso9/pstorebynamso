@@ -199,7 +199,7 @@ export const productPresentation: Record<string, { subtitle: string; imageClass:
     "subtitle": "Premium",
     "imageClass": "app-info"
   },
-  "Hiddify / V2Box / V2Ray": {
+  "Happ / V2Box / V2Ray": {
     "subtitle": "link Based / Data Limit",
     "imageClass": ""
   }

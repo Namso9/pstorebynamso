@@ -1,5 +1,8 @@
 # PStore AI Context
 
+2026-11-11 product descriptions and CapCut/Happ fixes: release prepared.
+See integration/PRODUCT_DETAILS_20261111.md for scope and verification.
+
 Read this file first. It is the short source of truth for AI-assisted work.
 Read the larger documents only when the current task requires their details.
 

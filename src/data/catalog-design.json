@@ -469,7 +469,7 @@
         "catalogId": "letsvpn"
       },
       {
-        "name": "Hiddify / V2Box / V2Ray",
+        "name": "Happ / V2Box / V2Ray",
         "desc": "High-data VPN keys, up to 600GB a year.",
         "initials": "V2",
         "brand": "#3B82F6",
@@ -734,8 +734,8 @@
             "catalogPlanId": "whole_acc_1_month"
           },
           {
-            "label": "6 Months - whole acc (2-3 devices)",
-            "price": "90,000 Ks",
+            "label": "7 Months - whole acc (2-3 devices)",
+            "price": "110,000 Ks",
             "catalogPlanId": "whole_acc_6_months"
           }
         ],

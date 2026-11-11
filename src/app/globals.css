@@ -2546,6 +2546,9 @@ html:not([data-lang="mm"]) .lang-toggle:hover .lang-card--en{ transform:translat
 .detail-content{ margin-top:64px; padding:32px 0; border-top:1px solid var(--detail-border); border-bottom:1px solid var(--detail-border); }
 .detail-content h2,.detail-related h2{ font-family:var(--font-fraunces),var(--font-mm),serif; font-size:28px; font-weight:500; margin:0 0 24px; }
 .detail-content-body{ min-height:48px; white-space:pre-line; line-height:1.8; color:var(--detail-muted); }
+.detail-content-link{ color:#2563eb; text-decoration:underline; text-underline-offset:3px; overflow-wrap:anywhere; }
+[data-theme="dark"] .detail-content-link{ color:#93c5fd; }
+.detail-content-link:focus-visible{ outline:2px solid currentColor; outline-offset:3px; }
 .detail-related{ margin-top:48px; }
 .detail-related-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; }
 .detail-related-card{ display:flex; flex-direction:column; align-items:flex-start; gap:16px; padding:24px; border-radius:18px; background:var(--detail-surface); border:1px solid var(--detail-border); min-width:0; }

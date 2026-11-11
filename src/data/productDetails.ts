@@ -1,3 +1,5 @@
+import descriptions from "@/data/product-descriptions.json";
+
 export type ProductDetails = {
   photo: string;
   content: string;
@@ -7,4 +9,4 @@ export type ProductDetails = {
 
 // Key entries by the product slug from /product/[slug].
 // Missing fields stay empty until product content and ordering URLs are added.
-export const productDetails: Record<string, Partial<ProductDetails>> = {};
+export const productDetails: Record<string, Partial<ProductDetails>> = descriptions;

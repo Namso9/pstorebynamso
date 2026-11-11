@@ -305,16 +305,16 @@
         {
           "name": "300 Participants - 1 Month",
           "desc": "300 participants, 1 month",
-          "price": "50,000 Ks",
+          "price": "45,000 Ks",
           "id": "300p_1_month",
-          "bot": false
+          "bot": true
         },
         {
           "name": "500 Participants - 1 Month",
           "desc": "500 participants, 1 month",
-          "price": "90,000 Ks",
+          "price": "85,000 Ks",
           "id": "500p_1_month",
-          "bot": false
+          "bot": true
         }
       ]
     },
@@ -743,7 +743,7 @@
           "name": "1 Month",
           "desc": "Super plan",
           "id": "1_month",
-          "price": "55,000 Ks",
+          "price": "70,000 Ks",
           "bot": true
         }
       ]

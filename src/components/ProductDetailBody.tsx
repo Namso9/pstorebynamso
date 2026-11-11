@@ -50,7 +50,11 @@ export default function ProductDetailBody({slug}:{slug:string}) {
           </div>
           {details?.content && <section className="detail-content" aria-labelledby="product-content-title">
             <h2 id="product-content-title">Product details</h2>
-            <div className="detail-content-body">{details?.content || ""}</div>
+            <div className="detail-content-body">{details.content.split(/(https:\/\/t\.me\/[A-Za-z0-9_/]+)/g).map((part, index) =>
+              part.startsWith("https://t.me/")
+                ? <a className="detail-content-link" key={index} href={part} target="_blank" rel="noopener noreferrer">{part}</a>
+                : part
+            )}</div>
           </section>}
           {slug === "hiddify-v2box-v2ray" && <HappLocations />}
           {slug === "bioscope-premium" && (
