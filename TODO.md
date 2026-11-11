@@ -2,6 +2,9 @@
 
 ## Status
 
+2026-11-11 description batch 2: LIVE as 28d056a; all 25 pages verified.
+See integration/PRODUCT_DETAILS_20261111.md.
+
 2026-11-11 descriptions + CapCut/Happ: LIVE and verified. See
 integration/PRODUCT_DETAILS_20261111.md.
 

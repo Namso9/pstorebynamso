@@ -40,4 +40,18 @@ All 25 exported descriptions match stored text; 12 previous entries unchanged.
 Lint (four existing warnings), typecheck, build, CSP, commerce and migration pass.
 This batch changes content only. Dependency audit evidence from the first
 release remains valid: package manifest and lockfile are unchanged.
-Publication pending. Rollback: 17050485-c816-42d3-a40a-99c76cf0e9cb.
+Publication complete. Rollback: 17050485-c816-42d3-a40a-99c76cf0e9cb.
+
+Batch 2 is LIVE: source 28d056a2f36af603442052ae975623bcd6691154 pushed to main.
+Production deployment: c5c43502-0806-4aa5-95f5-24974f6cd337.
+Immutable: https://c5c43502.pstorebynamso.pages.dev/.
+All 25 descriptions match on https://pstorebynamso.com/; tutorial link, Happ
+locations, CapCut label and CSP pass. All 14 checked CSS/JS files match the
+export. Public catalog matches the release catalog. No live order submitted.
+
+## Obsolete Netflix Basic FAQ removal
+
+Owner requested removal of the Phone/Tablet/PC Premium-versus-Basic FAQ
+because Basic is no longer sold. Removed that single product FAQ, preserving
+all other questions, product details and catalog entries. Publication pending.
+Rollback: c5c43502-0806-4aa5-95f5-24974f6cd337.
