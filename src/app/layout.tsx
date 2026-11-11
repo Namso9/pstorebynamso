@@ -13,9 +13,9 @@ const masterpiece = localFont({
   display: "swap",
 });
 
-const masterpieceStadium = localFont({
-  src: "../fonts/MasterpieceStadium.ttf",
-  weight: "400",
+const notoMyanmar = localFont({
+  src: "../fonts/NotoSansMyanmar-Variable.woff",
+  weight: "100 900",
   variable: "--font-mm-body",
   display: "swap",
 });
@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${masterpiece.variable} ${masterpieceStadium.variable}`}
+      className={`${masterpiece.variable} ${notoMyanmar.variable}`}
       suppressHydrationWarning
     >
       <head>

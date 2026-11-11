@@ -1,5 +1,8 @@
 # PStore AI Context
 
+2026-11-11 Noto Sans Myanmar phone preview prepared on a separate branch.
+See integration/MYANMAR_FONT_PREVIEW_20261111.md. Production remains unchanged.
+
 2026-11-11 description batch 2: 12 more descriptions across 13 active routes;
 25 total pages verified LIVE as 28d056a. See integration/PRODUCT_DETAILS_20261111.md.
 
