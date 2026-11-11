@@ -2,6 +2,10 @@
 
 ## Status
 
+2026-11-11 descriptions + CapCut/Happ: LIVE and verified. See
+integration/PRODUCT_DETAILS_20261111.md.
+
+
 2026-11-10 production release: COMPLETE; owner phone acceptance: PASS.
 Code e2015e8 is committed and pushed to main. Cloudflare production deployment
 461c0ba0-e52c-4034-aadf-a300f73931dc is live at https://pstorebynamso.com/.

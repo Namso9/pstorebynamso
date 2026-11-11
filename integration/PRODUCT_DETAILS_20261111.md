@@ -19,5 +19,25 @@ checkout edits are excluded. No bot/admin live database access or mutation.
 Lint (four existing warnings), typecheck, build, CSP, commerce/live-data and
 migration checks pass; all 12 exported descriptions match their JSON text
 exactly and the tutorial is an actual link. npm audit: zero vulnerabilities.
-No browser automation or live order. Production publication/verification pending.
+No browser automation or live order. Production publication/verification complete.
 Rollback: bffb83dd-1416-47ee-a114-4b1193ecfb33.
+
+Production source f2c5bb0b1eb27c5b158a511b371614910bd9a4d1 is pushed to main.
+Deployment: 17050485-c816-42d3-a40a-99c76cf0e9cb.
+Live: https://pstorebynamso.com/.
+Immutable: https://17050485.pstorebynamso.pages.dev/.
+All 12 live descriptions match the stored text. Tutorial link, Happ locations,
+CapCut 7-month label and CSP pass. All 14 checked live CSS/JS assets match the
+verified export. Public catalog matches the release root catalog exactly.
+Post-publication verification is recorded locally; no duplicate deploy needed.
+
+## Additional descriptions - batch 2
+
+Added the owner's 12 further descriptions to 13 routes: ExpressVPN, Nord, Proton, Canva, Picsart Gold, ChatGPT Plus, Quillbot, TIDAL,
+Netflix (both Premium pages), Office, Coursera and Telegram. Existing names,
+prices, IDs, order contracts and earlier descriptions are preserved.
+All 25 exported descriptions match stored text; 12 previous entries unchanged.
+Lint (four existing warnings), typecheck, build, CSP, commerce and migration pass.
+This batch changes content only. Dependency audit evidence from the first
+release remains valid: package manifest and lockfile are unchanged.
+Publication pending. Rollback: 17050485-c816-42d3-a40a-99c76cf0e9cb.

@@ -1,6 +1,9 @@
 # PStore AI Context
 
-2026-11-11 product descriptions and CapCut/Happ fixes: release prepared.
+2026-11-11 description batch 2: 12 more descriptions across 13 active routes;
+25 total pages verified in export. See integration/PRODUCT_DETAILS_20261111.md.
+
+2026-11-11 product descriptions and CapCut/Happ fixes: LIVE as f2c5bb0.
 See integration/PRODUCT_DETAILS_20261111.md for scope and verification.
 
 Read this file first. It is the short source of truth for AI-assisted work.
