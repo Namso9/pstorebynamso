@@ -1,7 +1,12 @@
 # PStore AI Context
 
-2026-11-11 Noto Sans Myanmar phone preview prepared on a separate branch.
-See integration/MYANMAR_FONT_PREVIEW_20261111.md. Production remains unchanged.
+2026-11-11 Noto preview accepted by owner on phone; production release with
+17px descriptions/FAQs and revised Netflix guidance is prepared.
+Record: integration/MYANMAR_FONT_PREVIEW_20261111.md.
+
+2026-11-11 Noto Sans Myanmar phone preview: 05529de, preview branch only.
+Phone acceptance pending; local network resets pages.dev connections.
+Record: integration/MYANMAR_FONT_PREVIEW_20261111.md.
 
 2026-11-11 description batch 2: 12 more descriptions across 13 active routes;
 25 total pages verified LIVE as 28d056a. See integration/PRODUCT_DETAILS_20261111.md.
