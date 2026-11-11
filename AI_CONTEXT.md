@@ -1,5 +1,8 @@
 # PStore AI Context
 
+2026-11-11 ATOM 130GB data-only correction prepared; see
+integration/ATOM130_20261111.md.
+
 2026-11-11 Noto preview accepted by owner on phone; production release with
 17px descriptions/FAQs and revised Netflix guidance is prepared.
 Record: integration/MYANMAR_FONT_PREVIEW_20261111.md.

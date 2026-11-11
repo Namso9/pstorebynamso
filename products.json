@@ -1001,7 +1001,7 @@
       "id": "atom-data",
       "category": "mobile-data",
       "name": "Atom Data",
-      "subtitle": "Data + Atom Mins + SMS",
+      "subtitle": "30-Day Data Packs",
       "image": "images/atom.webp",
       "imageClass": "",
       "modalTitle": "Atom Data Packs",
@@ -1014,7 +1014,7 @@
         },
         {
           "name": "130 GB",
-          "desc": "30 Days · 8000 Atom Mins · 5000 Atom SMS",
+          "desc": "30 Days - Data Only",
           "price": "31,000 Ks",
           "id": "130gb_30d"
         }

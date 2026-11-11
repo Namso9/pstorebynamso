@@ -160,7 +160,7 @@ export const productPresentation: Record<string, { subtitle: string; imageClass:
     "imageClass": "app-info"
   },
   "Atom Data": {
-    "subtitle": "Data + Atom Mins + SMS",
+    "subtitle": "30-Day Data Packs",
     "imageClass": ""
   },
   "Mytel Data": {

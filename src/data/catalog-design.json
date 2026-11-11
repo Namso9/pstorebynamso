@@ -569,7 +569,7 @@
     "products": [
       {
         "name": "Atom Data",
-        "desc": "30-day packs with Atom minutes and SMS included.",
+        "desc": "30-day packs. The 130GB plan includes data only.",
         "initials": "A",
         "brand": "#0EA5E9",
         "from": "from 15,000 Ks",
@@ -580,7 +580,7 @@
             "catalogPlanId": "24gb_30d"
           },
           {
-            "label": "130 GB - 30 days - 8000 Atom mins - 5000 SMS",
+            "label": "130 GB - 30 days - data only",
             "price": "31,000 Ks",
             "catalogPlanId": "130gb_30d"
           }
