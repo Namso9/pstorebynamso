@@ -360,25 +360,25 @@
       "modalTitle": "Netflix TV Plans (4K Ultra HD)",
       "plans": [
         {
-          "header": "🔴 Premium Plan"
+          "header": "\ud83d\udd34 Premium Plan"
         },
         {
           "name": "1M Premium (TV)",
-          "desc": "1 Profile · TV",
+          "desc": "1 Profile \u00b7 TV",
           "price": "25,000 Ks",
           "id": "1_month",
           "bot": true
         },
         {
           "name": "2M Premium (TV)",
-          "desc": "1 Profile · TV",
+          "desc": "1 Profile \u00b7 TV",
           "price": "53,000 Ks",
           "id": "2_months",
           "bot": true
         },
         {
           "name": "3M Premium (TV)",
-          "desc": "1 Profile · TV",
+          "desc": "1 Profile \u00b7 TV",
           "price": "80,000 Ks",
           "id": "3_months",
           "bot": true
@@ -395,7 +395,7 @@
       "modalTitle": "Netflix Phone/Tablet/PC Plans (4K Ultra HD)",
       "plans": [
         {
-          "header": "🔴 Premium Plan (Can Renew Without PF Change)"
+          "header": "\ud83d\udd34 Premium Plan (Can Renew Without PF Change)"
         },
         {
           "name": "1M Premium (Phone)",
@@ -498,7 +498,7 @@
       "modalTitle": "Amazon Prime Video (1 Profile, 1 Device)",
       "plans": [
         {
-          "header": "🔷 For TV"
+          "header": "\ud83d\udd37 For TV"
         },
         {
           "name": "1 Month",
@@ -508,7 +508,7 @@
           "bot": true
         },
         {
-          "header": "🔷 For Phone/Laptop"
+          "header": "\ud83d\udd37 For Phone/Laptop"
         },
         {
           "name": "1 Month",
@@ -547,7 +547,7 @@
       "modalTitle": "Windows Lifetime Keys",
       "plans": [
         {
-          "header": "🔷 Windows Pro Versions"
+          "header": "\ud83d\udd37 Windows Pro Versions"
         },
         {
           "name": "Windows 10 Pro",
@@ -564,7 +564,7 @@
           "bot": true
         },
         {
-          "header": "🔷 Windows Home Versions"
+          "header": "\ud83d\udd37 Windows Home Versions"
         },
         {
           "name": "Windows 10 Home",
@@ -929,7 +929,7 @@
       "id": "norton",
       "category": "premium-vpn-apps",
       "name": "Norton VPN",
-      "subtitle": "Secure VPN · ကိုယ်ရေးလုံခြုံစိတ်ချရတဲ့ VPN",
+      "subtitle": "Secure VPN \u00b7 \u1000\u102d\u102f\u101a\u103a\u101b\u1031\u1038\u101c\u102f\u1036\u1001\u103c\u102f\u1036\u1005\u102d\u1010\u103a\u1001\u103b\u101b\u1010\u1032\u1037 VPN",
       "image": "images/norton.webp",
       "imageClass": "app-info",
       "modalTitle": "Norton VPN",
@@ -965,14 +965,14 @@
       "id": "myanmar-vless",
       "category": "premium-vpn-apps",
       "name": "Myanmar Vless Key",
-      "subtitle": "Myanmar Region · VLESS Key",
+      "subtitle": "Myanmar Region \u00b7 VLESS Key",
       "image": "images/happ.webp",
       "imageClass": "",
       "modalTitle": "Myanmar Vless Key",
       "plans": [
         {
           "name": "Myanmar Vpn Key",
-          "desc": "1 Month · 1 Device",
+          "desc": "1 Month \u00b7 1 Device",
           "price": "3,000 Ks",
           "id": "1_month",
           "bot": true
@@ -983,7 +983,7 @@
       "id": "proton",
       "category": "premium-vpn-apps",
       "name": "Proton VPN",
-      "subtitle": "Secure VPN · Swiss Privacy",
+      "subtitle": "Secure VPN \u00b7 Swiss Privacy",
       "image": "images/proton.webp",
       "imageClass": "app-info",
       "modalTitle": "Proton VPN",
@@ -1008,7 +1008,7 @@
       "plans": [
         {
           "name": "24 GB",
-          "desc": "30 Days · 8000 Atom Mins · 5000 Atom SMS",
+          "desc": "30 Days \u00b7 8000 Atom Mins \u00b7 5000 Atom SMS",
           "price": "15,000 Ks",
           "id": "24gb_30d"
         },
@@ -1024,26 +1024,26 @@
       "id": "mytel-data",
       "category": "mobile-data",
       "name": "Mytel Data",
-      "subtitle": "Data Only — No Mins, No SMS",
+      "subtitle": "Data Only \u2014 No Mins, No SMS",
       "image": "images/mytel.webp",
       "imageClass": "",
       "modalTitle": "Mytel Data Packs",
       "plans": [
         {
           "name": "15 GB",
-          "desc": "30 Days · Data only",
+          "desc": "30 Days \u00b7 Data only",
           "price": "16,000 Ks",
           "id": "15gb_30d"
         },
         {
           "name": "40 GB",
-          "desc": "30 Days · Data only",
+          "desc": "30 Days \u00b7 Data only",
           "price": "21,000 Ks",
           "id": "40gb_30d"
         },
         {
           "name": "120 GB",
-          "desc": "30 Days · Data only",
+          "desc": "30 Days \u00b7 Data only",
           "price": "35,000 Ks",
           "id": "120gb_30d"
         }
@@ -1177,42 +1177,42 @@
       "modalTitle": "Meitu VIP & SVIP Plans",
       "plans": [
         {
-          "header": "Meitu VIP — 2 Devices"
+          "header": "Meitu VIP \u2014 2 Devices"
         },
         {
           "name": "1 Month",
-          "desc": "VIP · 2 Devices",
+          "desc": "VIP \u00b7 2 Devices",
           "price": "25,000 Ks",
           "id": "vip_1_month",
           "bot": true
         },
         {
           "name": "1 Year",
-          "desc": "VIP · 2 Devices",
+          "desc": "VIP \u00b7 2 Devices",
           "price": "150,000 Ks",
           "id": "vip_1_year",
           "bot": true
         },
         {
-          "header": "Meitu SVIP — 4 Devices"
+          "header": "Meitu SVIP \u2014 4 Devices"
         },
         {
           "name": "1 Month",
-          "desc": "SVIP · 4 Devices",
+          "desc": "SVIP \u00b7 4 Devices",
           "price": "35,000 Ks",
           "id": "svip_1_month",
           "bot": true
         },
         {
           "name": "3 Months",
-          "desc": "SVIP · 4 Devices",
+          "desc": "SVIP \u00b7 4 Devices",
           "price": "100,000 Ks",
           "id": "svip_3_months",
           "bot": true
         },
         {
           "name": "1 Year",
-          "desc": "SVIP · 4 Devices",
+          "desc": "SVIP \u00b7 4 Devices",
           "price": "250,000 Ks",
           "id": "svip_1_year",
           "bot": true
@@ -1282,6 +1282,40 @@
           "name": "1 Month",
           "desc": "Family Plan",
           "price": "15,000 Ks",
+          "id": "1_month",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "bebra",
+      "category": "premium-vpn-apps",
+      "name": "Bebra VPN",
+      "subtitle": "1 Month / 1 Device",
+      "image": "images/bebra.svg",
+      "modalTitle": "Bebra VPN",
+      "plans": [
+        {
+          "name": "1 Month / 1 Device",
+          "desc": "One Device",
+          "price": "10,000 Ks",
+          "id": "1_month",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "surfshark",
+      "category": "premium-vpn-apps",
+      "name": "Surfshark VPN",
+      "subtitle": "1 Month / 1 Device",
+      "image": "images/surfshark.svg",
+      "modalTitle": "Surfshark VPN",
+      "plans": [
+        {
+          "name": "1 Month / 1 Device",
+          "desc": "One Device",
+          "price": "10,000 Ks",
           "id": "1_month",
           "bot": true
         }
