@@ -1292,7 +1292,7 @@
       "category": "premium-vpn-apps",
       "name": "Bebra VPN",
       "subtitle": "1 Month / 1 Device",
-      "image": "images/bebra.svg",
+      "image": "images/bebra.png",
       "modalTitle": "Bebra VPN",
       "plans": [
         {
@@ -1309,7 +1309,7 @@
       "category": "premium-vpn-apps",
       "name": "Surfshark VPN",
       "subtitle": "1 Month / 1 Device",
-      "image": "images/surfshark.svg",
+      "image": "images/surfshark.png",
       "modalTitle": "Surfshark VPN",
       "plans": [
         {
