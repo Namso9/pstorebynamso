@@ -19,18 +19,18 @@
             "catalogPlanId": "100_credits"
           },
           {
-            "label": "200 Credits",
+            "label": "220 Credits",
             "price": "28,000 Ks",
             "catalogPlanId": "200_credits"
           },
           {
-            "label": "300 Credits",
+            "label": "330 Credits",
             "price": "40,000 Ks",
             "soldOut": true,
             "catalogPlanId": "300_credits"
           },
           {
-            "label": "500 Credits",
+            "label": "550 Credits",
             "price": "65,000 Ks",
             "soldOut": true,
             "catalogPlanId": "500_credits"

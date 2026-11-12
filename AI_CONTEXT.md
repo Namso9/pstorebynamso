@@ -1,3 +1,6 @@
+2026-11-12 AI Movie credit labels corrected to shared catalog values.
+See integration/AI_MOVIE_LABELS_20261112.md.
+
 2026-11-11 Duolingo Ready Made Acc: renamed catalog, cards, detail page, FAQs,
 legacy labels and order matching. Existing product/plan IDs and detail URL
 are preserved. Shared bot/admin product 154 renamed with private backup;

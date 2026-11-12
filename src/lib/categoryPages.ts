@@ -47,7 +47,7 @@ export function buildCategoryPages(catalog: CatalogData): CategoryPage[] {
         const plan=entry;
         plans.push({
         id: plan.id,
-        label: visual?.plans.find(item => item.catalogPlanId === plan.id)?.label || plan.name,
+        label: p.id === "short_drama" ? plan.name : visual?.plans.find(item => item.catalogPlanId === plan.id)?.label || plan.name,
         price: isAskPricePlan(plan) ? 'Contact store' : plan.price || 'Contact store',
         soldOut: plan.stock === false,
         contact: isAskPricePlan(plan),
