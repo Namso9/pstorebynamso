@@ -800,11 +800,11 @@
     {
       "id": "express_vpn",
       "category": "premium-vpn-apps",
-      "name": "Express VPN",
+      "name": "Express VPN (ios and mac os only)",
       "subtitle": "One Device Plan",
       "image": "images/express.svg",
       "imageClass": "expressvpn-logo",
-      "modalTitle": "Express VPN",
+      "modalTitle": "Express VPN (ios and mac os only)",
       "plans": [
         {
           "name": "6 Months",
