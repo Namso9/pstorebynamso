@@ -2,13 +2,13 @@
   "updated": "13 Nov 2026",
   "window_days": 7,
   "items": [
-    "short_drama",
     "netflix_tv",
-    "spotify_us",
+    "short_drama",
     "express_vpn",
+    "spotify_us",
     "netflix_phone",
     "chatgpt",
     "gemini",
-    "spotify_individual"
+    "capcut"
   ]
 }
