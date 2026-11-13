@@ -1,9 +1,9 @@
 {
-  "updated": "12 Nov 2026",
+  "updated": "13 Nov 2026",
   "window_days": 7,
   "items": [
-    "netflix_tv",
     "short_drama",
+    "netflix_tv",
     "spotify_us",
     "express_vpn",
     "netflix_phone",
