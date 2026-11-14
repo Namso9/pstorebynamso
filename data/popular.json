@@ -1,5 +1,5 @@
 {
-  "updated": "13 Nov 2026",
+  "updated": "14 Nov 2026",
   "window_days": 7,
   "items": [
     "netflix_tv",
@@ -8,7 +8,7 @@
     "spotify_us",
     "netflix_phone",
     "chatgpt",
-    "gemini",
-    "capcut"
+    "capcut",
+    "gemini"
   ]
 }
