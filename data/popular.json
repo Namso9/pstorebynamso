@@ -1,13 +1,13 @@
 {
-  "updated": "15 Nov 2026",
+  "updated": "16 Nov 2026",
   "window_days": 7,
   "items": [
     "netflix_tv",
     "short_drama",
     "spotify_us",
     "netflix_phone",
-    "express_vpn",
     "capcut",
+    "express_vpn",
     "happ",
     "spotify_individual"
   ]
