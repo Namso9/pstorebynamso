@@ -1,3 +1,6 @@
+2026-11-15 live weekly trending fix: validated; release pending.
+See integration/LIVE_TRENDING_20261115.md.
+
 2026-11-12 AI Movie credit labels corrected to shared catalog values.
 See integration/AI_MOVIE_LABELS_20261112.md.
 

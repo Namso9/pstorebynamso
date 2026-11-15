@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "@/components/TransitionLink";
-import snapshot from "@/data/trending-snapshot.json";
+import { useEffect, useState } from "react";
+import { fetchPopularData } from "@/services/content";
+import { fetchCatalog } from "@/services/catalog";
 import { STR, useLang } from "@/lib/i18n";
-import type { TrendingData, TrendingItem } from "@/lib/trending";
-import { detailProducts, productHref } from "@/lib/productDetails";
+import { resolveTrending, type TrendingData, type TrendingItem } from "@/lib/trending";
 
 function Card({ item, rank }: { item: TrendingItem; rank: number }) {
   const lang = useLang();
@@ -25,7 +26,7 @@ function Card({ item, rank }: { item: TrendingItem; rank: number }) {
       <h3>{item.name}</h3>
       <p className="desc">{item.desc}</p>
       <div className="price">{item.price}</div>
-      <Link className="add" prefetch={false} href={detailProducts.some(({ product }) => product.name === item.name) ? productHref(item.name) : item.href}>{s.discover}</Link>
+      <Link className="add" prefetch={false} href={item.href}>{s.discover}</Link>
     </article>
   );
 }
@@ -33,7 +34,30 @@ function Card({ item, rank }: { item: TrendingItem; rank: number }) {
 export default function TrendingThisWeek() {
   const lang = useLang();
   const s = STR[lang].catalog;
-  const trending: TrendingData = snapshot;
+  const [trending, setTrending] = useState<TrendingData | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    async function refresh() {
+      try {
+        const [ranking, catalog] = await Promise.all([
+          fetchPopularData(controller.signal),
+          fetchCatalog(controller.signal),
+        ]);
+        if (!controller.signal.aborted) setTrending(resolveTrending(ranking, catalog));
+      } catch {
+        if (!controller.signal.aborted) setTrending(null);
+      }
+    }
+    void refresh();
+    const timer = window.setInterval(() => void refresh(), 5 * 60 * 1000);
+    return () => {
+      controller.abort();
+      window.clearInterval(timer);
+    };
+  }, []);
+
+  if (!trending?.items.length) return null;
 
   return (
     <section id="deals" className="catalog" aria-label={s.heading}>

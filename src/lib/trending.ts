@@ -1,4 +1,4 @@
-import { getCategoryPage } from "@/lib/categoryPages";
+import { productHref } from "@/lib/productDetails";
 
 export type TrendingItem = {
   id: string;
@@ -25,16 +25,6 @@ type OldProduct = {
   plans?: OldPlan[];
 };
 
-const categorySlugs: Record<string, string> = {
-  "streaming-apps": "streaming",
-  "ai-apps": "ai",
-  "premium-vpn-apps": "vpn",
-  "mobile-data": "mobile-data",
-  "music-apps": "music",
-  "creative-apps": "creative-work",
-  social: "social",
-};
-
 function lowestAvailablePrice(plans: OldPlan[] | undefined): string | null {
   const prices = (Array.isArray(plans) ? plans : [])
     .filter((plan) => plan && typeof plan.id === "string" && plan.stock !== false)
@@ -47,9 +37,14 @@ function lowestAvailablePrice(plans: OldPlan[] | undefined): string | null {
   return prices.length ? `From ${Math.min(...prices).toLocaleString("en-US")} Ks` : null;
 }
 
-export function resolveTrending(popular: unknown, catalog: unknown): TrendingData | null {
+export function resolveTrending(popular: unknown, catalog: unknown, now = Date.now()): TrendingData | null {
   if (!popular || typeof popular !== "object" || !catalog || typeof catalog !== "object") return null;
   const ranking = popular as { updated?: unknown; window_days?: unknown; items?: unknown };
+  // The panel publishes daily. Never present an old fallback as this week's activity.
+  const published = typeof ranking.updated === "string"
+    ? Date.parse(`${ranking.updated} 00:00:00 GMT`) : NaN;
+  if (ranking.window_days !== 7 || !Number.isFinite(published) ||
+      published > now || now - published > 2 * 24 * 60 * 60 * 1000) return null;
   const source = catalog as { products?: unknown };
   if (!Array.isArray(ranking.items) || !Array.isArray(source.products)) return null;
 
@@ -70,11 +65,7 @@ export function resolveTrending(popular: unknown, catalog: unknown): TrendingDat
     const price = lowestAvailablePrice(product.plans);
     if (!price) continue;
 
-    const localSlug = categorySlugs[product.category];
-    const localProduct = localSlug && getCategoryPage(localSlug)?.products.some((entry) => entry.name === product.name);
-    const href = localProduct
-      ? `/category/${localSlug}`
-      : `/category/${localSlug || "streaming"}/#app-${id}`;
+    const href = productHref(product.name, id);
     const image = `/${product.image}`;
 
     items.push({
