@@ -448,7 +448,7 @@
           "desc": "No Ads (Own Mail Invite)",
           "price": "150,000 Ks",
           "id": "1_year_cus_mail",
-          "bot": true
+          "stock": false
         }
       ]
     },
