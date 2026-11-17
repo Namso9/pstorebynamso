@@ -1,14 +1,14 @@
 {
-  "updated": "17 Nov 2026",
+  "updated": "18 Nov 2026",
   "window_days": 7,
   "items": [
     "happ",
     "capcut",
     "short_drama",
     "snapchat",
-    "spotify_us",
     "atom-data",
     "chatgpt",
-    "netflix_tv"
+    "netflix_tv",
+    "express_vpn"
   ]
 }
