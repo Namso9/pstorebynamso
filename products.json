@@ -654,14 +654,14 @@
       "plans": [
         {
           "name": "Max 3 months warranty",
-          "desc": "Crack Acc",
+          "desc": "Ready Made Acc",
           "price": "20,000 Ks",
           "id": "max_3_months_warrant",
           "bot": true
         },
         {
           "name": "Super 3 months warranty",
-          "desc": "Crack Acc",
+          "desc": "Ready Made Acc",
           "price": "14,000 Ks",
           "id": "super_3_months_warra",
           "bot": true

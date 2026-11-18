@@ -934,12 +934,12 @@
         "from": "from 14,000 Ks",
         "plans": [
           {
-            "label": "Max - 3 months warranty - crack acc",
+            "label": "Max - 3 months warranty - Ready Made Acc",
             "price": "20,000 Ks",
             "catalogPlanId": "max_3_months_warrant"
           },
           {
-            "label": "Super - 3 months warranty - crack acc",
+            "label": "Super - 3 months warranty - Ready Made Acc",
             "price": "14,000 Ks",
             "catalogPlanId": "super_3_months_warra"
           }
