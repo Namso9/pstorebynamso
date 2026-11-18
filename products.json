@@ -1010,13 +1010,15 @@
           "name": "24 GB",
           "desc": "30 Days · 8000 Atom Mins · 5000 Atom SMS",
           "price": "15,000 Ks",
-          "id": "24gb_30d"
+          "id": "24gb_30d",
+          "bot": true
         },
         {
           "name": "130 GB",
           "desc": "30 Days - Data Only",
           "price": "31,000 Ks",
-          "id": "130gb_30d"
+          "id": "130gb_30d",
+          "bot": true
         }
       ]
     },
@@ -1033,19 +1035,22 @@
           "name": "15 GB",
           "desc": "30 Days · Data only",
           "price": "16,000 Ks",
-          "id": "15gb_30d"
+          "id": "15gb_30d",
+          "bot": true
         },
         {
           "name": "40 GB",
           "desc": "30 Days · Data only",
           "price": "21,000 Ks",
-          "id": "40gb_30d"
+          "id": "40gb_30d",
+          "bot": true
         },
         {
           "name": "120 GB",
           "desc": "30 Days · Data only",
           "price": "35,000 Ks",
-          "id": "120gb_30d"
+          "id": "120gb_30d",
+          "bot": true
         }
       ]
     },
