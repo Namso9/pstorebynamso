@@ -1,14 +1,14 @@
 {
-  "updated": "18 Nov 2026",
+  "updated": "19 Nov 2026",
   "window_days": 7,
   "items": [
     "happ",
     "snapchat",
     "myanmar-vless",
-    "netflix_tv",
     "proton",
     "short_drama",
-    "capcut",
-    "chatgpt"
+    "chatgpt",
+    "telegram",
+    "mytel-data"
   ]
 }
