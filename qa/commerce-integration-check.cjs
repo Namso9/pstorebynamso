@@ -141,8 +141,8 @@ try{
   const edit=JSON.parse(calls.find(c=>c.url.endsWith('/editMessageReplyMarkup')).options.body);
   assert.equal(edit.message_id,12);
   assert.deepEqual(edit.reply_markup.inline_keyboard,[[
-   {text:'Approve',callback_data:`web_approve_17_${mirror.order_ref}`},
-   {text:'Decline',callback_data:`web_decline_17_${mirror.order_ref}`},
+   {text:'\u2705 Approve',style:'success',callback_data:`web_approve_17_${mirror.order_ref}`},
+   {text:'\u274c Decline',style:'danger',callback_data:`web_decline_17_${mirror.order_ref}`},
   ]]);
   assert.equal(mirror.product_id,'netflix_tv');assert.equal(mirror.plan_id,stableId);
   assert(!('customer_pw'in mirror));assert(!('screenshot'in mirror));
@@ -192,7 +192,7 @@ try{
    assert.deepEqual([...new Uint8Array(await uploaded.arrayBuffer())],screenshot.bytes);
    const forwarded=JSON.parse(documents[1].options.body);
    assert.equal(forwarded.document,'fixture-document');
-   assert.equal(forwarded.reply_markup.inline_keyboard[0][0].text,'Approve');
+   assert.equal(forwarded.reply_markup.inline_keyboard[0][0].text,'\u2705 Approve');
   }
   const validationOffset=calls.length;
   const empty=await onRequestPost({request:makeRequest(telegramOrder,{name:'fixture.HEIC',type:'image/heic',bytes:[]}),env});

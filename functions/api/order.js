@@ -128,11 +128,14 @@ async function mirrorToPanel(env, data) {
 }
 
 function decisionKeyboard(id, ref, sender) {
-  const buttons = ['Approve', 'Decline'].map((text) => {
-    const payload = `web_${text.toLowerCase()}_${id}_${ref}`;
+  const buttons = [
+    { action: 'approve', text: '\u2705 Approve', style: 'success' },
+    { action: 'decline', text: '\u274c Decline', style: 'danger' },
+  ].map(({ action, ...button }) => {
+    const payload = `web_${action}_${id}_${ref}`;
     return sender?.toLowerCase() === 'psnamso_bot'
-      ? { text, callback_data: payload }
-      : { text, url: `https://t.me/PSNamso_bot?start=${payload}` };
+      ? { ...button, callback_data: payload }
+      : { ...button, url: `https://t.me/PSNamso_bot?start=${payload}` };
   });
   return { inline_keyboard: [buttons] };
 }

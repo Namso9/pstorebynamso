@@ -89,6 +89,11 @@ export default function WebsiteOrder() {
     if (receipt?.telegramLink) window.location.assign(receipt.telegramLink);
   }, [receipt]);
 
+  function markEngaged() {
+    setEngaged(true);
+    if (!baseline && item) setBaseline(item);
+  }
+
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submissionStarted.current || !order || productUnavailable || (!available && !engaged)) return;
@@ -176,7 +181,11 @@ export default function WebsiteOrder() {
       <p className="info-lead">Choose your plan, pay with your preferred app, and send your order here.</p>
       {productUnavailable && <p className="order-notice" role="status">Out of stock. No plans are currently available.</p>}
       {order?.plan.contact && <p className="order-notice" role="status">Please contact the store for the current price before paying.</p>}
-      <form onSubmit={submit} onInput={() => { setEngaged(true); if (!baseline && item) setBaseline(item); }}>
+      <form onSubmit={submit} onInput={event => {
+        // A native select emits input before change. Rendering here can
+        // restore its old controlled value before its change handler runs.
+        if (event.target !== contactSelect.current) markEngaged();
+      }}>
         <fieldset disabled={busy} className="order-fields">
           <section className="info-panel"><h2>1. Your plan</h2>
             <label>Product<select name="product_id" required value={slug} onChange={event => { const next=detailProducts.find(p=>p.slug===event.target.value); setChoice({slug:event.target.value,planId:next?.product.plans[0]?.id || ""}); setBaseline(null); setEngaged(false); }}><option value="">Choose a product</option>{detailProducts.map(p => <option value={p.slug} key={p.slug} disabled={!p.product.plans.length}>{p.product.name}{!p.product.plans.length ? " - Out of stock" : ""}</option>)}</select></label>
@@ -192,6 +201,7 @@ export default function WebsiteOrder() {
                 onChange={event => {
                   setContactMethod(event.target.value);
                   setContactInvalid(false);
+                  markEngaged();
                 }}>
                 <option value="">Choose Telegram or Viber</option>
                 <option value="telegram">Telegram</option>
