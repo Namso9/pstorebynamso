@@ -288,8 +288,8 @@ export async function onRequestPost(context) {
     const planId = clean(form.get('plan_id'), 60);
     const shot = form.get('screenshot');
 
-    if (contactMethod && !['telegram', 'viber'].includes(contactMethod)) {
-      return json({ ok: false, error: 'Invalid contact method' }, 400);
+    if (form.has('contact_method') && !['telegram', 'viber'].includes(contactMethod)) {
+      return json({ ok: false, error: 'Choose Telegram or Viber before placing your order.' }, 400);
     }
     if (contactMethod === 'viber' && !VIBER_PHONE.test(contact)) {
       return json({ ok: false, error: 'Invalid Viber number' }, 400);

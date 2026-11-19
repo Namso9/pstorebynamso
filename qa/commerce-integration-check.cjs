@@ -60,6 +60,8 @@ try{
  assert(html.includes('1. Your plan'));assert(html.includes('2. Contact &amp; delivery'));assert(html.includes('3. Payment'));
  assert(!html.includes('checkout-steps'));assert(!html.includes('payment-card-next'));
  assert(html.includes('name="contact_method"') && html.includes('value="telegram"') && html.includes('value="viber"'));
+ assert(html.includes('aria-describedby="order-contact-help"'));
+ assert(html.includes('Choose Telegram or Viber before placing your order.'));
  assert(html.includes('Preferred profile name'));
  assert(!html.includes('name="contact"') && !html.includes('name="devices"'));
  for (const id of ['netflix_phone','atom-data','mytel-data']) {
@@ -84,6 +86,19 @@ try{
 }finally{Module._load=load;}
 (async()=>{
  const {onRequestPost}=await import('../functions/api/order.js');
+ const {readOrderReply}=require('../src/components/WebsiteOrder.tsx');
+ for (const status of [200,403,502]) {
+  const html=new Response('<!DOCTYPE html><title>Server response</title>',{status,headers:{'Content-Type':'text/html'}});
+  assert.equal(await readOrderReply(html),null);
+ }
+ const malformed=new Response('{"ok":true,',{headers:{'Content-Type':'application/json'}});
+ assert.equal(await readOrderReply(malformed),null);
+ assert.deepEqual(await readOrderReply(new Response('<!DOCTYPE html>',{status:413})),
+  {error:'Please attach a payment screenshot under 8 MB.'});
+ assert.deepEqual(await readOrderReply(Response.json({ok:false,error:'Invalid Viber number'},{status:400})),
+  {error:'Invalid Viber number'});
+ assert.deepEqual(await readOrderReply(Response.json({ok:true,orderId:'WFIXTURE',telegramLink:'https://t.me/PSNamso_bot?start=linkweb_0123456789abcdef0123456789abcdef'})),
+  {orderId:'WFIXTURE',telegramLink:'https://t.me/PSNamso_bot?start=linkweb_0123456789abcdef0123456789abcdef'});
  const originalFetch=global.fetch;const originalLog=console.log;
  const calls=[];const pending=[];
  let sender='PSNamso_bot', mirrorAvailable=true, photo=[{file_id:'fixture-photo'}];
@@ -150,6 +165,9 @@ try{
   assert.equal((await viber.json()).telegramLink,undefined);
 
   const validationStart=calls.length;
+  const missingContact=await sendOrder({...telegramOrder,contact_method:''});
+  assert.equal(missingContact.status,400);
+  assert.equal((await missingContact.json()).error,'Choose Telegram or Viber before placing your order.');
   for (const fields of [
    {...telegramOrder,profile_name:''},
    {...telegramOrder,product:'Netflix Phone',product_id:'netflix_phone',devices:'TV'},

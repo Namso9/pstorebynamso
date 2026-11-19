@@ -10,8 +10,32 @@ import { useLang } from "@/lib/i18n";
 
 const TELEGRAM_ORDER_LINK = /^https:\/\/t\.me\/PSNamso_bot\?start=linkweb_[0-9a-f]{32}$/;
 const VIBER_PHONE_PATTERN = "09[0-9]{7,9}|[+]95[0-9]{7,10}";
+const CONTACT_REQUIRED = "Choose Telegram or Viber before placing your order.";
+const SCREENSHOT_LIMIT = "Please attach a payment screenshot under 8 MB.";
+const ORDER_UNCONFIRMED = "We couldn't confirm your order. If you already paid, contact support before submitting again.";
 
 type Receipt = { orderId: string; telegramLink?: string; contactMethod: "telegram" | "viber" };
+type OrderReply = Omit<Receipt, "contactMethod"> | { error: string };
+
+export async function readOrderReply(response: Response): Promise<OrderReply | null> {
+  if (response.status === 413) return { error: SCREENSHOT_LIMIT };
+  const contentType = response.headers.get("content-type")?.split(";")[0].trim().toLowerCase();
+  if (contentType !== "application/json") return null;
+
+  const data: unknown = await response.json().catch(() => null);
+  if (!data || typeof data !== "object" || !("ok" in data)) return null;
+  if (response.ok && data.ok === true && "orderId" in data &&
+      typeof data.orderId === "string" && data.orderId.trim()) {
+    const telegramLink = "telegramLink" in data && typeof data.telegramLink === "string" &&
+      TELEGRAM_ORDER_LINK.test(data.telegramLink) ? data.telegramLink : undefined;
+    return { orderId: data.orderId, telegramLink };
+  }
+  if (response.status >= 400 && response.status < 500 && data.ok === false &&
+      "error" in data && typeof data.error === "string" && data.error.trim()) {
+    return { error: data.error };
+  }
+  return null;
+}
 
 export default function WebsiteOrder() {
   const lang=useLang();
@@ -35,9 +59,12 @@ export default function WebsiteOrder() {
   const [payment, setPayment] = useState(paymentMethods[0].name);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [orderUnconfirmed, setOrderUnconfirmed] = useState(false);
   const [contactMethod, setContactMethod] = useState("");
+  const [contactInvalid, setContactInvalid] = useState(false);
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const submissionStarted = useRef(false);
+  const contactSelect = useRef<HTMLSelectElement>(null);
   const screenshotInput = useRef<HTMLInputElement>(null);
   const [attachedScreenshot, setAttachedScreenshot] = useState<File | null>(null);
   const productId=item?.product.id || "";
@@ -54,7 +81,11 @@ export default function WebsiteOrder() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submissionStarted.current || !order || productUnavailable || (!available && !engaged)) return;
-    if (contactMethod !== "telegram" && contactMethod !== "viber") return;
+    if (contactMethod !== "telegram" && contactMethod !== "viber") {
+      setContactInvalid(true);
+      contactSelect.current?.focus();
+      return;
+    }
     const form = new FormData(event.currentTarget);
     form.set("product_id",productId);
     form.set("plan_id",planId);
@@ -66,21 +97,42 @@ export default function WebsiteOrder() {
     else if(field?.name==="profile")form.set("profile_name",delivery);
     else if(delivery)form.set("note",[String(form.get("note") || ""),`${field?.label}: ${delivery}`].filter(Boolean).join("; "));
     const file = form.get("screenshot");
-    if (!(file instanceof File) || !file.size || file.size > MAX_RECEIPT) { setError("Please attach a payment screenshot under 8 MB."); return; }
+    if (!(file instanceof File) || !file.size || file.size > MAX_RECEIPT) {
+      setError(SCREENSHOT_LIMIT);
+      setOrderUnconfirmed(false);
+      return;
+    }
     submissionStarted.current = true;
     setBusy(true); setError("");
+    setOrderUnconfirmed(false);
+    let confirmed = false;
     try {
-      const response = await fetch("/api/order", { method: "POST", body: form });
-      const result = await response.json();
-      if (!response.ok || !result.ok || !result.orderId) throw new Error(result.error || "Please contact the store to check your order.");
-      const telegramLink = contactMethod === "telegram" && typeof result.telegramLink === "string" &&
-        TELEGRAM_ORDER_LINK.test(result.telegramLink) ? result.telegramLink : undefined;
-      setReceipt({ orderId: result.orderId, contactMethod, telegramLink });
-    } catch (cause) {
-      submissionStarted.current = false;
-      setError(cause instanceof Error ? cause.message : "Please contact the store to check your order before submitting again.");
+      const response = await fetch("/api/order", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: form,
+      });
+      const result = await readOrderReply(response);
+      if (!result) {
+        setError(ORDER_UNCONFIRMED);
+        setOrderUnconfirmed(true);
+      } else if ("error" in result) {
+        setError(result.error);
+      } else {
+        confirmed = true;
+        setReceipt({
+          orderId: result.orderId,
+          contactMethod,
+          telegramLink: contactMethod === "telegram" ? result.telegramLink : undefined,
+        });
+      }
+    } catch {
+      setError(ORDER_UNCONFIRMED);
+      setOrderUnconfirmed(true);
+    } finally {
+      if (!confirmed) submissionStarted.current = false;
+      setBusy(false);
     }
-    finally { setBusy(false); }
   }
   if (productUnavailable && !receipt) return <div className="info-inner website-order">
     <p className="info-eyebrow">Premium Store</p>
@@ -117,14 +169,27 @@ export default function WebsiteOrder() {
             {order?.plan.soldOut && <p role="status">This plan is out of stock. Please choose another plan.</p>}
           </section>
           <section className="info-panel"><h2>2. Contact & delivery</h2>
-            <label>How should we contact you?
-              <select name="contact_method" required value={contactMethod} onChange={event => setContactMethod(event.target.value)}>
+            <label>How should we contact you? (required)
+              <select name="contact_method" ref={contactSelect} required value={contactMethod}
+                aria-invalid={contactInvalid || undefined} aria-describedby="order-contact-help"
+                onInvalid={() => setContactInvalid(true)}
+                onChange={event => {
+                  setContactMethod(event.target.value);
+                  setContactInvalid(false);
+                }}>
                 <option value="">Choose Telegram or Viber</option>
                 <option value="telegram">Telegram</option>
                 <option value="viber">Viber</option>
               </select>
             </label>
-            {contactMethod === "telegram" && <small>Telegram opens after you place the order.</small>}
+            {contactInvalid ? (
+              <p id="order-contact-help" className="order-notice" role="alert">{CONTACT_REQUIRED}</p>
+            ) : (
+              <small id="order-contact-help">
+                {contactMethod === "telegram" ? "Telegram opens after you place the order." :
+                  contactMethod === "viber" ? "Our team will reply to your Viber number." : CONTACT_REQUIRED}
+              </small>
+            )}
             {contactMethod === "viber" && <label>Viber phone number
               <input name="contact" type="tel" required pattern={VIBER_PHONE_PATTERN}
                 maxLength={14} autoComplete="tel" placeholder="09xxxxxxxxx" />
@@ -156,7 +221,12 @@ export default function WebsiteOrder() {
           </section>
           <label className="order-consent"><input type="checkbox" name="terms" value="accepted" required /> <span>I have checked my plan and payment, and agree to the <Link href="/terms-and-conditions/" target="_blank" rel="noopener noreferrer">terms</Link> and <Link href="/refund-policy/" target="_blank" rel="noopener noreferrer">refund policy</Link>. See how order details are used in our <Link href="/privacy-policy/" target="_blank" rel="noopener noreferrer">privacy policy</Link>.</span></label>
           <div className="order-honeypot" aria-hidden="true"><input name="extra_field_hp" tabIndex={-1} autoComplete="off" /></div>
-          {error && <p className="order-notice" role="alert">{error}</p>}
+          {error && <p className="order-notice" role="alert">
+            {error}
+            {orderUnconfirmed && <>{" "}<a href="https://t.me/Premiumstorezz" target="_blank" rel="noopener noreferrer">
+              Contact Telegram support
+            </a></>}
+          </p>}
           <button className="info-action" type="submit" disabled={busy || !order || productUnavailable || (!available && !engaged)}>{busy ? "Sending your order..." : contactMethod === "telegram" ? "Place order and open Telegram" : "Place order"}</button>
         </fieldset>
       </form>
