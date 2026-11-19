@@ -19,14 +19,12 @@ const MAX_FILE = 8 * 1024 * 1024; // 8MB
 // body ကို buffer + parse လုပ်ပြီးမှ ငြင်းရတာ မဖြစ်တော့ဘူး (multipart boundary /
 // field overhead အတွက် MAX_FILE ထက် အနည်းငယ် ပိုပေးထားသည်)။
 const MAX_BODY = 10 * 1024 * 1024; // 10MB
-// Telegram sendPhoto ဆီ ပို့လို့ရတဲ့ format များ။ ဒါက ငွေလွှဲပြီးမှ ရောက်တဲ့
-// form ဖြစ်လို့ စာရင်းကို ကျယ်ကျယ်ထားတယ် — iPhone/Android က screenshot ကို
-// Files ကနေ ပြန် share ရင် heic/heif/avif ထွက်တတ်ပြီး၊ အရင်က အဲ့ဒါတွေကို
-// ငြင်းလိုက်လို့ ငွေပေးပြီးသား order တွေ ဒီနေရာမှာတင် ပျက်ကုန်တယ်။
+// HEIC and HEIF are accepted as documents so Telegram can keep the original file.
 const ALLOWED_IMAGE = [
   'image/jpeg', 'image/jpg', 'image/png', 'image/webp',
   'image/heic', 'image/heif', 'image/avif', 'image/gif', 'image/bmp',
 ];
+const PRIMARY_DELIVERY_TIMEOUT_MS = 25_000;
 // Browser form ကနေပဲ POST လာရမယ်။ Origin header မပါတဲ့ client တွေကို မပိတ်ဘူး —
 // ပါပြီး ကိုယ့် site မဟုတ်မှသာ ငြင်းတယ် (preview deploy အတွက် request ကိုယ်ပိုင်
 // origin ကိုပါ လက်ခံသည်)။
@@ -68,14 +66,10 @@ async function checkPlanStock(productId, planId) {
   try {
     // Hard time-bound the subrequest: a stalled GitHub connection must never
     // hang the customer's order. On timeout -> fail open (found:false).
-    const ctl = new AbortController();
-    const timer = setTimeout(() => ctl.abort(), 3000);
-    let r;
-    try {
-      r = await fetch(PRODUCTS_RAW_URL, { cf: { cacheTtl: 60, cacheEverything: true }, signal: ctl.signal });
-    } finally {
-      clearTimeout(timer);
-    }
+    const r = await fetch(PRODUCTS_RAW_URL, {
+      cf: { cacheTtl: 60, cacheEverything: true },
+      signal: AbortSignal.timeout(3000),
+    });
     if (!r.ok) return { found: false };
     const data = JSON.parse(await r.text());
     const prod = (data.products || []).find((p) => p.id === productId);
@@ -164,64 +158,42 @@ function notifyTargets(env) {
   return out;
 }
 
-/**
- * Telegram sendPhoto response ထဲက အကြီးဆုံး PhotoSize ရဲ့ file_id။
- * ဒါရှိရင် ကျန် chat တွေဆီ ပုံကို ပြန် upload မလုပ်တော့ဘဲ id နဲ့ပဲ ပို့လို့ရတယ် —
- * 8MB ကို admin အရေအတွက်အလိုက် ထပ်တင်စရာ မလိုတော့ဘူး။
- */
-function photoFileId(data) {
-  const sizes = (data && data.result && data.result.photo) || [];
-  const last = sizes[sizes.length - 1];
-  return last && last.file_id ? last.file_id : '';
+async function sendScreenshot(env, chatId, caption, upload, signal, fileId, keyboard) {
+  const fields = { chat_id: chatId, caption };
+  if (keyboard) fields.reply_markup = keyboard;
+
+  let body;
+  let headers;
+  if (fileId) {
+    body = JSON.stringify({ ...fields, [upload.field]: fileId });
+    headers = { 'Content-Type': 'application/json' };
+  } else {
+    body = new FormData();
+    body.append('chat_id', chatId);
+    body.append('caption', caption);
+    if (keyboard) body.append('reply_markup', JSON.stringify(keyboard));
+    body.append(upload.field, upload.file, upload.filename);
+  }
+
+  const response = await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/${upload.method}`, {
+    method: 'POST', body, headers, signal,
+  });
+  const data = await response.json();
+  if (typeof data?.ok !== 'boolean' || (data.ok && !data.result)) {
+    throw new Error('Invalid Telegram response');
+  }
+  return data;
 }
 
-/**
- * ကျန် target များဆီ file_id နဲ့ fan-out. **AWAITED**, `waitUntil` မဟုတ်။
- *
- * အရင်က `waitUntil` ဖြစ်ခဲ့တယ် — customer စောင့်ချိန် မတိုးစေရဖို့။ ဒါပေမဲ့
- * fan-out မရောက်တဲ့အခါ (2026-09-04) `waitUntil` က တိတ်တဆိတ်လား၊ env
- * အဟောင်းလားကို အပြင်ကနေ ခွဲလို့ မရဘူး — fire-and-forget က မဖြေရှင်းနိုင်တဲ့
- * အမှားမျိုး ဖြစ်စေတယ်။ file_id နဲ့ ပို့တာက ပုံ upload မလိုတော့လို့ ~300ms
- * ပဲ ကုန်တာမို့ await လုပ်တာ ပိုသင့်တယ်၊ ပြီးတော့ ရလဒ်ကို ရေတွက်လို့ရတယ်။
- *
- * ကျရင်လည်း order ကို ဘယ်တော့မှ မပျက်စေရ (ငွေလွှဲပြီးသား) — error ကို
- * log ထဲ ထည့်ရုံပဲ။ Telegram တစ်ခု ဆွဲနေရင် customer ကို မထိစေဖို့ တစ်ခုချင်း
- * 5s AbortController နဲ့ ချုပ်ထားတယ်။
- * primary ရှာရင်း ကျသွားခဲ့တဲ့ id ကိုလည်း ဒီမှာ ထပ်ကြိုးစားတယ် — ခဏတာ
- * အမှား (rate limit / timeout) ဆိုရင် ဒုတိယအကြိမ်မှာ ရောက်သွားနိုင်လို့။
- */
-async function fanOutToRest(env, targets, caption, fileId, shot, keyboard) {
-  if (!targets.length) return { sent: 0, failed: 0 };
-  const url = `https://api.telegram.org/bot${env.BOT_TOKEN}/sendPhoto`;
+async function fanOutToRest(env, targets, caption, fileId, upload, keyboard) {
   const results = await Promise.allSettled(
     targets.map(async (chatId) => {
-      const ctl = new AbortController();
-      const timer = setTimeout(() => ctl.abort(), 5000);
-      try {
-        let resp;
-        if (fileId) {
-          resp = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: chatId, caption, photo: fileId, reply_markup: keyboard }),
-            signal: ctl.signal,
-          });
-        } else {
-          // file_id မရခဲ့ရင်သာ ပုံကို ပြန်တင်တယ် (မဖြစ်သင့်တဲ့ လမ်းကြောင်း)။
-          const tg = new FormData();
-          tg.append('chat_id', chatId);
-          tg.append('caption', caption);
-          if (keyboard) tg.append('reply_markup', JSON.stringify(keyboard));
-          tg.append('photo', shot, 'payment-screenshot.jpg');
-          resp = await fetch(url, { method: 'POST', body: tg, signal: ctl.signal });
-        }
-        const data = await resp.json();
-        if (!data.ok) {
-          console.error('Telegram fan-out error:', chatId, JSON.stringify(data));
-          throw new Error('not ok');
-        }
-      } finally {
-        clearTimeout(timer);
+      const data = await sendScreenshot(
+        env, chatId, caption, upload, AbortSignal.timeout(5000), fileId, keyboard
+      );
+      if (!data.ok) {
+        console.warn('Telegram fan-out failed', data.error_code);
+        throw new Error('Fan-out failed');
       }
     })
   );
@@ -325,12 +297,17 @@ export async function onRequestPost(context) {
     if (shot.size > MAX_FILE) {
       return json({ ok: false, error: 'File too large' }, 400);
     }
-    // must be an image Telegram sendPhoto can actually take (HEIC/PDF ဆိုရင်
-    // Telegram က ရှုပ်ထွေးတဲ့ error ပဲ ပြန်ပေးတယ်)။ Empty type is allowed —
-    // some browsers omit it.
-    if (shot.type && ALLOWED_IMAGE.indexOf(shot.type.toLowerCase().split(';')[0].trim()) === -1) {
+    const type = shot.type.toLowerCase().split(';')[0].trim();
+    const highEfficiencyFormat =
+      /^image\/(heic|heif)$/.exec(type)?.[1] ||
+      ((!type || type === 'application/octet-stream') &&
+        /\.(heic|heif)$/i.exec(shot.name)?.[1].toLowerCase());
+    if (type && !ALLOWED_IMAGE.includes(type) && !highEfficiencyFormat) {
       return json({ ok: false, error: 'Unsupported image type' }, 400);
     }
+    const upload = highEfficiencyFormat
+      ? { method: 'sendDocument', field: 'document', file: shot, filename: `payment-screenshot.${highEfficiencyFormat}` }
+      : { method: 'sendPhoto', field: 'photo', file: shot, filename: 'payment-screenshot.jpg' };
 
     const orderId = newOrderId();
     const linkToken = telegram ? crypto.randomUUID().replaceAll('-', '') : '';
@@ -364,32 +341,30 @@ export async function onRequestPost(context) {
     const noteBudget = 980 - captionLines.length - '\nNote: '.length;
     const caption = captionLines + (note && noteBudget > 0 ? `\nNote: ${note.slice(0, noteBudget)}` : '');
 
-    // Target အားလုံးထဲက တစ်ခုကိုပဲ await လုပ်တယ် (ပုံ upload တစ်ခါတည်း) —
-    // customer ရဲ့ စောင့်ချိန်က admin အရေအတွက်နဲ့ မတက်ဘူး။ ပထမတစ်ခု ကျရင်
-    // နောက်တစ်ခုကို ဆက်ကြိုးစားတယ်၊ id တစ်ခု မှားနေလို့ ငွေလွှဲပြီးသား order
-    // တစ်ခုလုံး မပျက်စေရ။ တစ်ခုအောင်တာနဲ့ ကျန်တာက file_id fan-out။
     let primary;
     let deliveredTo = '';
     let fileId = '';
+    const deliverySignal = AbortSignal.timeout(PRIMARY_DELIVERY_TIMEOUT_MS);
     for (const chatId of targets) {
-      const tg = new FormData();
-      tg.append('chat_id', chatId);
-      tg.append('caption', caption);
-      tg.append('photo', shot, 'payment-screenshot.jpg');
-
-      const resp = await fetch(
-        `https://api.telegram.org/bot${env.BOT_TOKEN}/sendPhoto`,
-        { method: 'POST', body: tg }
-      );
-      const data = await resp.json();
+      let data;
+      try {
+        data = await sendScreenshot(env, chatId, caption, upload, deliverySignal);
+      } catch {
+        // Telegram may have received the upload before the response was lost.
+        console.warn('Telegram delivery unconfirmed', orderId, deliverySignal.aborted ? 'timeout' : 'response');
+        return json({ ok: false, error: 'Telegram delivery unconfirmed', orderId },
+                    deliverySignal.aborted ? 504 : 502);
+      }
 
       if (data.ok) {
         primary = data.result;
         deliveredTo = chatId;
-        fileId = photoFileId(data);
+        fileId = upload.field === 'document'
+          ? primary.document?.file_id
+          : primary.photo?.at(-1)?.file_id;
         break;
       }
-      console.error('Telegram error:', chatId, JSON.stringify(data));
+      console.warn('Telegram delivery declined', data.error_code);
     }
 
     if (!deliveredTo) {
@@ -417,6 +392,7 @@ export async function onRequestPost(context) {
       context.waitUntil(fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/editMessageReplyMarkup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(5000),
         body: JSON.stringify({
           chat_id: deliveredTo, message_id: primary.message_id, reply_markup: keyboard,
         }),
@@ -430,7 +406,7 @@ export async function onRequestPost(context) {
       targets.filter((id) => id !== deliveredTo),
       caption,
       fileId,
-      shot,
+      upload,
       keyboard
     );
     console.log('order', orderId, 'notify targets', targets.length,

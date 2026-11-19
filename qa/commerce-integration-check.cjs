@@ -97,6 +97,12 @@ try{
   {error:'Please attach a payment screenshot under 8 MB.'});
  assert.deepEqual(await readOrderReply(Response.json({ok:false,error:'Invalid Viber number'},{status:400})),
   {error:'Invalid Viber number'});
+ assert.deepEqual(await readOrderReply(Response.json({
+  ok:false,error:'Telegram delivery unconfirmed',orderId:'WFIXTURE',
+ },{status:504})), {
+  error:'Telegram took too long to confirm your order. Give support reference #WFIXTURE before submitting again.',
+  unconfirmed:true,
+ });
  assert.deepEqual(await readOrderReply(Response.json({ok:true,orderId:'WFIXTURE',telegramLink:'https://t.me/PSNamso_bot?start=linkweb_0123456789abcdef0123456789abcdef'})),
   {orderId:'WFIXTURE',telegramLink:'https://t.me/PSNamso_bot?start=linkweb_0123456789abcdef0123456789abcdef'});
  const originalFetch=global.fetch;const originalLog=console.log;
@@ -106,17 +112,24 @@ try{
  global.fetch=async(url,options)=>{
   calls.push({url:String(url),options});
   if(String(url).endsWith('/products.json'))return Response.json(catalog);
-  if(String(url)==='https://api.telegram.org/botfixture-token/sendPhoto')return Response.json({ok:true,result:{from:{username:sender},message_id:12,photo}});
+  if(String(url)==='https://api.telegram.org/botfixture-token/sendPhoto'){
+   options.signal.throwIfAborted();
+   return Response.json({ok:true,result:{from:{username:sender},message_id:12,photo}});
+  }
+  if(String(url)==='https://api.telegram.org/botfixture-token/sendDocument'){
+   options.signal.throwIfAborted();
+   return Response.json({ok:true,result:{from:{username:sender},message_id:12,document:{file_id:'fixture-document'}}});
+  }
   if(String(url).endsWith('/editMessageReplyMarkup'))return Response.json({ok:true});
   if(String(url)===env.PANEL_INGEST_URL)return mirrorAvailable ? Response.json({ok:true,id:17}) : Response.json({ok:false},{status:503});
   throw Error('Unexpected network request blocked');
  };
  console.log=()=>{};
- const makeRequest=(overrides={})=>{
+ const makeRequest=(overrides={}, screenshot={name:'fixture.png',type:'image/png',bytes:[137,80,78,71]})=>{
   const form=new FormData();
   const values={name:'Fixture Customer',product:'Netflix TV fixture',payment:'KBZ Pay',contact:'fixture-contact',product_id:'netflix_tv',plan_id:stableId,...overrides};
   for(const [key,value]of Object.entries(values))form.set(key,value);
-  form.set('screenshot',new Blob([new Uint8Array([137,80,78,71])],{type:'image/png'}),'fixture.png');
+  form.set('screenshot',new Blob([new Uint8Array(screenshot.bytes)],{type:screenshot.type}),screenshot.name);
   return new Request('https://store.fixture.invalid/api/order',{method:'POST',headers:{Origin:'https://store.fixture.invalid'},body:form});
  };
  try{
@@ -160,6 +173,50 @@ try{
   assert.equal(tgMirror.profile_name,'QA Profile');
   assert(tgCalls.find(c=>c.url.endsWith('/sendPhoto')).options.body.get('caption').includes('Profile: QA Profile'));
   assert(!JSON.stringify(tgCalls).includes(token));
+  for (const type of ['image/heic','application/octet-stream']) {
+   const heicOffset=calls.length;
+   const screenshot={name:'fixture.HEIC',type,bytes:[0,0,0,24,102,116,121,112,104,101,105,99]};
+   const response=await onRequestPost({
+    request:makeRequest(telegramOrder,screenshot),
+    env:{...env,SALE_GROUP_ID:'fixture-group'},
+    waitUntil:p=>pending.push(p),
+   });
+   assert.equal(response.status,200);
+   assert((await response.json()).telegramLink);
+   const heicCalls=calls.slice(heicOffset);
+   assert(!heicCalls.some(c=>c.url.endsWith('/sendPhoto')));
+   const documents=heicCalls.filter(c=>c.url.endsWith('/sendDocument'));
+   assert.equal(documents.length,2);
+   const uploaded=documents[0].options.body.get('document');
+   assert.equal(uploaded.name,'payment-screenshot.heic');
+   assert.deepEqual([...new Uint8Array(await uploaded.arrayBuffer())],screenshot.bytes);
+   const forwarded=JSON.parse(documents[1].options.body);
+   assert.equal(forwarded.document,'fixture-document');
+   assert.equal(forwarded.reply_markup.inline_keyboard[0][0].text,'Approve');
+  }
+  const validationOffset=calls.length;
+  const empty=await onRequestPost({request:makeRequest(telegramOrder,{name:'fixture.HEIC',type:'image/heic',bytes:[]}),env});
+  assert.equal(empty.status,400);
+  assert.equal((await empty.json()).error,'Screenshot required');
+  assert.equal(calls.length,validationOffset);
+
+  const timeout=AbortSignal.timeout;
+  AbortSignal.timeout=(ms)=>ms===25_000 ? AbortSignal.abort() : timeout.call(AbortSignal,ms);
+  try {
+   const start=calls.length;
+   const stalled=await onRequestPost({
+    request:makeRequest(telegramOrder),
+    env:{...env,SALE_GROUP_ID:'fixture-group'},
+   });
+   assert.equal(stalled.status,504);
+   const reply=await readOrderReply(stalled);
+   assert.equal(reply.unconfirmed,true);
+   const attempted=calls.slice(start);
+   assert.equal(attempted.filter(c=>c.url.endsWith('/sendPhoto')).length,1);
+   assert(!attempted.some(c=>c.url===env.PANEL_INGEST_URL));
+  } finally {
+   AbortSignal.timeout=timeout;
+  }
   const viber=await sendOrder({...telegramOrder,contact_method:'viber',contact:'+959123456789'});
   assert.equal(viber.status,200);
   assert.equal((await viber.json()).telegramLink,undefined);

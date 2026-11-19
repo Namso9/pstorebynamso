@@ -7,6 +7,7 @@ import { useDetailProducts,useLiveCatalog } from "@/components/CatalogProvider";
 import { telegramCheckoutHref } from "@/services/catalog";
 import { deliveryField, MAX_RECEIPT, paymentMethods } from "@/lib/ordering";
 import { useLang } from "@/lib/i18n";
+import { ORDER_TIMEOUT_MS } from "@/services/order";
 
 const TELEGRAM_ORDER_LINK = /^https:\/\/t\.me\/PSNamso_bot\?start=linkweb_[0-9a-f]{32}$/;
 const VIBER_PHONE_PATTERN = "09[0-9]{7,9}|[+]95[0-9]{7,10}";
@@ -15,7 +16,7 @@ const SCREENSHOT_LIMIT = "Please attach a payment screenshot under 8 MB.";
 const ORDER_UNCONFIRMED = "We couldn't confirm your order. If you already paid, contact support before submitting again.";
 
 type Receipt = { orderId: string; telegramLink?: string; contactMethod: "telegram" | "viber" };
-type OrderReply = Omit<Receipt, "contactMethod"> | { error: string };
+type OrderReply = Omit<Receipt, "contactMethod"> | { error: string; unconfirmed?: boolean };
 
 export async function readOrderReply(response: Response): Promise<OrderReply | null> {
   if (response.status === 413) return { error: SCREENSHOT_LIMIT };
@@ -29,6 +30,16 @@ export async function readOrderReply(response: Response): Promise<OrderReply | n
     const telegramLink = "telegramLink" in data && typeof data.telegramLink === "string" &&
       TELEGRAM_ORDER_LINK.test(data.telegramLink) ? data.telegramLink : undefined;
     return { orderId: data.orderId, telegramLink };
+  }
+  if ((response.status === 502 || response.status === 504) && data.ok === false &&
+      "error" in data && data.error === "Telegram delivery unconfirmed" &&
+      "orderId" in data && typeof data.orderId === "string" && /^W[A-Z0-9]{1,39}$/.test(data.orderId)) {
+    const message = response.status === 504 ? "Telegram took too long to confirm your order." :
+      "Telegram did not confirm your order.";
+    return {
+      error: `${message} Give support reference #${data.orderId} before submitting again.`,
+      unconfirmed: true,
+    };
   }
   if (response.status >= 400 && response.status < 500 && data.ok === false &&
       "error" in data && typeof data.error === "string" && data.error.trim()) {
@@ -105,12 +116,15 @@ export default function WebsiteOrder() {
     submissionStarted.current = true;
     setBusy(true); setError("");
     setOrderUnconfirmed(false);
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), ORDER_TIMEOUT_MS);
     let confirmed = false;
     try {
       const response = await fetch("/api/order", {
         method: "POST",
         headers: { Accept: "application/json" },
         body: form,
+        signal: controller.signal,
       });
       const result = await readOrderReply(response);
       if (!result) {
@@ -118,6 +132,7 @@ export default function WebsiteOrder() {
         setOrderUnconfirmed(true);
       } else if ("error" in result) {
         setError(result.error);
+        setOrderUnconfirmed(result.unconfirmed === true);
       } else {
         confirmed = true;
         setReceipt({
@@ -130,6 +145,7 @@ export default function WebsiteOrder() {
       setError(ORDER_UNCONFIRMED);
       setOrderUnconfirmed(true);
     } finally {
+      window.clearTimeout(timeout);
       if (!confirmed) submissionStarted.current = false;
       setBusy(false);
     }
