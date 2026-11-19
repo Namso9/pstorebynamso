@@ -59,9 +59,13 @@ try{
  assert(html.includes('website-order'));assert(html.includes('Order on website'));
  assert(html.includes('1. Your plan'));assert(html.includes('2. Contact &amp; delivery'));assert(html.includes('3. Payment'));
  assert(!html.includes('checkout-steps'));assert(!html.includes('payment-card-next'));
- assert(html.includes('name="contact_method"') && html.includes('value="telegram"') && html.includes('value="viber"'));
+ const contactInputs=[...html.matchAll(/<input[^>]+name="contact_method"[^>]*>/g)].map(match=>match[0]);
+ assert.deepEqual(contactInputs.map(input=>/value="([^"]+)"/.exec(input)[1]),['telegram','viber']);
+ assert(contactInputs.every(input=>input.includes('type="radio"') && input.includes('required')));
  assert(html.includes('aria-describedby="order-contact-help"'));
  assert(html.includes('Choose Telegram or Viber before placing your order.'));
+ assert.match(html, /<input(?=[^>]*name="screenshot")(?=[^>]*disabled="")[^>]*>/);
+ assert(html.includes('Choose Telegram or Viber above to attach your screenshot.'));
  assert(html.includes('Preferred profile name'));
  assert(!html.includes('name="contact"') && !html.includes('name="devices"'));
  for (const id of ['netflix_phone','atom-data','mytel-data']) {
@@ -95,6 +99,8 @@ try{
  assert.equal(await readOrderReply(malformed),null);
  assert.deepEqual(await readOrderReply(new Response('<!DOCTYPE html>',{status:413})),
   {error:'Please attach a payment screenshot under 8 MB.'});
+ assert.deepEqual(await readOrderReply(new Response('<!DOCTYPE html>',{status:429})),
+  {error:'Too many attempts. Wait a few seconds and try again.'});
  assert.deepEqual(await readOrderReply(Response.json({ok:false,error:'Invalid Viber number'},{status:400})),
   {error:'Invalid Viber number'});
  assert.deepEqual(await readOrderReply(Response.json({
@@ -129,7 +135,7 @@ try{
   if(String(url).endsWith('/editMessageReplyMarkup'))return Response.json({ok:true});
   if(String(url)===env.PANEL_INGEST_URL){
    const payload=JSON.parse(options.body);
-   if(payload.op==='telegram_messages') return Response.json({ok:true,status:messageStatus()});
+   if(payload.op==='telegram_messages') return Response.json({ok:true,status:messageStatus(),handled_by:'Fixture Admin'});
    if(releaseMirror) await releaseMirror;
    return mirrorAvailable ? Response.json({ok:true,id:17}) : Response.json({ok:false},{status:503});
   }
@@ -246,6 +252,7 @@ try{
   for (const chatId of [1001,-1002]) {
    const last=updates.filter(edit=>edit.chat_id===chatId).at(-1);
    assert.equal(last.reply_markup.inline_keyboard[0][0].callback_data,'req_done');
+   assert.equal(last.reply_markup.inline_keyboard[0][0].text,'\u2705 Approved by Fixture Admin');
   }
 
   const gateEnv={...env,...protectedEnv};

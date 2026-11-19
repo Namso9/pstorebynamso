@@ -210,7 +210,7 @@ async function publishOrderCopies(env, orderRef, mirrored, targets, primary, cap
     try {
       const response = await postToPanel(env, { op: 'telegram_messages', id, order_ref: orderRef, messages });
       const row = await response.json();
-      if (response.ok && row.ok) return row.status;
+      if (response.ok && row.ok) return row;
     } catch {
       // An unavailable panel does not prevent reviewing a delivered message.
     }
@@ -229,14 +229,17 @@ async function publishOrderCopies(env, orderRef, mirrored, targets, primary, cap
     const failed = results.filter(result => result.status === 'rejected').length;
     if (failed) console.warn('Web order markup updates failed', orderRef, failed);
   };
-  const resultKeyboard = (status) => {
-    const text = { approved: '\u2705 Approved', declined: '\u274c Declined', handled: 'Handled' }[status];
-    return text ? { inline_keyboard: [[{ text, callback_data: 'req_done' }]] } : null;
+  const resultKeyboard = (order) => {
+    const label = { approved: '\u2705 Approved', declined: '\u274c Declined', handled: 'Handled' }[order?.status];
+    if (!label) return null;
+    const reviewer = order.handled_by;
+    const text = typeof reviewer === 'string' && reviewer ? `${label} by ${reviewer}` : label;
+    return { inline_keyboard: [[{ text: Array.from(text).slice(0, 60).join(''), callback_data: 'req_done' }]] };
   };
 
   const sameBot = sender?.toLowerCase() === 'psnamso_bot';
-  const initialStatus = sameBot ? await sync() : undefined;
-  const closed = resultKeyboard(initialStatus);
+  const order = sameBot ? await sync() : undefined;
+  const closed = resultKeyboard(order);
   await edit(closed || decisionKeyboard(id, orderRef, sender));
   if (!closed && sameBot) {
     // A decision during the edits may have closed a copy before its buttons arrived.

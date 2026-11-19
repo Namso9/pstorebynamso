@@ -15,11 +15,16 @@ const VIBER_PHONE_PATTERN = "09[0-9]{7,9}|[+]95[0-9]{7,10}";
 const CONTACT_REQUIRED = "Choose Telegram or Viber before placing your order.";
 const SCREENSHOT_LIMIT = "Please attach a payment screenshot under 8 MB.";
 const ORDER_UNCONFIRMED = "We couldn't confirm your order. If you already paid, contact support before submitting again.";
+const CONTACT_OPTIONS = [
+  { value: "telegram", label: "Telegram", hint: "Continue in the bot" },
+  { value: "viber", label: "Viber", hint: "Get a reply by phone number" },
+] as const;
 
 type Receipt = { orderId: string; telegramLink?: string; contactMethod: "telegram" | "viber" };
 type OrderReply = Omit<Receipt, "contactMethod"> | { error: string; unconfirmed?: boolean };
 
 export async function readOrderReply(response: Response): Promise<OrderReply | null> {
+  if (response.status === 429) return { error: "Too many attempts. Wait a few seconds and try again." };
   if (response.status === 413) return { error: SCREENSHOT_LIMIT };
   const contentType = response.headers.get("content-type")?.split(";")[0].trim().toLowerCase();
   if (contentType !== "application/json") return null;
@@ -72,12 +77,12 @@ export default function WebsiteOrder() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [orderUnconfirmed, setOrderUnconfirmed] = useState(false);
-  const [contactMethod, setContactMethod] = useState("");
+  const [contactMethod, setContactMethod] = useState<Receipt["contactMethod"] | "">("");
   const [contactInvalid, setContactInvalid] = useState(false);
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const verification = useCheckoutVerification(!productUnavailable && !receipt);
   const submissionStarted = useRef(false);
-  const contactSelect = useRef<HTMLSelectElement>(null);
+  const contactChoice = useRef<HTMLInputElement>(null);
   const screenshotInput = useRef<HTMLInputElement>(null);
   const [attachedScreenshot, setAttachedScreenshot] = useState<File | null>(null);
   const productId=item?.product.id || "";
@@ -99,9 +104,9 @@ export default function WebsiteOrder() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submissionStarted.current || !order || productUnavailable || (!available && !engaged)) return;
-    if (contactMethod !== "telegram" && contactMethod !== "viber") {
+    if (!contactMethod) {
       setContactInvalid(true);
-      contactSelect.current?.focus();
+      contactChoice.current?.focus();
       return;
     }
     const form = new FormData(event.currentTarget);
@@ -189,9 +194,9 @@ export default function WebsiteOrder() {
       {productUnavailable && <p className="order-notice" role="status">Out of stock. No plans are currently available.</p>}
       {order?.plan.contact && <p className="order-notice" role="status">Please contact the store for the current price before paying.</p>}
       <form onSubmit={submit} onInput={event => {
-        // A native select emits input before change. Rendering here can
-        // restore its old controlled value before its change handler runs.
-        if (event.target !== contactSelect.current) markEngaged();
+        if (!(event.target instanceof HTMLInputElement && event.target.name === "contact_method")) {
+          markEngaged();
+        }
       }}>
         <fieldset disabled={busy} className="order-fields">
           <section className="info-panel"><h2>1. Your plan</h2>
@@ -201,28 +206,33 @@ export default function WebsiteOrder() {
             {order?.plan.soldOut && <p role="status">This plan is out of stock. Please choose another plan.</p>}
           </section>
           <section className="info-panel"><h2>2. Contact & delivery</h2>
-            <label>How should we contact you? (required)
-              <select name="contact_method" ref={contactSelect} required value={contactMethod}
-                aria-invalid={contactInvalid || undefined} aria-describedby="order-contact-help"
-                onInvalid={() => setContactInvalid(true)}
-                onChange={event => {
-                  setContactMethod(event.target.value);
-                  setContactInvalid(false);
-                  markEngaged();
-                }}>
-                <option value="">Choose Telegram or Viber</option>
-                <option value="telegram">Telegram</option>
-                <option value="viber">Viber</option>
-              </select>
-            </label>
-            {contactInvalid ? (
-              <p id="order-contact-help" className="order-notice" role="alert">{CONTACT_REQUIRED}</p>
-            ) : (
-              <small id="order-contact-help">
-                {contactMethod === "telegram" ? "Telegram opens after you place the order." :
-                  contactMethod === "viber" ? "Our team will reply to your Viber number." : CONTACT_REQUIRED}
-              </small>
-            )}
+            <fieldset className="order-contact-options" aria-describedby="order-contact-help">
+              <legend>How should we contact you? (required)</legend>
+              <div className="order-contact-choices">
+                {CONTACT_OPTIONS.map(({ value, label, hint }) => (
+                  <label className="order-contact-choice" key={value}>
+                    <input type="radio" name="contact_method" value={value} required
+                      ref={value === "telegram" ? contactChoice : undefined}
+                      checked={contactMethod === value}
+                      onInvalid={() => setContactInvalid(true)}
+                      onChange={() => {
+                        setContactMethod(value);
+                        setContactInvalid(false);
+                        markEngaged();
+                      }} />
+                    <span>{label}<small>{hint}</small></span>
+                  </label>
+                ))}
+              </div>
+              {contactInvalid ? (
+                <p id="order-contact-help" className="order-notice" role="alert">{CONTACT_REQUIRED}</p>
+              ) : (
+                <small id="order-contact-help" className="order-contact-help">
+                  {!contactMethod ? CONTACT_REQUIRED : contactMethod === "telegram" ?
+                    "Telegram opens after you place the order." : ""}
+                </small>
+              )}
+            </fieldset>
             {contactMethod === "viber" && <label>Viber phone number
               <input name="contact" type="tel" required pattern={VIBER_PHONE_PATTERN}
                 maxLength={14} autoComplete="tel" placeholder="09xxxxxxxxx" />
@@ -250,7 +260,14 @@ export default function WebsiteOrder() {
               <a href={method.qr} download>Save QR image</a>
               <p>Pay {order.plan.price}. Write only &quot;Payment&quot; in the transfer note.</p>
             </details>}
-            <label>Payment screenshot<input ref={screenshotInput} name="screenshot" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,image/avif" required onChange={event => { setAttachedScreenshot(event.currentTarget.files?.[0] || null); setError(""); }} /><small>JPG, PNG, WebP, GIF, HEIC or AVIF. Maximum 8 MB.</small></label>
+            <label>Payment screenshot
+              <input ref={screenshotInput} name="screenshot" type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,image/avif"
+                disabled={!contactMethod} required aria-describedby="order-screenshot-help"
+                onChange={event => { setAttachedScreenshot(event.currentTarget.files?.[0] || null); setError(""); }} />
+              <small id="order-screenshot-help">{contactMethod ? "JPG, PNG, WebP, GIF, HEIC or AVIF. Maximum 8 MB." :
+                "Choose Telegram or Viber above to attach your screenshot."}</small>
+            </label>
             {attachedScreenshot && <div className="order-attachment" role="status"><span>Screenshot attached: <strong>{attachedScreenshot.name}</strong></span><button type="button" className="order-attachment-remove" aria-label="Remove payment screenshot" onClick={() => { if (screenshotInput.current) screenshotInput.current.value = ""; setAttachedScreenshot(null); }}>&times;</button></div>}
           </section>
           <label className="order-consent"><input type="checkbox" name="terms" value="accepted" required /> <span>I have checked my plan and payment, and agree to the <Link href="/terms-and-conditions/" target="_blank" rel="noopener noreferrer">terms</Link> and <Link href="/refund-policy/" target="_blank" rel="noopener noreferrer">refund policy</Link>. See how order details are used in our <Link href="/privacy-policy/" target="_blank" rel="noopener noreferrer">privacy policy</Link>.</span></label>
