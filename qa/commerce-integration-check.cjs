@@ -59,6 +59,19 @@ try{
  assert(html.includes('website-order'));assert(html.includes('Order on website'));
  assert(html.includes('1. Your plan'));assert(html.includes('2. Contact &amp; delivery'));assert(html.includes('3. Payment'));
  assert(!html.includes('checkout-steps'));assert(!html.includes('payment-card-next'));
+ assert(html.includes('name="contact_method"') && html.includes('value="telegram"') && html.includes('value="viber"'));
+ assert(html.includes('Preferred profile name'));
+ assert(!html.includes('name="contact"') && !html.includes('name="devices"'));
+ for (const id of ['netflix_phone','atom-data','mytel-data']) {
+  const firstPlan=catalog.products.find(p=>p.id===id).plans.find(p=>p.id);
+  renderingQuery=`product=${id}&plan=${firstPlan.id}`;
+  const formHtml=renderToStaticMarkup(React.createElement(WebsiteOrder));
+  if (id==='netflix_phone') {
+   assert(formHtml.includes('Preferred profile name') && formHtml.includes('name="devices"'));
+  } else {
+   assert(formHtml.includes('Data SIM phone number') && !formHtml.includes('Preferred profile name'));
+  }
+ }
  for(const retiredPlanId of ['12_months','18_months']){
   renderingQuery=`product=gemini&plan=${retiredPlanId}`;
   const pausedHtml=renderToStaticMarkup(React.createElement(WebsiteOrder));
@@ -73,12 +86,14 @@ try{
  const {onRequestPost}=await import('../functions/api/order.js');
  const originalFetch=global.fetch;const originalLog=console.log;
  const calls=[];const pending=[];
+ let sender='PSNamso_bot', mirrorAvailable=true, photo=[{file_id:'fixture-photo'}];
  const env={BOT_TOKEN:'fixture-token',ADMIN_CHAT_ID:'fixture-admin',PANEL_INGEST_URL:'https://panel.fixture.invalid/internal/web-order',PANEL_INGEST_TOKEN:'fixture-ingest'};
  global.fetch=async(url,options)=>{
   calls.push({url:String(url),options});
   if(String(url).endsWith('/products.json'))return Response.json(catalog);
-  if(String(url)==='https://api.telegram.org/botfixture-token/sendPhoto')return Response.json({ok:true,result:{photo:[{file_id:'fixture-photo'}]}});
-  if(String(url)===env.PANEL_INGEST_URL)return Response.json({ok:true});
+  if(String(url)==='https://api.telegram.org/botfixture-token/sendPhoto')return Response.json({ok:true,result:{from:{username:sender},message_id:12,photo}});
+  if(String(url).endsWith('/editMessageReplyMarkup'))return Response.json({ok:true});
+  if(String(url)===env.PANEL_INGEST_URL)return mirrorAvailable ? Response.json({ok:true,id:17}) : Response.json({ok:false},{status:503});
   throw Error('Unexpected network request blocked');
  };
  console.log=()=>{};
@@ -93,8 +108,73 @@ try{
   let result=await onRequestPost({request:makeRequest(),env,waitUntil:p=>pending.push(p)});
   assert.equal(result.status,200);assert.equal((await result.json()).ok,true);await Promise.all(pending);
   const mirror=JSON.parse(calls.find(c=>c.url===env.PANEL_INGEST_URL).options.body);
+  const primary=calls.find(c=>c.url.endsWith('/sendPhoto')).options.body;
+  assert(primary.get('caption').startsWith(`Web order #${mirror.order_ref}\nNetflix TV fixture\n`));
+  const edit=JSON.parse(calls.find(c=>c.url.endsWith('/editMessageReplyMarkup')).options.body);
+  assert.equal(edit.message_id,12);
+  assert.deepEqual(edit.reply_markup.inline_keyboard,[[
+   {text:'Approve',callback_data:`web_approve_17_${mirror.order_ref}`},
+   {text:'Decline',callback_data:`web_decline_17_${mirror.order_ref}`},
+  ]]);
   assert.equal(mirror.product_id,'netflix_tv');assert.equal(mirror.plan_id,stableId);
   assert(!('customer_pw'in mirror));assert(!('screenshot'in mirror));
+  for (const reusePhoto of [true,false]) {
+   sender='fixture_sender';
+   photo=reusePhoto ? [{file_id:'fixture-photo'}] : [];
+   const offset=calls.length;
+   const r=await onRequestPost({request:makeRequest(),env:{...env,SALE_GROUP_ID:'fixture-group'},waitUntil:p=>pending.push(p)});
+   const {orderId}=await r.json();
+   const copies=calls.slice(offset).filter(c=>c.url.endsWith('/sendPhoto'));
+   const body=copies[1].options.body;
+   const keyboard=reusePhoto ? JSON.parse(body).reply_markup : JSON.parse(body.get('reply_markup'));
+   assert.deepEqual(keyboard.inline_keyboard[0].map(b=>b.url),['approve','decline'].map(action=>
+    `https://t.me/PSNamso_bot?start=web_${action}_17_${orderId}`));
+  }
+  const sendOrder = (fields) => onRequestPost({request:makeRequest(fields),env,waitUntil:p=>pending.push(p)});
+  const telegramOrder = {name:'',contact:'',contact_method:'telegram',profile_name:'QA Profile'};
+  const testStart=calls.length;
+  const tg=await sendOrder(telegramOrder);
+  assert.equal(tg.status,200);
+  assert.equal(tg.headers.get('Cache-Control'),'no-store');
+  const {telegramLink}=await tg.json();
+  const token=telegramLink.match(/^https:\/\/t\.me\/PSNamso_bot\?start=linkweb_([0-9a-f]{32})$/)[1];
+  const tgCalls=calls.slice(testStart);
+  const tgMirror=JSON.parse(tgCalls.find(c=>c.url===env.PANEL_INGEST_URL).options.body);
+  assert.equal(tgMirror.telegram_link_hash,require('node:crypto').createHash('sha256').update(token).digest('hex'));
+  assert.equal(tgMirror.contact,'');
+  assert.equal(tgMirror.profile_name,'QA Profile');
+  assert(tgCalls.find(c=>c.url.endsWith('/sendPhoto')).options.body.get('caption').includes('Profile: QA Profile'));
+  assert(!JSON.stringify(tgCalls).includes(token));
+  const viber=await sendOrder({...telegramOrder,contact_method:'viber',contact:'+959123456789'});
+  assert.equal(viber.status,200);
+  assert.equal((await viber.json()).telegramLink,undefined);
+
+  const validationStart=calls.length;
+  for (const fields of [
+   {...telegramOrder,profile_name:''},
+   {...telegramOrder,product:'Netflix Phone',product_id:'netflix_phone',devices:'TV'},
+   {...telegramOrder,product:'Atom data',product_id:'atom-data',phone:''},
+   {...telegramOrder,contact_method:'viber',contact:'@tester'},
+   {...telegramOrder,contact_method:'sms'},
+  ]) {
+   assert.equal((await sendOrder(fields)).status,400);
+  }
+  assert.equal(calls.length,validationStart,'Missing fulfillment data must stop delivery');
+  const atom=await sendOrder({...telegramOrder,product:'Atom data',product_id:'atom-data',profile_name:'',phone:'09123456789'});
+  assert.equal(atom.status,200);
+  const netflixPhone=await sendOrder({...telegramOrder,product:'Netflix Phone',product_id:'netflix_phone',devices:'iPhone'});
+  assert.equal(netflixPhone.status,200);
+  mirrorAvailable=false;
+  const offset=calls.length;
+  const unmirrored=await sendOrder(telegramOrder);
+  assert.equal(unmirrored.status,200);
+  assert.equal((await unmirrored.json()).telegramLink,undefined);
+  const outageCalls=calls.slice(offset);
+  assert(!outageCalls.some(c=>c.url.endsWith('/editMessageReplyMarkup')));
+  assert.equal(outageCalls.filter(c=>c.url.endsWith('/sendPhoto')).length,1);
+  const retries=outageCalls.filter(c=>c.url===env.PANEL_INGEST_URL);
+  assert.equal(retries.length,2);
+  assert.equal(retries[0].options.body,retries[1].options.body);
   for(const planId of ['12_months','18_months']){
    const count=calls.length;
    const result=await onRequestPost({request:makeRequest({product_id:'gemini',plan_id:planId}),env,waitUntil:p=>pending.push(p)});

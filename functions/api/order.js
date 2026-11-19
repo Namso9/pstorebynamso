@@ -49,6 +49,10 @@ const PHONE_REQUIRED_TEXT = /\b(atom|mytel)\b/i;
 // number to top up — a typo is worth rejecting at the door.
 const PHONE_SHAPE = /^09\d{7,9}$/;
 
+const VIBER_PHONE = /^(?:09[0-9]{7,9}|[+]95[0-9]{7,10})$/;
+const PROFILE_PRODUCTS = ['netflix_tv', 'netflix_phone', 'hbomax', 'prime'];
+const MAIL_PRODUCTS = ['zoom', 'zoom_business', 'canva', 'duolingo'];
+
 // same source the /products.json proxy serves from — the live catalog
 const PRODUCTS_RAW_URL =
   'https://raw.githubusercontent.com/Namso9/pstorebynamso/main/products.json';
@@ -93,7 +97,7 @@ async function checkPlanStock(productId, planId) {
  *   PANEL_INGEST_URL   = https://admin.pstorebynamso.com/internal/web-order
  *   PANEL_INGEST_TOKEN = (WEB_ORDER_TOKEN from the panel .env)
  * plus a Cloudflare Access bypass/service-token policy for that exact path.
- * Fire-and-forget: a panel hiccup never blocks the customer's order.
+ * After primary delivery, mirror with a bounded timeout to get the panel row ID.
  * Password/screenshot are NOT mirrored — Telegram keeps the only copy.
  *
  * product_id / plan_id ride along so the panel can answer "ဘယ် plan/product
@@ -102,18 +106,41 @@ async function checkPlanStock(productId, planId) {
  * chars — they say what was bought, never who bought it, so they change
  * nothing about what customer data reaches the panel.
  */
-function mirrorToPanel(env, waitUntil, data) {
+async function mirrorToPanel(env, data) {
   if (!env.PANEL_INGEST_URL || !env.PANEL_INGEST_TOKEN) return;
-  waitUntil(
-    fetch(env.PANEL_INGEST_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Ingest-Token': env.PANEL_INGEST_TOKEN,
-      },
-      body: JSON.stringify(data),
-    }).catch(() => {})
-  );
+  // Only token-backed inserts are idempotent across a lost response.
+  const attempts = data.telegram_link_hash ? 2 : 1;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      const response = await fetch(env.PANEL_INGEST_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Ingest-Token': env.PANEL_INGEST_TOKEN,
+        },
+        body: JSON.stringify(data),
+        signal: AbortSignal.timeout(5000),
+      });
+      if (response.status < 500) {
+        const row = await response.json();
+        if (response.ok && row.ok && Number.isSafeInteger(row.id) && row.id > 0) return row.id;
+        break;
+      }
+    } catch {
+      // The screenshot is already in Telegram.
+    }
+  }
+  console.warn('Web order mirror unavailable', data.order_ref);
+}
+
+function decisionKeyboard(id, ref, sender) {
+  const buttons = ['Approve', 'Decline'].map((text) => {
+    const payload = `web_${text.toLowerCase()}_${id}_${ref}`;
+    return sender?.toLowerCase() === 'psnamso_bot'
+      ? { text, callback_data: payload }
+      : { text, url: `https://t.me/PSNamso_bot?start=${payload}` };
+  });
+  return { inline_keyboard: [buttons] };
 }
 
 /**
@@ -163,7 +190,7 @@ function photoFileId(data) {
  * primary ရှာရင်း ကျသွားခဲ့တဲ့ id ကိုလည်း ဒီမှာ ထပ်ကြိုးစားတယ် — ခဏတာ
  * အမှား (rate limit / timeout) ဆိုရင် ဒုတိယအကြိမ်မှာ ရောက်သွားနိုင်လို့။
  */
-async function fanOutToRest(env, targets, caption, fileId, shot) {
+async function fanOutToRest(env, targets, caption, fileId, shot, keyboard) {
   if (!targets.length) return { sent: 0, failed: 0 };
   const url = `https://api.telegram.org/bot${env.BOT_TOKEN}/sendPhoto`;
   const results = await Promise.allSettled(
@@ -176,7 +203,7 @@ async function fanOutToRest(env, targets, caption, fileId, shot) {
           resp = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: chatId, caption, photo: fileId }),
+            body: JSON.stringify({ chat_id: chatId, caption, photo: fileId, reply_markup: keyboard }),
             signal: ctl.signal,
           });
         } else {
@@ -184,6 +211,7 @@ async function fanOutToRest(env, targets, caption, fileId, shot) {
           const tg = new FormData();
           tg.append('chat_id', chatId);
           tg.append('caption', caption);
+          if (keyboard) tg.append('reply_markup', JSON.stringify(keyboard));
           tg.append('photo', shot, 'payment-screenshot.jpg');
           resp = await fetch(url, { method: 'POST', body: tg, signal: ctl.signal });
         }
@@ -201,7 +229,8 @@ async function fanOutToRest(env, targets, caption, fileId, shot) {
   return { sent: results.length - failed, failed };
 }
 
-export async function onRequestPost({ request, env, waitUntil }) {
+export async function onRequestPost(context) {
+  const { request, env } = context;
   try {
     const targets = notifyTargets(env);
     if (!env.BOT_TOKEN || targets.length === 0) {
@@ -237,17 +266,18 @@ export async function onRequestPost({ request, env, waitUntil }) {
       // false positive က တိတ်တဆိတ် ဖြစ်တာမို့ Pages log ထဲ မှတ်ခဲ့တယ် —
       // ငွေလွှဲပြီးသား customer တစ်ယောက် "ရပြီ" ဆိုတဲ့ id ရပြီး order က
       // ဘယ်တော့မှ မရောက်ဘူးဆိုရင် ဒီ log ကပဲ တစ်ခုတည်းသော သဲလွန်စ။
-      console.error('honeypot hit', {
-        name: clean(form.get('name'), 60),
-        contact: clean(form.get('contact'), 40),
-      });
+      console.warn('Web order honeypot hit');
       return json({ ok: true, orderId: newOrderId(), fbLink: env.FB_PAGE_LINK || FB_DEFAULT });
     }
 
     const name = clean(form.get('name'), 60);
     const product = clean(form.get('product'), 120);
     const payment = clean(form.get('payment'), 30);
-    const contact = clean(form.get('contact'), 40);
+    const contactMethod = clean(form.get('contact_method'), 16);
+    const telegram = contactMethod === 'telegram';
+    const contact = telegram ? '' : clean(form.get('contact'), 40);
+    const profileName = clean(form.get('profile_name'), 60);
+    const devices = clean(form.get('devices'), 100);
     const customerMail = clean(form.get('customer_mail'), 120);
     const customerPw = clean(form.get('customer_pw'), 100);
     const note = clean(form.get('note'), 300);
@@ -258,10 +288,16 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const planId = clean(form.get('plan_id'), 60);
     const shot = form.get('screenshot');
 
-    if (!name || !product || !contact || !payment) {
+    if (contactMethod && !['telegram', 'viber'].includes(contactMethod)) {
+      return json({ ok: false, error: 'Invalid contact method' }, 400);
+    }
+    if (contactMethod === 'viber' && !VIBER_PHONE.test(contact)) {
+      return json({ ok: false, error: 'Invalid Viber number' }, 400);
+    }
+    if (!product || !payment || (!contactMethod && (!name || !contact))) {
       return json({ ok: false, error: 'Missing fields' }, 400);
     }
-    if (!shot || typeof shot === 'string') {
+    if (!shot || typeof shot === 'string' || !shot.size) {
       return json({ ok: false, error: 'Screenshot required' }, 400);
     }
     const needsPhone =
@@ -272,6 +308,19 @@ export async function onRequestPost({ request, env, waitUntil }) {
     }
     if (needsPhone && !PHONE_SHAPE.test(phone)) {
       return json({ ok: false, error: 'Invalid phone' }, 400);
+    }
+    const netflixPhone = productId === 'netflix_phone' || /netflix.*phone/i.test(product);
+    const needsProfile = netflixPhone || PROFILE_PRODUCTS.includes(productId) ||
+      /netflix.*tv|hbo|prime video/i.test(product);
+    if (contactMethod && needsProfile && profileName.length < 2) {
+      return json({ ok: false, error: 'Profile name required' }, 400);
+    }
+    if (contactMethod && netflixPhone && (devices.length < 2 || /tv|box/i.test(devices))) {
+      return json({ ok: false, error: 'Phone, tablet or computer required' }, 400);
+    }
+    if (contactMethod && (MAIL_PRODUCTS.includes(productId) || planId.includes('cus_mail')) &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerMail)) {
+      return json({ ok: false, error: 'Valid email required' }, 400);
     }
     if (shot.size > MAX_FILE) {
       return json({ ok: false, error: 'File too large' }, 400);
@@ -284,6 +333,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
     }
 
     const orderId = newOrderId();
+    const linkToken = telegram ? crypto.randomUUID().replaceAll('-', '') : '';
+    const tokenHash = linkToken
+      ? Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(linkToken))),
+          (byte) => byte.toString(16).padStart(2, '0')).join('')
+      : '';
 
     // Server-side stock check (defense-in-depth vs stale tab / bookmarked /
     // forged POST). We DON'T reject — manual web orders are admin-reviewed and
@@ -292,35 +346,29 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const stock = await checkPlanStock(productId, planId);
     const oos = stock.found && !stock.inStock;
 
-    // Telegram sendPhoto caption hard limit is 1024 chars. Everything except
-    // `note` is short & essential; trim only the note so a long note can never
-    // push the caption over the limit and get the whole order rejected.
-    const buildCaption = (n) =>
-      `🛒 WEB ORDER  #${orderId}\n` +
-      `━━━━━━━━━━━━━━━\n` +
-      (oos ? `🚨 OUT OF STOCK plan — restock ပြီးမှ ပေးပါ / customer ကို အကြောင်းပြန်ပါ\n` : '') +
-      `👤 Name: ${name}\n` +
-      `📦 Product: ${product}\n` +
-      `💳 Payment: ${payment}\n` +
-      (phone ? `📱 Data SIM: ${phone}\n` : '') +
-      `📞 Contact: ${contact}\n` +
-      (customerMail ? `📧 Customer Mail: ${customerMail}\n` : '') +
-      (customerPw ? `🔑 Mail Password: ${customerPw}\n` : '') +
-      (n ? `📝 Note: ${n}\n` : '') +
-      `━━━━━━━━━━━━━━━\n` +
-      `⚠️ Website order form ကနေ ဝင်လာတဲ့ order ပါ — အပေါ်က Contact (Viber နံပါတ် / Telegram username) အတိုင်း ပြန်ဆက်သွယ်ပေးပါ`;
-
-    let caption = buildCaption(note);
-    if (caption.length > 1024) {
-      const budget = note.length - (caption.length - 1024) - 1; // -1 for ellipsis
-      caption = buildCaption(budget > 0 ? note.slice(0, budget) + '…' : '');
-      if (caption.length > 1024) caption = caption.slice(0, 1024);
-    }
+    const captionLines = [
+      `Web order #${orderId}`,
+      product,
+      oos && 'Out of stock - contact customer before fulfillment.',
+      `Payment: ${payment}`,
+      name && `Customer: ${name}`,
+      telegram ? 'Contact: Telegram (waiting for Start)' :
+        `${contactMethod === 'viber' ? 'Viber' : 'Contact'}: ${contact}`,
+      profileName && `Profile: ${profileName}`,
+      devices && `Devices: ${devices}`,
+      phone && `Data SIM: ${phone}`,
+      customerMail && `Customer email: ${customerMail}`,
+      customerPw && `Mail password: ${customerPw}`,
+    ].filter(Boolean).join('\n');
+    // Leave room for the review status that the bot appends.
+    const noteBudget = 980 - captionLines.length - '\nNote: '.length;
+    const caption = captionLines + (note && noteBudget > 0 ? `\nNote: ${note.slice(0, noteBudget)}` : '');
 
     // Target အားလုံးထဲက တစ်ခုကိုပဲ await လုပ်တယ် (ပုံ upload တစ်ခါတည်း) —
     // customer ရဲ့ စောင့်ချိန်က admin အရေအတွက်နဲ့ မတက်ဘူး။ ပထမတစ်ခု ကျရင်
     // နောက်တစ်ခုကို ဆက်ကြိုးစားတယ်၊ id တစ်ခု မှားနေလို့ ငွေလွှဲပြီးသား order
     // တစ်ခုလုံး မပျက်စေရ။ တစ်ခုအောင်တာနဲ့ ကျန်တာက file_id fan-out။
+    let primary;
     let deliveredTo = '';
     let fileId = '';
     for (const chatId of targets) {
@@ -336,6 +384,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       const data = await resp.json();
 
       if (data.ok) {
+        primary = data.result;
         deliveredTo = chatId;
         fileId = photoFileId(data);
         break;
@@ -347,19 +396,13 @@ export async function onRequestPost({ request, env, waitUntil }) {
       return json({ ok: false, error: 'Delivery failed' }, 502);
     }
 
-    const fan = await fanOutToRest(
-      env,
-      targets.filter((id) => id !== deliveredTo),
-      caption,
-      fileId,
-      shot
-    );
-    console.log('order', orderId, 'notify targets', targets.length,
-                'primary ok, fan-out sent', fan.sent, 'failed', fan.failed);
-
-    mirrorToPanel(env, waitUntil, {
+    const id = await mirrorToPanel(env, {
       order_ref: orderId,
       name, product, payment, contact,
+      contact_method: contactMethod,
+      telegram_link_hash: tokenHash,
+      profile_name: profileName,
+      devices,
       phone,
       customer_mail: customerMail,
       note,
@@ -369,13 +412,38 @@ export async function onRequestPost({ request, env, waitUntil }) {
       oos: Boolean(oos),
     });
 
+    const keyboard = id ? decisionKeyboard(id, orderId, primary?.from?.username) : undefined;
+    if (keyboard) {
+      context.waitUntil(fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/editMessageReplyMarkup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: deliveredTo, message_id: primary.message_id, reply_markup: keyboard,
+        }),
+      }).then(response => {
+        if (!response.ok) console.warn('Web order buttons unavailable', orderId);
+      }).catch(() => console.warn('Web order buttons unavailable', orderId)));
+    }
+
+    const fan = await fanOutToRest(
+      env,
+      targets.filter((id) => id !== deliveredTo),
+      caption,
+      fileId,
+      shot,
+      keyboard
+    );
+    console.log('order', orderId, 'notify targets', targets.length,
+                'primary ok, fan-out sent', fan.sent, 'failed', fan.failed);
+
     const fbBase = env.FB_PAGE_LINK || FB_DEFAULT;
     const fbRef = env.FB_PAGE_LINK && env.FB_PAGE_LINK.includes('m.me')
       ? (fbBase.includes('?') ? `&ref=${orderId}` : `?ref=${orderId}`)
       : '';
-    return json({ ok: true, orderId, fbLink: fbBase + fbRef });
-  } catch (e) {
-    console.error(e);
+    const telegramLink = id && linkToken ? `https://t.me/PSNamso_bot?start=linkweb_${linkToken}` : undefined;
+    return json({ ok: true, orderId, fbLink: fbBase + fbRef, telegramLink });
+  } catch {
+    console.error('Web order request failed');
     return json({ ok: false, error: 'Server error' }, 500);
   }
 }
@@ -398,6 +466,7 @@ function json(obj, status = 200) {
       'Content-Type': 'application/json',
       // _headers rules don't apply to Pages Function responses — set here
       'X-Content-Type-Options': 'nosniff',
+      'Cache-Control': 'no-store',
     },
   });
 }
