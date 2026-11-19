@@ -12,24 +12,26 @@ const outputDirectory = path.join(projectRoot, "out");
 const outputHeadersPath = path.join(outputDirectory, "_headers");
 const publicHeadersPath = path.join(projectRoot, "public", "_headers");
 const rootHeadersPath = path.join(projectRoot, "_headers");
-const cloudflareWebAnalyticsScripts = [
+const cloudflareScripts = [
   "https://static.cloudflareinsights.com/beacon.min.js",
   "https://static.cloudflareinsights.com/beacon.min.js/",
+  // Client navigation can open checkout under another page's document CSP.
+  "https://challenges.cloudflare.com",
 ].join(" ");
 
 const compatibilityPolicy =
-  `default-src 'self'; script-src 'self' 'unsafe-inline' ${cloudflareWebAnalyticsScripts}; ` +
+  `default-src 'self'; script-src 'self' 'unsafe-inline' ${cloudflareScripts}; ` +
   "script-src-attr 'none'; " +
   "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; " +
   "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; " +
-  "connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; " +
+  "connect-src 'self'; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; " +
   "frame-ancestors 'none'";
 
 const nonScriptDirectives =
   "script-src-attr 'none'; " +
   "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; " +
   "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; " +
-  "connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; " +
+  "connect-src 'self'; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; " +
   "frame-ancestors 'none'";
 
 const executableScriptTypes = new Set([
@@ -96,7 +98,7 @@ function policyForScripts(scriptBodies) {
   assert(scriptBodies.length > 0, "Expected at least one executable inline script");
   const hashes = scriptBodies.map(hashSource).join(" ");
   return (
-    `default-src 'self'; script-src 'self' ${cloudflareWebAnalyticsScripts} ${hashes}; ` +
+    `default-src 'self'; script-src 'self' ${cloudflareScripts} ${hashes}; ` +
     nonScriptDirectives
   );
 }

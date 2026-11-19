@@ -8,6 +8,7 @@ import { telegramCheckoutHref } from "@/services/catalog";
 import { deliveryField, MAX_RECEIPT, paymentMethods } from "@/lib/ordering";
 import { useLang } from "@/lib/i18n";
 import { ORDER_TIMEOUT_MS } from "@/services/order";
+import { useCheckoutVerification } from "@/components/order/useCheckoutVerification";
 
 const TELEGRAM_ORDER_LINK = /^https:\/\/t\.me\/PSNamso_bot\?start=linkweb_[0-9a-f]{32}$/;
 const VIBER_PHONE_PATTERN = "09[0-9]{7,9}|[+]95[0-9]{7,10}";
@@ -74,6 +75,7 @@ export default function WebsiteOrder() {
   const [contactMethod, setContactMethod] = useState("");
   const [contactInvalid, setContactInvalid] = useState(false);
   const [receipt, setReceipt] = useState<Receipt | null>(null);
+  const verification = useCheckoutVerification(!productUnavailable && !receipt);
   const submissionStarted = useRef(false);
   const contactSelect = useRef<HTMLSelectElement>(null);
   const screenshotInput = useRef<HTMLInputElement>(null);
@@ -118,6 +120,8 @@ export default function WebsiteOrder() {
       setOrderUnconfirmed(false);
       return;
     }
+    if (!verification.ready) return;
+    if (verification.token) form.set("cf-turnstile-response", verification.token);
     submissionStarted.current = true;
     setBusy(true); setError("");
     setOrderUnconfirmed(false);
@@ -151,7 +155,10 @@ export default function WebsiteOrder() {
       setOrderUnconfirmed(true);
     } finally {
       window.clearTimeout(timeout);
-      if (!confirmed) submissionStarted.current = false;
+      if (!confirmed) {
+        verification.reset();
+        submissionStarted.current = false;
+      }
       setBusy(false);
     }
   }
@@ -233,6 +240,7 @@ export default function WebsiteOrder() {
             </label>}
             {needsPassword && <label>Account password<input name="customer_pw" type="password" required maxLength={100} autoComplete="off" /></label>}
             <label>Note (optional)<textarea name="note" rows={3} maxLength={200} placeholder="Anything we should know about this order" /></label>
+            {verification.field}
           </section>
           <section className="info-panel"><h2>3. Payment</h2>
             <label>Payment method<select name="payment" value={payment} onChange={event => setPayment(event.target.value)}>{paymentMethods.map(p => <option key={p.name}>{p.name}</option>)}</select></label>
@@ -253,7 +261,7 @@ export default function WebsiteOrder() {
               Contact Telegram support
             </a></>}
           </p>}
-          <button className="info-action" type="submit" disabled={busy || !order || productUnavailable || (!available && !engaged)}>{busy ? "Sending your order..." : contactMethod === "telegram" ? "Place order and open Telegram" : "Place order"}</button>
+          <button className="info-action" type="submit" disabled={busy || !verification.ready || !order || productUnavailable || (!available && !engaged)}>{busy ? "Sending your order..." : contactMethod === "telegram" ? "Place order and open Telegram" : "Place order"}</button>
         </fieldset>
       </form>
       <aside className="info-panel order-alternatives"><h2>Other ways to buy</h2><a href={botHref || "https://t.me/PSNamso_bot"} target="_blank" rel="noopener noreferrer">Shop with Telegram bot</a><a href="https://t.me/Premiumstorezz" target="_blank" rel="noopener noreferrer">Order with Telegram support</a></aside>

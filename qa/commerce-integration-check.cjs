@@ -85,7 +85,7 @@ try{
  assert(action.includes(`/order?product=${encodeURIComponent(express.id)}`) || action.includes(`/order/?product=${encodeURIComponent(express.id)}`),action);assert(!action.includes('Buy in bot'));
 }finally{Module._load=load;}
 (async()=>{
- const {onRequestPost}=await import('../functions/api/order.js');
+ const {onRequestGet,onRequestPost}=await import('../functions/api/order.js');
  const {readOrderReply}=require('../src/components/WebsiteOrder.tsx');
  for (const status of [200,403,502]) {
   const html=new Response('<!DOCTYPE html><title>Server response</title>',{status,headers:{'Content-Type':'text/html'}});
@@ -108,20 +108,31 @@ try{
  const originalFetch=global.fetch;const originalLog=console.log;
  const calls=[];const pending=[];
  let sender='PSNamso_bot', mirrorAvailable=true, photo=[{file_id:'fixture-photo'}];
+ let messageStatus=()=> 'new', releaseGroup, releaseMirror, turnstileResult;
+ const protectedEnv={TURNSTILE_SITE_KEY:'fixture-site-key',TURNSTILE_SECRET_KEY:'fixture-turnstile-secret'};
  const env={BOT_TOKEN:'fixture-token',ADMIN_CHAT_ID:'fixture-admin',PANEL_INGEST_URL:'https://panel.fixture.invalid/internal/web-order',PANEL_INGEST_TOKEN:'fixture-ingest'};
  global.fetch=async(url,options)=>{
   calls.push({url:String(url),options});
   if(String(url).endsWith('/products.json'))return Response.json(catalog);
-  if(String(url)==='https://api.telegram.org/botfixture-token/sendPhoto'){
+  if(String(url).endsWith('/siteverify')) return Response.json(turnstileResult);
+  if(String(url)==='https://api.telegram.org/botfixture-token/sendPhoto' ||
+    String(url)==='https://api.telegram.org/botfixture-token/sendDocument'){
    options.signal.throwIfAborted();
-   return Response.json({ok:true,result:{from:{username:sender},message_id:12,photo}});
-  }
-  if(String(url)==='https://api.telegram.org/botfixture-token/sendDocument'){
-   options.signal.throwIfAborted();
-   return Response.json({ok:true,result:{from:{username:sender},message_id:12,document:{file_id:'fixture-document'}}});
+   const target=options.body instanceof FormData ? options.body.get('chat_id') : JSON.parse(options.body).chat_id;
+   const group=target==='fixture-group';
+   if (group && releaseGroup) await releaseGroup;
+   const result={from:{username:sender},message_id:group ? 13 : 12,chat:{id:group ? -1002 : 1001}};
+   if(String(url).endsWith('/sendPhoto')) result.photo=photo;
+   else result.document={file_id:'fixture-document'};
+   return Response.json({ok:true,result});
   }
   if(String(url).endsWith('/editMessageReplyMarkup'))return Response.json({ok:true});
-  if(String(url)===env.PANEL_INGEST_URL)return mirrorAvailable ? Response.json({ok:true,id:17}) : Response.json({ok:false},{status:503});
+  if(String(url)===env.PANEL_INGEST_URL){
+   const payload=JSON.parse(options.body);
+   if(payload.op==='telegram_messages') return Response.json({ok:true,status:messageStatus()});
+   if(releaseMirror) await releaseMirror;
+   return mirrorAvailable ? Response.json({ok:true,id:17}) : Response.json({ok:false},{status:503});
+  }
   throw Error('Unexpected network request blocked');
  };
  console.log=()=>{};
@@ -132,8 +143,13 @@ try{
   form.set('screenshot',new Blob([new Uint8Array(screenshot.bytes)],{type:screenshot.type}),screenshot.name);
   return new Request('https://store.fixture.invalid/api/order',{method:'POST',headers:{Origin:'https://store.fixture.invalid'},body:form});
  };
+ const send = async (context) => {
+  const response=await onRequestPost(context);
+  await Promise.all(pending.splice(0));
+  return response;
+ };
  try{
-  let result=await onRequestPost({request:makeRequest(),env,waitUntil:p=>pending.push(p)});
+  let result=await send({request:makeRequest(),env,waitUntil:p=>pending.push(p)});
   assert.equal(result.status,200);assert.equal((await result.json()).ok,true);await Promise.all(pending);
   const mirror=JSON.parse(calls.find(c=>c.url===env.PANEL_INGEST_URL).options.body);
   const primary=calls.find(c=>c.url.endsWith('/sendPhoto')).options.body;
@@ -150,15 +166,19 @@ try{
    sender='fixture_sender';
    photo=reusePhoto ? [{file_id:'fixture-photo'}] : [];
    const offset=calls.length;
-   const r=await onRequestPost({request:makeRequest(),env:{...env,SALE_GROUP_ID:'fixture-group'},waitUntil:p=>pending.push(p)});
+   const r=await send({request:makeRequest(),env:{...env,SALE_GROUP_ID:'fixture-group'},waitUntil:p=>pending.push(p)});
    const {orderId}=await r.json();
    const copies=calls.slice(offset).filter(c=>c.url.endsWith('/sendPhoto'));
    const body=copies[1].options.body;
-   const keyboard=reusePhoto ? JSON.parse(body).reply_markup : JSON.parse(body.get('reply_markup'));
+   assert.equal(reusePhoto ? JSON.parse(body).photo : body.get('photo').size, reusePhoto ? 'fixture-photo' : 4);
+   const groupEdit=calls.slice(offset).filter(c=>c.url.endsWith('/editMessageReplyMarkup'))
+    .map(c=>JSON.parse(c.options.body)).find(c=>c.chat_id===-1002);
+   const keyboard=groupEdit.reply_markup;
    assert.deepEqual(keyboard.inline_keyboard[0].map(b=>b.url),['approve','decline'].map(action=>
     `https://t.me/PSNamso_bot?start=web_${action}_17_${orderId}`));
   }
-  const sendOrder = (fields) => onRequestPost({request:makeRequest(fields),env,waitUntil:p=>pending.push(p)});
+  const sendOrder = (fields) => send({request:makeRequest(fields),env,waitUntil:p=>pending.push(p)});
+  sender='PSNamso_bot';
   const telegramOrder = {name:'',contact:'',contact_method:'telegram',profile_name:'QA Profile'};
   const testStart=calls.length;
   const tg=await sendOrder(telegramOrder);
@@ -176,7 +196,7 @@ try{
   for (const type of ['image/heic','application/octet-stream']) {
    const heicOffset=calls.length;
    const screenshot={name:'fixture.HEIC',type,bytes:[0,0,0,24,102,116,121,112,104,101,105,99]};
-   const response=await onRequestPost({
+   const response=await send({
     request:makeRequest(telegramOrder,screenshot),
     env:{...env,SALE_GROUP_ID:'fixture-group'},
     waitUntil:p=>pending.push(p),
@@ -192,8 +212,59 @@ try{
    assert.deepEqual([...new Uint8Array(await uploaded.arrayBuffer())],screenshot.bytes);
    const forwarded=JSON.parse(documents[1].options.body);
    assert.equal(forwarded.document,'fixture-document');
-   assert.equal(forwarded.reply_markup.inline_keyboard[0][0].text,'\u2705 Approve');
+   const groupEdit=heicCalls.filter(c=>c.url.endsWith('/editMessageReplyMarkup'))
+    .map(c=>JSON.parse(c.options.body)).find(c=>c.chat_id===-1002);
+   assert.equal(groupEdit.reply_markup.inline_keyboard[0][0].text,'\u2705 Approve');
+   const registered=heicCalls.filter(c=>c.url===env.PANEL_INGEST_URL)
+    .map(c=>JSON.parse(c.options.body)).find(c=>c.op==='telegram_messages');
+   assert.deepEqual(registered.messages,[[1001,12],[-1002,13]]);
   }
+  const speedOffset=calls.length;
+  let resume;
+  releaseGroup=new Promise(resolve=>{resume=resolve;});
+  const orderPromise=onRequestPost({
+   request:makeRequest(telegramOrder),env:{...env,SALE_GROUP_ID:'fixture-group'},
+   waitUntil:p=>pending.push(p),
+  });
+  let timer;
+  let statusChecks=0;
+  messageStatus=()=>statusChecks++ === 0 ? 'new' : 'approved';
+  try {
+   const parallel=await Promise.race([orderPromise,new Promise(resolve=>{timer=setTimeout(resolve,1000);})]);
+   assert(parallel,'Telegram checkout response should not wait for the second chat');
+   assert((await parallel.json()).telegramLink);
+  } finally {
+   clearTimeout(timer);
+   resume();
+   releaseGroup=undefined;
+   await Promise.all(pending.splice(0));
+   messageStatus=()=> 'new';
+  }
+  const updates=calls.slice(speedOffset).filter(c=>c.url.endsWith('/editMessageReplyMarkup'))
+   .map(c=>JSON.parse(c.options.body));
+  assert.equal(updates.length,4);
+  for (const chatId of [1001,-1002]) {
+   const last=updates.filter(edit=>edit.chat_id===chatId).at(-1);
+   assert.equal(last.reply_markup.inline_keyboard[0][0].callback_data,'req_done');
+  }
+
+  const gateEnv={...env,...protectedEnv};
+  const config=await onRequestGet({env:gateEnv}).json();
+  assert.deepEqual(config,{ok:true,siteKey:'fixture-site-key'});
+  assert.equal(onRequestGet({env:{TURNSTILE_SITE_KEY:'fixture-site-key'}}).status,503);
+  const gateOrder=(fields)=>send({request:makeRequest({...telegramOrder,...fields}),env:gateEnv,waitUntil:p=>pending.push(p)});
+  const gateOffset=calls.length;
+  assert.equal((await gateOrder({})).status,403);
+  for (turnstileResult of [
+   {success:false,'error-codes':['timeout-or-duplicate']},
+   {success:true,hostname:'wrong.fixture.invalid',action:'web_order'},
+   {success:true,hostname:'store.fixture.invalid',action:'wrong_action'},
+  ]) assert.equal((await gateOrder({'cf-turnstile-response':'fixture-token'})).status,403);
+  assert(calls.slice(gateOffset).every(call=>call.url.endsWith('/siteverify')));
+  turnstileResult={success:true,hostname:'store.fixture.invalid',action:'web_order'};
+  const protectedOrder=await gateOrder({'cf-turnstile-response':'fixture-token'});
+  assert.equal(protectedOrder.status,200);
+  assert((await protectedOrder.json()).telegramLink);
   const validationOffset=calls.length;
   const empty=await onRequestPost({request:makeRequest(telegramOrder,{name:'fixture.HEIC',type:'image/heic',bytes:[]}),env});
   assert.equal(empty.status,400);
@@ -217,9 +288,24 @@ try{
   } finally {
    AbortSignal.timeout=timeout;
   }
-  const viber=await sendOrder({...telegramOrder,contact_method:'viber',contact:'+959123456789'});
-  assert.equal(viber.status,200);
-  assert.equal((await viber.json()).telegramLink,undefined);
+  let resumeMirror;
+  let mirrorTimer;
+  releaseMirror=new Promise(resolve=>{resumeMirror=resolve;});
+  try {
+   const viberOrder=onRequestPost({
+    request:makeRequest({...telegramOrder,contact_method:'viber',contact:'+959123456789'}),
+    env,waitUntil:p=>pending.push(p),
+   });
+   const viber=await Promise.race([viberOrder,new Promise(resolve=>{mirrorTimer=setTimeout(resolve,1000);})]);
+   assert(viber,'Viber checkout response should not wait for the panel mirror');
+   assert.equal(viber.status,200);
+   assert.equal((await viber.json()).telegramLink,undefined);
+  } finally {
+   clearTimeout(mirrorTimer);
+   resumeMirror();
+   releaseMirror=undefined;
+   await Promise.all(pending.splice(0));
+  }
 
   const validationStart=calls.length;
   const missingContact=await sendOrder({...telegramOrder,contact_method:''});

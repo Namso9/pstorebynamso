@@ -25,6 +25,7 @@ const ALLOWED_IMAGE = [
   'image/heic', 'image/heif', 'image/avif', 'image/gif', 'image/bmp',
 ];
 const PRIMARY_DELIVERY_TIMEOUT_MS = 25_000;
+const TURNSTILE_ACTION = 'web_order';
 // Browser form ကနေပဲ POST လာရမယ်။ Origin header မပါတဲ့ client တွေကို မပိတ်ဘူး —
 // ပါပြီး ကိုယ့် site မဟုတ်မှသာ ငြင်းတယ် (preview deploy အတွက် request ကိုယ်ပိုင်
 // origin ကိုပါ လက်ခံသည်)။
@@ -100,21 +101,25 @@ async function checkPlanStock(productId, planId) {
  * chars — they say what was bought, never who bought it, so they change
  * nothing about what customer data reaches the panel.
  */
+async function postToPanel(env, data) {
+  return fetch(env.PANEL_INGEST_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Ingest-Token': env.PANEL_INGEST_TOKEN,
+    },
+    body: JSON.stringify(data),
+    signal: AbortSignal.timeout(2500),
+  });
+}
+
 async function mirrorToPanel(env, data) {
   if (!env.PANEL_INGEST_URL || !env.PANEL_INGEST_TOKEN) return;
   // Only token-backed inserts are idempotent across a lost response.
   const attempts = data.telegram_link_hash ? 2 : 1;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     try {
-      const response = await fetch(env.PANEL_INGEST_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Ingest-Token': env.PANEL_INGEST_TOKEN,
-        },
-        body: JSON.stringify(data),
-        signal: AbortSignal.timeout(5000),
-      });
+      const response = await postToPanel(env, data);
       if (response.status < 500) {
         const row = await response.json();
         if (response.ok && row.ok && Number.isSafeInteger(row.id) && row.id > 0) return row.id;
@@ -161,9 +166,8 @@ function notifyTargets(env) {
   return out;
 }
 
-async function sendScreenshot(env, chatId, caption, upload, signal, fileId, keyboard) {
+async function sendScreenshot(env, chatId, caption, upload, signal, fileId) {
   const fields = { chat_id: chatId, caption };
-  if (keyboard) fields.reply_markup = keyboard;
 
   let body;
   let headers;
@@ -174,7 +178,6 @@ async function sendScreenshot(env, chatId, caption, upload, signal, fileId, keyb
     body = new FormData();
     body.append('chat_id', chatId);
     body.append('caption', caption);
-    if (keyboard) body.append('reply_markup', JSON.stringify(keyboard));
     body.append(upload.field, upload.file, upload.filename);
   }
 
@@ -188,20 +191,93 @@ async function sendScreenshot(env, chatId, caption, upload, signal, fileId, keyb
   return data;
 }
 
-async function fanOutToRest(env, targets, caption, fileId, upload, keyboard) {
-  const results = await Promise.allSettled(
-    targets.map(async (chatId) => {
-      const data = await sendScreenshot(
-        env, chatId, caption, upload, AbortSignal.timeout(5000), fileId, keyboard
-      );
-      if (!data.ok) {
-        console.warn('Telegram fan-out failed', data.error_code);
-        throw new Error('Fan-out failed');
-      }
-    })
-  );
-  const failed = results.filter((r) => r.status === 'rejected').length;
-  return { sent: results.length - failed, failed };
+async function publishOrderCopies(env, orderRef, mirrored, targets, primary, caption, fileId, upload) {
+  const copies = await Promise.allSettled(targets.map(async (chatId) => {
+    const reply = await sendScreenshot(env, chatId, caption, upload, AbortSignal.timeout(5000), fileId);
+    if (!reply.ok) throw new Error('Telegram fan-out failed');
+    return reply.result;
+  }));
+  const sent = [primary, ...copies.flatMap(result => result.status === 'fulfilled' ? [result.value] : [])];
+  console.log('Web order delivery', orderRef, 'sent', sent.length, 'failed', copies.length + 1 - sent.length);
+
+  const id = await mirrored;
+  if (!id) return;
+  const sender = primary.from?.username;
+  const messages = sent.map(message => [message.chat?.id, message.message_id])
+    .filter(([chatId, messageId]) => Number.isSafeInteger(chatId) && Number.isSafeInteger(messageId) && messageId > 0);
+  if (!messages.length) return;
+  const sync = async () => {
+    try {
+      const response = await postToPanel(env, { op: 'telegram_messages', id, order_ref: orderRef, messages });
+      const row = await response.json();
+      if (response.ok && row.ok) return row.status;
+    } catch {
+      // An unavailable panel does not prevent reviewing a delivered message.
+    }
+    console.warn('Web order message registration unavailable', orderRef);
+  };
+  const edit = async (keyboard) => {
+    const results = await Promise.allSettled(messages.map(async ([chatId, messageId]) => {
+      const response = await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/editMessageReplyMarkup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, message_id: messageId, reply_markup: keyboard }),
+        signal: AbortSignal.timeout(5000),
+      });
+      if (!response.ok) throw new Error('Telegram markup update failed');
+    }));
+    const failed = results.filter(result => result.status === 'rejected').length;
+    if (failed) console.warn('Web order markup updates failed', orderRef, failed);
+  };
+  const resultKeyboard = (status) => {
+    const text = { approved: '\u2705 Approved', declined: '\u274c Declined', handled: 'Handled' }[status];
+    return text ? { inline_keyboard: [[{ text, callback_data: 'req_done' }]] } : null;
+  };
+
+  const sameBot = sender?.toLowerCase() === 'psnamso_bot';
+  const initialStatus = sameBot ? await sync() : undefined;
+  const closed = resultKeyboard(initialStatus);
+  await edit(closed || decisionKeyboard(id, orderRef, sender));
+  if (!closed && sameBot) {
+    // A decision during the edits may have closed a copy before its buttons arrived.
+    const finalKeyboard = resultKeyboard(await sync());
+    if (finalKeyboard) await edit(finalKeyboard);
+  }
+}
+
+export function onRequestGet({ env }) {
+  if (Boolean(env.TURNSTILE_SITE_KEY) !== Boolean(env.TURNSTILE_SECRET_KEY)) {
+    return json({ ok: false, error: 'Checkout verification is unavailable.' }, 503);
+  }
+  return json({ ok: true, siteKey: env.TURNSTILE_SITE_KEY || null });
+}
+
+async function verifyCheckout(request, env, form) {
+  if (!env.TURNSTILE_SITE_KEY && !env.TURNSTILE_SECRET_KEY) return;
+  if (!env.TURNSTILE_SITE_KEY || !env.TURNSTILE_SECRET_KEY) {
+    return json({ ok: false, error: 'Checkout verification is unavailable.' }, 503);
+  }
+  const token = form.get('cf-turnstile-response');
+  if (typeof token !== 'string' || !token || token.length > 2048) {
+    return json({ ok: false, error: 'Complete the checkout verification before placing your order.' }, 403);
+  }
+  try {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: env.TURNSTILE_SECRET_KEY, response: token }),
+      signal: AbortSignal.timeout(4000),
+    });
+    if (response.ok) {
+      const result = await response.json();
+      if (result.success === true && result.action === TURNSTILE_ACTION &&
+          result.hostname === new URL(request.url).hostname) return;
+      return json({ ok: false, error: 'Verification expired or failed. Complete it again.' }, 403);
+    }
+  } catch {
+    // A verification outage must not forward an unverified order.
+  }
+  return json({ ok: false, error: 'Checkout verification is unavailable.' }, 503);
 }
 
 export async function onRequestPost(context) {
@@ -308,6 +384,10 @@ export async function onRequestPost(context) {
     if (type && !ALLOWED_IMAGE.includes(type) && !highEfficiencyFormat) {
       return json({ ok: false, error: 'Unsupported image type' }, 400);
     }
+
+    const verificationError = await verifyCheckout(request, env, form);
+    if (verificationError) return verificationError;
+
     const upload = highEfficiencyFormat
       ? { method: 'sendDocument', field: 'document', file: shot, filename: `payment-screenshot.${highEfficiencyFormat}` }
       : { method: 'sendPhoto', field: 'photo', file: shot, filename: 'payment-screenshot.jpg' };
@@ -374,7 +454,7 @@ export async function onRequestPost(context) {
       return json({ ok: false, error: 'Delivery failed' }, 502);
     }
 
-    const id = await mirrorToPanel(env, {
+    const mirrored = mirrorToPanel(env, {
       order_ref: orderId,
       name, product, payment, contact,
       contact_method: contactMethod,
@@ -390,30 +470,14 @@ export async function onRequestPost(context) {
       oos: Boolean(oos),
     });
 
-    const keyboard = id ? decisionKeyboard(id, orderId, primary?.from?.username) : undefined;
-    if (keyboard) {
-      context.waitUntil(fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/editMessageReplyMarkup`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: AbortSignal.timeout(5000),
-        body: JSON.stringify({
-          chat_id: deliveredTo, message_id: primary.message_id, reply_markup: keyboard,
-        }),
-      }).then(response => {
-        if (!response.ok) console.warn('Web order buttons unavailable', orderId);
-      }).catch(() => console.warn('Web order buttons unavailable', orderId)));
-    }
+    context.waitUntil(publishOrderCopies(
+      env, orderId, mirrored, targets.filter(chatId => chatId !== deliveredTo),
+      primary, caption, fileId, upload
+    ).catch(() => console.warn('Web order copies could not be finalized', orderId)));
 
-    const fan = await fanOutToRest(
-      env,
-      targets.filter((id) => id !== deliveredTo),
-      caption,
-      fileId,
-      upload,
-      keyboard
-    );
-    console.log('order', orderId, 'notify targets', targets.length,
-                'primary ok, fan-out sent', fan.sent, 'failed', fan.failed);
+    // Telegram needs the row for its private link. Viber can confirm as soon as
+    // the primary screenshot arrives since the phone number is in that copy.
+    const id = telegram ? await mirrored : undefined;
 
     const fbBase = env.FB_PAGE_LINK || FB_DEFAULT;
     const fbRef = env.FB_PAGE_LINK && env.FB_PAGE_LINK.includes('m.me')
