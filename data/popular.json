@@ -2,13 +2,13 @@
   "updated": "21 Nov 2026",
   "window_days": 7,
   "items": [
-    "happ",
     "spotify_canada",
+    "happ",
+    "spotify_individual",
     "jumpjump",
+    "spotify_us",
     "chatgpt",
     "myanmar-vless",
-    "mytel-data",
-    "spotify_individual",
-    "spotify_us"
+    "mytel-data"
   ]
 }
