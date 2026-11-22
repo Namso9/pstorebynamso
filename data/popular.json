@@ -1,14 +1,14 @@
 {
-  "updated": "21 Nov 2026",
+  "updated": "22 Nov 2026",
   "window_days": 7,
   "items": [
     "spotify_canada",
     "happ",
     "spotify_individual",
     "atom-data",
+    "chatgpt",
     "jumpjump",
     "spotify_us",
-    "chatgpt",
     "myanmar-vless"
   ]
 }
