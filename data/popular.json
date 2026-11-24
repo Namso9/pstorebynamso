@@ -2,13 +2,13 @@
   "updated": "24 Nov 2026",
   "window_days": 7,
   "items": [
-    "spotify_canada",
     "atom-data",
+    "spotify_canada",
     "chatgpt",
-    "spotify_us",
     "mytel-data",
+    "spotify_us",
+    "express_vpn",
     "capcut",
-    "spotify_individual",
-    "express_vpn"
+    "jumpjump"
   ]
 }
