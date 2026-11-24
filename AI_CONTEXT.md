@@ -1,3 +1,5 @@
+Express VPN uses the linked panel product name on the storefront. Saving the product retries title publication.
+
 2026-11-15 live weekly trending fix: validated; release pending.
 See integration/LIVE_TRENDING_20261115.md.
 
