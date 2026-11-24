@@ -3,12 +3,12 @@
   "window_days": 7,
   "items": [
     "atom-data",
-    "spotify_canada",
     "chatgpt",
+    "spotify_canada",
     "spotify_us",
     "mytel-data",
+    "capcut",
     "express_vpn",
-    "jumpjump",
-    "proton"
+    "jumpjump"
   ]
 }
