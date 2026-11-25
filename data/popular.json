@@ -1,14 +1,14 @@
 {
-  "updated": "24 Nov 2026",
+  "updated": "25 Nov 2026",
   "window_days": 7,
   "items": [
+    "chatgpt",
     "atom-data",
     "spotify_canada",
-    "chatgpt",
     "spotify_us",
-    "mytel-data",
-    "capcut",
     "express_vpn",
-    "netflix_phone"
+    "mytel-data",
+    "proton",
+    "bebra"
   ]
 }
