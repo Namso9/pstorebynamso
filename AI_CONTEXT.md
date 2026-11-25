@@ -1,3 +1,9 @@
+2026-11-25 ATOM plan renamed to 135 GB, still 31,000 Ks / 30 days /
+data only. Panel-published catalog 29e216d retains the 130gb_30d checkout ID
+for existing links. Display description and label updated. Lint (four existing
+warnings), typecheck, build, CSP, commerce/proxy, migration and export
+checks passed; npm audit reports zero vulnerabilities.
+
 Express VPN uses the linked panel product name on the storefront. Saving the product retries title publication.
 
 2026-11-15 live weekly trending fix: validated; release pending.
