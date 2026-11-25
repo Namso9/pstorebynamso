@@ -818,7 +818,8 @@
           "desc": "One Device",
           "price": "35,000 Ks",
           "id": "1_year",
-          "bot": true
+          "bot": true,
+          "stock": false
         }
       ]
     },
