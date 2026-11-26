@@ -2,6 +2,8 @@ import { categoryPages, type CategoryPage } from "@/lib/categoryPages";
 import { productHref } from "@/lib/productDetails";
 
 const aliases: Record<string, string> = {
+  // AI Movie Bot
+  dramabox: "ai movie bot",
   // Netflix
   "\u1014\u1000\u103a\u1016\u101c\u1005\u103a": "netflix",
   netflex: "netflix",
