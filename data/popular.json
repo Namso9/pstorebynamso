@@ -1,12 +1,12 @@
 {
-  "updated": "25 Nov 2026",
+  "updated": "26 Nov 2026",
   "window_days": 7,
   "items": [
     "chatgpt",
     "atom-data",
+    "express_vpn",
     "spotify_canada",
     "spotify_us",
-    "express_vpn",
     "jumpjump",
     "mytel-data",
     "bebra"
