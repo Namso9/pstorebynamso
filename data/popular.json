@@ -5,10 +5,10 @@
     "chatgpt",
     "atom-data",
     "express_vpn",
-    "spotify_canada",
-    "spotify_us",
     "capcut",
     "bebra",
-    "mytel-data"
+    "mytel-data",
+    "spotify_us",
+    "happ"
   ]
 }
