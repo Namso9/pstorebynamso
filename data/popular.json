@@ -3,12 +3,12 @@
   "window_days": 7,
   "items": [
     "chatgpt",
-    "atom-data",
     "express_vpn",
-    "capcut",
-    "bebra",
-    "happ",
+    "atom-data",
     "jumpjump",
+    "bebra",
+    "capcut",
+    "happ",
     "mytel-data"
   ]
 }
