@@ -994,6 +994,27 @@
           "price": "7,000 Ks",
           "id": "1_month",
           "bot": true
+        },
+        {
+          "name": "3 Months",
+          "desc": "VPN access",
+          "price": "20,500 Ks",
+          "id": "3_months",
+          "bot": true
+        },
+        {
+          "name": "6 Months",
+          "desc": "VPN access",
+          "price": "41,000 Ks",
+          "id": "6_months",
+          "bot": true
+        },
+        {
+          "name": "1 Year",
+          "desc": "VPN access",
+          "price": "80,000 Ks",
+          "id": "1_year",
+          "bot": true
         }
       ]
     },
@@ -1322,6 +1343,30 @@
           "desc": "One Device",
           "price": "10,000 Ks",
           "id": "1_month",
+          "bot": true
+        }
+      ]
+    },
+    {
+      "id": "xvpn",
+      "category": "premium-vpn-apps",
+      "name": "XVPN",
+      "subtitle": "VPN access for 1 device",
+      "image": "logos/vpn.svg",
+      "modalTitle": "XVPN",
+      "plans": [
+        {
+          "name": "1 Month",
+          "desc": "1 Device",
+          "price": "10,000 Ks",
+          "id": "1_month",
+          "bot": true
+        },
+        {
+          "name": "1 Year",
+          "desc": "1 Device",
+          "price": "90,000 Ks",
+          "id": "1_year",
           "bot": true
         }
       ]
