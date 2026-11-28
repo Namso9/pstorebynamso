@@ -43,6 +43,7 @@ export const productImages: Record<string, string> = {
   "Telegram Premium": "/product-logos/telegram.svg",
   "Tidal": "/product-logos/tidal.svg",
   "Windows Lifetime Keys": "/product-logos/windows.svg",
+  "XVPN": "/product-logos/xvpn.jpg",
   "YouTube Premium": "/product-logos/youtube.svg",
   "Zoom Business": "/product-logos/zoom.svg",
   "Zoom Pro": "/product-logos/zoom.svg"

@@ -2034,6 +2034,18 @@ html:not([data-lang="mm"]) .lang-toggle:hover .lang-card--en{ transform:translat
 [data-theme="dark"] .catalog-plans-row{ background:#282828; border-color:rgba(238,238,238,.12); }
 [data-theme="dark"] .catalog-plans-row small{ color:#dbad8b; }
 [data-theme="dark"] .catalog-plans-row.sold-out{ color:#b0b0b0; }
+@media (width > 600px){
+  .catalog-plans-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 8rem 96px;
+    min-height:66px;
+    padding-block:12px;
+  }
+  .catalog-plans-row>b{
+    justify-self:end;
+    font-variant-numeric:tabular-nums;
+  }
+}
 @media(max-width:600px){
   .catalog-plans-backdrop{ padding:14px; }
   .catalog-plans-dialog{ padding:20px; }

@@ -1,3 +1,8 @@
+2026-11-28 VPN storefront layout and logo.
+The plan dialog aligns prices and actions in desktop columns. The phone
+layout uses the existing stacked rows. XVPN uses the supplied wordmark
+on storefront product cards, search results, and plan dialogs.
+
 2026-11-25 ATOM plan renamed to 135 GB, still 31,000 Ks / 30 days /
 data only. Panel-published catalog 29e216d retains the 130gb_30d checkout ID
 for existing links. Display description and label updated. Lint (four existing
